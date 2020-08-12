@@ -6,7 +6,14 @@
 #include <stdio.h>
 #define FPS 30
 
+BOOL isDone = FALSE;
+
+
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+void printKeyPressed(MSG &msg);
+
+void runMessageLoop();
 
 int main()
 {
@@ -48,17 +55,21 @@ int main()
 
 	// Run the message loop.
 
-	MSG msg = { };
+	runMessageLoop();
+
+	return 0;
+}
+
+void runMessageLoop()
+{
+	MSG msg = {};
 	LARGE_INTEGER nFrequency;
 	QueryPerformanceFrequency(&nFrequency);
-	while (PeekMessage(&msg, NULL, 0, 0, 0))
+	while (!isDone)
 	{
+		PeekMessage(&msg, NULL, 0, 0, PM_REMOVE);
 		// get start
 		LARGE_INTEGER nStartTime;
-		
-		
-		
-		
 
 		// get elapsed time
 		// 1s = 1 000 000 micro s = 30 frames
@@ -67,40 +78,45 @@ int main()
 		LARGE_INTEGER  frameTime;
 		frameTime.QuadPart = 1000000 / FPS;
 
-		
 		QueryPerformanceCounter(&nStartTime);
-		
-		switch (msg.message)
-		{
-		case WM_LBUTTONDOWN:
-		case WM_RBUTTONDOWN:
-		case WM_KEYDOWN:
-			// 
-			// Perform any required cleanup. 
-			// 
-		}
+
+		// start of keypress detection
+		printKeyPressed(msg);
 
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 
-		while (1) 
+		while (1)
 		{
 			LARGE_INTEGER nStopTime;
-			LARGE_INTEGER nElapsed;
 			// get new elapsed time
 			// if (new elapsed time - start
 			QueryPerformanceCounter(&nStopTime);
-			nElapsed.QuadPart = (nStopTime.QuadPart - nStartTime.QuadPart) * 1000000;
-			nElapsed.QuadPart /= nFrequency.QuadPart;
-			if (nElapsed.QuadPart > frameTime.QuadPart) {
+			nStopTime.QuadPart = (nStopTime.QuadPart - nStartTime.QuadPart) * 1000000;
+			nStopTime.QuadPart /= nFrequency.QuadPart;
+			if (nStopTime.QuadPart > frameTime.QuadPart) {
 				break;
 			}
 		}
 		//printf("%f\n", (float) nElapsed.QuadPart / 1000);
-
 	}
+}
 
-	return 0;
+void printKeyPressed(MSG &msg)
+{
+
+	switch (msg.message)
+	{
+		case WM_KEYDOWN:
+			switch (msg.wParam)
+			{
+				case VK_ESCAPE:
+					isDone = TRUE;
+					break;
+			}
+			printf("KEY PRESSED -> \"%c\" ASCII Value = %d\n", (char) msg.wParam, (int) msg.wParam);
+			break;
+	}
 }
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -110,20 +126,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		return 0;
+		break;
 
-	case WM_PAINT:
-	{
-		PAINTSTRUCT ps;
-		HDC hdc = BeginPaint(hwnd, &ps);
-
-
-
-		FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW +1));
-
-		EndPaint(hwnd, &ps);
-	}
-	return 0;
-
-	}
+		}
 	return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
