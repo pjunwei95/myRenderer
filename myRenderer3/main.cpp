@@ -1,73 +1,40 @@
-#ifndef UNICODE
-#define UNICODE
-#endif 
 
+#define SDL_MAIN_HANDLED
+#include "sdl/SDL.h"
 #include <windows.h>
 #include <stdio.h>
+
+//#pragma comment (lib, "opengl32.lib")
 #define FPS 30
 
 BOOL isDone = FALSE;
 
 
-LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-void printKeyPressed(MSG &msg);
 
 void runMessageLoop();
 
+void test();
+
 int main()
 {
-	// Register the window class.
-	const wchar_t CLASS_NAME[] = L"Sample Window Class";
-
-	HINSTANCE hInstance = 0;
-	WNDCLASS wc = { };
-
-	wc.lpfnWndProc = WindowProc;
-	wc.hInstance = hInstance;
-	wc.lpszClassName = CLASS_NAME;
-
-	RegisterClass(&wc);
-
-	// Create the window.
-
-	HWND hwnd = CreateWindowEx(
-		0,                              // Optional window styles.
-		CLASS_NAME,                     // Window class
-		L"Learn to Program Windows",    // Window text
-		WS_OVERLAPPEDWINDOW,            // Window style
-
-		// Size and position
-		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
-
-		NULL,       // Parent window    
-		NULL,       // Menu
-		hInstance,  // Instance handle
-		NULL        // Additional application data
-	);
-
-	if (hwnd == NULL)
-	{
-		return 0;
-	}
-
-	ShowWindow(hwnd, 1);
-
-	// Run the message loop.
-
+	
 	runMessageLoop();
 
 	return 0;
 }
 
+void test() {
+	//printf("OpenGL version = %s\n", (char*)glGetString(GL_VERSION));
+
+}
+
 void runMessageLoop()
 {
-	MSG msg = {};
 	LARGE_INTEGER nFrequency;
 	QueryPerformanceFrequency(&nFrequency);
 	while (!isDone)
 	{
-		PeekMessage(&msg, NULL, 0, 0, PM_REMOVE);
 		// get start
 		LARGE_INTEGER nStartTime;
 
@@ -80,11 +47,7 @@ void runMessageLoop()
 
 		QueryPerformanceCounter(&nStartTime);
 
-		// start of keypress detection
-		printKeyPressed(msg);
 
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
 
 		while (1)
 		{
@@ -102,32 +65,3 @@ void runMessageLoop()
 	}
 }
 
-void printKeyPressed(MSG &msg)
-{
-
-	switch (msg.message)
-	{
-		case WM_KEYDOWN:
-			switch (msg.wParam)
-			{
-				case VK_ESCAPE:
-					isDone = TRUE;
-					break;
-			}
-			printf("KEY PRESSED -> \"%c\" ASCII Value = %d\n", (char) msg.wParam, (int) msg.wParam);
-			break;
-	}
-}
-
-LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-	switch (uMsg)
-	{
-	case WM_DESTROY:
-		PostQuitMessage(0);
-		return 0;
-		break;
-
-		}
-	return DefWindowProc(hwnd, uMsg, wParam, lParam);
-}
