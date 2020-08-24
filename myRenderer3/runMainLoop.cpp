@@ -1,6 +1,7 @@
-#include "sdl/SDL.h"
 #include <stdio.h>
 #include <windows.h>
+
+#include "sdl/SDL.h"
 #include "engine.h"
 #include "drawScreen.h"
 #include "getKeyInput.h"
