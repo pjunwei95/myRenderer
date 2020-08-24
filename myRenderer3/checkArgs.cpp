@@ -13,7 +13,7 @@ int checkArgs(int argc, char *argsv[])
         // string is address of first element of string
         // argsv is pointer to char pointer
         char *string = argsv[i];
-        printf("string is \"%s\"\n", string);
+        printf("string[%d] is \"%s\"\n", i, string);
     }
     return 0;
 }

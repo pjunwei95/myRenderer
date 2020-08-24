@@ -11,6 +11,7 @@
 int main(int argc, char *argsv[])
 {
     checkArgs(argc, argsv);
+    printf("Press ESC to exit the application\n");
 	runFrameController();
 	return 0;
 }
@@ -59,7 +60,7 @@ void runFrameController()
 				screenSurface = SDL_GetWindowSurface(window);
 
 				//Fill the surface white
-				//drawScreen(screenSurface);
+				drawScreen(screenSurface);
 
                 getKeyInput();
 
@@ -113,7 +114,7 @@ void getKeyInput()
             default:
                 break;
             }
-            printf("The key '%c' is pressed", e.key.keysym.sym);
+            printf("The key '%c' is pressed\n", e.key.keysym.sym);
         }
     }
 }
