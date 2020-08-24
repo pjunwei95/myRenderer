@@ -8,13 +8,25 @@
 #include "checkArgs.h"
 #include "drawScreen.h"
 
-BOOL isDone = FALSE;
+BOOL isDone;
 
 void getKeyInput();
 void runFrameController();
 
+void setBool(BOOL boolean, BOOL value)
+{
+    boolean = value;
+}
+
+BOOL getBool(BOOL boolean)
+{
+    return boolean;
+}
+
 int main(int argc, char *argsv[])
 {
+    setBool(isDone, FALSE);
+    printf("isDone value is now %d\n", getBool(isDone) );
     checkArgs(argc, argsv);
     printf("Press ESC to exit the application\n");
 	runFrameController();
