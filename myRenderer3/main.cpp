@@ -7,21 +7,12 @@
 #include "engine.h"
 #include "checkArgs.h"
 #include "drawScreen.h"
+#include "bool.h"
 
 BOOL isDone;
 
 void getKeyInput();
 void runFrameController();
-
-void setBool(BOOL boolean, BOOL value)
-{
-    boolean = value;
-}
-
-BOOL getBool(BOOL boolean)
-{
-    return boolean;
-}
 
 int main(int argc, char *argsv[])
 {
