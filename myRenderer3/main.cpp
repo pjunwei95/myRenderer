@@ -7,21 +7,11 @@
 #include "engine.h"
 #include "checkArgs.h"
 #include "drawScreen.h"
+#include "getKeyInput.h"
 
 BOOL isDone;
 
-void getKeyInput();
 void runFrameController();
-
-void setIsDone(BOOL value)
-{
-    isDone = value;
-}
-
-BOOL getIsDone()
-{
-    return isDone;
-}
 
 int main(int argc, char *argsv[])
 {
@@ -109,31 +99,12 @@ void runFrameController()
 	SDL_Quit();
 }
 
-void getKeyInput()
+void setIsDone(BOOL value)
 {
-    SDL_Event e;
-    //Handle events on queue
-    while (SDL_PollEvent(&e) != 0) {
-        //User requests quit
-        if (e.type == SDL_QUIT)
-        {
-            isDone = true;
-        }
-        //User presses a key
-        else if (e.type == SDL_KEYDOWN)
-        {
-            //Select surfaces based on key press
-            switch (e.key.keysym.sym)
-            {
-            case SDLK_ESCAPE:
-                isDone = true;
-                break;
-            default:
-                break;
-            }
-            printf("The key '%c' is pressed\n", e.key.keysym.sym);
-        }
-    }
+    isDone = value;
 }
 
-
+BOOL getIsDone()
+{
+    return isDone;
+}

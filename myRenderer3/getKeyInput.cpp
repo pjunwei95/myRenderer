@@ -1,6 +1,7 @@
+#include "engine.h"
 #include "sdl/SDL.h"
 #include <stdio.h>
-#include "bool.h"
+#include "getKeyInput.h"
 
 void getKeyInput()
 {
@@ -10,7 +11,7 @@ void getKeyInput()
         //User requests quit
         if (e.type == SDL_QUIT)
         {
-            setBool(isDone, TRUE);
+            setIsDone(true);
         }
         //User presses a key
         else if (e.type == SDL_KEYDOWN)
@@ -19,7 +20,7 @@ void getKeyInput()
             switch (e.key.keysym.sym)
             {
             case SDLK_ESCAPE:
-                setBool(isDone, TRUE);
+                setIsDone(true);
                 break;
             default:
                 break;
