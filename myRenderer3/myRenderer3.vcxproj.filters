@@ -23,10 +23,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="main.h">
+    <ClInclude Include="checkArgs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="checkArgs.h">
+    <ClInclude Include="engine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

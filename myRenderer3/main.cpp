@@ -5,8 +5,14 @@
 
 #include "sdl/SDL.h"
 #include "sdl/SDL_video.h"
-#include "main.h"
+#include "engine.h"
 #include "checkArgs.h"
+
+BOOL isDone = FALSE;
+
+void getKeyInput();
+void runFrameController();
+void drawScreen(SDL_Surface * screenSurface);
 
 int main(int argc, char *argsv[])
 {
