@@ -6,11 +6,11 @@
 #include "sdl/SDL.h"
 #include "sdl/SDL_video.h"
 #include "main.h"
+#include "checkArgs.h"
 
-int main(int argc, char* argsv[])
+int main(int argc, char *argsv[])
 {
-    argc;
-    argsv;
+    checkArgs(argc, argsv);
 	runFrameController();
 	return 0;
 }
@@ -125,22 +125,3 @@ void drawScreen(SDL_Surface * screenSurface)
 
 }
 
-void function() {
-    /* Information about the current video settings. */
-    const SDL_VideoInfo* info = NULL;
-    /* Dimensions of our window. */
-    int width = 0;
-    int height = 0;
-    /* Color depth in bits of our window. */
-    int bpp = 0;
-    /* Flags we will pass into SDL_SetVideoMode. */
-    int flags = 0;
-
-    /* First, initialize SDL's video subsystem. */
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        /* Failed, exit. */
-        fprintf(stderr, "Video initialization failed: %s\n",
-            SDL_GetError());
-        quit_tutorial(1);
-    }
-}
