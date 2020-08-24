@@ -4,15 +4,14 @@
 #include <stdio.h>
 
 #include "sdl/SDL.h"
-#include "sdl/SDL_video.h"
 #include "engine.h"
 #include "checkArgs.h"
+#include "drawScreen.h"
 
 BOOL isDone = FALSE;
 
 void getKeyInput();
 void runFrameController();
-void drawScreen(SDL_Surface * screenSurface);
 
 int main(int argc, char *argsv[])
 {
@@ -125,10 +124,4 @@ void getKeyInput()
     }
 }
 
-void drawScreen(SDL_Surface * screenSurface)
-{
-	//fill rectangle on screen
-	SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0xFF, 0x00, 0x00));
-
-}
 
