@@ -1,6 +1,7 @@
+#include <stdio.h>
+
 #include "engine.h"
 #include "sdl/SDL.h"
-#include <stdio.h>
 #include "getKeyInput.h"
 
 void getKeyInput()

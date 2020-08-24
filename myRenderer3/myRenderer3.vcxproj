@@ -127,12 +127,14 @@
     <ClCompile Include="drawScreen.cpp" />
     <ClCompile Include="getKeyInput.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="runMainLoop.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="checkArgs.h" />
     <ClInclude Include="drawScreen.h" />
     <ClInclude Include="engine.h" />
     <ClInclude Include="getKeyInput.h" />
+    <ClInclude Include="runMainLoop.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
