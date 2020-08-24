@@ -1,5 +1,6 @@
 #include "checkArgs.h"
 #include <stdio.h>
+#include <string.h>
 
 int checkArgs(int argc, char *argsv[])
 {
@@ -14,6 +15,9 @@ int checkArgs(int argc, char *argsv[])
         // argsv is pointer to char pointer
         char *string = argsv[i];
         printf("string[%d] is \"%s\"\n", i, string);
+
+        if (strcmp(string, "int") == 0)
+            printf("This works\n");
     }
     return 0;
 }
