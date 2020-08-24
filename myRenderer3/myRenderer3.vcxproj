@@ -123,13 +123,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="bool.cpp" />
     <ClCompile Include="checkArgs.cpp" />
     <ClCompile Include="drawScreen.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bool.h" />
     <ClInclude Include="checkArgs.h" />
     <ClInclude Include="drawScreen.h" />
     <ClInclude Include="engine.h" />

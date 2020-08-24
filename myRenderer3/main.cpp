@@ -7,17 +7,26 @@
 #include "engine.h"
 #include "checkArgs.h"
 #include "drawScreen.h"
-#include "bool.h"
 
 BOOL isDone;
 
 void getKeyInput();
 void runFrameController();
 
+void setIsDone(BOOL value)
+{
+    isDone = value;
+}
+
+BOOL getIsDone()
+{
+    return isDone;
+}
+
 int main(int argc, char *argsv[])
 {
-    setBool(isDone, FALSE);
-    printf("isDone value is now %d\n", getBool(isDone) );
+    setIsDone(FALSE);
+    printf("isDone value is now %d\n", getIsDone() );
     checkArgs(argc, argsv);
     printf("Press ESC to exit the application\n");
 	runFrameController();
