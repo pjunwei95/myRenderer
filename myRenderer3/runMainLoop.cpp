@@ -8,8 +8,32 @@
 #include "runMainLoop.h"
 #include "frameRateController.h"
 
+LARGE_INTEGER test;
+LARGE_INTEGER * nStartTime = &test;
+
+
+// Windows properties
+LARGE_INTEGER test2;
+LARGE_INTEGER *nFrequency = &test2;
+
+LARGE_INTEGER test3;
+LARGE_INTEGER *defaultFrameTime = &test3;
+
+LARGE_INTEGER test4;
+LARGE_INTEGER * nStopTime = &test4;
+
+
 void runMainLoop()
 {
+
+    
+
+    QueryPerformanceFrequency(nFrequency); //to be called only once. not per frame
+
+    // 1s = 1 000 000 micro s = 30 frames
+    defaultFrameTime->QuadPart = 1000000 / FPS; //frametime is in micro seconds
+
+
     //SDL Properties
     //The window we'll be rendering to
     SDL_Window* window = NULL;
@@ -34,8 +58,8 @@ void runMainLoop()
         {
             while (!getIsDone())
             {
-                frameStart();
 
+                StartTimer(nStartTime);
                 //Get window surface
                 screenSurface = SDL_GetWindowSurface(window);
 
@@ -51,10 +75,17 @@ void runMainLoop()
 
                 while (1) // frame drawing and blocking, or at gameStateCurr == next
                 {
-                    frameEnd();
+                    //frameEnd(nStopTime);
+                    StopTimer(nStopTime);
 
-                    if (isWithinFrameRate())
+                    if (isWithinFrameRate(nStopTime, nStartTime, nFrequency, defaultFrameTime))
+                    {
+                        //printf("%.2f\n", (float)nStopTime->QuadPart / 1000);
+                        //printf("%.2f\n", GetTimerElapsedMs(nStartTime,nStopTime,nFrequency));
+
                         break;
+                    }
+
                 }
             }
         }
