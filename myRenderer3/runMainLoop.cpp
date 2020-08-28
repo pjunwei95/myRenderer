@@ -6,49 +6,9 @@
 #include "drawScreen.h"
 #include "getKeyInput.h"
 #include "runMainLoop.h"
-
-// Windows properties
-LARGE_INTEGER nFrequency;
+#include "frameRateController.h"
 
 
-// get start
-LARGE_INTEGER nStartTime;
-
-// get elapsed time
-// 1s = 1 000 000 micro s = 30 frames
-LARGE_INTEGER  frameTime;
-
-
-LARGE_INTEGER nStopTime;
-
-
-void frameStart()
-{
-    QueryPerformanceFrequency(&nFrequency);
-
-    frameTime.QuadPart = 1000000 / FPS;
-
-    QueryPerformanceCounter(&nStartTime);
-}
-
-void frameEnd() 
-{
-    // get new elapsed time
-                    // if (new elapsed time - start
-    QueryPerformanceCounter(&nStopTime);
-    
-}
-
-bool isWithinFrameRate()
-{
-    nStopTime.QuadPart = (nStopTime.QuadPart - nStartTime.QuadPart) * 1000000;
-    nStopTime.QuadPart /= nFrequency.QuadPart;
-    if (nStopTime.QuadPart > frameTime.QuadPart) {
-        printf("%.2f\n", (float)nStopTime.QuadPart / 1000);
-        return true;
-    }
-    return false;
-}
 
 void runMainLoop()
 {

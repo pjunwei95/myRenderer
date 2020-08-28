@@ -125,6 +125,7 @@
   <ItemGroup>
     <ClCompile Include="checkArgs.cpp" />
     <ClCompile Include="drawScreen.cpp" />
+    <ClCompile Include="frameRateController.cpp" />
     <ClCompile Include="getKeyInput.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="runMainLoop.cpp" />
@@ -133,6 +134,7 @@
     <ClInclude Include="checkArgs.h" />
     <ClInclude Include="drawScreen.h" />
     <ClInclude Include="engine.h" />
+    <ClInclude Include="frameRateController.h" />
     <ClInclude Include="getKeyInput.h" />
     <ClInclude Include="runMainLoop.h" />
   </ItemGroup>
