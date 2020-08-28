@@ -7,6 +7,56 @@
 #include "getKeyInput.h"
 #include "runMainLoop.h"
 
+// Windows properties
+LARGE_INTEGER nFrequency;
+
+
+// get start
+LARGE_INTEGER nStartTime;
+
+// get elapsed time
+// 1s = 1 000 000 micro s = 30 frames
+LARGE_INTEGER  frameTime;
+
+LARGE_INTEGER nStopTime;
+
+void setDefaultFrameTime()
+{
+    frameTime.QuadPart = 1000000 / FPS;
+}
+
+void frameStart()
+{
+    QueryPerformanceFrequency(&nFrequency);
+
+    QueryPerformanceCounter(&nStartTime);
+}
+
+void frameEnd()
+{
+    // get new elapsed time
+                    // if (new elapsed time - start
+    QueryPerformanceCounter(&nStopTime);
+
+}
+
+LARGE_INTEGER getCurrentFrameTime()
+{
+    nStopTime.QuadPart = (nStopTime.QuadPart - nStartTime.QuadPart) * 1000000;
+    nStopTime.QuadPart /= nFrequency.QuadPart;
+    return nStopTime;
+}
+
+bool isWithinFrameRate()
+{
+
+    if (nStopTime.QuadPart > frameTime.QuadPart) {
+        printf("FPS = %.2f\n", (float)nStopTime.QuadPart / 1000);
+        return true;
+    }
+    return false;
+}
+
 void runMainLoop()
 {
     //SDL Properties
@@ -15,9 +65,7 @@ void runMainLoop()
     //The surface contained by the window
     SDL_Surface* screenSurface = NULL;
 
-    // Windows properties
-    LARGE_INTEGER nFrequency;
-    QueryPerformanceFrequency(&nFrequency);
+    
 
     //Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -37,15 +85,9 @@ void runMainLoop()
         {
             while (!getIsDone())
             {
-                // get start
-                LARGE_INTEGER nStartTime;
-
-                // get elapsed time
-                // 1s = 1 000 000 micro s = 30 frames
-                LARGE_INTEGER  frameTime;
-                frameTime.QuadPart = 1000000 / FPS;
-
-                QueryPerformanceCounter(&nStartTime);
+                
+                setDefaultFrameTime();
+                frameStart();
 
                 //Get window surface
                 screenSurface = SDL_GetWindowSurface(window);
@@ -60,18 +102,14 @@ void runMainLoop()
                 //Wait two seconds
                 //SDL_Delay(2000);
 
-                while (1)
+
+                while (1) // frame drawing and blocking, or at gameStateCurr == next
                 {
-                    LARGE_INTEGER nStopTime;
-                    // get new elapsed time
-                    // if (new elapsed time - start
-                    QueryPerformanceCounter(&nStopTime);
-                    nStopTime.QuadPart = (nStopTime.QuadPart - nStartTime.QuadPart) * 1000000;
-                    nStopTime.QuadPart /= nFrequency.QuadPart;
-                    if (nStopTime.QuadPart > frameTime.QuadPart) {
-                        //printf("%.2f\n", (float)nStopTime.QuadPart / 1000);
+                    frameEnd();
+
+                    if (isWithinFrameRate())
                         break;
-                    }
+                    
                 }
             }
         }
