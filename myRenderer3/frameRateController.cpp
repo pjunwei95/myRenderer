@@ -2,6 +2,8 @@
 #include <Windows.h>
 #include "engine.h"
 #include <stdio.h>
+#include "runMainLoop.h"
+
 
 // Windows properties
 LARGE_INTEGER nFrequency;
@@ -15,9 +17,15 @@ LARGE_INTEGER  defaultFrameTime;
 
 LARGE_INTEGER nStopTime;
 
+//void StartTimer(TimerHandle*);
+//void StopTimer(TimerHandle*);
+//float GetTimerElapsedMs((TimerHandle*);
+//float GetTimerElapsedSeconds((TimerHandle*);
+
+
 void frameStart()
 {
-    QueryPerformanceFrequency(&nFrequency);
+    QueryPerformanceFrequency(&nFrequency); //to be called only once. not per frame
 
     defaultFrameTime.QuadPart = 1000000 / FPS;
 
@@ -41,3 +49,5 @@ bool isWithinFrameRate()
     }
     return false;
 }
+
+
