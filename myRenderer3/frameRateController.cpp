@@ -6,14 +6,12 @@
 // Windows properties
 LARGE_INTEGER nFrequency;
 
-
 // get start
 LARGE_INTEGER nStartTime;
 
 // get elapsed time
 // 1s = 1 000 000 micro s = 30 frames
 LARGE_INTEGER  defaultFrameTime;
-
 
 LARGE_INTEGER nStopTime;
 
@@ -31,7 +29,6 @@ void frameEnd()
     // get new elapsed time
     // if (new elapsed time - start
     QueryPerformanceCounter(&nStopTime);
-
 }
 
 bool isWithinFrameRate()
