@@ -1,6 +1,8 @@
 #pragma once
 #include <Windows.h>
 
+typedef LARGE_INTEGER TimerHandle;
+
 //void frameStart();
 
 //void frameStart(LARGE_INTEGER * nFrequency, LARGE_INTEGER * nStartTime, LARGE_INTEGER * defaultFrameTime);
@@ -10,15 +12,19 @@
 //void frameEnd(LARGE_INTEGER * nStopTime);
 
 
-bool isWithinFrameRate(LARGE_INTEGER* nStartTime, LARGE_INTEGER* nStopTime, LARGE_INTEGER* nFrequency, LARGE_INTEGER* defaultFrameTime);
+//bool isWithinFrameRate(TimerHandle* nStartTime, TimerHandle* nStopTime, TimerHandle* nFrequency, TimerHandle* defaultFrameTime);
 
-void StartTimer(LARGE_INTEGER * nStartTime);
+//bool isWithinFrameRate(TimerHandle* nStartTime, TimerHandle* nStopTime, LARGE_INTEGER* nFrequency, TimerHandle* defaultFrameTime);
 
-void StopTimer(LARGE_INTEGER * nStopTime);
+bool isWithinFrameRate(TimerHandle* nStartTime, TimerHandle* nStopTime, TimerHandle* nFrequency, TimerHandle* defaultFrameTime);
 
-float GetTimerElapsedMs(LARGE_INTEGER* nStopTime);
+void StartTimer(TimerHandle * nStartTime);
 
-float GetTimerElapsedSeconds(LARGE_INTEGER* nStopTime);
+void StopTimer(TimerHandle * nStopTime);
+
+float GetTimerElapsedMs(TimerHandle* nStopTime);
+
+float GetTimerElapsedSeconds(TimerHandle* nStopTime);
 
 //float GetTimerElapsedMs(LARGE_INTEGER* nStartTime, LARGE_INTEGER* nStopTime, LARGE_INTEGER* nFrequency);
 

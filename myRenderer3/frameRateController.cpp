@@ -10,7 +10,7 @@
 //float GetTimerElapsedSeconds((TimerHandle*);
 
 
-bool isWithinFrameRate(LARGE_INTEGER *nStartTime, LARGE_INTEGER * nStopTime, LARGE_INTEGER * nFrequency, LARGE_INTEGER * defaultFrameTime)
+bool isWithinFrameRate(TimerHandle *nStartTime, TimerHandle * nStopTime, TimerHandle * nFrequency, TimerHandle * defaultFrameTime)
 {
     nStopTime->QuadPart = (nStopTime->QuadPart - nStartTime->QuadPart); //the units here are in seconds
     nStopTime->QuadPart *= 1000000; //convert seconds to microseconds
@@ -21,21 +21,21 @@ bool isWithinFrameRate(LARGE_INTEGER *nStartTime, LARGE_INTEGER * nStopTime, LAR
     return false;
 }
 
-void StartTimer(LARGE_INTEGER *nStartTime)
+void StartTimer(TimerHandle *nStartTime)
 {
     QueryPerformanceCounter(nStartTime);
 }
-void StopTimer(LARGE_INTEGER *nStopTime)
+void StopTimer(TimerHandle *nStopTime)
 {
     QueryPerformanceCounter(nStopTime);
 }
 
-float GetTimerElapsedMs(LARGE_INTEGER* nStopTime)
+float GetTimerElapsedMs(TimerHandle* nStopTime)
 {
     return (float) nStopTime->QuadPart / 1000;
 }
 
-float GetTimerElapsedSeconds(LARGE_INTEGER* nStopTime)
+float GetTimerElapsedSeconds(TimerHandle* nStopTime)
 {
     return (float)nStopTime->QuadPart / 1000000;
 }

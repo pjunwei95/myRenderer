@@ -8,17 +8,19 @@
 #include "runMainLoop.h"
 #include "frameRateController.h"
 
-LARGE_INTEGER test;
-LARGE_INTEGER * nStartTime = &test;
+typedef LARGE_INTEGER TimerHandle;
 
-LARGE_INTEGER test2;
-LARGE_INTEGER *nFrequency = &test2;
+TimerHandle test;
+TimerHandle * nStartTime = &test;
 
-LARGE_INTEGER test3;
-LARGE_INTEGER *defaultFrameTime = &test3;
+TimerHandle test2;
+TimerHandle *nFrequency = &test2;
 
-LARGE_INTEGER test4;
-LARGE_INTEGER * nStopTime = &test4;
+TimerHandle test3;
+TimerHandle *defaultFrameTime = &test3;
+
+TimerHandle test4;
+TimerHandle * nStopTime = &test4;
 
 
 void runMainLoop()
