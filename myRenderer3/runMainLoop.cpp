@@ -11,8 +11,6 @@
 LARGE_INTEGER test;
 LARGE_INTEGER * nStartTime = &test;
 
-
-// Windows properties
 LARGE_INTEGER test2;
 LARGE_INTEGER *nFrequency = &test2;
 
@@ -25,14 +23,10 @@ LARGE_INTEGER * nStopTime = &test4;
 
 void runMainLoop()
 {
-
-    
-
     QueryPerformanceFrequency(nFrequency); //to be called only once. not per frame
 
     // 1s = 1 000 000 micro s = 30 frames
-    defaultFrameTime->QuadPart = 1000000 / FPS; //frametime is in micro seconds
-
+    defaultFrameTime->QuadPart = 1000000 / FPS; // unit is in seconds, NOT microseconds
 
     //SDL Properties
     //The window we'll be rendering to
@@ -58,8 +52,8 @@ void runMainLoop()
         {
             while (!getIsDone())
             {
-
                 StartTimer(nStartTime);
+
                 //Get window surface
                 screenSurface = SDL_GetWindowSurface(window);
 
@@ -75,14 +69,13 @@ void runMainLoop()
 
                 while (1) // frame drawing and blocking, or at gameStateCurr == next
                 {
-                    //frameEnd(nStopTime);
                     StopTimer(nStopTime);
 
-                    if (isWithinFrameRate(nStopTime, nStartTime, nFrequency, defaultFrameTime))
+                    if (isWithinFrameRate(nStartTime, nStopTime, nFrequency, defaultFrameTime))
                     {
-                        //printf("%.2f\n", (float)nStopTime->QuadPart / 1000);
-                        //printf("%.2f\n", GetTimerElapsedMs(nStartTime,nStopTime,nFrequency));
-
+                        printf("frametime = %.2f ms\n", GetTimerElapsedMs(nStopTime));
+                        //printf("frametime = %f s\n", GetTimerElapsedSeconds(nStopTime));
+                        //printf("FPS = %f \n", 1.0 / GetTimerElapsedSeconds(nStopTime));
                         break;
                     }
 
