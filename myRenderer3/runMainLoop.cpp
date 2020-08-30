@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <windows.h>
 
 #include "sdl/SDL.h"
 #include "engine.h"
@@ -8,23 +7,20 @@
 #include "runMainLoop.h"
 #include "frameRateController.h"
 
-typedef LARGE_INTEGER TimerHandle;
-
-TimerHandle test;
-TimerHandle * nStartTime = &test;
-
-TimerHandle test2;
-TimerHandle *nFrequency = &test2;
-
-TimerHandle test3;
-TimerHandle *defaultFrameTime = &test3;
-
-TimerHandle test4;
-TimerHandle * nStopTime = &test4;
-
-
 void runMainLoop()
 {
+    TimerHandle test;
+    TimerHandle* nStartTime = &test;
+
+    TimerHandle test2;
+    TimerHandle* nFrequency = &test2;
+
+    TimerHandle test3;
+    TimerHandle* defaultFrameTime = &test3;
+
+    TimerHandle test4;
+    TimerHandle* nStopTime = &test4;
+
     QueryPerformanceFrequency(nFrequency); //to be called only once. not per frame
 
     // 1s = 1 000 000 micro s = 30 frames
@@ -75,9 +71,9 @@ void runMainLoop()
 
                     if (isWithinFrameRate(nStartTime, nStopTime, nFrequency, defaultFrameTime))
                     {
-                        printf("frametime = %.2f ms\n", GetTimerElapsedMs(nStopTime));
+                        //printf("frametime = %.2f ms\n", GetTimerElapsedMs(nStopTime));
                         //printf("frametime = %f s\n", GetTimerElapsedSeconds(nStopTime));
-                        //printf("FPS = %f \n", 1.0 / GetTimerElapsedSeconds(nStopTime));
+                        printf("FPS = %f \n", 1.0 / GetTimerElapsedSeconds(nStopTime));
                         break;
                     }
 

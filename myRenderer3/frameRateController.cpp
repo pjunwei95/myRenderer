@@ -1,14 +1,4 @@
 #include "frameRateController.h"
-#include <Windows.h>
-#include "engine.h"
-#include <stdio.h>
-#include "runMainLoop.h"
-
-//void StartTimer(TimerHandle*);
-//void StopTimer(TimerHandle*);
-//float GetTimerElapsedMs((TimerHandle*);
-//float GetTimerElapsedSeconds((TimerHandle*);
-
 
 bool isWithinFrameRate(TimerHandle *nStartTime, TimerHandle * nStopTime, TimerHandle * nFrequency, TimerHandle * defaultFrameTime)
 {
