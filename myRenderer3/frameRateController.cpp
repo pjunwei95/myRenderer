@@ -25,6 +25,7 @@ void StartTimer(TimerHandle *nStartTime)
 {
     QueryPerformanceCounter(nStartTime);
 }
+
 void StopTimer(TimerHandle *nStopTime)
 {
     QueryPerformanceCounter(nStopTime);
