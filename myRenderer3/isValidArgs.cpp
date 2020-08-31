@@ -1,7 +1,6 @@
 #include "isValidArgs.h"
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
 #include "fileManager.h"
 
 #define FILENAME "config.txt"

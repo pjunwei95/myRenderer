@@ -1,8 +1,8 @@
-#include "Timer.h"
+#include "timer.h"
 
 Timer nFrequency;
 
-void InitialiseTimer()
+void initialiseTimer()
 {
     QueryPerformanceFrequency(&nFrequency); //to be called only once. not per frame
 }

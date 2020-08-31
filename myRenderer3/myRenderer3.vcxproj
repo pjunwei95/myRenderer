@@ -130,7 +130,7 @@
     <ClCompile Include="getKeyInput.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="runMainLoop.cpp" />
-    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fileManager.h" />
@@ -140,7 +140,7 @@
     <ClInclude Include="frameRateController.h" />
     <ClInclude Include="getKeyInput.h" />
     <ClInclude Include="runMainLoop.h" />
-    <ClInclude Include="Timer.h" />
+    <ClInclude Include="timer.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="config.txt" />

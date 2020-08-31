@@ -6,12 +6,11 @@
 #include "getKeyInput.h"
 #include "runMainLoop.h"
 #include "frameRateController.h"
-#include "Timer.h"
-
+#include "timer.h"
 
 void runMainLoop()
 {
-    InitialiseTimer();
+    initialiseTimer();
 
     Timer defaultFrameTime;
     // 1s = 1 000 000 micro s = 30 frames

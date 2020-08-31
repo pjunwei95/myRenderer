@@ -5,4 +5,4 @@ typedef LARGE_INTEGER Timer;
 
 extern Timer nFrequency;
 
-void InitialiseTimer();
+void initialiseTimer();
