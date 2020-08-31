@@ -65,7 +65,7 @@ void runMainLoop()
                     {
                         //printf("frametime = %.2f ms\n", GetTimerElapsedMs(nStopTime));
                         //printf("frametime = %f s\n", GetTimerElapsedSeconds(nStopTime));
-                        printf("FPS = %f \n", 1.0 / GetTimerElapsedSeconds(&nStopTime));
+                        //printf("FPS = %f \n", 1.0 / GetTimerElapsedSeconds(&nStopTime));
                         break;
                     }
 

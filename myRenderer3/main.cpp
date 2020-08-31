@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 #include "engine.h"
-#include "checkArgs.h"
+#include "isValidArgs.h"
 #include "runMainLoop.h"
 
 BOOL isDone;
@@ -13,9 +13,9 @@ int main(int argc, char *argsv[])
 {
     setIsDone(FALSE);
 
-    printf("isDone value is now %d\n", getIsDone() );
+    //printf("isDone value is now %d\n", getIsDone() );
 
-    checkArgs(argc, argsv);
+    isValidArgs(argc, argsv);
 
     printf("Press ESC to exit the application\n");
 
