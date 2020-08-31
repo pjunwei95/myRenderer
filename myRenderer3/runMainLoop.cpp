@@ -9,17 +9,11 @@
 
 void runMainLoop()
 {
-    TimerHandle test;
-    TimerHandle* nStartTime = &test;
-
     TimerHandle test2;
     TimerHandle* nFrequency = &test2;
 
     TimerHandle test3;
     TimerHandle* defaultFrameTime = &test3;
-
-    TimerHandle test4;
-    TimerHandle* nStopTime = &test4;
 
     QueryPerformanceFrequency(nFrequency); //to be called only once. not per frame
 
@@ -50,6 +44,8 @@ void runMainLoop()
         {
             while (!getIsDone())
             {
+                TimerHandle test;
+                TimerHandle* nStartTime = &test;
                 StartTimer(nStartTime);
 
                 //Get window surface
@@ -67,6 +63,9 @@ void runMainLoop()
 
                 while (1) // frame drawing and blocking, or at gameStateCurr == next
                 {
+                    TimerHandle test4;
+                    TimerHandle* nStopTime = &test4;
+
                     StopTimer(nStopTime);
 
                     if (isWithinFrameRate(nStartTime, nStopTime, nFrequency, defaultFrameTime))
