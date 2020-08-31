@@ -16,8 +16,8 @@ int checkArgs(int argc, char *argsv[])
         char *string = argsv[i];
         printf("string[%d] is \"%s\"\n", i, string);
 
-        if (strcmp(string, "int") == 0)
-            printf("This works\n");
+        /*if (strcmp(string, "int") == 0)
+            printf("This works\n");*/
     }
     return 0;
 }

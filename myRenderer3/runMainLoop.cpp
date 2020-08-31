@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <windows.h>
 
 #include "sdl/SDL.h"
 #include "engine.h"
@@ -10,6 +9,17 @@
 
 void runMainLoop()
 {
+    TimerHandle test2;
+    TimerHandle* nFrequency = &test2;
+
+    TimerHandle test3;
+    TimerHandle* defaultFrameTime = &test3;
+
+    QueryPerformanceFrequency(nFrequency); //to be called only once. not per frame
+
+    // 1s = 1 000 000 micro s = 30 frames
+    defaultFrameTime->QuadPart = 1000000 / FPS; // unit is in seconds, NOT microseconds
+
     //SDL Properties
     //The window we'll be rendering to
     SDL_Window* window = NULL;
@@ -34,7 +44,9 @@ void runMainLoop()
         {
             while (!getIsDone())
             {
-                frameStart();
+                TimerHandle test;
+                TimerHandle* nStartTime = &test;
+                StartTimer(nStartTime);
 
                 //Get window surface
                 screenSurface = SDL_GetWindowSurface(window);
@@ -51,10 +63,19 @@ void runMainLoop()
 
                 while (1) // frame drawing and blocking, or at gameStateCurr == next
                 {
-                    frameEnd();
+                    TimerHandle test4;
+                    TimerHandle* nStopTime = &test4;
 
-                    if (isWithinFrameRate())
+                    StopTimer(nStopTime);
+
+                    if (isWithinFrameRate(nStartTime, nStopTime, nFrequency, defaultFrameTime))
+                    {
+                        //printf("frametime = %.2f ms\n", GetTimerElapsedMs(nStopTime));
+                        //printf("frametime = %f s\n", GetTimerElapsedSeconds(nStopTime));
+                        printf("FPS = %f \n", 1.0 / GetTimerElapsedSeconds(nStopTime));
                         break;
+                    }
+
                 }
             }
         }
