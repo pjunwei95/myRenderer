@@ -4,6 +4,9 @@
 #include <stdlib.h>
 
 #define FILENAME "config.txt"
+#define TEMP_MAX_CHAR 256
+
+#define LOGNAME "debug.log"
 
 void readFromFile(const char* fileName)
 {
@@ -17,19 +20,18 @@ void readFromFile(const char* fileName)
     }
     else
     {
-        printf("//////////Reading File \"%s\"/////////////\n", fileName);
+        printf("-------------Reading File \"%s\"-------------\n", fileName);
         fseek(stream, 0L, SEEK_SET);
-        char arguments[256];
-        if (fscanf_s(stream, "%s", arguments, 256) == 1)
+        char arguments[TEMP_MAX_CHAR];
+        if (fscanf_s(stream, "%s", arguments, TEMP_MAX_CHAR) == 1)
         {
-            printf("stream read, the input is \"%s\"\n", arguments);
+            printf("Stream read, the input is \"%s\"\n", arguments);
         }
         // config.txt
         /*
             debug
         */
-        printf("//////////Closing File \"%s\"/////////////\n", fileName);
-
+        printf("-------------Closing File \"%s\"-------------\n", fileName);
         fclose(stream);
     }
 }
