@@ -2,7 +2,6 @@
 #include <Windows.h>
 
 typedef LARGE_INTEGER * TimerHandle;
-typedef LARGE_INTEGER Timer;
 
 
 bool isWithinFrameRate(TimerHandle nStartTime, TimerHandle nStopTime, TimerHandle nFrequency, TimerHandle defaultFrameTime);

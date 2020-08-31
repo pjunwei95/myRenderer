@@ -6,12 +6,11 @@
 #include "getKeyInput.h"
 #include "runMainLoop.h"
 #include "frameRateController.h"
+#include "Timer.h"
 
 
 void runMainLoop()
 {
-    Timer nFrequency;
-
     Timer defaultFrameTime;
 
     QueryPerformanceFrequency(&nFrequency); //to be called only once. not per frame
