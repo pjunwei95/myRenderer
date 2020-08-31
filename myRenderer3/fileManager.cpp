@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #define TEMP_MAX_CHAR 256
+#define LOGNAME "debug.log"
 
 void readFromFile(const char* fileName)
 {
@@ -31,7 +32,6 @@ void readFromFile(const char* fileName)
         fclose(stream);
     }
 }
-#define LOGNAME "debug.log"
 
 FILE* startLog(FILE* pfout)
 {
