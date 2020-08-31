@@ -1,6 +1,20 @@
 #include "checkArgs.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+
+#define FILENAME "config.txt"
+
+//void function()
+//{
+//    FILE *pfin;
+//    if ((pfin = fopen(FILENAME, "r")) == NULL)
+//    {
+//        printf("Error opening data file %s\n", FILENAME);
+//        exit(EXIT_FAILURE); //shutdown program
+//    }
+//}
+
 
 int checkArgs(int argc, char *argsv[])
 {
@@ -19,5 +33,7 @@ int checkArgs(int argc, char *argsv[])
         /*if (strcmp(string, "int") == 0)
             printf("This works\n");*/
     }
+
+    //function();
     return 0;
 }

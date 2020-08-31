@@ -3,7 +3,6 @@
 
 typedef LARGE_INTEGER * TimerHandle;
 
-
 bool isWithinFrameRate(TimerHandle nStartTime, TimerHandle nStopTime, TimerHandle nFrequency, TimerHandle defaultFrameTime);
 
 void StartTimer(TimerHandle nStartTime);

@@ -11,10 +11,9 @@
 
 void runMainLoop()
 {
+    InitialiseTimer();
+
     Timer defaultFrameTime;
-
-    QueryPerformanceFrequency(&nFrequency); //to be called only once. not per frame
-
     // 1s = 1 000 000 micro s = 30 frames
     defaultFrameTime.QuadPart = 1000000 / FPS; // unit is in seconds, NOT microseconds
 
@@ -56,13 +55,10 @@ void runMainLoop()
 
                 //Update the surface
                 SDL_UpdateWindowSurface(window);
-                //Wait two seconds
-                //SDL_Delay(2000);
 
                 while (1) // frame drawing and blocking, or at gameStateCurr == next
                 {
                     Timer nStopTime;
-
                     StopTimer(&nStopTime);
 
                     if (isWithinFrameRate(&nStartTime, &nStopTime, &nFrequency, &defaultFrameTime))
