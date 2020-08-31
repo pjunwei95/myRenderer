@@ -10,18 +10,15 @@
 
 BOOL isDone;
 
-
-FILE *pfout;
-
 int main(int argc, char *argsv[])
 {
 
     setIsDone(FALSE);
 
-    //printf("isDone value is now %d\n", getIsDone() );
     printf("Press ESC to exit the application\n");
     
-    pfout = startLog(pfout);
+    pfout = startLog();
+    fprintf(pfout,"isDone value is now %d\n", getIsDone());
 
     if (isValidArgs(argc, argsv))
     {
@@ -32,8 +29,6 @@ int main(int argc, char *argsv[])
 
 	runMainLoop();
     endLog(pfout);
-
-
 	return 0;
 }
 

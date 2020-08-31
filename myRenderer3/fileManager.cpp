@@ -5,6 +5,8 @@
 #define TEMP_MAX_CHAR 256
 #define LOGNAME "debug.log"
 
+FILE *pfout;
+
 void readFromFile(const char* fileName)
 {
     FILE *stream;
@@ -20,6 +22,7 @@ void readFromFile(const char* fileName)
         printf("-------------Reading File \"%s\"-------------\n", fileName);
         fseek(stream, 0L, SEEK_SET);
         char arguments[TEMP_MAX_CHAR];
+        //TODO: Handle multiple inputs
         if (fscanf_s(stream, "%s", arguments, TEMP_MAX_CHAR) == 1)
         {
             printf("Stream read, the input is \"%s\"\n", arguments);
@@ -27,13 +30,15 @@ void readFromFile(const char* fileName)
         // config.txt
         /*
             debug
+            arg2
+            arg3
         */
         printf("-------------Closing File \"%s\"-------------\n", fileName);
         fclose(stream);
     }
 }
 
-FILE* startLog(FILE* pfout)
+FILE* startLog()
 {
     const char* fileName = LOGNAME;
     /* open output file */
@@ -55,9 +60,9 @@ FILE* startLog(FILE* pfout)
     return pfout;
 }
 
-void endLog(FILE* pfout)
+void endLog(FILE* pf)
 {
-    fprintf(pfout, "===========Logging End===========\n");
+    fprintf(pf, "===========Logging End===========\n");
 
-    fclose(pfout);
+    fclose(pf);
 }
