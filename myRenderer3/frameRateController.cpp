@@ -21,12 +21,12 @@ void StopTimer(TimerHandle nStopTime)
     QueryPerformanceCounter(nStopTime);
 }
 
-float GetTimerElapsedMs(TimerHandle nStopTime)
+float GetTimerElapsedMs(const TimerHandle nStopTime)
 {
     return (float) nStopTime->QuadPart / 1000;
 }
 
-float GetTimerElapsedSeconds(TimerHandle nStopTime)
+float GetTimerElapsedSeconds(const TimerHandle nStopTime)
 {
     return (float)nStopTime->QuadPart / 1000000;
 }

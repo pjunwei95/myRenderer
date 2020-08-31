@@ -37,7 +37,5 @@ int isValidArgs(int argc, char *argsv[])
                 printf("This works\n");*/
         }
     }
-    
-
     return 1;
 }
