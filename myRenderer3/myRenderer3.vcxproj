@@ -123,6 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="fileManager.cpp" />
     <ClCompile Include="isValidArgs.cpp" />
     <ClCompile Include="drawScreen.cpp" />
     <ClCompile Include="frameRateController.cpp" />
@@ -132,6 +133,7 @@
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="fileManager.h" />
     <ClInclude Include="isValidArgs.h" />
     <ClInclude Include="drawScreen.h" />
     <ClInclude Include="engine.h" />
