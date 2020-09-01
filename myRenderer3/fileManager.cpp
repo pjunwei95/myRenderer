@@ -4,71 +4,99 @@
 
 
 #define TEMP_MAX_CHAR 256
+#define NUM_STRINGS 50
 #define LOGNAME "debug.log"
-
-FILE *pfout;
 
 
 //bool OpenFile(const char* FileName, OpenType openType, FileHandle fileHandle)
 
-
-
-void readFromFile(const char* fileName)
+void manageFile()
 {
-    FILE *stream;
-    errno_t err = fopen_s(&stream, fileName, "r");
+    FileHandle fileHandle;
+    openFile("config.txt", "rb", fileHandle);
+
+    closeFile(fileHandle);
+}
+
+bool openFile(const char* fileName, OpenType openType, FileHandle fileHandle)
+{
+    char * buffer = 0;
+    long length;
+    errno_t err = fopen_s(&fileHandle, fileName, openType);
 
     if (err)
     {
         printf("Error opening data file %s\n", fileName);
-        exit(EXIT_FAILURE); //shutdown program
+        return 0;
     }
     else
     {
         printf("-------------Reading File \"%s\"-------------\n", fileName);
-        fseek(stream, 0L, SEEK_SET);
-        char arguments[TEMP_MAX_CHAR];
-        //TODO: Handle multiple inputs
-        if (fscanf_s(stream, "%s", arguments, TEMP_MAX_CHAR) == 1)
-        {
-            printf("Stream read, the input is \"%s\"\n", arguments);
-        }
-        // config.txt
-        /*
-            debug
-            arg2
-            arg3
-        */
-        printf("-------------Closing File \"%s\"-------------\n", fileName);
-        fclose(stream);
+        return 1;
     }
 }
 
-FILE* startLog()
+
+bool closeFile(FileHandle fileHandle) 
 {
-    const char* fileName = LOGNAME;
-    /* open output file */
-
-    //check whether is overwriting
-    errno_t err = fopen_s(&pfout, fileName, "a");
-
-    if (err)
-    {
-        printf("Error opening data file %s\n", fileName);
-        printf("Cannot write to log\n");
-        //dont shutdown at every logging
-    }
-    else
-    {
-        fprintf(pfout, "===========Logging Begin===========\n");
-    }
-
-    return pfout;
+    printf("-------------Closing File-------------\n");
+    fclose(fileHandle);
 }
 
-void endLog(FILE* pf)
-{
-    fprintf(pf, "===========Logging End===========\n");
+//void function() 
+//{
+    //char strArr[NUM_STRINGS][TEMP_MAX_CHAR];
+//
+//    fseek(fileHandle, 0, SEEK_END);
+//    length = ftell(fileHandle);
+//    fseek(fileHandle, 0, SEEK_SET);
+//    buffer = (char *)malloc(length + 1);
+//    if (buffer)
+//    {
+//        fread(buffer, 1, length, fileHandle);
+//    }
+//    
+//    buffer[length] = '\0';
+//
+//    if (buffer) //TODO openType == r
+//    {
+//        //do nothing
+//    }
+//    free(buffer);
+//
+//    // config.txt
+//    /*
+//        debug
+//        arg2
+//        arg3
+//    */
+//}
 
-    fclose(pf);
-}
+//FILE* startLog()
+//{
+//    const char* fileName = LOGNAME;
+//    /* open output file */
+//
+//    //check whether is overwriting
+//    errno_t err = fopen_s(&pfout, fileName, "a");
+//
+//    if (err)
+//    {
+//        printf("Error opening data file %s\n", fileName);
+//        printf("Cannot write to log\n");
+//        //dont shutdown at every logging
+//    }
+//    else
+//    {
+//        fprintf(pfout, "===========Logging Begin===========\n");
+//    }
+//
+//    return pfout;
+//}
+//
+//void endLog(FILE* pf)
+//{
+//    fprintf(pf, "===========Logging End===========\n");
+//
+//    fclose(pf);
+//}

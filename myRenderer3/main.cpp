@@ -19,6 +19,8 @@ int main(int argc, char *argsv[])
     
     //printf("isDone value is now %d\n", getIsDone());
 
+    manageFile();
+
     if (isValidArgs(argc, argsv))
 
 	runMainLoop();

@@ -1,14 +1,12 @@
 #pragma once
 #include <stdio.h>
 
-void readFromFile(const char * fileName);
+typedef FILE * FileHandle;
 
-FILE * startLog();
+typedef const char * OpenType;
 
-//void startLog(FILE * pfout);
+void manageFile();
 
-//FILE * startLog(FILE * pfout);
+bool openFile(const char * fileName, OpenType openType, FileHandle filehandle);
 
-void endLog(FILE * pfout);
-
-//void function();
+bool closeFile(FileHandle fileHandle);
