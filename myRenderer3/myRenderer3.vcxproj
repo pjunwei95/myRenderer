@@ -123,20 +123,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="checkArgs.cpp" />
+    <ClCompile Include="fileManager.cpp" />
+    <ClCompile Include="isValidArgs.cpp" />
     <ClCompile Include="drawScreen.cpp" />
     <ClCompile Include="frameRateController.cpp" />
     <ClCompile Include="getKeyInput.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="runMainLoop.cpp" />
+    <ClCompile Include="timer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="checkArgs.h" />
+    <ClInclude Include="fileManager.h" />
+    <ClInclude Include="isValidArgs.h" />
     <ClInclude Include="drawScreen.h" />
     <ClInclude Include="engine.h" />
     <ClInclude Include="frameRateController.h" />
     <ClInclude Include="getKeyInput.h" />
     <ClInclude Include="runMainLoop.h" />
+    <ClInclude Include="timer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="config.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
