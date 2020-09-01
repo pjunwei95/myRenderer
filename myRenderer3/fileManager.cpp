@@ -21,14 +21,14 @@ void manageFile()
     openFile("config.txt", "rb", &fileHandle);
 
     char* buffer = readFileToBuffer(fileHandle);
-    buffer;
 
     closeFile(fileHandle);
+
+    freeBuffer(buffer);
 }
 
 bool openFile(const char* fileName, OpenType openType, FileHandle * fileHandle)
 {
-    
     errno_t err = fopen_s(fileHandle, fileName, openType);
 
     if (err)
@@ -57,7 +57,6 @@ bool closeFile(FileHandle fileHandle)
     return 1;
 }
 
-
 //TODO handle binary
 char* readFileToBuffer(FileHandle fileHandle)
 {
@@ -75,37 +74,10 @@ char* readFileToBuffer(FileHandle fileHandle)
     return buffer;
  }
 
-
-
-
-// char* readFileToBuffer(FileHandle fileHandle)
-// void freeBuffer(const char*)
-
-//void function(FileHandle fileHandle) 
-//{
-//    char * buffer = 0;
-//    long length;
-//    char strArr[NUM_STRINGS][TEMP_MAX_CHAR];
-//
-//    fseek(fileHandle, 0, SEEK_END);
-//    length = ftell(fileHandle);
-//    fseek(fileHandle, 0, SEEK_SET);
-//    buffer = (char *)malloc(length + 1);
-//    if (buffer)
-//    {
-//        fread(buffer, 1, length, fileHandle);
-//    }
-//    
-//    buffer[length] = '\0';
-//
-//    if (buffer) //TODO openType == r
-//    {
-//        //do nothing
-//    }
-//    free(buffer);
-//
-//    
-//}
+void freeBuffer(char* buffer)
+{
+    free(buffer);
+}
 
 //FILE* startLog()
 //{
