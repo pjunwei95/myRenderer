@@ -13,16 +13,16 @@
 void manageFile()
 {
     FileHandle fileHandle;
-    openFile("config.txt", "rb", fileHandle);
+
+    openFile("config.txt", "rb", &fileHandle);
 
     closeFile(fileHandle);
 }
 
-bool openFile(const char* fileName, OpenType openType, FileHandle fileHandle)
+bool openFile(const char* fileName, OpenType openType, FileHandle * fileHandle)
 {
-    char * buffer = 0;
-    long length;
-    errno_t err = fopen_s(&fileHandle, fileName, openType);
+    
+    errno_t err = fopen_s(fileHandle, fileName, openType);
 
     if (err)
     {
@@ -31,7 +31,7 @@ bool openFile(const char* fileName, OpenType openType, FileHandle fileHandle)
     }
     else
     {
-        printf("-------------Reading File \"%s\"-------------\n", fileName);
+        printf("-------------Opening File \"%s\"-------------\n", fileName);
         return 1;
     }
 }
@@ -39,12 +39,22 @@ bool openFile(const char* fileName, OpenType openType, FileHandle fileHandle)
 
 bool closeFile(FileHandle fileHandle) 
 {
-    printf("-------------Closing File-------------\n");
-    fclose(fileHandle);
+    if (!fileHandle) 
+    {
+        return 0;
+    }
+    else
+    {
+        printf("-------------Closing File-------------\n");
+        fclose(fileHandle);
+    }
+    return 1;
 }
 
 //void function() 
 //{
+//char * buffer = 0;
+//long length;
     //char strArr[NUM_STRINGS][TEMP_MAX_CHAR];
 //
 //    fseek(fileHandle, 0, SEEK_END);
