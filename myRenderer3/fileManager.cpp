@@ -57,6 +57,8 @@ bool closeFile(FileHandle fileHandle)
     return 1;
 }
 
+
+//TODO handle binary
 char* readFileToBuffer(FileHandle fileHandle)
 {
     char * buffer = 0;
@@ -73,21 +75,12 @@ char* readFileToBuffer(FileHandle fileHandle)
     return buffer;
  }
 
-//char* getStringArray(const char * buffer)
-//{
-//    char strArr[NUM_STRINGS][TEMP_MAX_CHAR];
-//
-//    if (buffer) //TODO openType == r
-//    {
-//        //do nothing
-//    }
-// }
 
 
 
 // char* readFileToBuffer(FileHandle fileHandle)
-// char* getStringArray(const char *)
 // void freeBuffer(const char*)
+
 //void function(FileHandle fileHandle) 
 //{
 //    char * buffer = 0;

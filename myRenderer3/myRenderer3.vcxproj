@@ -130,6 +130,7 @@
     <ClCompile Include="getKeyInput.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="runMainLoop.cpp" />
+    <ClCompile Include="windowHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fileManager.h" />
@@ -139,6 +140,7 @@
     <ClInclude Include="frameRateController.h" />
     <ClInclude Include="getKeyInput.h" />
     <ClInclude Include="runMainLoop.h" />
+    <ClInclude Include="windowHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="config.txt" />

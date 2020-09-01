@@ -6,70 +6,42 @@
 #include "getKeyInput.h"
 #include "runMainLoop.h"
 #include "frameRateController.h"
+#include "windowHandler.h"
+
 
 void runMainLoop()
 {
     initialiseTimer();
-
-    //SDL Properties
-    //The window we'll be rendering to
-    SDL_Window* window = NULL;
-    //The surface contained by the window
-    SDL_Surface* screenSurface = NULL;
-
-    //Initialize SDL
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    
+    if(createWindow())
     {
-        printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-    }
-    else
-    {
-        //Create window
-        window = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-            SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-        if (window == NULL)
+        while (!getIsDone())
         {
-            printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
-        }
-        else
-        {
-            while (!getIsDone())
+            //LARGE_INTEGER test;
+            Timer nStartTime;
+            startTimer(&nStartTime);
+
+            drawWindow();
+
+            getKeyInput();
+
+            updateWindow();
+
+            while (1) // frame drawing and blocking, or at gameStateCurr == next
             {
-                //LARGE_INTEGER test;
-                Timer nStartTime;
-                startTimer(&nStartTime);
+                Timer nStopTime;
+                stopTimer(&nStopTime);
 
-                //Get window surface
-                screenSurface = SDL_GetWindowSurface(window);
-
-                //Fill the surface white
-                drawScreen(screenSurface);
-
-                getKeyInput();
-
-                //Update the surface
-                SDL_UpdateWindowSurface(window);
-
-                while (1) // frame drawing and blocking, or at gameStateCurr == next
+                if (isWithinFrameRate(&nStartTime, &nStopTime))
                 {
-                    Timer nStopTime;
-                    stopTimer(&nStopTime);
-
-                    if (isWithinFrameRate(&nStartTime, &nStopTime))
-                    {
-                        //printf("frametime = %.2f ms\n", GetTimerElapsedMs(nStopTime));
-                        //printf("frametime = %f s\n", GetTimerElapsedSeconds(nStopTime));
-                        //printf("FPS = %f \n", 1.0 / getTimerElapsedSeconds(&nStopTime));
-                        break;
-                    }
-
+                    //printf("frametime = %.2f ms\n", GetTimerElapsedMs(nStopTime));
+                    //printf("frametime = %f s\n", GetTimerElapsedSeconds(nStopTime));
+                    //printf("FPS = %f \n", 1.0 / getTimerElapsedSeconds(&nStopTime));
+                    break;
                 }
+
             }
         }
     }
-    //Destroy window
-    SDL_DestroyWindow(window);
-
-    //Quit SDL subsystems
-    SDL_Quit();
+    destroyWindow();
 }
