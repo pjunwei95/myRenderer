@@ -21,8 +21,7 @@ int isValidArgs(int argc, char *argsv[])
     //check args
     if (argc == 3 && (strcmp(argsv[2], "config") == 0)) // app.exe 2 config
     {
-        fprintf(pfout, "Loading default configurations\n");
-        readFromFile(FILENAME);
+        printf("Loading default configurations\n");
     }
     else //else default reading
     {
@@ -31,10 +30,10 @@ int isValidArgs(int argc, char *argsv[])
             // string is address of first element of string
             // argsv is pointer to char pointer
             char *string = argsv[i];
-            fprintf(pfout, "string[%d] is \"%s\"\n", i, string);
+            printf("string[%d] is \"%s\"\n", i, string);
 
             if (strcmp(string, "config") == 0)
-                fprintf(pfout,"This works\n");
+                printf("This works\n");
         }
     }
     return 1;

@@ -17,13 +17,11 @@ int main(int argc, char *argsv[])
 
     printf("Press ESC to exit the application\n");
     
-    pfout = startLog();
-    fprintf(pfout,"isDone value is now %d\n", getIsDone());
+    //printf("isDone value is now %d\n", getIsDone());
 
     if (isValidArgs(argc, argsv))
 
 	runMainLoop();
-    endLog(pfout);
 	return 0;
 }
 

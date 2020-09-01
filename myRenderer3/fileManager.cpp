@@ -2,10 +2,16 @@
 #include <Windows.h>
 #include <stdio.h>
 
+
 #define TEMP_MAX_CHAR 256
 #define LOGNAME "debug.log"
 
 FILE *pfout;
+
+
+//bool OpenFile(const char* FileName, OpenType openType, FileHandle fileHandle)
+
+
 
 void readFromFile(const char* fileName)
 {
