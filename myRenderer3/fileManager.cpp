@@ -2,11 +2,6 @@
 #include <Windows.h>
 #include <stdio.h>
 
-
-#define TEMP_MAX_CHAR 256
-#define NUM_STRINGS 50
-#define LOGNAME "debug.log"
-
 // config.txt
 /*
     debug
@@ -14,11 +9,12 @@
     arg3
 */
 
-void manageFile()
+
+void readFile(const char * fileName)
 {
     FileHandle fileHandle;
 
-    openFile("config.txt", "rb", &fileHandle);
+    openFile(fileName, "rb", &fileHandle);
 
     char* buffer = readFileToBuffer(fileHandle);
 
@@ -38,7 +34,7 @@ bool openFile(const char* fileName, OpenType openType, FileHandle * fileHandle)
     }
     else
     {
-        printf("-------------Opening File \"%s\"-------------\n", fileName);
+        printf("-------------Opening File \"%s\"\n", fileName);
         return 1;
     }
 }
@@ -51,7 +47,7 @@ bool closeFile(FileHandle fileHandle)
     }
     else
     {
-        printf("-------------Closing File-------------\n");
+        printf("-------------Closing File\n");
         fclose(fileHandle);
     }
     return 1;
@@ -79,31 +75,3 @@ void freeBuffer(char* buffer)
     free(buffer);
 }
 
-//FILE* startLog()
-//{
-//    const char* fileName = LOGNAME;
-//    /* open output file */
-//
-//    //check whether is overwriting
-//    errno_t err = fopen_s(&pfout, fileName, "a");
-//
-//    if (err)
-//    {
-//        printf("Error opening data file %s\n", fileName);
-//        printf("Cannot write to log\n");
-//        //dont shutdown at every logging
-//    }
-//    else
-//    {
-//        fprintf(pfout, "===========Logging Begin===========\n");
-//    }
-//
-//    return pfout;
-//}
-//
-//void endLog(FILE* pf)
-//{
-//    fprintf(pf, "===========Logging End===========\n");
-//
-//    fclose(pf);
-//}

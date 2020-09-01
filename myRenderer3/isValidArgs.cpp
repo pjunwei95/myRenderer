@@ -3,8 +3,6 @@
 #include <string.h>
 #include "fileManager.h"
 
-#define FILENAME "config.txt"
-
 int isValidArgs(int argc, char *argsv[])
 {
     if (argc < 2) 
@@ -22,6 +20,7 @@ int isValidArgs(int argc, char *argsv[])
     if (argc == 3 && (strcmp(argsv[2], "config") == 0)) // app.exe 2 config
     {
         printf("Loading default configurations\n");
+        return 1;
     }
     else //else default reading
     {
@@ -36,5 +35,5 @@ int isValidArgs(int argc, char *argsv[])
                 printf("This works\n");
         }
     }
-    return 1;
+    return 0;
 }
