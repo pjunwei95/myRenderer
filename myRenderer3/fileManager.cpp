@@ -7,14 +7,21 @@
 #define NUM_STRINGS 50
 #define LOGNAME "debug.log"
 
-
-//bool OpenFile(const char* FileName, OpenType openType, FileHandle fileHandle)
+// config.txt
+/*
+    debug
+    arg2
+    arg3
+*/
 
 void manageFile()
 {
     FileHandle fileHandle;
 
     openFile("config.txt", "rb", &fileHandle);
+
+    char* buffer = readFileToBuffer(fileHandle);
+    buffer;
 
     closeFile(fileHandle);
 }
@@ -36,7 +43,6 @@ bool openFile(const char* fileName, OpenType openType, FileHandle * fileHandle)
     }
 }
 
-
 bool closeFile(FileHandle fileHandle) 
 {
     if (!fileHandle) 
@@ -51,11 +57,42 @@ bool closeFile(FileHandle fileHandle)
     return 1;
 }
 
-//void function() 
+char* readFileToBuffer(FileHandle fileHandle)
+{
+    char * buffer = 0;
+    long length;
+    fseek(fileHandle, 0, SEEK_END);
+    length = ftell(fileHandle);
+    fseek(fileHandle, 0, SEEK_SET);
+    buffer = (char *)malloc(length + 1);
+    if (buffer)
+    {
+        fread(buffer, 1, length, fileHandle);
+    }
+    buffer[length] = '\0';
+    return buffer;
+ }
+
+//char* getStringArray(const char * buffer)
 //{
-//char * buffer = 0;
-//long length;
-    //char strArr[NUM_STRINGS][TEMP_MAX_CHAR];
+//    char strArr[NUM_STRINGS][TEMP_MAX_CHAR];
+//
+//    if (buffer) //TODO openType == r
+//    {
+//        //do nothing
+//    }
+// }
+
+
+
+// char* readFileToBuffer(FileHandle fileHandle)
+// char* getStringArray(const char *)
+// void freeBuffer(const char*)
+//void function(FileHandle fileHandle) 
+//{
+//    char * buffer = 0;
+//    long length;
+//    char strArr[NUM_STRINGS][TEMP_MAX_CHAR];
 //
 //    fseek(fileHandle, 0, SEEK_END);
 //    length = ftell(fileHandle);
@@ -74,12 +111,7 @@ bool closeFile(FileHandle fileHandle)
 //    }
 //    free(buffer);
 //
-//    // config.txt
-//    /*
-//        debug
-//        arg2
-//        arg3
-//    */
+//    
 //}
 
 //FILE* startLog()
