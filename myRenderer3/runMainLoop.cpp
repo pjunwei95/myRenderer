@@ -6,15 +6,10 @@
 #include "getKeyInput.h"
 #include "runMainLoop.h"
 #include "frameRateController.h"
-#include "timer.h"
 
 void runMainLoop()
 {
     initialiseTimer();
-
-    Timer defaultFrameTime;
-    // 1s = 1 000 000 micro s = 30 frames
-    defaultFrameTime.QuadPart = 1000000 / FPS; // unit is in seconds, NOT microseconds
 
     //SDL Properties
     //The window we'll be rendering to
@@ -42,7 +37,7 @@ void runMainLoop()
             {
                 //LARGE_INTEGER test;
                 Timer nStartTime;
-                StartTimer(&nStartTime);
+                startTimer(&nStartTime);
 
                 //Get window surface
                 screenSurface = SDL_GetWindowSurface(window);
@@ -58,13 +53,13 @@ void runMainLoop()
                 while (1) // frame drawing and blocking, or at gameStateCurr == next
                 {
                     Timer nStopTime;
-                    StopTimer(&nStopTime);
+                    stopTimer(&nStopTime);
 
-                    if (isWithinFrameRate(&nStartTime, &nStopTime, &nFrequency, &defaultFrameTime))
+                    if (isWithinFrameRate(&nStartTime, &nStopTime))
                     {
                         //printf("frametime = %.2f ms\n", GetTimerElapsedMs(nStopTime));
                         //printf("frametime = %f s\n", GetTimerElapsedSeconds(nStopTime));
-                        //printf("FPS = %f \n", 1.0 / GetTimerElapsedSeconds(&nStopTime));
+                        //printf("FPS = %f \n", 1.0 / getTimerElapsedSeconds(&nStopTime));
                         break;
                     }
 
