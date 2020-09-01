@@ -21,11 +21,6 @@ int main(int argc, char *argsv[])
     fprintf(pfout,"isDone value is now %d\n", getIsDone());
 
     if (isValidArgs(argc, argsv))
-    {
-        //start logging
-
-        //how to end logging? use a global bool to keep track?
-    }
 
 	runMainLoop();
     endLog(pfout);
