@@ -2,7 +2,7 @@
 #include <Windows.h>
 #include <stdio.h>
 
-void readFile(const char * fileName, OpenType openType)
+char* readFile(const char * fileName, OpenType openType)
 {
     FileHandle fileHandle;
 
@@ -10,11 +10,11 @@ void readFile(const char * fileName, OpenType openType)
 
     char* buffer = readFileToBuffer(fileHandle);
 
+    if (!buffer)
+        printf("Error writing to buffer!\n");
+
     closeFile(fileHandle);
-
-    processBuffer(buffer);
-
-    freeBuffer(buffer);
+    return buffer;
 }
 
 bool openFile(const char* fileName, OpenType openType, FileHandle * fileHandle)
@@ -58,21 +58,13 @@ char* readFileToBuffer(FileHandle fileHandle)
     if (buffer)
     {
         fread(buffer, 1, length, fileHandle);
+        buffer[length] = '\0';
+
     }
-    buffer[length] = '\0';
     return buffer;
  }
 
-void processBuffer(char * buffer)
-{
-    char *nextToken;
-    char * token = strtok_s(buffer, " ", &nextToken);
-    while (token != NULL)
-    {
-        printf("token = %s\n", token);
-        token = strtok_s(NULL, " ", &nextToken);
-    }
-}
+
 
 void freeBuffer(char* buffer)
 {

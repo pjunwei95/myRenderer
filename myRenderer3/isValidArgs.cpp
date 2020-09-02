@@ -20,6 +20,8 @@ int isValidArgs(int argc, char *argsv[])
     if (argc == 3 && (strcmp(argsv[2], "config") == 0)) // app.exe 2 config
     {
         printf("Loading default configurations\n");
+        loadConfig();
+
         return 1;
     }
     else //else default reading
@@ -31,9 +33,34 @@ int isValidArgs(int argc, char *argsv[])
             char *string = argsv[i];
             printf("string[%d] is \"%s\"\n", i, string);
 
-            if (strcmp(string, "config") == 0)
+            if (strcmp(string, "int") == 0)
+            {
                 printf("This works\n");
+            }
         }
     }
     return 0;
+}
+
+void loadConfig() 
+{
+    char* buffer;
+
+    buffer = readFile("config.txt", "rb"); //issues with using "r"
+
+    tokeniseBuffer(buffer);
+
+    freeBuffer(buffer);
+
+}
+
+void tokeniseBuffer(char * buffer)
+{
+    char *nextToken;
+    char * token = strtok_s(buffer, " ", &nextToken);
+    while (token != NULL)
+    {
+        printf("token = %s\n", token);
+        token = strtok_s(NULL, " ", &nextToken);
+    }
 }
