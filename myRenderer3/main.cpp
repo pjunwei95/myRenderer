@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 #include "engine.h"
-#include "isValidArgs.h"
+#include "processArgs.h"
 #include "runMainLoop.h"
 #include "fileManager.h"
 #include "logger.h"

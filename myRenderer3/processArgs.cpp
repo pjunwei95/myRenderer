@@ -1,4 +1,4 @@
-#include "isValidArgs.h"
+#include "processArgs.h"
 #include <stdio.h>
 #include <string.h>
 #include "fileManager.h"
