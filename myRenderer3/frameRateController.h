@@ -7,11 +7,11 @@ typedef LARGE_INTEGER * TimerHandle;
 
 void initialiseTimer();
 
-bool isWithinFrameRate(TimerHandle nStartTime, TimerHandle nStopTime);
+void idleUntilFPSLimit(TimerHandle timer);
 
-void startTimer(TimerHandle nStartTime);
+bool isWithinFrameRate(TimerHandle nStartTime);
 
-void stopTimer(TimerHandle nStopTime);
+void updateTimeStamp(TimerHandle nStartTime);
 
 float getTimerElapsedMs(TimerHandle nStopTime);
 
