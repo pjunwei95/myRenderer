@@ -1,16 +1,18 @@
 #pragma once
 #include <stdio.h>
 
-extern FILE* pfout;
+typedef FILE * FileHandle;
 
-void readFromFile(const char * fileName);
+typedef const char * OpenType;
 
-FILE * startLog();
+void readFile(const char * fileName, OpenType openType);
 
-//void startLog(FILE * pfout);
+bool openFile(const char * fileName, OpenType openType, FileHandle * fileHandle);
 
-//FILE * startLog(FILE * pfout);
+bool closeFile(FileHandle fileHandle);
 
-void endLog(FILE * pfout);
+char * readFileToBuffer(FileHandle fileHandle);
 
-//void function();
+void processBuffer(char * buffer);
+
+void freeBuffer(char * buffer);

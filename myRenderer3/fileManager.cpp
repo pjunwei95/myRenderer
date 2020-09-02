@@ -2,67 +2,80 @@
 #include <Windows.h>
 #include <stdio.h>
 
-#define TEMP_MAX_CHAR 256
-#define LOGNAME "debug.log"
-
-FILE *pfout;
-
-void readFromFile(const char* fileName)
+void readFile(const char * fileName, OpenType openType)
 {
-    FILE *stream;
-    errno_t err = fopen_s(&stream, fileName, "r");
+    FileHandle fileHandle;
+
+    openFile(fileName, openType, &fileHandle);
+
+    char* buffer = readFileToBuffer(fileHandle);
+
+    closeFile(fileHandle);
+
+    processBuffer(buffer);
+
+    freeBuffer(buffer);
+}
+
+bool openFile(const char* fileName, OpenType openType, FileHandle * fileHandle)
+{
+    errno_t err = fopen_s(fileHandle, fileName, openType);
 
     if (err)
     {
         printf("Error opening data file %s\n", fileName);
-        exit(EXIT_FAILURE); //shutdown program
+        return 0;
     }
     else
     {
-        printf("-------------Reading File \"%s\"-------------\n", fileName);
-        fseek(stream, 0L, SEEK_SET);
-        char arguments[TEMP_MAX_CHAR];
-        //TODO: Handle multiple inputs
-        if (fscanf_s(stream, "%s", arguments, TEMP_MAX_CHAR) == 1)
-        {
-            printf("Stream read, the input is \"%s\"\n", arguments);
-        }
-        // config.txt
-        /*
-            debug
-            arg2
-            arg3
-        */
-        printf("-------------Closing File \"%s\"-------------\n", fileName);
-        fclose(stream);
+        printf("-------------Opening File \"%s\"\n", fileName);
+        return 1;
     }
 }
 
-FILE* startLog()
+bool closeFile(FileHandle fileHandle) 
 {
-    const char* fileName = LOGNAME;
-    /* open output file */
-
-    //check whether is overwriting
-    errno_t err = fopen_s(&pfout, fileName, "a");
-
-    if (err)
+    if (!fileHandle) 
     {
-        printf("Error opening data file %s\n", fileName);
-        printf("Cannot write to log\n");
-        //dont shutdown at every logging
+        return 0;
     }
     else
     {
-        fprintf(pfout, "===========Logging Begin===========\n");
+        printf("-------------Closing File\n");
+        fclose(fileHandle);
     }
-
-    return pfout;
+    return 1;
 }
 
-void endLog(FILE* pf)
+char* readFileToBuffer(FileHandle fileHandle)
 {
-    fprintf(pf, "===========Logging End===========\n");
+    char * buffer = 0;
+    long length;
+    fseek(fileHandle, 0, SEEK_END);
+    length = ftell(fileHandle);
+    fseek(fileHandle, 0, SEEK_SET);
+    buffer = (char *)malloc(length + 1);
+    if (buffer)
+    {
+        fread(buffer, 1, length, fileHandle);
+    }
+    buffer[length] = '\0';
+    return buffer;
+ }
 
-    fclose(pf);
+void processBuffer(char * buffer)
+{
+    char *nextToken;
+    char * token = strtok_s(buffer, " ", &nextToken);
+    while (token != NULL)
+    {
+        printf("token = %s\n", token);
+        token = strtok_s(NULL, " ", &nextToken);
+    }
 }
+
+void freeBuffer(char* buffer)
+{
+    free(buffer);
+}
+

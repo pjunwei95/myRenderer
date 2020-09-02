@@ -128,9 +128,10 @@
     <ClCompile Include="drawScreen.cpp" />
     <ClCompile Include="frameRateController.cpp" />
     <ClCompile Include="getKeyInput.cpp" />
+    <ClCompile Include="logger.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="runMainLoop.cpp" />
-    <ClCompile Include="timer.cpp" />
+    <ClCompile Include="windowHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fileManager.h" />
@@ -139,8 +140,9 @@
     <ClInclude Include="engine.h" />
     <ClInclude Include="frameRateController.h" />
     <ClInclude Include="getKeyInput.h" />
+    <ClInclude Include="logger.h" />
     <ClInclude Include="runMainLoop.h" />
-    <ClInclude Include="timer.h" />
+    <ClInclude Include="windowHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="config.txt" />

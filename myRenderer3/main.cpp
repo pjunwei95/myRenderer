@@ -7,6 +7,7 @@
 #include "isValidArgs.h"
 #include "runMainLoop.h"
 #include "fileManager.h"
+#include "logger.h"
 
 BOOL isDone;
 
@@ -17,13 +18,14 @@ int main(int argc, char *argsv[])
 
     printf("Press ESC to exit the application\n");
     
-    pfout = startLog();
-    fprintf(pfout,"isDone value is now %d\n", getIsDone());
+    //printf("isDone value is now %d\n", getIsDone());
+    if (!getIsDone())
+        log("isDone value is now false\n");
 
     if (isValidArgs(argc, argsv))
+        readFile("config.txt", "rb"); //issues with using "r"
 
 	runMainLoop();
-    endLog(pfout);
 	return 0;
 }
 
