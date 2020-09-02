@@ -4,20 +4,6 @@
 
 void tokeniseBuffer(char * buffer);
 
-char* readFile(const char * fileName, OpenType openType)
-{
-    FileHandle fileHandle;
-
-    openFile(fileName, openType, &fileHandle);
-
-    char* buffer = readFileToBuffer(fileHandle);
-
-    if (!buffer)
-        printf("Error writing to buffer!\n");
-
-    closeFile(fileHandle);
-    return buffer;
-}
 
 bool openFile(const char* fileName, OpenType openType, FileHandle * fileHandle)
 {
@@ -49,48 +35,66 @@ bool closeFile(FileHandle fileHandle)
     return 1;
 }
 
-char* readFileToBuffer(FileHandle fileHandle)
+void tokeniseBuffer(char * buffer)
 {
-    char * buffer = 0;
-    long length;
-    fseek(fileHandle, 0, SEEK_END);
-    length = ftell(fileHandle);
-    fseek(fileHandle, 0, SEEK_SET);
-    buffer = (char *)malloc(length + 1);
-    if (buffer)
+    //printf("buffer:\n%s\n", buffer);
+    char *nextToken;
+    const char * delim = " \n";
+    char * token = strtok_s(buffer, delim, &nextToken);
+    while (token != NULL)
     {
-        fread(buffer, 1, length, fileHandle);
-        buffer[length] = '\0';
-
+        printf("token = %s\n", token);
+        token = strtok_s(NULL, delim, &nextToken);
     }
-    return buffer;
- }
+}
 
 void freeBuffer(char* buffer)
 {
     free(buffer);
 }
 
-void loadConfig()
+void writeToBuffer(const FileHandle fileHandle, char * buffer, long length)
 {
-    printf("Loading default configurations\n");
+    if (buffer)
+    {
+        fread(buffer, 1, length, fileHandle);
+        buffer[length] = '\0';
+    }
+    else
+        printf("Error writing to buffer!\n");
+}
 
-    char* buffer;
+void readAndProcessFile(const char * fileName, OpenType openType)
+{
+    FileHandle fileHandle;
 
-    buffer = readFile("config.txt", "rb"); //issues with using "r"
+    openFile(fileName, openType, &fileHandle);
+
+    char * buffer = 0;
+    long length;
+
+    fseek(fileHandle, 0, SEEK_END);
+    length = ftell(fileHandle);
+    fseek(fileHandle, 0, SEEK_SET);
+    buffer = (char *)malloc(length + 1);
+
+    writeToBuffer(fileHandle, buffer, length);
+
+    closeFile(fileHandle);
 
     tokeniseBuffer(buffer);
 
     freeBuffer(buffer);
 }
-
-void tokeniseBuffer(char * buffer)
+void loadConfig()
 {
-    char *nextToken;
-    char * token = strtok_s(buffer, " ", &nextToken);
-    while (token != NULL)
-    {
-        printf("token = %s\n", token);
-        token = strtok_s(NULL, " ", &nextToken);
-    }
+    //you can always assume the "config.txt" file will always be present. if not, init default values
+
+    printf("Loading default configurations\n");
+
+    readAndProcessFile("config.txt", "rb"); //issues with using "r"
 }
+
+
+
+
