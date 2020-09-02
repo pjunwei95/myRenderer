@@ -2,23 +2,17 @@
 #include <Windows.h>
 #include <stdio.h>
 
-// config.txt
-/*
-    debug
-    arg2
-    arg3
-*/
-
-
-void readFile(const char * fileName)
+void readFile(const char * fileName, OpenType openType)
 {
     FileHandle fileHandle;
 
-    openFile(fileName, "rb", &fileHandle);
+    openFile(fileName, openType, &fileHandle);
 
     char* buffer = readFileToBuffer(fileHandle);
 
     closeFile(fileHandle);
+
+    processBuffer(buffer);
 
     freeBuffer(buffer);
 }
@@ -53,7 +47,6 @@ bool closeFile(FileHandle fileHandle)
     return 1;
 }
 
-//TODO handle binary
 char* readFileToBuffer(FileHandle fileHandle)
 {
     char * buffer = 0;
@@ -69,6 +62,17 @@ char* readFileToBuffer(FileHandle fileHandle)
     buffer[length] = '\0';
     return buffer;
  }
+
+void processBuffer(char * buffer)
+{
+    char *nextToken;
+    char * token = strtok_s(buffer, " ", &nextToken);
+    while (token != NULL)
+    {
+        printf("token = %s\n", token);
+        token = strtok_s(NULL, " ", &nextToken);
+    }
+}
 
 void freeBuffer(char* buffer)
 {

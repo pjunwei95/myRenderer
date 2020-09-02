@@ -23,7 +23,7 @@ int main(int argc, char *argsv[])
         log("isDone value is now false\n");
 
     if (isValidArgs(argc, argsv))
-        readFile("config.txt");
+        readFile("config.txt", "rb"); //issues with using "r"
 
 	runMainLoop();
 	return 0;
