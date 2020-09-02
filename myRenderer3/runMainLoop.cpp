@@ -29,7 +29,7 @@ void runMainLoop()
 
             idleUntilFPSLimit(&timer);
         }
+        destroyWindow();
     }
-    destroyWindow();
 }
 

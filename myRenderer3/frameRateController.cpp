@@ -33,7 +33,7 @@ bool isWithinFrameRate(TimerHandle nStartTime)
     nStopTime.QuadPart *= 1000000; //convert seconds to microseconds
     nStopTime.QuadPart /= nFrequency.QuadPart;
     if (nStopTime.QuadPart > defaultFrameTime.QuadPart) {
-        printf("frametime = %.2f ms\n", getTimerElapsedMs(&nStopTime));
+        //printf("frametime = %.2f ms\n", getTimerElapsedMs(&nStopTime));
         //printf("frametime = %f s\n", GetTimerElapsedSeconds(nStopTime));
         //printf("FPS = %f \n", 1.0 / getTimerElapsedSeconds(&nStopTime));
         return true;

@@ -18,11 +18,12 @@ int main(int argc, char *argsv[])
 
     printf("Press ESC to exit the application\n");
     
-    //printf("isDone value is now %d\n", getIsDone());
     if (!getIsDone())
         log("isDone value is now false\n");
 
-    isValidArgs(argc, argsv);
+    loadConfig();
+
+    processArgs(argc, argsv);
 
 	runMainLoop();
 	return 0;

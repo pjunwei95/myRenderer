@@ -1,6 +1,9 @@
 #include "fileManager.h"
 #include <Windows.h>
 #include <stdio.h>
+#include "isValidArgs.h"
+
+void tokeniseBuffer(char * buffer);
 
 char* readFile(const char * fileName, OpenType openType)
 {
@@ -64,10 +67,31 @@ char* readFileToBuffer(FileHandle fileHandle)
     return buffer;
  }
 
-
-
 void freeBuffer(char* buffer)
 {
     free(buffer);
 }
 
+void loadConfig()
+{
+    printf("Loading default configurations\n");
+
+    char* buffer;
+
+    buffer = readFile("config.txt", "rb"); //issues with using "r"
+
+    tokeniseBuffer(buffer);
+
+    freeBuffer(buffer);
+}
+
+void tokeniseBuffer(char * buffer)
+{
+    char *nextToken;
+    char * token = strtok_s(buffer, " ", &nextToken);
+    while (token != NULL)
+    {
+        printf("token = %s\n", token);
+        token = strtok_s(NULL, " ", &nextToken);
+    }
+}

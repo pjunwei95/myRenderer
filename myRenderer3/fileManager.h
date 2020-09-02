@@ -5,6 +5,8 @@ typedef FILE * FileHandle;
 
 typedef const char * OpenType;
 
+void loadConfig();
+
 char * readFile(const char * fileName, OpenType openType);
 
 bool openFile(const char * fileName, OpenType openType, FileHandle * fileHandle);
