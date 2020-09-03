@@ -1,6 +1,7 @@
 #include "fileManager.h"
 #include <Windows.h>
 #include <stdio.h>
+#include "logger.h"
 
 void tokeniseBuffer(char * buffer);
 
@@ -94,13 +95,4 @@ void readAndProcessFile(const char * fileName, OpenType openType)
         tokeniseBuffer(buffer);
 
     freeBuffer(buffer);
-}
-
-void loadConfig()
-{
-    //you can always assume the "config.txt" file will always be present. if not, init default values
-
-    printf("Loading default configurations\n");
-
-    readAndProcessFile("config.txt", TYPE_TEXT); 
 }

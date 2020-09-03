@@ -2,6 +2,17 @@
 #include <stdio.h>
 #include <string.h>
 #include "fileManager.h"
+#include "logger.h"
+
+void loadConfig()
+{
+    //you can always assume the "config.txt" file will always be present. if not, init default values
+
+    log("Loading default configurations\n");
+
+    readAndProcessFile("config.txt", TYPE_TEXT);
+}
+
 
 void processArgs(int argc, char *argsv[])
 {
@@ -21,8 +32,9 @@ void processArgs(int argc, char *argsv[])
         // string is address of first element of string
         // argsv is pointer to char pointer
         char *string = argsv[i];
-        printf("string[%d] is \"%s\"\n", i, string);
+        printf("argsv[%d] is \"%s\"\n", i, string);
     }
     
+    loadConfig();
 }
 

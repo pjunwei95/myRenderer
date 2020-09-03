@@ -16,10 +16,10 @@ enum FileMode
     MODE_APPEND
 };
 
-void loadConfig();
-
 bool openFile(const char * fileName, OpenType openType, FileMode fileMode, FileHandle * fileHandle);
 
 bool closeFile(FileHandle fileHandle);
 
 void freeBuffer(char * buffer);
+
+void readAndProcessFile(const char * fileName, OpenType openType);

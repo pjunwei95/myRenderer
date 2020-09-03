@@ -17,10 +17,8 @@ int main(int argc, char *argsv[])
 
     setIsDone(FALSE);
     
-    //if (!getIsDone())
-        //log("isDone value is now false\n");
-
-    loadConfig();
+    if (!getIsDone())
+        log("isDone value is now false\n");
 
     printf("Press ESC to exit the application\n");
 
