@@ -5,19 +5,27 @@
 void tokeniseBuffer(char * buffer);
 
 
-bool openFile(const char* fileName, OpenType openType, FileHandle * fileHandle)
+bool openFile(const char* fileName, OpenType openType, FileMode fileMode, FileHandle * fileHandle)
 {
-    errno_t err = fopen_s(fileHandle, fileName, openType);
+    errno_t err = NULL;
+    if (fileMode == MODE_WRITE)
+        err = fopen_s(fileHandle, fileName, "w");
+    else if (fileMode == MODE_APPEND)
+        err = fopen_s(fileHandle, fileName, "a");
+    else if (fileMode == MODE_READ && openType == TYPE_TEXT)
+        err = fopen_s(fileHandle, fileName, "r"); //issues with using "r" printing extra
+    else if (fileMode == MODE_READ && openType == TYPE_BIN)
+        err = fopen_s(fileHandle, fileName, "rb");
 
     if (err)
     {
         printf("Error opening data file %s\n", fileName);
-        return 0;
+        return false;
     }
     else
     {
         printf("-------------Opening File \"%s\"\n", fileName);
-        return 1;
+        return true;
     }
 }
 
@@ -25,14 +33,14 @@ bool closeFile(FileHandle fileHandle)
 {
     if (!fileHandle) 
     {
-        return 0;
+        return false;
     }
     else
     {
         printf("-------------Closing File\n");
         fclose(fileHandle);
     }
-    return 1;
+    return true;
 }
 
 void tokeniseBuffer(char * buffer)
@@ -53,7 +61,7 @@ void freeBuffer(char* buffer)
     free(buffer);
 }
 
-void writeToBuffer(const FileHandle fileHandle, char * buffer, long length)
+void readToBuffer(const FileHandle fileHandle, char * buffer, long length)
 {
     if (buffer)
     {
@@ -61,14 +69,14 @@ void writeToBuffer(const FileHandle fileHandle, char * buffer, long length)
         buffer[length] = '\0';
     }
     else
-        printf("Error writing to buffer!\n");
+        printf("Error reading to buffer!\n");
 }
 
 void readAndProcessFile(const char * fileName, OpenType openType)
 {
     FileHandle fileHandle;
 
-    openFile(fileName, openType, &fileHandle);
+    openFile(fileName, openType, MODE_READ, &fileHandle);
 
     char * buffer = 0;
     long length;
@@ -78,23 +86,21 @@ void readAndProcessFile(const char * fileName, OpenType openType)
     fseek(fileHandle, 0, SEEK_SET);
     buffer = (char *)malloc(length + 1);
 
-    writeToBuffer(fileHandle, buffer, length);
+    readToBuffer(fileHandle, buffer, length);
 
     closeFile(fileHandle);
 
-    tokeniseBuffer(buffer);
+    if (openType == TYPE_TEXT)
+        tokeniseBuffer(buffer);
 
     freeBuffer(buffer);
 }
+
 void loadConfig()
 {
     //you can always assume the "config.txt" file will always be present. if not, init default values
 
     printf("Loading default configurations\n");
 
-    readAndProcessFile("config.txt", "rb"); //issues with using "r"
+    readAndProcessFile("config.txt", TYPE_TEXT); 
 }
-
-
-
-
