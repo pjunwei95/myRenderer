@@ -124,23 +124,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="fileManager.cpp" />
-    <ClCompile Include="isValidArgs.cpp" />
     <ClCompile Include="drawScreen.cpp" />
     <ClCompile Include="frameRateController.cpp" />
     <ClCompile Include="getKeyInput.cpp" />
     <ClCompile Include="logger.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="processArgs.cpp" />
     <ClCompile Include="runMainLoop.cpp" />
     <ClCompile Include="windowHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fileManager.h" />
-    <ClInclude Include="isValidArgs.h" />
     <ClInclude Include="drawScreen.h" />
     <ClInclude Include="engine.h" />
     <ClInclude Include="frameRateController.h" />
     <ClInclude Include="getKeyInput.h" />
     <ClInclude Include="logger.h" />
+    <ClInclude Include="processArgs.h" />
     <ClInclude Include="runMainLoop.h" />
     <ClInclude Include="windowHandler.h" />
   </ItemGroup>

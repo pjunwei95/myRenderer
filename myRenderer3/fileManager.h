@@ -3,14 +3,23 @@
 
 typedef FILE * FileHandle;
 
-typedef const char * OpenType;
+enum OpenType
+{
+    TYPE_TEXT,
+    TYPE_BIN
+};
 
-char * readFile(const char * fileName, OpenType openType);
+enum FileMode
+{
+    MODE_READ,
+    MODE_WRITE,
+    MODE_APPEND
+};
 
-bool openFile(const char * fileName, OpenType openType, FileHandle * fileHandle);
+bool openFile(const char * fileName, OpenType openType, FileMode fileMode, FileHandle * fileHandle);
 
 bool closeFile(FileHandle fileHandle);
 
-char * readFileToBuffer(FileHandle fileHandle);
-
 void freeBuffer(char * buffer);
+
+void readAndProcessFile(const char * fileName, OpenType openType);

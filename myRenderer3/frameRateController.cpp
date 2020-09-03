@@ -1,5 +1,6 @@
 #include "frameRateController.h"
 #include "engine.h"
+#include <stdio.h>
 
 Timer nFrequency;
 Timer defaultFrameTime;
@@ -12,33 +13,45 @@ void initialiseTimer()
     QueryPerformanceFrequency(&nFrequency); //to be called only once. not per frame
 }
 
-bool isWithinFrameRate(TimerHandle nStartTime, TimerHandle nStopTime)
+void idleUntilFPSLimit(TimerHandle timer)
 {
-    nStopTime->QuadPart = (nStopTime->QuadPart - nStartTime->QuadPart); //the units here are in seconds
-    nStopTime->QuadPart *= 1000000; //convert seconds to microseconds
-    nStopTime->QuadPart /= nFrequency.QuadPart;
-    if (nStopTime->QuadPart > defaultFrameTime.QuadPart) {
+    while (1) // frame drawing and blocking, or at gameStateCurr == next
+    {
+        if (isWithinFrameRate(timer))
+        {
+            break;
+        }
+    }
+}
+
+bool isWithinFrameRate(TimerHandle nStartTime)
+{
+    Timer nStopTime;
+    updateTimeStamp(&nStopTime);
+
+    nStopTime.QuadPart = (nStopTime.QuadPart - nStartTime->QuadPart); //the units here are in seconds
+    nStopTime.QuadPart *= 1000000; //convert seconds to microseconds
+    nStopTime.QuadPart /= nFrequency.QuadPart;
+    if (nStopTime.QuadPart > defaultFrameTime.QuadPart) {
+        //printf("frametime = %.2f ms\n", getTimerElapsedMs(&nStopTime));
+        //printf("frametime = %f s\n", GetTimerElapsedSeconds(nStopTime));
+        //printf("FPS = %f \n", 1.0 / getTimerElapsedSeconds(&nStopTime));
         return true;
     }
     return false;
 }
 
-void startTimer(TimerHandle nStartTime)
+void updateTimeStamp(TimerHandle timer)
 {
-    QueryPerformanceCounter(nStartTime);
+    QueryPerformanceCounter(timer);
 }
 
-void stopTimer(TimerHandle nStopTime)
+float getTimerElapsedMs(const TimerHandle timeElapsed)
 {
-    QueryPerformanceCounter(nStopTime);
+    return (float) timeElapsed->QuadPart / 1000;
 }
 
-float getTimerElapsedMs(const TimerHandle nStopTime)
+float getTimerElapsedSeconds(const TimerHandle timeElapsed)
 {
-    return (float) nStopTime->QuadPart / 1000;
-}
-
-float getTimerElapsedSeconds(const TimerHandle nStopTime)
-{
-    return (float)nStopTime->QuadPart / 1000000;
+    return (float)timeElapsed->QuadPart / 1000000;
 }

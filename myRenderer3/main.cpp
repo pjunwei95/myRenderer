@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 #include "engine.h"
-#include "isValidArgs.h"
+#include "processArgs.h"
 #include "runMainLoop.h"
 #include "fileManager.h"
 #include "logger.h"
@@ -13,18 +13,18 @@ BOOL isDone;
 
 int main(int argc, char *argsv[])
 {
+    beginLog();
+    processArgs(argc, argsv);
 
     setIsDone(FALSE);
+    
+    //if (!getIsDone())
+        //log("isDone value is now false\n");
 
     printf("Press ESC to exit the application\n");
-    
-    //printf("isDone value is now %d\n", getIsDone());
-    if (!getIsDone())
-        log("isDone value is now false\n");
-
-    isValidArgs(argc, argsv);
 
 	runMainLoop();
+    endLog();
 	return 0;
 }
 

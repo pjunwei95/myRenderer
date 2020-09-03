@@ -17,9 +17,9 @@ void runMainLoop()
     {
         while (!getIsDone())
         {
-            //LARGE_INTEGER test;
-            Timer nStartTime;
-            startTimer(&nStartTime);
+            Timer timer;
+
+            updateTimeStamp(&timer);
 
             drawWindow();
 
@@ -27,21 +27,9 @@ void runMainLoop()
 
             updateWindow();
 
-            while (1) // frame drawing and blocking, or at gameStateCurr == next
-            {
-                Timer nStopTime;
-                stopTimer(&nStopTime);
-
-                if (isWithinFrameRate(&nStartTime, &nStopTime))
-                {
-                    //printf("frametime = %.2f ms\n", GetTimerElapsedMs(nStopTime));
-                    //printf("frametime = %f s\n", GetTimerElapsedSeconds(nStopTime));
-                    //printf("FPS = %f \n", 1.0 / getTimerElapsedSeconds(&nStopTime));
-                    break;
-                }
-
-            }
+            idleUntilFPSLimit(&timer);
         }
+        destroyWindow();
     }
-    destroyWindow();
 }
+
