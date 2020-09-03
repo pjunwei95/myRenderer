@@ -1,3 +1,7 @@
 #pragma once
 
-void log(const char * msg);
+void logmsg(const char * msg);
+
+void beginLog();
+
+void endLog();

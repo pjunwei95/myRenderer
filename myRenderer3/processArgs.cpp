@@ -8,7 +8,7 @@ void loadConfig()
 {
     //you can always assume the "config.txt" file will always be present. if not, init default values
 
-    log("Loading default configurations\n");
+    logmsg("Loading default configurations\n");
 
     readAndProcessFile("config.txt", TYPE_TEXT);
 }
@@ -32,7 +32,12 @@ void processArgs(int argc, char *argsv[])
         // string is address of first element of string
         // argsv is pointer to char pointer
         char *string = argsv[i];
-        printf("argsv[%d] is \"%s\"\n", i, string);
+        //printf("argsv[%d] is \"%s\"\n", i, string);
+        logmsg("argsv[");
+        
+        logmsg("] is \"");
+        logmsg(string);
+        logmsg("\"\n");
     }
     
     loadConfig();

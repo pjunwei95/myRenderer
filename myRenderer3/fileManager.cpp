@@ -25,7 +25,7 @@ bool openFile(const char* fileName, OpenType openType, FileMode fileMode, FileHa
     }
     else
     {
-        printf("-------------Opening File \"%s\"\n", fileName);
+        //printf("-------------Opening File \"%s\"\n", fileName);
         return true;
     }
 }
@@ -38,7 +38,7 @@ bool closeFile(FileHandle fileHandle)
     }
     else
     {
-        printf("-------------Closing File\n");
+        //printf("-------------Closing File\n");
         fclose(fileHandle);
     }
     return true;

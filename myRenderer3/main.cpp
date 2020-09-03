@@ -13,16 +13,18 @@ BOOL isDone;
 
 int main(int argc, char *argsv[])
 {
+    beginLog();
     processArgs(argc, argsv);
 
     setIsDone(FALSE);
     
-    if (!getIsDone())
-        log("isDone value is now false\n");
+    //if (!getIsDone())
+        //log("isDone value is now false\n");
 
     printf("Press ESC to exit the application\n");
 
 	runMainLoop();
+    endLog();
 	return 0;
 }
 

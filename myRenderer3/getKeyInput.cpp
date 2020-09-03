@@ -3,6 +3,7 @@
 #include "engine.h"
 #include "sdl/SDL.h"
 #include "getKeyInput.h"
+#include "logger.h"
 
 void getKeyInput()
 {
