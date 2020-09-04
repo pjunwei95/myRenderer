@@ -27,7 +27,7 @@ void getKeyInput()
             default:
                 break;
             }
-            printf("The key '%c' is pressed\n", e.key.keysym.sym);
+            logmsg("The key '%c' is pressed\n", e.key.keysym.sym);
         }
     }
 }

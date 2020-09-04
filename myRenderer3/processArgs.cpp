@@ -19,8 +19,8 @@ void processArgs(int argc, char *argsv[])
 {
     if (argc < 2) 
     {
-        printf("No external arguments.\n");
-        printf("Usage: ./app.exe (int)numArgs (string)args\n");
+        logmsg("No external arguments.\n");
+        logmsg("Usage: ./app.exe (int)numArgs (string)args\n");
     }
 
     // Examples

@@ -3,6 +3,7 @@
 #include "windowHandler.h"
 #include <stdio.h>
 #include "drawScreen.h"
+#include "logger.h"
 
 WindowHandle window;
 SurfaceHandle screenSurface;
@@ -21,7 +22,7 @@ bool createWindow()
     //Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
-        printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+        logmsg("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
         return 0;
     }
     else
@@ -31,7 +32,7 @@ bool createWindow()
             SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
         if (window == NULL)
         {
-            printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+            logmsg("Window could not be created! SDL_Error: %s\n", SDL_GetError());
             return 0;
         }
         else

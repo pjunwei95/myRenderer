@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <stdio.h>
 #include "bufferOps.h"
+#include <cassert>
 
 bool openFile(const char* fileName, OpenType openType, FileMode fileMode, FileHandle * fileHandle)
 {
@@ -29,6 +30,7 @@ bool openFile(const char* fileName, OpenType openType, FileMode fileMode, FileHa
 
 bool closeFile(FileHandle fileHandle) 
 {
+    assert(fileHandle);
     if (!fileHandle) 
     {
         return false;
