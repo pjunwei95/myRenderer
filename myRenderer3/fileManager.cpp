@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <stdio.h>
 #include "bufferOps.h"
+//#define NDEBUG
 #include <cassert>
 
 bool openFile(const char* fileName, OpenType openType, FileMode fileMode, FileHandle * fileHandle)
@@ -12,7 +13,7 @@ bool openFile(const char* fileName, OpenType openType, FileMode fileMode, FileHa
     else if (fileMode == MODE_APPEND)
         err = fopen_s(fileHandle, fileName, "a");
     else if (fileMode == MODE_READ && openType == TYPE_TEXT)
-        err = fopen_s(fileHandle, fileName, "rb"); //issues with using "r" printing extra binary characters
+        err = fopen_s(fileHandle, fileName, "r"); 
     else if (fileMode == MODE_READ && openType == TYPE_BIN)
         err = fopen_s(fileHandle, fileName, "rb");
 
@@ -52,8 +53,9 @@ void readToBuffer(const FileHandle fileHandle, char * buffer, long length)
 {
     if (buffer)
     {
-        fread(buffer, 1, length, fileHandle);
-        buffer[length] = '\0';
+        size_t value = fread(buffer, 1, length, fileHandle);
+        assert(value == length);
+        buffer[value] = '\0';
     }
     else
         printf("Error reading to buffer!\n");
@@ -77,8 +79,8 @@ void readAndProcessFile(const char * fileName, OpenType openType)
 
     closeFile(fileHandle);
 
-    if (openType == TYPE_TEXT)
-        tokeniseBuffer(buffer);
+    //if (openType == TYPE_TEXT)
+        //tokeniseBuffer(buffer);
 
     freeBuffer(buffer);
 }
