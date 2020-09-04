@@ -2,7 +2,7 @@
 #include <Windows.h>
 #include <stdio.h>
 #include "bufferOps.h"
-//#define NDEBUG
+#define NDEBUG
 #include <cassert>
 
 bool openFile(const char* fileName, OpenType openType, FileMode fileMode, FileHandle * fileHandle)
@@ -79,8 +79,8 @@ void readAndProcessFile(const char * fileName, OpenType openType)
 
     closeFile(fileHandle);
 
-    //if (openType == TYPE_TEXT)
-        //tokeniseBuffer(buffer);
+    if (openType == TYPE_TEXT)
+        tokeniseBuffer(buffer);
 
     freeBuffer(buffer);
 }
