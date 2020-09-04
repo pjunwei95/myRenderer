@@ -1,10 +1,7 @@
 #include "fileManager.h"
 #include <Windows.h>
 #include <stdio.h>
-#include "logger.h"
-
-void tokeniseBuffer(char * buffer);
-
+#include "bufferOps.h"
 
 bool openFile(const char* fileName, OpenType openType, FileMode fileMode, FileHandle * fileHandle)
 {
@@ -14,7 +11,7 @@ bool openFile(const char* fileName, OpenType openType, FileMode fileMode, FileHa
     else if (fileMode == MODE_APPEND)
         err = fopen_s(fileHandle, fileName, "a");
     else if (fileMode == MODE_READ && openType == TYPE_TEXT)
-        err = fopen_s(fileHandle, fileName, "r"); //issues with using "r" printing extra
+        err = fopen_s(fileHandle, fileName, "rb"); //issues with using "r" printing extra binary characters
     else if (fileMode == MODE_READ && openType == TYPE_BIN)
         err = fopen_s(fileHandle, fileName, "rb");
 
@@ -42,19 +39,6 @@ bool closeFile(FileHandle fileHandle)
         fclose(fileHandle);
     }
     return true;
-}
-
-void tokeniseBuffer(char * buffer)
-{
-    //printf("buffer:\n%s\n", buffer);
-    char *nextToken;
-    const char * delim = " \n";
-    char * token = strtok_s(buffer, delim, &nextToken);
-    while (token != NULL)
-    {
-        printf("token = %s\n", token);
-        token = strtok_s(NULL, delim, &nextToken);
-    }
 }
 
 void freeBuffer(char* buffer)

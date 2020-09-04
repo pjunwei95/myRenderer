@@ -1,7 +1,8 @@
 #pragma once
 
-void logmsg(const char * msg);
 
-void beginLog();
+void openLogStream();
 
-void endLog();
+void closeLogStream();
+
+void logmsg(const char * format, ...);

@@ -13,7 +13,7 @@ BOOL isDone;
 
 int main(int argc, char *argsv[])
 {
-    beginLog();
+    openLogStream();
     processArgs(argc, argsv);
 
     setIsDone(FALSE);
@@ -24,7 +24,7 @@ int main(int argc, char *argsv[])
     printf("Press ESC to exit the application\n");
 
 	runMainLoop();
-    endLog();
+    closeLogStream();
 	return 0;
 }
 

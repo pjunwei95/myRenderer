@@ -1,34 +1,42 @@
 #include "fileManager.h"
 #include "logger.h"
 
+#include <vector>
+#include <cstdio>
+#include <cstdarg>
+
 #define FILE_NAME "debug.txt"
 
-void logmsg(const char * msg)
-{
-    FileHandle fileHandle;
+FileHandle fileHandle;
 
-    openFile(FILE_NAME, TYPE_TEXT, MODE_APPEND, &fileHandle);
-    //write output to file
-    //fprintf(fileHandle, "===========Logging Begin===========\n");
-    fprintf(fileHandle, msg);
-    //fprintf(fileHandle, "===========Logging End=============\n");
-    closeFile(fileHandle);
+void logmsg(const char *format, ...)
+{
+    va_list args1;
+    va_start(args1, format);
+    va_list args2;
+    va_copy(args2, args1);
+    std::vector<char> buf(1 + std::vsnprintf(nullptr, 0, format, args1));
+    va_end(args1);
+    std::vsnprintf(buf.data(), buf.size(), format, args2);
+    va_end(args2);
+    printf("%s", buf.data());
+    fprintf(fileHandle, buf.data());
 }
 
-void beginLog()
+void openLogStream()
 {
-    FileHandle fileHandle;
-
     openFile(FILE_NAME, TYPE_TEXT, MODE_APPEND, &fileHandle);
     fprintf(fileHandle, "===========Logging Begin===========\n");
-    closeFile(fileHandle);
+    //closeFile(fileHandle);
 }
 
-void endLog()
+void closeLogStream()
 {
-    FileHandle fileHandle;
 
-    openFile(FILE_NAME, TYPE_TEXT, MODE_APPEND, &fileHandle);
+    //openFile(FILE_NAME, TYPE_TEXT, MODE_APPEND, &fileHandle);
     fprintf(fileHandle, "===========Logging End=============\n");
     closeFile(fileHandle);
 }
+
+
+
