@@ -8,8 +8,8 @@
 #include "runMainLoop.h"
 #include "fileManager.h"
 #include "logger.h"
-
 BOOL isDone;
+
 
 int main(int argc, char *argsv[])
 {
@@ -25,6 +25,7 @@ int main(int argc, char *argsv[])
 
 	runMainLoop();
     closeLogStream();
+
 	return 0;
 }
 
