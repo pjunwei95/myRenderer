@@ -1,6 +1,7 @@
 #include "frameRateController.h"
 #include "engine.h"
 #include <stdio.h>
+#include "profiler.h"
 
 Timer nFrequency;
 Timer defaultFrameTime;
@@ -34,7 +35,13 @@ bool isWithinFrameRate(TimerHandle nStartTime)
     if (nStopTime.QuadPart > defaultFrameTime.QuadPart) {
         //printf("frametime = %.2f ms\n", getTimerElapsedMs(&nStopTime));
         //printf("frametime = %f s\n", GetTimerElapsedSeconds(nStopTime));
-        //printf("FPS = %f \n", 1.0 / getTimerElapsedSeconds(&nStopTime));
+        //logmsg("FPS = %f \n", 1.0 / getTimerElapsedSeconds(&nStopTime));
+
+        if (getIsTrackProfile() && (getCount() < 50))
+        {
+            addCount();
+            logmsg("Frame #%d, frametime = %.2f ms\n", getCount(), getTimerElapsedMs(&nStopTime));
+        }
         return true;
     }
     return false;

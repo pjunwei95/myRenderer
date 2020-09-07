@@ -131,6 +131,7 @@
     <ClCompile Include="logger.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="processArgs.cpp" />
+    <ClCompile Include="profiler.cpp" />
     <ClCompile Include="runMainLoop.cpp" />
     <ClCompile Include="windowHandler.cpp" />
   </ItemGroup>

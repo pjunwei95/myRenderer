@@ -7,13 +7,25 @@
 #include "runMainLoop.h"
 #include "fileManager.h"
 #include "logger.h"
+#include "profiler.h"
 
 BOOL isDone;
 
-
 int main(int argc, char *argsv[])
 {
+    PROFILE_INIT();
     openLogStream();
+
+    PROFILE_BEGIN(first loop);
+    for (int i = 0; i < 50; i++)
+    {
+        for (int j = 0; j < 50; j++)
+        {
+
+        }
+        PROFILE_END();
+    }
+
     processArgs(argc, argsv);
 
     setIsDone(FALSE);
@@ -39,3 +51,4 @@ BOOL getIsDone()
 {
     return isDone;
 }
+

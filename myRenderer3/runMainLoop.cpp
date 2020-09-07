@@ -12,7 +12,7 @@
 void runMainLoop()
 {
     initialiseTimer();
-    PROFILE_CAPTURE(mainLoop);
+    PROFILE_BEGIN(Main Loop);
 
     if(createWindow())
     {
