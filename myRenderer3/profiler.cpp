@@ -1,49 +1,36 @@
 #include "profiler.h"
-#include <string>
 
 bool isTrackProfile;
 int count;
 
-class Profile {
-public:
-    std::string profName;
-    Timer startTime;
-};
-
-void function() 
+void testProfiling() 
 {
-    /*PROFILE_BEGIN(first loop);
-    for (int i = 0; i < 50; i++)
+    int arr[99][99];
+    for (int i = 0; i < 99; i++)
     {
-        PROFILE_BEGIN(second loop);
-        for (int j = 0; j < 50; j++)
+        for (int j = 0; j < 99; j++)
         {
-            PROFILE_END(second loop);
+            arr[i][j] = 1;
+
         }
-        PROFILE_END(first loop);
-    }*/
+    }
+    int sum = 0;
+    PROFILE_BEGIN(test1);
 
-    //struc/class containing
-    //name
-    //timeElapsed
+    for (int i = 0; i < sizeof(arr)/sizeof(arr[0]); i++)
+    {
+        PROFILE_BEGIN(test2);
 
-
-//#define PROFILE_BEGIN(name) \
-
-    //Profile profile;
-    //profile.profname = #name;
-    //updateTimeStamp(&profile.startTime);\
-//
-//
-//#define PROFILE_END(name) \
-    // 
+        for (int j = 0; j < sizeof(arr)/sizeof(arr[0]); j++)
+        {
+            sum += arr[i][j];
+        }
+        PROFILE_END(test2);
 
 
-//                        Timer pStopTime;\
-//                        updateTimeStamp(&pStopTime);\
-//                        getTimerElapsedUs(&pStopTime, &pStartTime);\
-//                        logmsg("Time elapsed for %s = %.2f ms\n", #name, getTimerElapsedMs(&pStopTime));\
-
+    }
+    PROFILE_END(test1);
+    //logmsg("sum = %d\n", sum);
 }
 
 void setIsTrackProfile(bool value)

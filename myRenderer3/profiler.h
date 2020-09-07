@@ -12,16 +12,15 @@
 
 
 #define PROFILE_BEGIN(name) \
-                                initialiseTimer();\
-                                Timer pStartTime;\
-                                updateTimeStamp(&pStartTime);\
+                                Timer name##StartTime;\
+                                updateTimeStamp(&name##StartTime);\
 
 
 #define PROFILE_END(name) \
-                        Timer pStopTime;\
-                        updateTimeStamp(&pStopTime);\
-                        getTimerElapsedUs(&pStopTime, &pStartTime);\
-                        logmsg("Time elapsed for %s = %.2f ms\n", #name, getTimerElapsedMs(&pStopTime));\
+                        Timer name##StopTime;\
+                        updateTimeStamp(&name##StopTime);\
+                        getTimerElapsedUs(&name##StopTime, &name##StartTime);\
+                        logmsg("Time elapsed for %s = %.2f ms\n", #name, getTimerElapsedMs(&name##StopTime));\
 
 
 //#define PROFILE_FUNCTION()
@@ -29,7 +28,7 @@
 
 #define TEST() setIsTrackProfile(true); setCount(0);\
 
-void function();
+void testProfiling();
 
 void setIsTrackProfile(bool value);
 

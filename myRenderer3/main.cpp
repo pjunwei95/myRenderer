@@ -15,9 +15,9 @@ int main(int argc, char *argsv[])
 {
     PROFILE_INIT();
     openLogStream();
-    PROFILE_BEGIN(main.cpp);
+    //PROFILE_BEGIN(main.cpp);
 
-    function();
+    testProfiling();
 
     processArgs(argc, argsv);
 
@@ -30,7 +30,7 @@ int main(int argc, char *argsv[])
 
 	runMainLoop();
 
-    PROFILE_END(main.cpp);
+    //PROFILE_END(main.cpp);
 
     closeLogStream();
 	return 0;
