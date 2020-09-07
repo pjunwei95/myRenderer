@@ -10,24 +10,26 @@
 ////then you should have an option to dump out the profiling results to a text file
 ////for the past ~50 frames or so
 
+
 #define PROFILE_BEGIN(name) \
                                 initialiseTimer();\
-                                logmsg("Capturing profile for \"%s\":\n", #name);\
                                 Timer pStartTime;\
                                 updateTimeStamp(&pStartTime);\
 
 
-#define PROFILE_END() \
+#define PROFILE_END(name) \
                         Timer pStopTime;\
                         updateTimeStamp(&pStopTime);\
                         getTimerElapsedUs(&pStopTime, &pStartTime);\
-                        logmsg("Time elapsed = %.2f ms\n", getTimerElapsedMs(&pStopTime));\
+                        logmsg("Time elapsed for %s = %.2f ms\n", #name, getTimerElapsedMs(&pStopTime));\
 
 
 //#define PROFILE_FUNCTION()
-#define PROFILE_INIT() setIsTrackProfile(false); setCount(50); \
+#define PROFILE_INIT() initialiseTimer(); setIsTrackProfile(false); setCount(50); \
 
 #define TEST() setIsTrackProfile(true); setCount(0);\
+
+void function();
 
 void setIsTrackProfile(bool value);
 

@@ -15,16 +15,9 @@ int main(int argc, char *argsv[])
 {
     PROFILE_INIT();
     openLogStream();
+    PROFILE_BEGIN(main.cpp);
 
-    PROFILE_BEGIN(first loop);
-    for (int i = 0; i < 50; i++)
-    {
-        for (int j = 0; j < 50; j++)
-        {
-
-        }
-        PROFILE_END();
-    }
+    function();
 
     processArgs(argc, argsv);
 
@@ -36,8 +29,10 @@ int main(int argc, char *argsv[])
     printf("Press ESC to exit the application\n");
 
 	runMainLoop();
-    closeLogStream();
 
+    PROFILE_END(main.cpp);
+
+    closeLogStream();
 	return 0;
 }
 
