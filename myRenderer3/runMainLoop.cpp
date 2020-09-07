@@ -7,12 +7,13 @@
 #include "runMainLoop.h"
 #include "frameRateController.h"
 #include "windowHandler.h"
-
+#include "profiler.h"
 
 void runMainLoop()
 {
     initialiseTimer();
-    
+    //PROFILE_BEGIN(runmainloop.cpp);
+
     if(createWindow())
     {
         while (!getIsDone())
@@ -31,5 +32,6 @@ void runMainLoop()
         }
         destroyWindow();
     }
+    //PROFILE_END(runmainloop.cpp);
 }
 

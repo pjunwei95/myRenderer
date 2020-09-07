@@ -45,6 +45,9 @@
     <ClCompile Include="bufferOps.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="profiler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine.h">
@@ -75,6 +78,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="bufferOps.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="profiler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

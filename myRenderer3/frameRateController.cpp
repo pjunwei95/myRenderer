@@ -1,6 +1,7 @@
 #include "frameRateController.h"
 #include "engine.h"
 #include <stdio.h>
+#include "profiler.h"
 
 Timer nFrequency;
 Timer defaultFrameTime;
@@ -24,21 +25,33 @@ void idleUntilFPSLimit(TimerHandle timer)
     }
 }
 
+
 bool isWithinFrameRate(TimerHandle nStartTime)
 {
     Timer nStopTime;
     updateTimeStamp(&nStopTime);
 
-    nStopTime.QuadPart = (nStopTime.QuadPart - nStartTime->QuadPart); //the units here are in seconds
-    nStopTime.QuadPart *= 1000000; //convert seconds to microseconds
-    nStopTime.QuadPart /= nFrequency.QuadPart;
+    getTimerElapsedUs(&nStopTime, nStartTime);
     if (nStopTime.QuadPart > defaultFrameTime.QuadPart) {
         //printf("frametime = %.2f ms\n", getTimerElapsedMs(&nStopTime));
         //printf("frametime = %f s\n", GetTimerElapsedSeconds(nStopTime));
-        //printf("FPS = %f \n", 1.0 / getTimerElapsedSeconds(&nStopTime));
+        //logmsg("FPS = %f \n", 1.0 / getTimerElapsedSeconds(&nStopTime));
+
+        if (getIsTrackProfile() && (getCount() < 50))
+        {
+            addCount();
+            logmsg("Frame #%d, frametime = %.2f ms\n", getCount(), getTimerElapsedMs(&nStopTime));
+        }
         return true;
     }
     return false;
+}
+
+void getTimerElapsedUs(TimerHandle nStopTime, const TimerHandle nStartTime)
+{
+    nStopTime->QuadPart = (nStopTime->QuadPart - nStartTime->QuadPart); //the units here are in seconds
+    nStopTime->QuadPart *= 1000000; //convert seconds to microseconds
+    nStopTime->QuadPart /= nFrequency.QuadPart;
 }
 
 void updateTimeStamp(TimerHandle timer)

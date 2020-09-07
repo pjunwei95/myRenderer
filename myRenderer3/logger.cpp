@@ -1,9 +1,10 @@
 #include "fileManager.h"
 #include "logger.h"
 
-#include <vector>
-#include <cstdio>
-#include <cstdarg>
+//#include <vector>
+//#include <cstdio>
+//#include <cstdarg>
+#include "stdarg.h"
 
 #define FILE_NAME "debug.txt"
 
@@ -11,21 +12,19 @@ FileHandle fileHandle;
 
 void logmsg(const char *format, ...)
 {
-    va_list args1;
-    va_start(args1, format);
-    va_list args2;
-    va_copy(args2, args1);
-    std::vector<char> buf(1 + std::vsnprintf(nullptr, 0, format, args1));
-    va_end(args1);
-    std::vsnprintf(buf.data(), buf.size(), format, args2);
-    va_end(args2);
-    printf("%s", buf.data());
-    fprintf(fileHandle, buf.data());
+    char buffer[256];
+    va_list args;
+    va_start(args, format);
+    vsnprintf(buffer, 256, format, args);
+    printf(buffer);
+    vfprintf(fileHandle, format, args);
+    va_end(args);
 }
 
 void openLogStream()
 {
-    openFile(FILE_NAME, TYPE_TEXT, MODE_APPEND, &fileHandle);
+    //check if file is there
+    openFile(FILE_NAME, TYPE_TEXT, MODE_WRITE, &fileHandle);
     fprintf(fileHandle, "===========Logging Begin===========\n");
     //closeFile(fileHandle);
 }
@@ -37,6 +36,3 @@ void closeLogStream()
     fprintf(fileHandle, "===========Logging End=============\n");
     closeFile(fileHandle);
 }
-
-
-

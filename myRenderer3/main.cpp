@@ -1,6 +1,5 @@
-#define SDL_MAIN_HANDLED
+//#define SDL_MAIN_HANDLED
 //#pragma comment (lib, "opengl32.lib")
-//#include <windows.h>
 #include <stdio.h>
 
 #include "engine.h"
@@ -8,12 +7,18 @@
 #include "runMainLoop.h"
 #include "fileManager.h"
 #include "logger.h"
+#include "profiler.h"
 
 BOOL isDone;
 
 int main(int argc, char *argsv[])
 {
+    PROFILE_INIT();
     openLogStream();
+    //PROFILE_BEGIN(main.cpp);
+
+    testProfiling();
+
     processArgs(argc, argsv);
 
     setIsDone(FALSE);
@@ -24,6 +29,9 @@ int main(int argc, char *argsv[])
     printf("Press ESC to exit the application\n");
 
 	runMainLoop();
+
+    //PROFILE_END(main.cpp);
+
     closeLogStream();
 	return 0;
 }
@@ -38,3 +46,4 @@ BOOL getIsDone()
 {
     return isDone;
 }
+
