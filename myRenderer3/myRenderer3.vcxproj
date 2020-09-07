@@ -131,7 +131,6 @@
     <ClCompile Include="logger.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="processArgs.cpp" />
-    <ClCompile Include="profiler.cpp" />
     <ClCompile Include="runMainLoop.cpp" />
     <ClCompile Include="windowHandler.cpp" />
   </ItemGroup>
@@ -144,6 +143,7 @@
     <ClInclude Include="getKeyInput.h" />
     <ClInclude Include="logger.h" />
     <ClInclude Include="processArgs.h" />
+    <ClInclude Include="profiler.h" />
     <ClInclude Include="runMainLoop.h" />
     <ClInclude Include="windowHandler.h" />
   </ItemGroup>

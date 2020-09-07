@@ -13,8 +13,9 @@ bool isWithinFrameRate(TimerHandle nStartTime);
 
 void getTimerElapsedUs(TimerHandle nStopTime, const TimerHandle nStartTime);
 
-void updateTimeStamp(TimerHandle nStartTime);
+void updateTimeStamp(TimerHandle timer);
 
-float getTimerElapsedMs(TimerHandle nStopTime);
+float getTimerElapsedMs(const TimerHandle timeElapsed);
 
-float getTimerElapsedSeconds(TimerHandle nStopTime);
+float getTimerElapsedSeconds(const TimerHandle timeElapsed);
+

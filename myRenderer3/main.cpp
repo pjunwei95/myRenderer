@@ -1,6 +1,5 @@
-#define SDL_MAIN_HANDLED
+//#define SDL_MAIN_HANDLED
 //#pragma comment (lib, "opengl32.lib")
-//#include <windows.h>
 #include <stdio.h>
 
 #include "engine.h"
@@ -8,6 +7,7 @@
 #include "runMainLoop.h"
 #include "fileManager.h"
 #include "logger.h"
+
 BOOL isDone;
 
 
