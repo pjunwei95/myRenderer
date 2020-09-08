@@ -1,7 +1,10 @@
 #include "profiler.h"
 
+
 bool isTrackProfile;
 int count;
+
+
 
 void testProfiling() 
 {
@@ -25,18 +28,19 @@ void testProfiling()
         PROFILE_END(test2);
     }
     PROFILE_END(test1);*/
+    PROFILE_INIT();
+
     PROFILE_BEGIN(test1);
     Sleep(100);
-    PROFILE_END(test1);
-
+    PROFILE_END();
 }
 
-void profileInit()
-{
-    initialiseTimer(); 
-    setIsTrackProfile(false); 
-    setCount(50);
-}
+//void setProfile()
+//{
+//    initialiseTimer(); 
+//    setIsTrackProfile(false); 
+//    setCount(50);
+//}
 
 void setIsTrackProfile(bool value)
 {
