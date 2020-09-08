@@ -13,7 +13,6 @@ BOOL isDone;
 
 int main(int argc, char *argsv[])
 {
-
     openLogStream();
 
     testProfiling();

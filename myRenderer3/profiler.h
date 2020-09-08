@@ -32,22 +32,29 @@ if (!profileStack.empty())\
     Profile profile = profileStack.back();\
     updateTimeStamp(&profile.elapsed);\
     getTimerElapsedUs(&profile.elapsed, &profile.start);\
-    logmsg("Time elapsed for %s = %.2f ms\n", profile.profileName, getTimerElapsedMs(&profile.elapsed));\
     profileStack.pop_back();\
 }
+//logmsg("Time elapsed for %s = %.2f ms\n", profile.profileName, getTimerElapsedMs(&profile.elapsed)); \
 
 
 //#define PROFILE_FUNCTION()
 //#define PROFILE_SCOPED(name)
 
 #define PROFILE_INIT() \
-std::deque<Profile> profileStack;\
 initialiseTimer();\
 setIsTrackProfile(false);\
 setCount(50);
 
+#define PROFILE_DUMP() \
+for (int i = 0; i < profileStack.size(); i++)\
+{\
+    logmsg("Time elapsed for %s = %.2f ms\n", profileStack[i].profileName, getTimerElapsedMs(&profileStack[i].elapsed));\
+}
+
 // Header functions
 void testProfiling();
+
+void printProfile();
 
 void setIsTrackProfile(bool value);
 

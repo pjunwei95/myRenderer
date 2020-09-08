@@ -1,10 +1,8 @@
 #include "profiler.h"
 
-
 bool isTrackProfile;
 int count;
-
-
+std::deque<Profile> profileStack;
 
 void testProfiling() 
 {
@@ -32,8 +30,26 @@ void testProfiling()
 
     PROFILE_BEGIN(test1);
     Sleep(100);
+    {
+        PROFILE_BEGIN(test2);
+        Sleep(100);
+        PROFILE_END();
+    }
     PROFILE_END();
+
 }
+
+void printProfile()
+{
+    //PROFILE_DUMP();
+    //std::deque<Profile> profileStack;
+
+    /*for (int i = 0; i < profileStack.size(); i++)
+    {
+        logmsg("Time elapsed for %s = %.2f ms\n", profileStack[i].profileName, getTimerElapsedMs(&profileStack[i].elapsed));
+    }*/
+}
+
 
 //void setProfile()
 //{
