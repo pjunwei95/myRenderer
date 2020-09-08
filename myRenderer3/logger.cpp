@@ -1,21 +1,22 @@
 #include "fileManager.h"
 #include "logger.h"
-
-//#include <vector>
-//#include <cstdio>
-//#include <cstdarg>
 #include "stdarg.h"
+#include <cassert>
+#include <string.h>
 
 #define FILE_NAME "debug.txt"
+#define CHAR_MAX_LIMIT 256
 
 FileHandle fileHandle;
 
 void logmsg(const char *format, ...)
 {
-    char buffer[256];
+    assert(strlen(format) < CHAR_MAX_LIMIT);
+
+    char buffer[CHAR_MAX_LIMIT];
     va_list args;
     va_start(args, format);
-    vsnprintf(buffer, 256, format, args);
+    vsnprintf(buffer, CHAR_MAX_LIMIT, format, args);
     printf(buffer);
     vfprintf(fileHandle, format, args);
     va_end(args);
@@ -23,16 +24,12 @@ void logmsg(const char *format, ...)
 
 void openLogStream()
 {
-    //check if file is there
     openFile(FILE_NAME, TYPE_TEXT, MODE_WRITE, &fileHandle);
     fprintf(fileHandle, "===========Logging Begin===========\n");
-    //closeFile(fileHandle);
 }
 
 void closeLogStream()
 {
-
-    //openFile(FILE_NAME, TYPE_TEXT, MODE_APPEND, &fileHandle);
     fprintf(fileHandle, "===========Logging End=============\n");
     closeFile(fileHandle);
 }

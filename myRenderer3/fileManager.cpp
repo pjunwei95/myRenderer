@@ -27,7 +27,7 @@ bool openFile(const char* fileName, OpenType openType, FileMode fileMode, FileHa
 
 bool closeFile(FileHandle fileHandle) 
 {
-    assert(!fileHandle);
+    //assert(fileHandle);
     if (fileHandle) 
     {
         fclose(fileHandle);

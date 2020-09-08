@@ -8,31 +8,14 @@
 #define PROFILE_BEGIN(name) \
 Timer name##StartTime;\
 updateTimeStamp(&name##StartTime);
-//struc Profile{
-//char profName[];
-//Timer start;
-//Timer elapsedTime;
-//}
-//Profile &name##profile;
-//profile.name = #name
-//updateTimeStamp(&profile.start); 
-//
 
 #define PROFILE_END(name) \
 Timer name##StopTime;\
 updateTimeStamp(&name##StopTime);\
 getTimerElapsedUs(&name##StopTime, &name##StartTime);\
-logmsg("Time elapsed for %s = %.2f us\n", #name, &name##StopTime.QuadPart);
-//logmsg("Time elapsed for %s = %.2f ms\n", #name, getTimerElapsedMs(&name##StopTime));\
-//Timer name##StopTime;\
-//updateTimeStamp(&name##StopTime);\
-//getTimerElapsedUs(&name##StopTime, &profile.StartTime);\
-//profile.elapsedTime.quadpart = profile.stopTime.quadpart;
+logmsg("Time elapsed for %s = %.2f ms\n", #name, getTimerElapsedMs(&name##StopTime));
 
-//#define PROFILE_FUNCTION()
-
-
-#define PROFILE_INIT() initialiseTimer(); setIsTrackProfile(false); setCount(50); \
+void profileInit();
 
 #define PROFILE_TRACK() setIsTrackProfile(true); setCount(0);\
 

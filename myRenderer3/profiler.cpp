@@ -5,7 +5,7 @@ int count;
 
 void testProfiling() 
 {
-    int arr[99][99];
+    /*int arr[99][99];
     for (int i = 0; i < 99; i++)
     {
         for (int j = 0; j < 99; j++)
@@ -24,14 +24,18 @@ void testProfiling()
         }
         PROFILE_END(test2);
     }
+    PROFILE_END(test1);*/
+    PROFILE_BEGIN(test1);
+    Sleep(100);
     PROFILE_END(test1);
-    //logmsg("sum = %d\n", sum);
 
-    //struct profile
-    //timer start 100
-    //timer stop 101
-    //timer elapsedTime = stop - start
-   
+}
+
+void profileInit()
+{
+    initialiseTimer(); 
+    setIsTrackProfile(false); 
+    setCount(50);
 }
 
 void setIsTrackProfile(bool value)

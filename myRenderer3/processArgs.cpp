@@ -4,16 +4,15 @@
 #include "fileManager.h"
 #include "logger.h"
 
-
 void loadConfig()
 {
+    //TODO 
     //you can always assume the "config.txt" file will always be present. if not, init default values
 
     logmsg("Loading default configurations\n");
 
     readAndProcessFile("config.txt", TYPE_TEXT);
 }
-
 
 void processArgs(int argc, char *argsv[])
 {
@@ -23,10 +22,6 @@ void processArgs(int argc, char *argsv[])
         logmsg("Usage: ./app.exe (int)numArgs (string)args\n");
     }
 
-    // Examples
-    // app.exe 2 debug
-    // app.exe 4 test hi int
-    
     //check args
     for (int i = 0; i < argc; ++i)
     {
@@ -35,8 +30,5 @@ void processArgs(int argc, char *argsv[])
         char *string = argsv[i];
         logmsg("argsv[%d] is \"%s\"\n", i, string);
     }
-    
     loadConfig();
 }
-
-
