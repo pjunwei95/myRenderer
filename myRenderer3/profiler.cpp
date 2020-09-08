@@ -11,7 +11,6 @@ void testProfiling()
         for (int j = 0; j < 99; j++)
         {
             arr[i][j] = 1;
-
         }
     }
     int sum = 0;
@@ -27,6 +26,12 @@ void testProfiling()
     }
     PROFILE_END(test1);
     //logmsg("sum = %d\n", sum);
+
+    //struct profile
+    //timer start 100
+    //timer stop 101
+    //timer elapsedTime = stop - start
+   
 }
 
 void setIsTrackProfile(bool value)

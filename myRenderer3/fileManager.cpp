@@ -22,31 +22,18 @@ bool openFile(const char* fileName, OpenType openType, FileMode fileMode, FileHa
         printf("Error opening data file %s\n", fileName);
         return false;
     }
-    else
-    {
-        //printf("-------------Opening File \"%s\"\n", fileName);
-        return true;
-    }
+    return true;
 }
 
 bool closeFile(FileHandle fileHandle) 
 {
-    assert(fileHandle);
-    if (!fileHandle) 
+    assert(!fileHandle);
+    if (fileHandle) 
     {
-        return false;
-    }
-    else
-    {
-        //printf("-------------Closing File\n");
         fclose(fileHandle);
+        return true;
     }
-    return true;
-}
-
-void freeBuffer(char* buffer)
-{
-    free(buffer);
+    return false;
 }
 
 void readToBuffer(const FileHandle fileHandle, char * buffer, long length)
@@ -82,5 +69,5 @@ void readAndProcessFile(const char * fileName, OpenType openType)
     if (openType == TYPE_TEXT)
         tokeniseBuffer(buffer);
 
-    freeBuffer(buffer);
+    free(buffer);
 }

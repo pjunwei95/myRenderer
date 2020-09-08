@@ -12,7 +12,7 @@
 void runMainLoop()
 {
     initialiseTimer();
-    //PROFILE_BEGIN(runmainloop.cpp);
+    PROFILE_BEGIN(runmainloop);
 
     if(createWindow())
     {
@@ -32,6 +32,6 @@ void runMainLoop()
         }
         destroyWindow();
     }
-    //PROFILE_END(runmainloop.cpp);
+    PROFILE_END(runmainloop);
 }
 
