@@ -26,14 +26,14 @@ void testProfiling()
         PROFILE_END(test2);
     }
     PROFILE_END(test1);*/
-    PROFILE_INIT();
-
+    //PROFILE_INIT();
+    setProfile();
     PROFILE_BEGIN(test1);
     Sleep(100);
     {
-        PROFILE_BEGIN(test2);
+        /*PROFILE_BEGIN(test2);
         Sleep(100);
-        PROFILE_END();
+        PROFILE_END();*/
     }
     PROFILE_END();
 
@@ -51,12 +51,12 @@ void printProfile()
 }
 
 
-//void setProfile()
-//{
-//    initialiseTimer(); 
-//    setIsTrackProfile(false); 
-//    setCount(50);
-//}
+void setProfile()
+{
+    initialiseTimer(); 
+    setIsTrackProfile(false); 
+    setCount(50);
+}
 
 void setIsTrackProfile(bool value)
 {
