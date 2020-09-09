@@ -1,8 +1,16 @@
 #include "profiler.h"
 
-bool isTrackProfile;
+
+struct Profile {
+    Timer start;
+    Timer elapsed;
+    char profileName[CHAR_MAX_LIMIT];
+    std::deque<float> frameTimeDeque;
+    bool isTrackProfile = false;
+};
 int count;
 std::deque<Profile> profileStack;
+
 
 void testProfiling() 
 {
@@ -31,42 +39,64 @@ void testProfiling()
     PROFILE_BEGIN(test1);
     Sleep(100);
     {
-        /*PROFILE_BEGIN(test2);
+        PROFILE_BEGIN(test2);
         Sleep(100);
-        PROFILE_END();*/
+        PROFILE_END();
+        //endProfile();
     }
+    //endProfile();
     PROFILE_END();
-
 }
-
-void printProfile()
-{
-    //PROFILE_DUMP();
-    //std::deque<Profile> profileStack;
-
-    /*for (int i = 0; i < profileStack.size(); i++)
-    {
-        logmsg("Time elapsed for %s = %.2f ms\n", profileStack[i].profileName, getTimerElapsedMs(&profileStack[i].elapsed));
-    }*/
-}
-
 
 void setProfile()
 {
     initialiseTimer(); 
-    setIsTrackProfile(false); 
     setCount(50);
 }
 
-void setIsTrackProfile(bool value)
+void beginProfile(const char * string)
 {
-    isTrackProfile = value;
+    Profile profile;
+    strcpy_s(profile.profileName, sizeof profile.profileName, string);
+    updateTimeStamp(&profile.start);
+    profile.isTrackProfile = true;
+    profileStack.push_back(profile);
 }
 
-bool getIsTrackProfile()
+void endProfile() 
 {
-    return isTrackProfile;
+    assert(!profileStack.empty());
+    if (!profileStack.empty()) //TODO to remove if statement
+    {
+        Profile profile = profileStack.back();
+        updateTimeStamp(&profile.elapsed);
+        getTimerElapsedUs(&profile.elapsed, &profile.start);
+        logmsg("Time elapsed for Profile %s = %.2f ms\n", profile.profileName, getTimerElapsedMs(&profile.elapsed));
+        profileStack.pop_back();
+    }
 }
+
+
+std::deque<Profile> getProfileStack()
+{
+    return profileStack;
+}
+
+//void profileFrameTime()
+//{
+//    assert(!profileStack.empty());
+//    for (int i = 0; i < profileStack.size; ++i)
+//    {
+//        Profile profile = profileStack[i];
+//        updateTimeStamp(&profile.elapsed);
+//        getTimerElapsedUs(&profile.elapsed, &profile.start);
+//    }
+//}
+
+
+
+
+
 
 void setCount(int value)
 {

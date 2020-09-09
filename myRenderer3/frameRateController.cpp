@@ -37,11 +37,7 @@ bool isWithinFrameRate(TimerHandle nStartTime)
         //printf("frametime = %f s\n", GetTimerElapsedSeconds(nStopTime));
         //logmsg("FPS = %f \n", 1.0 / getTimerElapsedSeconds(&nStopTime));
 
-        if (getIsTrackProfile() && (getCount() < 50))
-        {
-            addCount();
-            logmsg("Frame #%d, frametime = %.2f ms\n", getCount(), getTimerElapsedMs(&nStopTime));
-        }
+        
         return true;
     }
     return false;

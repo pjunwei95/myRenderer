@@ -7,29 +7,24 @@
 
 #define CHAR_MAX_LIMIT 256
 
-struct Profile {
-    Timer start;
-    Timer elapsed;
-    char profileName[CHAR_MAX_LIMIT];
-};
 
 // Preprocessor functions
-#define PROFILE_BEGIN(name) \
-Profile name##profile;\
-strcpy_s(name##profile.profileName, sizeof name##profile.profileName, #name);\
-updateTimeStamp(&name##profile.start);\
-profileStack.push_back(name##profile);
+#define PROFILE_BEGIN(name) beginProfile(#name);
+//Profile name##profile;\
+//strcpy_s(name##profile.profileName, sizeof name##profile.profileName, #name);\
+//updateTimeStamp(&name##profile.start);\
+//profileStack.push_back(name##profile);
 
-#define PROFILE_END() \
-assert(!profileStack.empty());\
-if (!profileStack.empty())\
-{\
-Profile profile = profileStack.back();\
-updateTimeStamp(&profile.elapsed);\
-getTimerElapsedUs(&profile.elapsed, &profile.start);\
-logmsg("Time elapsed for %s = %.2f ms\n", profile.profileName, getTimerElapsedMs(&profile.elapsed)); \
-profileStack.pop_back();\
-}
+#define PROFILE_END() endProfile();
+//assert(!profileStack.empty());\
+//if (!profileStack.empty())\
+//{\
+//Profile profile = profileStack.back();\
+//updateTimeStamp(&profile.elapsed);\
+//getTimerElapsedUs(&profile.elapsed, &profile.start);\
+//logmsg("Time elapsed for %s = %.2f ms\n", profile.profileName, getTimerElapsedMs(&profile.elapsed)); \
+//profileStack.pop_back();\
+//}
 
 
 //#define PROFILE_FUNCTION()
@@ -40,22 +35,15 @@ profileStack.pop_back();\
 //setIsTrackProfile(false);\
 //setCount(50);
 
-#define PROFILE_DUMP() \
-for (int i = 0; i < profileStack.size(); i++)\
-{\
-    logmsg("Time elapsed for %s = %.2f ms\n", profileStack[i].profileName, getTimerElapsedMs(&profileStack[i].elapsed));\
-}
 
 // Header functions
 void testProfiling();
 
-void printProfile();
-
 void setProfile();
 
-void setIsTrackProfile(bool value);
+void beginProfile(const char * string);
 
-bool getIsTrackProfile();
+void endProfile();
 
 void setCount(int value);
 
