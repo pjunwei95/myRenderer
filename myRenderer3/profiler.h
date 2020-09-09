@@ -39,15 +39,6 @@
 // Header functions
 void testProfiling();
 
-void setProfile();
-
 void beginProfile(const char * string);
 
 void endProfile();
-
-void setCount(int value);
-
-int getCount();
-
-void addCount();
-

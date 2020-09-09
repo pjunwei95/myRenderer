@@ -14,28 +14,7 @@ std::deque<Profile> profileStack;
 
 void testProfiling() 
 {
-    /*int arr[99][99];
-    for (int i = 0; i < 99; i++)
-    {
-        for (int j = 0; j < 99; j++)
-        {
-            arr[i][j] = 1;
-        }
-    }
-    int sum = 0;
-    PROFILE_BEGIN(test1);
-    for (int i = 0; i < sizeof(arr)/sizeof(arr[0]); i++)
-    {
-        PROFILE_BEGIN(test2);
-        for (int j = 0; j < sizeof(arr)/sizeof(arr[0]); j++)
-        {
-            sum += arr[i][j];
-        }
-        PROFILE_END(test2);
-    }
-    PROFILE_END(test1);*/
-    //PROFILE_INIT();
-    setProfile();
+    initialiseTimer();
     PROFILE_BEGIN(test1);
     Sleep(100);
     {
@@ -48,11 +27,6 @@ void testProfiling()
     PROFILE_END();
 }
 
-void setProfile()
-{
-    initialiseTimer(); 
-    setCount(50);
-}
 
 void beginProfile(const char * string)
 {
@@ -76,39 +50,40 @@ void endProfile()
     }
 }
 
-
-std::deque<Profile> getProfileStack()
+void profileFrameTime(TimerHandle frameStart)
 {
-    return profileStack;
+    if (!profileStack.empty()) {
+        Timer frameElapsedUs;
+        updateTimeStamp(&frameElapsedUs);
+        getTimerElapsedUs(&frameElapsedUs, frameStart);
+        float frameElapsedMs = getTimerElapsedMs(&frameElapsedUs);
+
+        for (int i = 0; i < profileStack.size(); ++i)
+        {
+            std::deque<float> frameQueue = profileStack[i].frameTimeDeque;
+            if (frameQueue.size() > 50)
+            {
+                frameQueue.pop_front();
+            }
+            frameQueue.push_back(frameElapsedMs);
+        }
+    }
 }
 
-//void profileFrameTime()
-//{
-//    assert(!profileStack.empty());
-//    for (int i = 0; i < profileStack.size; ++i)
-//    {
-//        Profile profile = profileStack[i];
-//        updateTimeStamp(&profile.elapsed);
-//        getTimerElapsedUs(&profile.elapsed, &profile.start);
-//    }
-//}
-
-
-
-
-
-
-void setCount(int value)
+void printProfile()
 {
-    count = value;
-}
-
-int getCount()
-{
-    return count;
-}
-
-void addCount()
-{
-    ++count;
+    if (!profileStack.empty())
+    {
+        for (int i = 0; i < profileStack.size(); ++i)
+        {
+            std::deque<float> frameQueue = profileStack[i].frameTimeDeque;
+            for (int j = 0; j < frameQueue.size(); ++j)
+            {
+                logmsg("frametime #%d for %s = %.2f ms\n", 
+                    frameQueue.size() - j,
+                    profileStack[i].profileName,
+                    frameQueue[j]);
+            }
+        }
+    }
 }

@@ -36,8 +36,6 @@ bool isWithinFrameRate(TimerHandle nStartTime)
         //printf("frametime = %.2f ms\n", getTimerElapsedMs(&nStopTime));
         //printf("frametime = %f s\n", GetTimerElapsedSeconds(nStopTime));
         //logmsg("FPS = %f \n", 1.0 / getTimerElapsedSeconds(&nStopTime));
-
-        
         return true;
     }
     return false;
