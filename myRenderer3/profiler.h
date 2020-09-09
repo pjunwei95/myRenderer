@@ -8,22 +8,32 @@
 #define CHAR_MAX_LIMIT 256
 
 
-// Preprocessor functions
-#define PROFILE_BEGIN(name) beginProfile(#name);
-//Profile name##profile;\
-//strcpy_s(name##profile.profileName, sizeof name##profile.profileName, #name);\
-//updateTimeStamp(&name##profile.start);\
-//profileStack.push_back(name##profile);
 
-#define PROFILE_END() endProfile();
-//assert(!profileStack.empty());\
-//if (!profileStack.empty())\
+
+//// Preprocessor functions
+//#define PROFILE_BEGIN(name) \
 //{\
-//Profile profile = profileStack.back();\
-//updateTimeStamp(&profile.elapsed);\
-//getTimerElapsedUs(&profile.elapsed, &profile.start);\
-//logmsg("Time elapsed for %s = %.2f ms\n", profile.profileName, getTimerElapsedMs(&profile.elapsed)); \
-//profileStack.pop_back();\
+//    Profile profile;\
+//    strcpy_s(profile.profileName, sizeof profile.profileName, #name);\
+//    updateTimeStamp(&profile.start);\
+//    profile.isTrackProfile = true;\
+//    std::deque<Profile> profileStack = getProfileStack();\
+//    profileStack.push_back(profile);\
+//}
+//
+//
+//#define PROFILE_END() \
+//{\
+//    std::deque<Profile> profileStack = getProfileStack();\
+//    if (!profileStack.empty()) \
+//    {\
+//        Profile profile = profileStack.back();\
+//        updateTimeStamp(&profile.elapsed);\
+//        getTimerElapsedUs(&profile.elapsed, &profile.start);\
+//        logmsg("Time elapsed for Profile %s = %.2f ms\n", \
+//        profile.profileName, getTimerElapsedMs(&profile.elapsed));\
+//        profileStack.pop_back();\
+//    }\
 //}
 
 
@@ -42,3 +52,9 @@ void testProfiling();
 void beginProfile(const char * string);
 
 void endProfile();
+
+void profileFrameTime(TimerHandle frameStart);
+
+void printProfile();
+
+//std::deque<Profile> getProfileStack();

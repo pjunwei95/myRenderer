@@ -1,6 +1,5 @@
 #include "profiler.h"
 
-
 struct Profile {
     Timer start;
     Timer elapsed;
@@ -8,23 +7,24 @@ struct Profile {
     std::deque<float> frameTimeDeque;
     bool isTrackProfile = false;
 };
-int count;
+
 std::deque<Profile> profileStack;
 
 
 void testProfiling() 
 {
     initialiseTimer();
-    PROFILE_BEGIN(test1);
+    //PROFILE_BEGIN(test1);
+    beginProfile("test1");
     Sleep(100);
-    {
-        PROFILE_BEGIN(test2);
-        Sleep(100);
-        PROFILE_END();
-        //endProfile();
-    }
-    //endProfile();
-    PROFILE_END();
+    //{
+    //    PROFILE_BEGIN(test2);
+    //    Sleep(100);
+    //    PROFILE_END();
+    //    //endProfile();
+    //}
+    endProfile();
+    //PROFILE_END();
 }
 
 
@@ -60,18 +60,19 @@ void profileFrameTime(TimerHandle frameStart)
 
         for (int i = 0; i < profileStack.size(); ++i)
         {
-            std::deque<float> frameQueue = profileStack[i].frameTimeDeque;
-            if (frameQueue.size() > 50)
+            Profile profile = profileStack[i];
+            if (profile.frameTimeDeque.size() > 50)
             {
-                frameQueue.pop_front();
+                profile.frameTimeDeque.pop_front();
             }
-            frameQueue.push_back(frameElapsedMs);
+            profile.frameTimeDeque.push_back(frameElapsedMs);
         }
     }
 }
 
 void printProfile()
 {
+    printf("this works\n");
     if (!profileStack.empty())
     {
         for (int i = 0; i < profileStack.size(); ++i)
@@ -87,3 +88,8 @@ void printProfile()
         }
     }
 }
+std::deque<Profile> getProfileStack() 
+{
+    return profileStack;
+}
+

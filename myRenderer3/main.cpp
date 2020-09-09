@@ -15,8 +15,6 @@ int main(int argc, char *argsv[])
 {
     openLogStream();
 
-    testProfiling();
-
     processArgs(argc, argsv);
 
     setIsDone(FALSE);

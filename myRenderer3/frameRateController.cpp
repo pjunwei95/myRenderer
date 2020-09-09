@@ -1,7 +1,6 @@
 #include "frameRateController.h"
 #include "engine.h"
 #include <stdio.h>
-#include "profiler.h"
 
 Timer nFrequency;
 Timer defaultFrameTime;
