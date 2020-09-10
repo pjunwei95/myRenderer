@@ -48,8 +48,6 @@ struct Profile {
 //setCount(50);
 
 
-void testStack();
-
 void initProfile();
 
 // Header functions

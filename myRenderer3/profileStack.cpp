@@ -1,7 +1,7 @@
 #include <stdio.h> 
 #include <stdlib.h> 
 #include <assert.h>
-#include "stack.h"
+#include "profileStack.h"
 #include "profiler.h"
 #include "logger.h"
 
@@ -12,7 +12,7 @@ struct Stack* createStack(unsigned capacity)
     struct Stack* stack = (struct Stack*)malloc(sizeof(struct Stack));
     stack->capacity = capacity;
     stack->top = -1;
-    stack->profArr = (Profile*)malloc(stack->capacity * sizeof(Profile));
+    stack->array = (Profile*)malloc(stack->capacity * sizeof(Profile));
     return stack;
 }
 
@@ -34,7 +34,7 @@ void push(struct Stack* stack, Profile item)
     assert(stack);
     if (isFull(stack))
         return;
-    stack->profArr[++stack->top] = item;
+    stack->array[++stack->top] = item;
     //logmsg("Profile %s pushed to stack\n", item.profileName);
 }
 
@@ -42,12 +42,12 @@ void push(struct Stack* stack, Profile item)
 void pop(struct Stack* stack)
 {
     assert(!isEmpty(stack));
-    stack->profArr[stack->top--];
+    stack->array[stack->top--];
 }
 
 // Function to return the top from stack without removing it 
 Profile peek(struct Stack* stack)
 {
     assert(!isEmpty(stack));
-    return stack->profArr[stack->top];
+    return stack->array[stack->top];
 }

@@ -51,7 +51,7 @@
     <ClCompile Include="test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="stack.cpp">
+    <ClCompile Include="profileStack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -92,7 +92,7 @@
     <ClInclude Include="test.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="stack.h">
+    <ClInclude Include="profileStack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

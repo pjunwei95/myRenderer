@@ -22,7 +22,6 @@ void runMainLoop()
     {
         endProfile();
 
-
         while (!getIsDone())
         {
             Timer timer;

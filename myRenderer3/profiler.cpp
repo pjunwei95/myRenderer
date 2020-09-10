@@ -1,16 +1,10 @@
 #include "profiler.h"
-#include "stack.h"
+#include "profileStack.h"
 #include <stdio.h>
 #include <assert.h>
 #include "logger.h"
 
 struct Stack* profileStack;
-
-
-void testStack()
-{
-    
-}
 
 void initProfile()
 {
@@ -28,9 +22,6 @@ void testProfiling()
     Sleep(100);
     endProfile();
 }
-
-
-
 
 void beginProfile(const char * string)
 {

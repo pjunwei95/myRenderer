@@ -5,7 +5,7 @@
 struct Stack {
     int top;
     unsigned capacity;
-    Profile *profArr;
+    Profile *array;
 };
 
 Stack * createStack(unsigned capacity);
