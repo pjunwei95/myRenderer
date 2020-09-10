@@ -50,6 +50,8 @@ struct Profile {
 
 void testStack();
 
+void initProfile();
+
 // Header functions
 void testProfiling();
 

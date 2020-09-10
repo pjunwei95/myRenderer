@@ -22,6 +22,9 @@ void testProfiling()
     initialiseTimer();
     initProfile();
     beginProfile("test1");
+        beginProfile("test2");
+        Sleep(100);
+        endProfile();
     Sleep(100);
     endProfile();
 }
@@ -32,7 +35,7 @@ void testProfiling()
 void beginProfile(const char * string)
 {
     Profile profile;
-    strcpy_s(profile.profileName, sizeof(profile.profileName), string);
+    strcpy_s(profile.profileName, sizeof(profile.profileName), string); //easy conversion to macros
     updateTimeStamp(&profile.start);
     push(profileStack, profile);
 }
@@ -43,7 +46,7 @@ void endProfile()
     Profile profile = peek(profileStack);
     updateTimeStamp(&profile.elapsed);
     getTimerElapsedUs(&profile.elapsed, &profile.start);
-    logmsg("Time elapsed for Profile %s = %.2f ms\n", profile.profileName, getTimerElapsedMs(&profile.elapsed));
+    logmsg("Time elapsed for |%s| profile = %.2f ms\n", profile.profileName, getTimerElapsedMs(&profile.elapsed));
     pop(profileStack);
 }
 //

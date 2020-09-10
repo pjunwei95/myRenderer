@@ -9,19 +9,20 @@
 #include "windowHandler.h"
 #include "profiler.h"
 #include "test.h"
-#include "stack.h"
 
 void runMainLoop()
 {
     initialiseTimer();
-    
-    //testStack();
-    testProfiling();
+    initProfile();
+    //testProfiling();
     //PROFILE_BEGIN(test1);
-    //beginProfile("test1");
+    beginProfile("createWindow");
 
     if(createWindow())
     {
+        endProfile();
+
+
         while (!getIsDone())
         {
             Timer timer;
@@ -41,7 +42,6 @@ void runMainLoop()
         destroyWindow();
     }
     //PROFILE_END();
-    //endProfile();
 
 }
 
