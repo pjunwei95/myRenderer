@@ -2,7 +2,7 @@
 #include <Windows.h>
 #include <stdio.h>
 #include "bufferOps.h"
-#define NDEBUG
+//#define NDEBUG
 #include <cassert>
 
 bool openFile(const char* fileName, OpenType openType, FileMode fileMode, FileHandle * fileHandle)
@@ -16,6 +16,7 @@ bool openFile(const char* fileName, OpenType openType, FileMode fileMode, FileHa
         err = fopen_s(fileHandle, fileName, "r"); 
     else if (fileMode == MODE_READ && openType == TYPE_BIN)
         err = fopen_s(fileHandle, fileName, "rb");
+
 
     if (err)
     {
@@ -38,10 +39,12 @@ bool closeFile(FileHandle fileHandle)
 
 void readToBuffer(const FileHandle fileHandle, char * buffer, long length)
 {
+    assert(2 + 2 == 4);
+    assert(buffer);
     if (buffer)
     {
         size_t value = fread(buffer, 1, length, fileHandle);
-        assert(value == length);
+        assert(value < length);
         buffer[value] = '\0';
     }
     else

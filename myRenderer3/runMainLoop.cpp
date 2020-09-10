@@ -32,7 +32,7 @@ void runMainLoop()
 
             updateWindow();
 
-            profileFrameTime(&timer);
+            //profileFrameTime(&timer);
 
             idleUntilFPSLimit(&timer);
         }

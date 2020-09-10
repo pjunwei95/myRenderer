@@ -2,7 +2,6 @@
 #include "frameRateController.h"
 #include "logger.h"
 #include <string.h>
-#include <deque>
 #include <cassert>
 
 #define CHAR_MAX_LIMIT 256
@@ -53,8 +52,7 @@ void beginProfile(const char * string);
 
 void endProfile();
 
-void profileFrameTime(TimerHandle frameStart);
+//void profileFrameTime(TimerHandle frameStart);
+//
+//void printProfile();
 
-void printProfile();
-
-//std::deque<Profile> getProfileStack();
