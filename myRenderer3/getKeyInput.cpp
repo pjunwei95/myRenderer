@@ -26,7 +26,7 @@ void getKeyInput()
                 setIsDone(true);
                 break;
             case SDLK_p:
-                PROFILE_TRACK();
+                printProfile();
                 break;
             default:
                 break;

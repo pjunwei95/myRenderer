@@ -20,6 +20,4 @@ bool openFile(const char * fileName, OpenType openType, FileMode fileMode, FileH
 
 bool closeFile(FileHandle fileHandle);
 
-void freeBuffer(char * buffer);
-
 void readAndProcessFile(const char * fileName, OpenType openType);

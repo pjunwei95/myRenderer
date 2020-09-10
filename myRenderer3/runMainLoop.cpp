@@ -12,7 +12,9 @@
 void runMainLoop()
 {
     initialiseTimer();
-    //PROFILE_BEGIN(runmainloop.cpp);
+    //testProfiling();
+    //PROFILE_BEGIN(test1);
+    beginProfile("test1");
 
     if(createWindow())
     {
@@ -28,10 +30,14 @@ void runMainLoop()
 
             updateWindow();
 
+            profileFrameTime(&timer);
+
             idleUntilFPSLimit(&timer);
         }
         destroyWindow();
     }
-    //PROFILE_END(runmainloop.cpp);
+    //PROFILE_END();
+    endProfile();
+
 }
 

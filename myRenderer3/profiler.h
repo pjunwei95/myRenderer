@@ -1,34 +1,60 @@
 #pragma once
 #include "frameRateController.h"
 #include "logger.h"
+#include <string.h>
+#include <deque>
+#include <cassert>
+
+#define CHAR_MAX_LIMIT 256
+
+
+
+
+//// Preprocessor functions
+//#define PROFILE_BEGIN(name) \
+//{\
+//    Profile profile;\
+//    strcpy_s(profile.profileName, sizeof profile.profileName, #name);\
+//    updateTimeStamp(&profile.start);\
+//    profile.isTrackProfile = true;\
+//    std::deque<Profile> profileStack = getProfileStack();\
+//    profileStack.push_back(profile);\
+//}
+//
+//
+//#define PROFILE_END() \
+//{\
+//    std::deque<Profile> profileStack = getProfileStack();\
+//    if (!profileStack.empty()) \
+//    {\
+//        Profile profile = profileStack.back();\
+//        updateTimeStamp(&profile.elapsed);\
+//        getTimerElapsedUs(&profile.elapsed, &profile.start);\
+//        logmsg("Time elapsed for Profile %s = %.2f ms\n", \
+//        profile.profileName, getTimerElapsedMs(&profile.elapsed));\
+//        profileStack.pop_back();\
+//    }\
+//}
+
 
 //#define PROFILE_FUNCTION()
 //#define PROFILE_SCOPED(name)
 
-#define PROFILE_BEGIN(name) \
-                                Timer name##StartTime;\
-                                updateTimeStamp(&name##StartTime);\
+//#define PROFILE_INIT() \
+//initialiseTimer();\
+//setIsTrackProfile(false);\
+//setCount(50);
 
 
-#define PROFILE_END(name) \
-                        Timer name##StopTime;\
-                        updateTimeStamp(&name##StopTime);\
-                        getTimerElapsedUs(&name##StopTime, &name##StartTime);\
-                        logmsg("Time elapsed for %s = %.2f ms\n", #name, getTimerElapsedMs(&name##StopTime));\
-
-
-#define PROFILE_INIT() initialiseTimer(); setIsTrackProfile(false); setCount(50); \
-
-#define PROFILE_TRACK() setIsTrackProfile(true); setCount(0);\
-
+// Header functions
 void testProfiling();
 
-void setIsTrackProfile(bool value);
+void beginProfile(const char * string);
 
-bool getIsTrackProfile();
+void endProfile();
 
-void setCount(int value);
+void profileFrameTime(TimerHandle frameStart);
 
-int getCount();
+void printProfile();
 
-void addCount();
+//std::deque<Profile> getProfileStack();
