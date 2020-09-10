@@ -132,7 +132,9 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="processArgs.cpp" />
     <ClCompile Include="profiler.cpp" />
+    <ClCompile Include="queue.cpp" />
     <ClCompile Include="runMainLoop.cpp" />
+    <ClCompile Include="test.cpp" />
     <ClCompile Include="windowHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -145,7 +147,9 @@
     <ClInclude Include="logger.h" />
     <ClInclude Include="processArgs.h" />
     <ClInclude Include="profiler.h" />
+    <ClInclude Include="queue.h" />
     <ClInclude Include="runMainLoop.h" />
+    <ClInclude Include="test.h" />
     <ClInclude Include="windowHandler.h" />
   </ItemGroup>
   <ItemGroup>

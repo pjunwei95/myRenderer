@@ -5,7 +5,6 @@ struct Profile {
     Timer elapsed;
     char profileName[CHAR_MAX_LIMIT];
     std::deque<float> frameTimeDeque;
-    bool isTrackProfile = false;
 };
 
 std::deque<Profile> profileStack;
@@ -33,7 +32,6 @@ void beginProfile(const char * string)
     Profile profile;
     strcpy_s(profile.profileName, sizeof profile.profileName, string);
     updateTimeStamp(&profile.start);
-    profile.isTrackProfile = true;
     profileStack.push_back(profile);
 }
 
@@ -52,27 +50,30 @@ void endProfile()
 
 void profileFrameTime(TimerHandle frameStart)
 {
-    if (!profileStack.empty()) {
-        Timer frameElapsedUs;
-        updateTimeStamp(&frameElapsedUs);
-        getTimerElapsedUs(&frameElapsedUs, frameStart);
-        float frameElapsedMs = getTimerElapsedMs(&frameElapsedUs);
+    Timer frameElapsedUs;
+    updateTimeStamp(&frameElapsedUs);
+    getTimerElapsedUs(&frameElapsedUs, frameStart);
+    float frameElapsedMs = getTimerElapsedMs(&frameElapsedUs);
+    //logmsg("frametime #%d for %s = %.2f ms\n",)
 
-        for (int i = 0; i < profileStack.size(); ++i)
+
+    for (int i = 0; i < profileStack.size(); ++i)
+    {
+        Profile profile = profileStack[i];
+        //logmsg("profileSize before pushing = %d bytes\n", sizeof profile);
+
+        if (profile.frameTimeDeque.size() > 50)
         {
-            Profile profile = profileStack[i];
-            if (profile.frameTimeDeque.size() > 50)
-            {
-                profile.frameTimeDeque.pop_front();
-            }
-            profile.frameTimeDeque.push_back(frameElapsedMs);
+            profile.frameTimeDeque.pop_front();
         }
+        profile.frameTimeDeque.push_back(std::move(frameElapsedMs));
+        //logmsg("profileSize after pushing = %d bytes\n", sizeof profile);
+
     }
 }
 
 void printProfile()
 {
-    printf("this works\n");
     if (!profileStack.empty())
     {
         for (int i = 0; i < profileStack.size(); ++i)
