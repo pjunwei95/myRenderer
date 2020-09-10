@@ -11,14 +11,14 @@ FileHandle fileHandle;
 
 void logmsg(const char *format, ...)
 {
-    assert(format);
+    assert(format); //check if null
 
     char buffer[CHAR_MAX_LIMIT];
     va_list args;
     va_start(args, format);
     vsnprintf(buffer, CHAR_MAX_LIMIT, format, args);
 
-    assert(sizeof buffer < CHAR_MAX_LIMIT);
+    assert(vsnprintf(buffer, CHAR_MAX_LIMIT, format, args) < CHAR_MAX_LIMIT);
 
     printf(buffer);
     vfprintf(fileHandle, format, args);

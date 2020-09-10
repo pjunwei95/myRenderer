@@ -41,6 +41,7 @@ void readToBuffer(const FileHandle fileHandle, char * buffer, long length)
 {
     assert(2 + 2 == 4);
     assert(buffer);
+    assert(1 || 0);
     if (buffer)
     {
         size_t value = fread(buffer, 1, length, fileHandle);
