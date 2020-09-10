@@ -9,14 +9,16 @@
 #include "windowHandler.h"
 #include "profiler.h"
 #include "test.h"
+#include "stack.h"
 
 void runMainLoop()
 {
     initialiseTimer();
-    //test();
-    //testProfiling();
+    
+    //testStack();
+    testProfiling();
     //PROFILE_BEGIN(test1);
-    beginProfile("test1");
+    //beginProfile("test1");
 
     if(createWindow())
     {
@@ -39,7 +41,7 @@ void runMainLoop()
         destroyWindow();
     }
     //PROFILE_END();
-    endProfile();
+    //endProfile();
 
 }
 

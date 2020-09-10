@@ -1,12 +1,15 @@
 #pragma once
 #include "frameRateController.h"
-#include "logger.h"
-#include <string.h>
-#include <cassert>
+//#include <string.h>
+//#include <cassert>
 
 #define CHAR_MAX_LIMIT 256
 
-
+struct Profile {
+    Timer start;
+    Timer elapsed;
+    char profileName[CHAR_MAX_LIMIT];
+};
 
 
 //// Preprocessor functions
@@ -44,6 +47,8 @@
 //setIsTrackProfile(false);\
 //setCount(50);
 
+
+void testStack();
 
 // Header functions
 void testProfiling();

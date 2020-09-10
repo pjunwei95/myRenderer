@@ -1,44 +1,50 @@
 #include "profiler.h"
+#include "stack.h"
+#include <stdio.h>
+#include <assert.h>
+#include "logger.h"
 
-struct Profile {
-    Timer start;
-    Timer elapsed;
-    char profileName[CHAR_MAX_LIMIT];
-};
+struct Stack* profileStack;
 
 
+void testStack()
+{
+    
+}
+
+void initProfile()
+{
+    profileStack = createStack(100);
+}
 
 void testProfiling() 
 {
     initialiseTimer();
-    //PROFILE_BEGIN(test1);
+    initProfile();
     beginProfile("test1");
     Sleep(100);
     endProfile();
-    //PROFILE_END();
 }
+
+
 
 
 void beginProfile(const char * string)
 {
-    string;
-   /* Profile profile;
-    strcpy_s(profile.profileName, sizeof profile.profileName, string);
+    Profile profile;
+    strcpy_s(profile.profileName, sizeof(profile.profileName), string);
     updateTimeStamp(&profile.start);
-    profileStack.push_back(profile);*/
+    push(profileStack, profile);
 }
 
 void endProfile() 
 {
-    //assert(!profileStack.empty());
-    //if (!profileStack.empty()) //TODO to remove if statement
-    //{
-    //    Profile profile = profileStack.back();
-    //    updateTimeStamp(&profile.elapsed);
-    //    getTimerElapsedUs(&profile.elapsed, &profile.start);
-    //    logmsg("Time elapsed for Profile %s = %.2f ms\n", profile.profileName, getTimerElapsedMs(&profile.elapsed));
-    //    profileStack.pop_back();
-    //}
+    assert(!isEmpty(profileStack));
+    Profile profile = peek(profileStack);
+    updateTimeStamp(&profile.elapsed);
+    getTimerElapsedUs(&profile.elapsed, &profile.start);
+    logmsg("Time elapsed for Profile %s = %.2f ms\n", profile.profileName, getTimerElapsedMs(&profile.elapsed));
+    pop(profileStack);
 }
 //
 //void profileFrameTime(TimerHandle frameStart)
