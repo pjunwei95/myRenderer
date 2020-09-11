@@ -9,11 +9,11 @@ typedef struct {
     int head;
     int tail;
     const int maxlen;
-} circ_bbuf_t;
+} CircularBuffer;
 
 #define CIRC_BBUF_DEF(x,y)                \
     uint8_t x##_data_space[y];            \
-    circ_bbuf_t x = {                     \
+    CircularBuffer x = {                     \
         x##_data_space,         \
         0,                        \
         0,                        \
@@ -21,7 +21,7 @@ typedef struct {
     }
 
 
-int circ_bbuf_push(circ_bbuf_t *c, uint8_t data)
+int circ_bbuf_push(CircularBuffer *c, uint8_t data)
 {
     int next;
 
@@ -37,7 +37,7 @@ int circ_bbuf_push(circ_bbuf_t *c, uint8_t data)
     return 0;  // return success to indicate successful push.
 }
 
-int circ_bbuf_pop(circ_bbuf_t *c, uint8_t *data)
+int circ_bbuf_pop(CircularBuffer *c, uint8_t *data)
 {
     int next;
 
@@ -56,25 +56,37 @@ int circ_bbuf_pop(circ_bbuf_t *c, uint8_t *data)
 
 void test()
 {
-    CIRC_BBUF_DEF(my_circ_buf, 5);
+    CIRC_BBUF_DEF(my_circ_buf, 6);
     uint8_t out_data = 0, in_data = 0x55;
+    uint8_t test = 0x66;
 
     circ_bbuf_push(&my_circ_buf, in_data);
-    circ_bbuf_push(&my_circ_buf, in_data);
-    circ_bbuf_push(&my_circ_buf, in_data);
-    circ_bbuf_push(&my_circ_buf, in_data);
-    circ_bbuf_push(&my_circ_buf, in_data);
+    circ_bbuf_push(&my_circ_buf, test);
+    circ_bbuf_push(&my_circ_buf, test);
+    circ_bbuf_push(&my_circ_buf, test);
+    circ_bbuf_push(&my_circ_buf, test);
+    circ_bbuf_push(&my_circ_buf, test);
 
-
+    /*if (circ_bbuf_pop(&my_circ_buf, &out_data)) {
+        printf("CB is empty\n");
+    }*/
+    circ_bbuf_pop(&my_circ_buf, &out_data);
+    printf("Pop:  0x%x\n", out_data);
+    circ_bbuf_pop(&my_circ_buf, &out_data);
+    printf("Pop:  0x%x\n", out_data);
+    circ_bbuf_pop(&my_circ_buf, &out_data);
+    printf("Pop:  0x%x\n", out_data);
 
     if (circ_bbuf_push(&my_circ_buf, in_data)) {
         printf("Out of space in CB\n");
     }
-
-    if (circ_bbuf_pop(&my_circ_buf, &out_data)) {
-        printf("CB is empty\n");
+    if (circ_bbuf_push(&my_circ_buf, in_data)) {
+        printf("Out of space in CB\n");
     }
-
+    if (circ_bbuf_push(&my_circ_buf, in_data)) {
+        printf("Out of space in CB\n");
+    }
+    //printf("Push: 0x%x\n", in_data);
     
 }
 
