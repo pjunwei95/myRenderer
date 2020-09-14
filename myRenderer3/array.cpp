@@ -31,6 +31,18 @@ int a_size(const Array* const arr)
     return arr->m_Size;
 }
 
+void* a_realloc(void* block, size_t oldSize, size_t newSize)
+{
+    assert(block);
+    assert(oldSize < newSize);
+    void* newBlock;
+    newBlock = malloc(newSize);
+    assert(newBlock);
+    newBlock = memcpy(newBlock, block, oldSize);
+    free(block);
+    return newBlock;
+}
+
 void array_push(Array* const dstArr, const void* srcData, int sizeElem)
 {
     assert(dstArr);
@@ -47,8 +59,11 @@ void array_push(Array* const dstArr, const void* srcData, int sizeElem)
 
     if (dstArr->m_Size == dstArr->m_Capacity)
     {
+        /*dstArr->m_Capacity *= 2;
+        ptr = realloc(dstArr->m_Data, dstArr->m_Capacity * sizeElem);*/
+        ptr = a_realloc(dstArr->m_Data, dstArr->m_Capacity * sizeElem, dstArr->m_Capacity * sizeElem * 2);
         dstArr->m_Capacity *= 2;
-        ptr = realloc(dstArr->m_Data, dstArr->m_Capacity * sizeElem);
+
         assert(ptr);
         dstArr->m_Data = ptr;
     }
