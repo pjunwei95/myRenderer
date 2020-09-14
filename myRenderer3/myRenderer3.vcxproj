@@ -123,6 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="array.cpp" />
     <ClCompile Include="bufferOps.cpp" />
     <ClCompile Include="fileManager.cpp" />
     <ClCompile Include="drawScreen.cpp" />
@@ -133,9 +134,12 @@
     <ClCompile Include="processArgs.cpp" />
     <ClCompile Include="profiler.cpp" />
     <ClCompile Include="runMainLoop.cpp" />
+    <ClCompile Include="profileStack.cpp" />
+    <ClCompile Include="test.cpp" />
     <ClCompile Include="windowHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="array.h" />
     <ClInclude Include="bufferOps.h" />
     <ClInclude Include="fileManager.h" />
     <ClInclude Include="drawScreen.h" />
@@ -146,6 +150,8 @@
     <ClInclude Include="processArgs.h" />
     <ClInclude Include="profiler.h" />
     <ClInclude Include="runMainLoop.h" />
+    <ClInclude Include="profileStack.h" />
+    <ClInclude Include="test.h" />
     <ClInclude Include="windowHandler.h" />
   </ItemGroup>
   <ItemGroup>

@@ -8,18 +8,26 @@
 #include "frameRateController.h"
 #include "windowHandler.h"
 #include "profiler.h"
+#include "array.h"
 
 void runMainLoop()
 {
+    testArray();
     initialiseTimer();
+    //test();
+    initProfile();
     //testProfiling();
     //PROFILE_BEGIN(test1);
-    beginProfile("test1");
+    beginProfile("createWindow");
 
     if(createWindow())
     {
+        endProfile();
+
         while (!getIsDone())
         {
+            //beginProfile("beforeidle");
+
             Timer timer;
 
             updateTimeStamp(&timer);
@@ -29,15 +37,15 @@ void runMainLoop()
             getKeyInput();
 
             updateWindow();
+            //endProfile();
 
-            profileFrameTime(&timer);
+            //profileFrameTime(&timer);
 
             idleUntilFPSLimit(&timer);
         }
         destroyWindow();
     }
     //PROFILE_END();
-    endProfile();
 
 }
 
