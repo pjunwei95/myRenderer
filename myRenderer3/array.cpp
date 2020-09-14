@@ -8,8 +8,8 @@
 struct Array {
     void* m_Data; // pointer to array
     int m_Size; // number of elements
-    int m_Capacity; //
-    unsigned int m_typeSize;
+    int m_Capacity; // available memory size
+    unsigned int m_typeSize; // size of element type
 };
 
 Array createNewArray(unsigned int sizeElem) {
@@ -24,9 +24,9 @@ Array createNewArray(unsigned int sizeElem) {
 bool a_empty(const Array* const dstArr)
 {
     if (dstArr->m_Size > 0)
-        return true;
-    else
         return false;
+    else
+        return true;
 }
 
 void array_push(Array* const dstArr, const void* srcData, int sizeElem)
@@ -40,7 +40,7 @@ void array_push(Array* const dstArr, const void* srcData, int sizeElem)
         dstArr->m_Capacity++;
     }
 
-    if (dstArr->m_Size >= dstArr->m_Capacity)
+    if (dstArr->m_Size == dstArr->m_Capacity)
     {
         dstArr->m_Capacity *= 2;
         dstArr->m_Data = realloc(dstArr->m_Data, dstArr->m_Capacity * sizeElem);
@@ -74,6 +74,13 @@ void a_free(Array* const dstArr)
     free(dstArr->m_Data);
 }
 
+void* a_at(const Array* const dstArr, int index)
+{
+    assert(index >= 0);
+    assert(index < dstArr->m_Size);
+    return (unsigned char*)dstArr->m_Data + index * dstArr->m_typeSize;
+}
+
 void testArray()
 {
     //testing purposes
@@ -82,14 +89,20 @@ void testArray()
 
     Array a = createNewArray(sizeof(int));
     int num = 1;
-    int num2 = 2;
-    array_push(&a, &num, sizeof(int));
-    array_push(&a, &num2, sizeof(int));
+    for (int i = 0; i < 10; ++i)
+    {
+        array_push(&a, &num, sizeof(int));
+    }
+    for (int i = 0; i < 10; ++i)
+    {
+        int numAtIdx = *((int*) a_at(&a, i));
+        printf("array [%d] = %d\n", i, numAtIdx);
+    }
     
     int getFirst = *((int*) a_front(&a));
 
     printf("first = %d\n", getFirst);
-    int getSecond = *((int*)a_back(&a));
-    printf("last = %d\n", getSecond);
+    int getLast = *((int*)a_back(&a));
+    printf("last = %d\n", getLast);
     a_free(&a);
 }
