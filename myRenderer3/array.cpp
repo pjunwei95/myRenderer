@@ -21,9 +21,7 @@ Array createNewArray(unsigned int sizeElem) {
     return a;
 }
 
-//void push_back(const T& value);
-
-bool a_empty(Array* const dstArr)
+bool a_empty(const Array* const dstArr)
 {
     if (dstArr->m_Size > 0)
         return true;
@@ -44,20 +42,18 @@ void array_push(Array* const dstArr, const void* srcData, int sizeElem)
 
     if (dstArr->m_Size >= dstArr->m_Capacity)
     {
-        //capacity *= 2
         dstArr->m_Capacity *= 2;
-        //copy over old memory
         dstArr->m_Data = realloc(dstArr->m_Data, dstArr->m_Capacity * sizeElem);
     }
 
     void* ptr = (unsigned char *)dstArr->m_Data + sizeElem * dstArr->m_Size;
     memcpy(ptr, srcData, sizeElem);
     dstArr->m_Size++;
-    
 }
 
 void* a_front(const Array* const dstArr)
 {
+    assert(!a_empty(dstArr));
     assert(dstArr);
     assert(dstArr->m_Data);
     return (unsigned char*)dstArr->m_Data;
@@ -65,7 +61,7 @@ void* a_front(const Array* const dstArr)
 
 void* a_back(const Array* const dstArr)
 {
-    // TODO empty
+    assert(!a_empty(dstArr));
     assert(dstArr);
     assert(dstArr->m_Data);
     int lastIdx = dstArr->m_Size - 1;
@@ -77,11 +73,6 @@ void a_free(Array* const dstArr)
     assert(dstArr->m_Data);
     free(dstArr->m_Data);
 }
-
-//void a_init(Array* const dstArr)
-//{
-//
-//}
 
 void testArray()
 {
