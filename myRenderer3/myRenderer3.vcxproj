@@ -123,6 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="array.cpp" />
     <ClCompile Include="bufferOps.cpp" />
     <ClCompile Include="fileManager.cpp" />
     <ClCompile Include="drawScreen.cpp" />
@@ -138,6 +139,7 @@
     <ClCompile Include="windowHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="array.h" />
     <ClInclude Include="bufferOps.h" />
     <ClInclude Include="fileManager.h" />
     <ClInclude Include="drawScreen.h" />

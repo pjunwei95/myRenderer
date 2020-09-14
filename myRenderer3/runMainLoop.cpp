@@ -8,10 +8,11 @@
 #include "frameRateController.h"
 #include "windowHandler.h"
 #include "profiler.h"
-#include "test.h"
+#include "array.h"
 
 void runMainLoop()
 {
+    testArray();
     initialiseTimer();
     //test();
     initProfile();
@@ -25,7 +26,7 @@ void runMainLoop()
 
         while (!getIsDone())
         {
-            beginProfile("beforeidle");
+            //beginProfile("beforeidle");
 
             Timer timer;
 
@@ -36,7 +37,7 @@ void runMainLoop()
             getKeyInput();
 
             updateWindow();
-            endProfile();
+            //endProfile();
 
             //profileFrameTime(&timer);
 
