@@ -23,7 +23,7 @@ Array createNewArray(unsigned int sizeElem) {
 
 bool a_empty(const Array* const dstArr)
 {
-    /*return (dstArr->m_Size > 0) ? false : true;*/
+    return (dstArr->m_Size > 0) ? false : true;
 }
 
 int a_size(const Array* const arr)
@@ -39,18 +39,18 @@ void array_push(Array* const dstArr, const void* srcData, int sizeElem)
     void* ptr;
     if (!dstArr->m_Data)
     {
-        /*ptr = malloc(sizeElem);
+        ptr = malloc(sizeElem);
         assert(ptr);
-        dstArr->m_Data = ptr;*/
+        dstArr->m_Data = ptr;
         dstArr->m_Capacity++;
     }
 
     if (dstArr->m_Size == dstArr->m_Capacity)
     {
         dstArr->m_Capacity *= 2;
-       /* ptr = realloc(dstArr->m_Data, dstArr->m_Capacity * sizeElem);
+        ptr = realloc(dstArr->m_Data, dstArr->m_Capacity * sizeElem);
         assert(ptr);
-        dstArr->m_Data = ptr;*/
+        dstArr->m_Data = ptr;
     }
     ptr = (unsigned char *)dstArr->m_Data + sizeElem * dstArr->m_Size;
     memcpy(ptr, srcData, sizeElem);
