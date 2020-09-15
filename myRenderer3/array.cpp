@@ -94,7 +94,27 @@ void* a_realloc(void* block, size_t oldSize, size_t newSize)
         free(block);
         return NULL;
     }
-        
+}
+
+void check_suff_mem(Array *const dstArr, void * ptr)
+{
+    assert(dstArr);
+    assert(ptr);
+    if (!dstArr->m_Data) // array memory uninitialised
+    {
+        ptr = malloc(dstArr->m_TypeSize);
+        assert(ptr);
+        dstArr->m_Data = ptr;
+        dstArr->m_Capacity++;
+    }
+    else if (dstArr->m_Size == dstArr->m_Capacity) // array memory exceeded
+    {
+        // *Block, oldSize, newSize
+        ptr = a_realloc(dstArr->m_Data, dstArr->m_Capacity * dstArr->m_TypeSize, dstArr->m_Capacity * dstArr->m_TypeSize * 2);
+        assert(ptr);
+        dstArr->m_Data = ptr;
+        dstArr->m_Capacity *= 2;
+    }
 }
 
 void a_push_back(Array* const dstArr, const void* srcData)
@@ -103,20 +123,7 @@ void a_push_back(Array* const dstArr, const void* srcData)
     assert(srcData);
     assert(dstArr->m_TypeSize > 0);
     void* ptr;
-    if (!dstArr->m_Data)
-    {
-        ptr = malloc(dstArr->m_TypeSize);
-        assert(ptr);
-        dstArr->m_Data = ptr;
-        dstArr->m_Capacity++;
-    }
-
-    if (dstArr->m_Size == dstArr->m_Capacity)
-    {
-        ptr = a_realloc(dstArr->m_Data, dstArr->m_Capacity * dstArr->m_TypeSize, dstArr->m_Capacity * dstArr->m_TypeSize * 2);
-        dstArr->m_Capacity *= 2;
-        dstArr->m_Data = ptr;
-    }
+    check_suff_mem(dstArr, &ptr);
     ptr = (unsigned char *)dstArr->m_Data + dstArr->m_TypeSize * dstArr->m_Size;
     memcpy(ptr, srcData, dstArr->m_TypeSize);
     dstArr->m_Size++;
