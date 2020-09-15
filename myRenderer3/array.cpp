@@ -137,6 +137,23 @@ void a_pop_back(Array* const arr)
 }
 
 
+void a_erase(Array* const arr, int index)
+{
+    assert(!a_empty(arr));
+    assert(index >= 0 && index < arr->m_Size);
+    if (index == arr->m_Size - 1) // last index
+        a_pop_back(arr);
+    //shift array left
+    unsigned char* ptr = (unsigned char*)arr->m_Data;
+    // A[i] = *[A + i]
+    for (unsigned char* i = ptr + index; i < ptr + (arr->m_Size - 1) * arr->m_TypeSize; i += arr->m_TypeSize)
+    {
+        // A[i] = A[i+1]
+        memcpy(i, i + arr->m_TypeSize, arr->m_TypeSize);
+    }
+    arr->m_Size--;
+}
+
 void testArray()
 {
     Array a = createNewArray(sizeof(int));
@@ -150,22 +167,19 @@ void testArray()
         numAtIdx = *((int*)a_at(&a, i));
         printf("array [%d] = %d\n", i, numAtIdx);
     }
-    
-    //push 10 elements and print
-    for (int i = 0; i < 10; ++i)
-    {
-        a_push_back(&a, &num);
-        num++;
-        numAtIdx = *((int*)a_at(&a, i));
-        printf("array [%d] = %d\n", i, numAtIdx);
-    }
 
     //print first
     int getFirst = *((int*)a_front(&a));
     printf("first = %d\n", getFirst);
 
-    //remove 10
-    printf("popping last element\n");
+    //erase at idx
+    printf("erasing a[%d] = %d...\n", 6, *((int*)a_at(&a, 6) ));
+
+    a_erase(&a, 6);
+    printf("a[%d] is now = %d\n", 6, *((int*)a_at(&a, 6) ) );
+
+    //remove last
+    printf("popping last element...\n");
     a_pop_back(&a);
 
     //print last
