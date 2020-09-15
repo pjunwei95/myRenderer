@@ -83,9 +83,18 @@ void* a_realloc(void* block, size_t oldSize, size_t newSize)
     void* newBlock;
     newBlock = malloc(newSize);
     assert(newBlock);
-    newBlock = memcpy(newBlock, block, oldSize);
-    free(block);
-    return newBlock;
+    if (newBlock)
+    {
+        newBlock = memcpy(newBlock, block, oldSize);
+        free(block);
+        return newBlock;
+    }
+    else
+    {
+        free(block);
+        return NULL;
+    }
+        
 }
 
 void a_push_back(Array* const dstArr, const void* srcData)
@@ -113,10 +122,7 @@ void a_push_back(Array* const dstArr, const void* srcData)
     dstArr->m_Size++;
 }
 
-//void* a_insert(Array* const dstArr, const void* srcData, int sizeElem)
-//{
-//
-//}
+
 
 void testArray()
 {
