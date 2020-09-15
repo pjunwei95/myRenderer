@@ -76,27 +76,19 @@ void* a_at(const Array* const arr, int index)
     return (unsigned char*)arr->m_Data + index * arr->m_TypeSize;
 }
 
-void* a_realloc(void* block, size_t oldSize, size_t newSize)
+static void* a_realloc(void* block, size_t oldSize, size_t newSize)
 {
     assert(block);
     assert(oldSize < newSize);
     void* newBlock;
     newBlock = malloc(newSize);
     assert(newBlock);
-    if (newBlock)
-    {
-        newBlock = memcpy(newBlock, block, oldSize);
-        free(block);
-        return newBlock;
-    }
-    else
-    {
-        free(block);
-        return NULL;
-    }
+    newBlock = memcpy(newBlock, block, oldSize);
+    free(block);
+    return newBlock;
 }
 
-void check_suff_mem(Array *const &dstArr, void * &ptr)
+void check_suff_mem(Array *const dstArr, void * ptr)
 {
     assert(dstArr);
     assert(ptr);
@@ -123,7 +115,7 @@ void a_push_back(Array* const dstArr, const void* srcData)
     assert(srcData);
     assert(dstArr->m_TypeSize > 0);
     void* ptr;
-    check_suff_mem(dstArr, ptr);
+    check_suff_mem(dstArr, &ptr);
     ptr = (unsigned char *)dstArr->m_Data + dstArr->m_TypeSize * dstArr->m_Size;
     memcpy(ptr, srcData, dstArr->m_TypeSize);
     dstArr->m_Size++;
@@ -135,6 +127,7 @@ void a_pop_back(Array* const arr)
     assert(!a_empty(arr));
     arr->m_Size--;
 }
+
 
 
 void a_erase(Array* const arr, int index)
@@ -157,7 +150,7 @@ void a_erase(Array* const arr, int index)
 void testArray()
 {
     Array a = createNewArray(sizeof(int));
-    int num = 1;
+    int num = 0;
     int numAtIdx;
     //push 10 elements and print
     for (int i = 0; i < 10; ++i)
