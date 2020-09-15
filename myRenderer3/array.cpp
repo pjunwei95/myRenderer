@@ -44,6 +44,7 @@ void a_clear(Array* const arr)
     assert(arr);
     arr->m_Size = 0;
 }
+
 void* a_front(const Array* const arr)
 {
     assert(arr);
@@ -66,7 +67,6 @@ void a_free(Array* const dstArr)
     free(dstArr->m_Data);
 }
 
-
 void* a_at(const Array* const arr, int index)
 {
     assert(!a_empty(arr));
@@ -74,6 +74,13 @@ void* a_at(const Array* const arr, int index)
     assert(index >= 0);
     assert(index < arr->m_Size);
     return (unsigned char*)arr->m_Data + index * arr->m_TypeSize;
+}
+
+void a_pop_back(Array* const arr)
+{
+    assert(arr);
+    assert(!a_empty(arr));
+    arr->m_Size--;
 }
 
 static void* a_realloc(void* block, size_t oldSize, size_t newSize)
@@ -121,13 +128,6 @@ void a_push_back(Array* const dstArr, const void* srcData)
     dstArr->m_Size++;
 }
 
-void a_pop_back(Array* const arr)
-{
-    assert(arr);
-    assert(!a_empty(arr));
-    arr->m_Size--;
-}
-
 
 
 void a_erase(Array* const arr, int index)
@@ -135,7 +135,10 @@ void a_erase(Array* const arr, int index)
     assert(!a_empty(arr));
     assert(index >= 0 && index < arr->m_Size);
     if (index == arr->m_Size - 1) // last index
+    {
         a_pop_back(arr);
+        return;
+    }
     //shift array left
     unsigned char* ptr = (unsigned char*)arr->m_Data;
     // A[i] = *[A + i]
@@ -152,7 +155,10 @@ void testArray()
     Array a = createNewArray(sizeof(int));
     int num = 0;
     int numAtIdx;
+
+    
     //push 10 elements and print
+    printf("==============\n");
     for (int i = 0; i < 10; ++i)
     {
         a_push_back(&a, &num);
@@ -160,16 +166,27 @@ void testArray()
         numAtIdx = *((int*)a_at(&a, i));
         printf("array [%d] = %d\n", i, numAtIdx);
     }
+    printf("==============\n");
 
     //print first
     int getFirst = *((int*)a_front(&a));
     printf("first = %d\n", getFirst);
 
-    //erase at idx
-    printf("erasing a[%d] = %d...\n", 6, *((int*)a_at(&a, 6) ));
+    ////erase at idx
+    //printf("erasing a[%d] = %d...\n", 6, *((int*)a_at(&a, 6) ));
+    //a_erase(&a, 6);
+    //printf("a[%d] is now = %d\n", 6, *((int*)a_at(&a, 6) ) );
 
-    a_erase(&a, 6);
-    printf("a[%d] is now = %d\n", 6, *((int*)a_at(&a, 6) ) );
+    
+
+    printf("==============\n");
+    printf("printing updated table\n");
+    for (int i = 0; i < 10; ++i)
+    {
+        numAtIdx = *((int*)a_at(&a, i));
+        printf("array [%d] = %d\n", i, numAtIdx);
+    }
+    printf("==============\n");
 
     //remove last
     printf("popping last element...\n");
