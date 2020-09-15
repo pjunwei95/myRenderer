@@ -96,7 +96,7 @@ void* a_realloc(void* block, size_t oldSize, size_t newSize)
     }
 }
 
-void check_suff_mem(Array *const dstArr, void * ptr)
+void check_suff_mem(Array *const &dstArr, void * &ptr)
 {
     assert(dstArr);
     assert(ptr);
@@ -123,12 +123,18 @@ void a_push_back(Array* const dstArr, const void* srcData)
     assert(srcData);
     assert(dstArr->m_TypeSize > 0);
     void* ptr;
-    check_suff_mem(dstArr, &ptr);
+    check_suff_mem(dstArr, ptr);
     ptr = (unsigned char *)dstArr->m_Data + dstArr->m_TypeSize * dstArr->m_Size;
     memcpy(ptr, srcData, dstArr->m_TypeSize);
     dstArr->m_Size++;
 }
 
+void a_pop_back(Array* const arr)
+{
+    assert(arr);
+    assert(!a_empty(arr));
+    arr->m_Size--;
+}
 
 
 void testArray()
