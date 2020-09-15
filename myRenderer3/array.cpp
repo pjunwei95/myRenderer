@@ -151,16 +151,33 @@ void testArray()
         printf("array [%d] = %d\n", i, numAtIdx);
     }
     
+    //push 10 elements and print
+    for (int i = 0; i < 10; ++i)
+    {
+        a_push_back(&a, &num);
+        num++;
+        numAtIdx = *((int*)a_at(&a, i));
+        printf("array [%d] = %d\n", i, numAtIdx);
+    }
+
     //print first
-    int getFirst = *((int*) a_front(&a));
+    int getFirst = *((int*)a_front(&a));
     printf("first = %d\n", getFirst);
 
-    //clears array
-    //a_clear(&a);
+    //remove 10
+    printf("popping last element\n");
+    a_pop_back(&a);
 
     //print last
     int getLast = *((int*)a_back(&a));
     printf("last = %d\n", getLast);
+
+    //clears array
+    a_clear(&a);
+
+    //print first
+    /*int getFirst = *((int*)a_front(&a));
+    printf("first = %d\n", getFirst);*/
 
     //free after usage
     a_free(&a);
