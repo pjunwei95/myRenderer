@@ -23,51 +23,27 @@ Array createNewArray(unsigned int sizeElem) {
 
 bool a_empty(const Array* const arr)
 {
+    assert(arr);
     return (arr->m_Size > 0) ? false : true;
 }
 
 int a_size(const Array* const arr)
 {
+    assert(arr);
     return arr->m_Size;
 }
 
-void* a_realloc(void* block, size_t oldSize, size_t newSize)
+int a_capacity(const Array* const arr)
 {
-    assert(block);
-    assert(oldSize < newSize);
-    void* newBlock;
-    newBlock = malloc(newSize);
-    assert(newBlock);
-    newBlock = memcpy(newBlock, block, oldSize);
-    free(block);
-    return newBlock;
+    assert(arr);
+    return arr->m_Capacity;
 }
 
-void array_push(Array* const dstArr, const void* srcData, int sizeElem)
+void a_clear(Array* const arr)
 {
-    assert(dstArr);
-    assert(srcData);
-    assert(sizeElem > 0);
-    void* ptr;
-    if (!dstArr->m_Data)
-    {
-        ptr = malloc(sizeElem);
-        assert(ptr);
-        dstArr->m_Data = ptr;
-        dstArr->m_Capacity++;
-    }
-
-    if (dstArr->m_Size == dstArr->m_Capacity)
-    {
-        ptr = a_realloc(dstArr->m_Data, dstArr->m_Capacity * sizeElem, dstArr->m_Capacity * sizeElem * 2);
-        dstArr->m_Capacity *= 2;
-        dstArr->m_Data = ptr;
-    }
-    ptr = (unsigned char *)dstArr->m_Data + sizeElem * dstArr->m_Size;
-    memcpy(ptr, srcData, sizeElem);
-    dstArr->m_Size++;
+    assert(arr);
+    arr->m_Size = 0;
 }
-
 void* a_front(const Array* const arr)
 {
     assert(arr);
@@ -90,6 +66,7 @@ void a_free(Array* const dstArr)
     free(dstArr->m_Data);
 }
 
+
 void* a_at(const Array* const arr, int index)
 {
     assert(!a_empty(arr));
@@ -99,25 +76,68 @@ void* a_at(const Array* const arr, int index)
     return (unsigned char*)arr->m_Data + index * arr->m_TypeSize;
 }
 
+void* a_realloc(void* block, size_t oldSize, size_t newSize)
+{
+    assert(block);
+    assert(oldSize < newSize);
+    void* newBlock;
+    newBlock = malloc(newSize);
+    assert(newBlock);
+    newBlock = memcpy(newBlock, block, oldSize);
+    free(block);
+    return newBlock;
+}
+
+void a_push_back(Array* const dstArr, const void* srcData)
+{
+    assert(dstArr);
+    assert(srcData);
+    assert(dstArr->m_TypeSize > 0);
+    void* ptr;
+    if (!dstArr->m_Data)
+    {
+        ptr = malloc(dstArr->m_TypeSize);
+        assert(ptr);
+        dstArr->m_Data = ptr;
+        dstArr->m_Capacity++;
+    }
+
+    if (dstArr->m_Size == dstArr->m_Capacity)
+    {
+        ptr = a_realloc(dstArr->m_Data, dstArr->m_Capacity * dstArr->m_TypeSize, dstArr->m_Capacity * dstArr->m_TypeSize * 2);
+        dstArr->m_Capacity *= 2;
+        dstArr->m_Data = ptr;
+    }
+    ptr = (unsigned char *)dstArr->m_Data + dstArr->m_TypeSize * dstArr->m_Size;
+    memcpy(ptr, srcData, dstArr->m_TypeSize);
+    dstArr->m_Size++;
+}
+
+//void* a_insert(Array* const dstArr, const void* srcData, int sizeElem)
+//{
+//
+//}
+
 void testArray()
 {
     Array a = createNewArray(sizeof(int));
     int num = 1;
+    int numAtIdx;
     //push 10 elements and print
     for (int i = 0; i < 10; ++i)
     {
-        array_push(&a, &num, sizeof(int));
+        a_push_back(&a, &num);
         num++;
-    }
-    for (int i = 0; i < 10; ++i)
-    {
-        int numAtIdx = *((int*) a_at(&a, i));
+        numAtIdx = *((int*)a_at(&a, i));
         printf("array [%d] = %d\n", i, numAtIdx);
     }
     
     //print first
     int getFirst = *((int*) a_front(&a));
     printf("first = %d\n", getFirst);
+
+    //clears array
+    //a_clear(&a);
 
     //print last
     int getLast = *((int*)a_back(&a));
