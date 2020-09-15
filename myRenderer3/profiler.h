@@ -42,22 +42,11 @@ struct Profile {
 //#define PROFILE_FUNCTION()
 //#define PROFILE_SCOPED(name)
 
-//#define PROFILE_INIT() \
-//initialiseTimer();\
-//setIsTrackProfile(false);\
-//setCount(50);
-
-
 void initProfile();
 
 // Header functions
-void testProfiling();
+void testProfiler();
 
 void beginProfile(const char * string);
 
 void endProfile();
-
-//void profileFrameTime(TimerHandle frameStart);
-//
-//void printProfile();
-

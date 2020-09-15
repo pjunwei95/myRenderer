@@ -1,16 +1,8 @@
 #include <assert.h>
 #include <string.h>
+#include <stdlib.h>
 #include "array.h"
 #include "stdio.h"
-
-#include <vector>
-
-struct Array {
-    void* m_Data; // pointer to array
-    int m_Size; // number of elements
-    int m_Capacity; // available memory size
-    unsigned int m_TypeSize; // size of element type
-};
 
 Array createNewArray(unsigned int sizeElem) {
     Array a;
@@ -155,8 +147,6 @@ void testArray()
     Array a = createNewArray(sizeof(int));
     int num = 0;
     int numAtIdx;
-
-    
     //push 10 elements and print
     printf("==============\n");
     for (int i = 0; i < 10; ++i)
@@ -171,11 +161,6 @@ void testArray()
     //print first
     int getFirst = *((int*)a_front(&a));
     printf("first = %d\n", getFirst);
-
-    ////erase at idx
-    //printf("erasing a[%d] = %d...\n", 6, *((int*)a_at(&a, 6) ));
-    //a_erase(&a, 6);
-    //printf("a[%d] is now = %d\n", 6, *((int*)a_at(&a, 6) ) );
 
     
 

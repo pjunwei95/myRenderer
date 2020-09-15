@@ -1,17 +1,36 @@
 #include "profiler.h"
-#include "profileStack.h"
 #include <stdio.h>
 #include <assert.h>
 #include "logger.h"
+#include "array.h"
 
-struct Stack* profileStack;
+Array profileStack;
 
 void initProfile()
 {
-    profileStack = createStack(100);
+    profileStack = createNewArray(sizeof(Profile));
 }
 
-void testProfiling() 
+void beginProfile(const char * string)
+{
+    Profile profile;
+    strcpy_s(profile.profileName, sizeof(profile.profileName), string); //easy conversion to macros
+    updateTimeStamp(&profile.start);
+    a_push_back(&profileStack, &profile);
+}
+
+void endProfile() 
+{
+    assert(!a_empty(&profileStack));
+    //dereference from peek()
+    Profile profile = *((Profile*)a_back(&profileStack));
+    updateTimeStamp(&profile.elapsed);
+    getTimerElapsedUs(&profile.elapsed, &profile.start);
+    logmsg("Time elapsed for |%s| profile = %.2f ms\n", profile.profileName, getTimerElapsedMs(&profile.elapsed));
+    a_pop_back(&profileStack);
+}
+
+void testProfiler()
 {
     initialiseTimer();
     initProfile();
@@ -21,24 +40,6 @@ void testProfiling()
         endProfile();
     Sleep(100);
     endProfile();
-}
-
-void beginProfile(const char * string)
-{
-    Profile profile;
-    strcpy_s(profile.profileName, sizeof(profile.profileName), string); //easy conversion to macros
-    updateTimeStamp(&profile.start);
-    push(profileStack, profile);
-}
-
-void endProfile() 
-{
-    assert(!isEmpty(profileStack));
-    Profile profile = peek(profileStack);
-    updateTimeStamp(&profile.elapsed);
-    getTimerElapsedUs(&profile.elapsed, &profile.start);
-    logmsg("Time elapsed for |%s| profile = %.2f ms\n", profile.profileName, getTimerElapsedMs(&profile.elapsed));
-    pop(profileStack);
 }
 //
 //void profileFrameTime(TimerHandle frameStart)
