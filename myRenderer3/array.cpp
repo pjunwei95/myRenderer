@@ -21,9 +21,9 @@ Array createNewArray(unsigned int sizeElem) {
     return a;
 }
 
-bool a_empty(const Array* const dstArr)
+bool a_empty(const Array* const arr)
 {
-    return (dstArr->m_Size > 0) ? false : true;
+    return (arr->m_Size > 0) ? false : true;
 }
 
 int a_size(const Array* const arr)
@@ -59,12 +59,8 @@ void array_push(Array* const dstArr, const void* srcData, int sizeElem)
 
     if (dstArr->m_Size == dstArr->m_Capacity)
     {
-        /*dstArr->m_Capacity *= 2;
-        ptr = realloc(dstArr->m_Data, dstArr->m_Capacity * sizeElem);*/
         ptr = a_realloc(dstArr->m_Data, dstArr->m_Capacity * sizeElem, dstArr->m_Capacity * sizeElem * 2);
         dstArr->m_Capacity *= 2;
-
-        assert(ptr);
         dstArr->m_Data = ptr;
     }
     ptr = (unsigned char *)dstArr->m_Data + sizeElem * dstArr->m_Size;
@@ -74,8 +70,8 @@ void array_push(Array* const dstArr, const void* srcData, int sizeElem)
 
 void* a_front(const Array* const arr)
 {
-    assert(!a_empty(arr));
     assert(arr);
+    assert(!a_empty(arr));
     assert(arr->m_Data);
     return (unsigned char*)arr->m_Data;
 }
@@ -107,7 +103,6 @@ void testArray()
 {
     Array a = createNewArray(sizeof(int));
     int num = 1;
-    
     //push 10 elements and print
     for (int i = 0; i < 10; ++i)
     {
