@@ -154,7 +154,9 @@ void a_erase(Array* const arr, unsigned int index)
     //shift array left
     unsigned char* ptr = (unsigned char*)arr->m_Data;
     // A[i] = *[A + i]
-    for (unsigned char* i = ptr + index; i < ptr + (arr->m_Size - 1) * arr->m_TypeSize; i += arr->m_TypeSize)
+    for (unsigned char* i = ptr + index * arr->m_TypeSize; 
+        i < ptr + (arr->m_Size - 1) * arr->m_TypeSize; 
+        i += arr->m_TypeSize)
     {
         // A[i] = A[i+1]
         memcpy(i, i + arr->m_TypeSize, arr->m_TypeSize);
@@ -199,11 +201,11 @@ void testArray()
     a_erase(&a, 6);
     printf("a[%d] is now = %d\n", 6, *((int*)a_at(&a, 6) ) );
 
-    ////insert at idx
-    //int newNum = 99;
-    //printf("inserting a[%d] = %d...\n", 6, newNum);
-    //a_insert(&a, 6, &newNum);
-    //printf("a[%d] is now = %d\n", 6, *((int*)a_at(&a, 6)));
+    //insert at idx
+    int newNum = 99;
+    printf("inserting a[%d] = %d...\n", 6, newNum);
+    a_insert(&a, 6, &newNum);
+    printf("a[%d] is now = %d\n", 6, *((int*)a_at(&a, 6)));
 
     printArray(&a);
 
