@@ -14,7 +14,7 @@ void runMainLoop()
 {
     initialiseTimer();
     initProfile();
-    //testArray();
+    testArray();
     //testProfiler();
     //PROFILE_BEGIN(test1);
     beginProfile("createWindow");
