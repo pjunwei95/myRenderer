@@ -4,6 +4,8 @@
 #include "array.h"
 #include "stdio.h"
 
+static void printArray(const Array* const a);
+
 Array createNewArray(unsigned int sizeElem) {
     Array a;
     a.m_Data = nullptr;
@@ -16,7 +18,7 @@ Array createNewArray(unsigned int sizeElem) {
 bool a_empty(const Array* const arr)
 {
     assert(arr);
-    return (arr->m_Size > 0) ? false : true;
+    return 0 == arr->m_Size;
 }
 
 int a_size(const Array* const arr)
@@ -59,7 +61,7 @@ void a_free(Array* const dstArr)
     free(dstArr->m_Data);
 }
 
-void* a_at(const Array* const arr, int index)
+void* a_at(const Array* const arr, unsigned int index)
 {
     assert(!a_empty(arr));
     assert(arr->m_Data);
@@ -120,21 +122,44 @@ void a_push_back(Array* const dstArr, const void* srcData)
     dstArr->m_Size++;
 }
 
+void a_insert(Array* const dstArr, unsigned int index, const void* srcData)
+{
+    assert(dstArr);
+    assert(srcData);
+    assert(index >= 0 && index <= dstArr->m_Size);
+    void* ptr;
+    check_suff_mem(dstArr, &ptr);
+    unsigned char* newPtr = (unsigned char*)dstArr->m_Data;
+    //shift array right
+    // for i = size-1; i > index-1; i--
+    for (unsigned char* i = newPtr + (dstArr->m_Size - 1) * dstArr->m_TypeSize; 
+        i > newPtr + (index - 1) * dstArr->m_TypeSize; 
+        i -= dstArr->m_TypeSize)
+    {
+        //A[i+1] = A[i]
+        memcpy(i + dstArr->m_TypeSize, i, dstArr->m_TypeSize);
+    }
+    //A[index] = data
+    memcpy(newPtr + index * dstArr->m_TypeSize, srcData, dstArr->m_TypeSize);
+    dstArr->m_Size++;
+}
 
-
-void a_erase(Array* const arr, int index)
+void a_erase(Array* const arr, unsigned int index)
 {
     assert(!a_empty(arr));
     assert(index >= 0 && index < arr->m_Size);
     if (index == arr->m_Size - 1) // last index
     {
-        a_pop_back(arr);
+        a_pop_back(arr); //CHECK SIZE
         return;
     }
     //shift array left
     unsigned char* ptr = (unsigned char*)arr->m_Data;
     // A[i] = *[A + i]
-    for (unsigned char* i = ptr + index; i < ptr + (arr->m_Size - 1) * arr->m_TypeSize; i += arr->m_TypeSize)
+    // for i = index; i < size-1; i++
+    for (unsigned char* i = ptr + index * arr->m_TypeSize; 
+        i < ptr + (arr->m_Size - 1) * arr->m_TypeSize; 
+        i += arr->m_TypeSize)
     {
         // A[i] = A[i+1]
         memcpy(i, i + arr->m_TypeSize, arr->m_TypeSize);
@@ -142,36 +167,55 @@ void a_erase(Array* const arr, int index)
     arr->m_Size--;
 }
 
+
+// This method will remove the element at the specified index but
+// will not preserve the order in the array(the element is swapped with
+// the last one of the array)
+void a_remove_at_fast(Array* const arr, unsigned int index)
+{
+    assert(!a_empty(arr));
+    assert(index >= 0 && index < arr->m_Size);
+    unsigned char* ptr = (unsigned char*)arr->m_Data;
+    unsigned char* ptrToLast = ptr + (arr->m_Size - 1) * arr->m_TypeSize;
+    unsigned char* ptrToIdx = ptr + index * arr->m_TypeSize;
+    memcpy(ptrToIdx, ptrToLast, arr->m_TypeSize);
+    arr->m_Size--;
+}
+
 void testArray()
 {
     Array a = createNewArray(sizeof(int));
     int num = 0;
-    int numAtIdx;
-    //push 10 elements and print
-    printf("==============\n");
+    //push 10 elements and print (init)
     for (int i = 0; i < 10; ++i)
     {
         a_push_back(&a, &num);
         num++;
-        numAtIdx = *((int*)a_at(&a, i));
-        printf("array [%d] = %d\n", i, numAtIdx);
     }
-    printf("==============\n");
+    printArray(&a);
 
     //print first
     int getFirst = *((int*)a_front(&a));
     printf("first = %d\n", getFirst);
 
-    
+    //erase at idx
+    printf("erasing a[%d] = %d...\n", 6, *((int*)a_at(&a, 6) ));
+    a_erase(&a, 6);
+    printf("a[%d] is now = %d\n", 6, *((int*)a_at(&a, 6) ) );
 
-    printf("==============\n");
-    printf("printing updated table\n");
-    for (int i = 0; i < 10; ++i)
-    {
-        numAtIdx = *((int*)a_at(&a, i));
-        printf("array [%d] = %d\n", i, numAtIdx);
-    }
-    printf("==============\n");
+    //insert at idx
+    int newNum = 99;
+    printf("inserting a[%d] = %d...\n", 6, newNum);
+    a_insert(&a, 6, &newNum);
+    printf("a[%d] is now = %d\n", 6, *((int*)a_at(&a, 6)));
+    
+    printArray(&a);
+    //remove at fast idx 5
+    printf("RemoveAtFast 5...\n");
+    a_remove_at_fast(&a, 5);
+
+    printArray(&a);
+
 
     //remove last
     printf("popping last element...\n");
@@ -190,4 +234,17 @@ void testArray()
 
     //free after usage
     a_free(&a);
+}
+
+static void printArray(const Array* const a)
+{
+    printf("==============\n");
+    printf("printing updated table\n");
+    int numAtIdx;
+    for (unsigned int i = 0; i < a->m_Size; ++i)
+    {
+        numAtIdx = *((int*)a_at(a, i));
+        printf("array [%d] = %d\n", i, numAtIdx);
+    }
+    printf("==============\n");
 }

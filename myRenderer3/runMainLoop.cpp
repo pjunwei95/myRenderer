@@ -14,7 +14,7 @@ void runMainLoop()
 {
     initialiseTimer();
     initProfile();
-    //testArray();
+    testArray();
     //testProfiler();
     //PROFILE_BEGIN(test1);
     beginProfile("createWindow");
@@ -25,7 +25,7 @@ void runMainLoop()
 
         while (!getIsDone())
         {
-            beginProfile("beforeidle");
+            //beginProfile("beforeidle");
 
             Timer timer;
 
@@ -36,7 +36,7 @@ void runMainLoop()
             getKeyInput();
 
             updateWindow();
-            endProfile();
+            //endProfile();
 
             //profileFrameTime(&timer);
 

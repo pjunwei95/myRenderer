@@ -6,9 +6,9 @@
 #define CHAR_MAX_LIMIT 256
 
 struct Profile {
-    Timer start;
-    Timer elapsed;
-    char profileName[CHAR_MAX_LIMIT];
+    Timer m_Start;
+    Timer m_Elapsed;
+    char m_ProfileName[CHAR_MAX_LIMIT];
 };
 
 
