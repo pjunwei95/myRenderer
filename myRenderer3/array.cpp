@@ -16,7 +16,7 @@ Array createNewArray(unsigned int sizeElem) {
 bool a_empty(const Array* const arr)
 {
     assert(arr);
-    return (arr->m_Size > 0) ? false : true;
+    return 0 == arr->m_Size;
 }
 
 int a_size(const Array* const arr)
@@ -120,7 +120,25 @@ void a_push_back(Array* const dstArr, const void* srcData)
     dstArr->m_Size++;
 }
 
-
+void a_insert(Array* const dstArr, int index, const void* srcData)
+{
+    assert(dstArr);
+    assert(srcData);
+    assert(index >= 0 && index <= dstArr->m_Size);
+    void* ptr;
+    check_suff_mem(dstArr, &ptr);
+    unsigned char* newPtr = (unsigned char*)dstArr->m_Data;
+    //shift array right
+    // for i = size-1; i > index-1; i--
+    for (unsigned char* i = newPtr + (dstArr->m_Size - 1) * dstArr->m_TypeSize; i > newPtr + (index - 1) * dstArr->m_TypeSize; i -= dstArr->m_TypeSize)
+    {
+        //A[i+1] = A[i]
+        memcpy(i + dstArr->m_TypeSize, i, dstArr->m_TypeSize);
+    }
+    //A[index] = data
+    memcpy(newPtr + index * dstArr->m_TypeSize, srcData, dstArr->m_TypeSize);
+    dstArr->m_Size++;
+}
 
 void a_erase(Array* const arr, int index)
 {
@@ -162,7 +180,16 @@ void testArray()
     int getFirst = *((int*)a_front(&a));
     printf("first = %d\n", getFirst);
 
-    
+    //erase at idx
+    printf("erasing a[%d] = %d...\n", 6, *((int*)a_at(&a, 6) ));
+    a_erase(&a, 6);
+    printf("a[%d] is now = %d\n", 6, *((int*)a_at(&a, 6) ) );
+
+    //insert at idx
+    int newNum = 99;
+    printf("inserting a[%d] = %d...\n", 6, newNum);
+    a_insert(&a, 6, &newNum);
+    printf("a[%d] is now = %d\n", 6, *((int*)a_at(&a, 6)));
 
     printf("==============\n");
     printf("printing updated table\n");
