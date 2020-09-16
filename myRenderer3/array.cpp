@@ -193,7 +193,7 @@ void testArray()
         num++;
     }
     printArray(&a);
-    //test
+
     //print first
     int getFirst = *((int*)a_front(&a));
     printf("first = %d\n", getFirst);
@@ -210,9 +210,7 @@ void testArray()
     printf("a[%d] is now = %d\n", 6, *((int*)a_at(&a, 6)));
     
     printArray(&a);
-
     //remove at fast idx 5
-    //swap 5 = 5 with last
     printf("RemoveAtFast 5...\n");
     a_remove_at_fast(&a, 5);
 
