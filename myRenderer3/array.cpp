@@ -4,6 +4,8 @@
 #include "array.h"
 #include "stdio.h"
 
+static void printArray(const Array* const a);
+
 Array createNewArray(unsigned int sizeElem) {
     Array a;
     a.m_Data = nullptr;
@@ -160,21 +162,33 @@ void a_erase(Array* const arr, unsigned int index)
     arr->m_Size--;
 }
 
+
+// This method will remove the element at the specified index but
+// will not preserve the order in the array(the element is swapped with
+// the last one of the array)
+//void a_remove_at_fast(Array* const arr, unsigned int index)
+//{
+//    assert(!a_empty(arr));
+//    assert(index >= 0 && index < arr->m_Size);
+//    unsigned char* ptr = (unsigned char*)arr->m_Data;
+//
+//
+//}
+
+
+
 void testArray()
 {
     Array a = createNewArray(sizeof(int));
     int num = 0;
-    int numAtIdx;
-    //push 10 elements and print
-    printf("==============\n");
+    //push 10 elements and print (init)
     for (int i = 0; i < 10; ++i)
     {
         a_push_back(&a, &num);
         num++;
-        numAtIdx = *((int*)a_at(&a, i));
-        printf("array [%d] = %d\n", i, numAtIdx);
     }
-    printf("==============\n");
+
+    printArray(&a);
 
     //print first
     int getFirst = *((int*)a_front(&a));
@@ -185,20 +199,13 @@ void testArray()
     a_erase(&a, 6);
     printf("a[%d] is now = %d\n", 6, *((int*)a_at(&a, 6) ) );
 
-    //insert at idx
-    int newNum = 99;
-    printf("inserting a[%d] = %d...\n", 6, newNum);
-    a_insert(&a, 6, &newNum);
-    printf("a[%d] is now = %d\n", 6, *((int*)a_at(&a, 6)));
+    ////insert at idx
+    //int newNum = 99;
+    //printf("inserting a[%d] = %d...\n", 6, newNum);
+    //a_insert(&a, 6, &newNum);
+    //printf("a[%d] is now = %d\n", 6, *((int*)a_at(&a, 6)));
 
-    printf("==============\n");
-    printf("printing updated table\n");
-    for (int i = 0; i < 10; ++i)
-    {
-        numAtIdx = *((int*)a_at(&a, i));
-        printf("array [%d] = %d\n", i, numAtIdx);
-    }
-    printf("==============\n");
+    printArray(&a);
 
     //remove last
     printf("popping last element...\n");
@@ -217,4 +224,17 @@ void testArray()
 
     //free after usage
     a_free(&a);
+}
+
+static void printArray(const Array* const a)
+{
+    printf("==============\n");
+    printf("printing updated table\n");
+    int numAtIdx;
+    for (unsigned int i = 0; i < a->m_Size; ++i)
+    {
+        numAtIdx = *((int*)a_at(a, i));
+        printf("array [%d] = %d\n", i, numAtIdx);
+    }
+    printf("==============\n");
 }
