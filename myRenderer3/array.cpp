@@ -1,16 +1,8 @@
 #include <assert.h>
 #include <string.h>
+#include <stdlib.h>
 #include "array.h"
 #include "stdio.h"
-
-#include <vector>
-
-struct Array {
-    void* m_Data; // pointer to array
-    int m_Size; // number of elements
-    int m_Capacity; // available memory size
-    unsigned int m_TypeSize; // size of element type
-};
 
 Array createNewArray(unsigned int sizeElem) {
     Array a;
@@ -44,6 +36,7 @@ void a_clear(Array* const arr)
     assert(arr);
     arr->m_Size = 0;
 }
+
 void* a_front(const Array* const arr)
 {
     assert(arr);
@@ -66,7 +59,6 @@ void a_free(Array* const dstArr)
     free(dstArr->m_Data);
 }
 
-
 void* a_at(const Array* const arr, int index)
 {
     assert(!a_empty(arr));
@@ -76,27 +68,26 @@ void* a_at(const Array* const arr, int index)
     return (unsigned char*)arr->m_Data + index * arr->m_TypeSize;
 }
 
-void* a_realloc(void* block, size_t oldSize, size_t newSize)
+void a_pop_back(Array* const arr)
+{
+    assert(arr);
+    assert(!a_empty(arr));
+    arr->m_Size--;
+}
+
+static void* a_realloc(void* block, size_t oldSize, size_t newSize)
 {
     assert(block);
     assert(oldSize < newSize);
     void* newBlock;
     newBlock = malloc(newSize);
     assert(newBlock);
-    if (newBlock)
-    {
-        newBlock = memcpy(newBlock, block, oldSize);
-        free(block);
-        return newBlock;
-    }
-    else
-    {
-        free(block);
-        return NULL;
-    }
+    newBlock = memcpy(newBlock, block, oldSize);
+    free(block);
+    return newBlock;
 }
 
-void check_suff_mem(Array *const &dstArr, void * &ptr)
+void check_suff_mem(Array *const dstArr, void * ptr)
 {
     assert(dstArr);
     assert(ptr);
@@ -123,26 +114,41 @@ void a_push_back(Array* const dstArr, const void* srcData)
     assert(srcData);
     assert(dstArr->m_TypeSize > 0);
     void* ptr;
-    check_suff_mem(dstArr, ptr);
+    check_suff_mem(dstArr, &ptr);
     ptr = (unsigned char *)dstArr->m_Data + dstArr->m_TypeSize * dstArr->m_Size;
     memcpy(ptr, srcData, dstArr->m_TypeSize);
     dstArr->m_Size++;
 }
 
-void a_pop_back(Array* const arr)
+
+
+void a_erase(Array* const arr, int index)
 {
-    assert(arr);
     assert(!a_empty(arr));
+    assert(index >= 0 && index < arr->m_Size);
+    if (index == arr->m_Size - 1) // last index
+    {
+        a_pop_back(arr);
+        return;
+    }
+    //shift array left
+    unsigned char* ptr = (unsigned char*)arr->m_Data;
+    // A[i] = *[A + i]
+    for (unsigned char* i = ptr + index; i < ptr + (arr->m_Size - 1) * arr->m_TypeSize; i += arr->m_TypeSize)
+    {
+        // A[i] = A[i+1]
+        memcpy(i, i + arr->m_TypeSize, arr->m_TypeSize);
+    }
     arr->m_Size--;
 }
-
 
 void testArray()
 {
     Array a = createNewArray(sizeof(int));
-    int num = 1;
+    int num = 0;
     int numAtIdx;
     //push 10 elements and print
+    printf("==============\n");
     for (int i = 0; i < 10; ++i)
     {
         a_push_back(&a, &num);
@@ -150,22 +156,25 @@ void testArray()
         numAtIdx = *((int*)a_at(&a, i));
         printf("array [%d] = %d\n", i, numAtIdx);
     }
-    
-    //push 10 elements and print
-    for (int i = 0; i < 10; ++i)
-    {
-        a_push_back(&a, &num);
-        num++;
-        numAtIdx = *((int*)a_at(&a, i));
-        printf("array [%d] = %d\n", i, numAtIdx);
-    }
+    printf("==============\n");
 
     //print first
     int getFirst = *((int*)a_front(&a));
     printf("first = %d\n", getFirst);
 
-    //remove 10
-    printf("popping last element\n");
+    
+
+    printf("==============\n");
+    printf("printing updated table\n");
+    for (int i = 0; i < 10; ++i)
+    {
+        numAtIdx = *((int*)a_at(&a, i));
+        printf("array [%d] = %d\n", i, numAtIdx);
+    }
+    printf("==============\n");
+
+    //remove last
+    printf("popping last element...\n");
     a_pop_back(&a);
 
     //print last
