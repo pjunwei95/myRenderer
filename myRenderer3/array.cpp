@@ -59,7 +59,7 @@ void a_free(Array* const dstArr)
     free(dstArr->m_Data);
 }
 
-void* a_at(const Array* const arr, int index)
+void* a_at(const Array* const arr, unsigned int index)
 {
     assert(!a_empty(arr));
     assert(arr->m_Data);
@@ -120,7 +120,7 @@ void a_push_back(Array* const dstArr, const void* srcData)
     dstArr->m_Size++;
 }
 
-void a_insert(Array* const dstArr, int index, const void* srcData)
+void a_insert(Array* const dstArr, unsigned int index, const void* srcData)
 {
     assert(dstArr);
     assert(srcData);
@@ -140,7 +140,7 @@ void a_insert(Array* const dstArr, int index, const void* srcData)
     dstArr->m_Size++;
 }
 
-void a_erase(Array* const arr, int index)
+void a_erase(Array* const arr, unsigned int index)
 {
     assert(!a_empty(arr));
     assert(index >= 0 && index < arr->m_Size);

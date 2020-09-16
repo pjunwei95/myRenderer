@@ -2,8 +2,8 @@
 
 struct Array {
     void* m_Data; // pointer to array
-    int m_Size; // number of elements
-    int m_Capacity; // available memory size
+    unsigned int m_Size; // number of elements
+    unsigned int m_Capacity; // available memory size
     unsigned int m_TypeSize; // size of element type
 };
 
