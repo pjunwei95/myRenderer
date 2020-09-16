@@ -193,7 +193,7 @@ void testArray()
         num++;
     }
     printArray(&a);
-
+    //test
     //print first
     int getFirst = *((int*)a_front(&a));
     printf("first = %d\n", getFirst);
