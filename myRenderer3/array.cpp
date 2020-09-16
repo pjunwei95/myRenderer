@@ -132,7 +132,9 @@ void a_insert(Array* const dstArr, unsigned int index, const void* srcData)
     unsigned char* newPtr = (unsigned char*)dstArr->m_Data;
     //shift array right
     // for i = size-1; i > index-1; i--
-    for (unsigned char* i = newPtr + (dstArr->m_Size - 1) * dstArr->m_TypeSize; i > newPtr + (index - 1) * dstArr->m_TypeSize; i -= dstArr->m_TypeSize)
+    for (unsigned char* i = newPtr + (dstArr->m_Size - 1) * dstArr->m_TypeSize; 
+        i > newPtr + (index - 1) * dstArr->m_TypeSize; 
+        i -= dstArr->m_TypeSize)
     {
         //A[i+1] = A[i]
         memcpy(i + dstArr->m_TypeSize, i, dstArr->m_TypeSize);
@@ -148,12 +150,13 @@ void a_erase(Array* const arr, unsigned int index)
     assert(index >= 0 && index < arr->m_Size);
     if (index == arr->m_Size - 1) // last index
     {
-        a_pop_back(arr);
+        a_pop_back(arr); //CHECK SIZE
         return;
     }
     //shift array left
     unsigned char* ptr = (unsigned char*)arr->m_Data;
     // A[i] = *[A + i]
+    // for i = index; i < size-1; i++
     for (unsigned char* i = ptr + index * arr->m_TypeSize; 
         i < ptr + (arr->m_Size - 1) * arr->m_TypeSize; 
         i += arr->m_TypeSize)
@@ -168,16 +171,16 @@ void a_erase(Array* const arr, unsigned int index)
 // This method will remove the element at the specified index but
 // will not preserve the order in the array(the element is swapped with
 // the last one of the array)
-//void a_remove_at_fast(Array* const arr, unsigned int index)
-//{
-//    assert(!a_empty(arr));
-//    assert(index >= 0 && index < arr->m_Size);
-//    unsigned char* ptr = (unsigned char*)arr->m_Data;
-//
-//
-//}
-
-
+void a_remove_at_fast(Array* const arr, unsigned int index)
+{
+    assert(!a_empty(arr));
+    assert(index >= 0 && index < arr->m_Size);
+    unsigned char* ptr = (unsigned char*)arr->m_Data;
+    unsigned char* ptrToLast = ptr + (arr->m_Size - 1) * arr->m_TypeSize;
+    unsigned char* ptrToIdx = ptr + index * arr->m_TypeSize;
+    memcpy(ptrToIdx, ptrToLast, arr->m_TypeSize);
+    arr->m_Size--;
+}
 
 void testArray()
 {
@@ -189,7 +192,6 @@ void testArray()
         a_push_back(&a, &num);
         num++;
     }
-
     printArray(&a);
 
     //print first
@@ -206,8 +208,16 @@ void testArray()
     printf("inserting a[%d] = %d...\n", 6, newNum);
     a_insert(&a, 6, &newNum);
     printf("a[%d] is now = %d\n", 6, *((int*)a_at(&a, 6)));
+    
+    printArray(&a);
+
+    //remove at fast idx 5
+    //swap 5 = 5 with last
+    printf("RemoveAtFast 5...\n");
+    a_remove_at_fast(&a, 5);
 
     printArray(&a);
+
 
     //remove last
     printf("popping last element...\n");
