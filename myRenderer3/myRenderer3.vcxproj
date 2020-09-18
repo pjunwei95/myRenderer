@@ -126,6 +126,7 @@
   <ItemGroup>
     <ClCompile Include="array.cpp" />
     <ClCompile Include="bufferOps.cpp" />
+    <ClCompile Include="circularBuffer.cpp" />
     <ClCompile Include="fileManager.cpp" />
     <ClCompile Include="drawScreen.cpp" />
     <ClCompile Include="frameRateController.cpp" />
@@ -142,6 +143,7 @@
   <ItemGroup>
     <ClInclude Include="array.h" />
     <ClInclude Include="bufferOps.h" />
+    <ClInclude Include="circularBuffer.h" />
     <ClInclude Include="fileManager.h" />
     <ClInclude Include="drawScreen.h" />
     <ClInclude Include="engine.h" />
