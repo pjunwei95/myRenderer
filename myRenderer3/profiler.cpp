@@ -8,7 +8,7 @@ Array profileStack;
 
 void initProfile()
 {
-    profileStack = createNewArray(sizeof(Profile));
+    profileStack = a_create_new(sizeof(Profile));
 }
 
 void beginProfile(const char * string)
