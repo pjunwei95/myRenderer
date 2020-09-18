@@ -8,13 +8,14 @@
 #include "frameRateController.h"
 #include "windowHandler.h"
 #include "profiler.h"
-#include "test.h"
+//#include "test.h"
+#include "circularBuffer.h"
 
 void runMainLoop()
 {
     initialiseTimer();
     initProfile();
-    test();
+    testCircularBuffer();
     //testProfiler();
     //PROFILE_BEGIN(test1);
     beginProfile("createWindow");

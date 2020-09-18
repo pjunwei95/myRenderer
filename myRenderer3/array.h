@@ -21,6 +21,8 @@ void a_insert(Array * const dstArr, unsigned int index, const void * srcData);
 
 void * a_back(const Array * const arr);
 
+void a_free(Array * const dstArr);
+
 void * a_at(const Array * const arr, unsigned int index);
 
 void a_pop_back(Array * const arr);
