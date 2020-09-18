@@ -2,63 +2,60 @@
 #include <iostream>
 #include <iomanip>
 #include <string.h>
-#include <assert.h>
-
 #include "array.h"
+#include "assert.h"
 
 #define BUFFER_LENGTH 3
 
-Array createNewCircBuffer(unsigned int sizeElem)
+int front, back;
+
+void c_push(Array* const array, const void* srcData)
 {
-    Array a;
-    a.m_Data = malloc(BUFFER_LENGTH * sizeElem);
-    a.m_Size = 0;
-    a.m_Capacity = BUFFER_LENGTH;
-    a.m_TypeSize = sizeElem;
-    return a;
+    //assert(array->m_Data);
+    assert(srcData);
+    //array[back] = value;
+    void* element = a_at(array, back);
+    memcpy(element, srcData, array->m_TypeSize);
+
+    // Advances back
+    back = (back + 1) % BUFFER_LENGTH;
+    if (front == back)
+    {
+        front = (front + 1) % BUFFER_LENGTH;
+    }
 }
 
-void pop(int* front, int* back)
+void c_init()
 {
-    if (*front == *back)
-    {
-        printf("queue empty\n");
-    }
-    *front = (*front + 1) % (BUFFER_LENGTH);  // Advance the read pointer
+    front = 0;
+    back = 0;
 }
 
-void push(Array* array, int value, int* front, int* back)
+void c_read(const Array* const circBuf)
 {
-    if (*front == (*back + 1) % BUFFER_LENGTH)
+    int tempFront = front;
+    printf("Reading..\n");
+    for (int i = 0; i < BUFFER_LENGTH; ++i)
     {
-        printf("queue full\n");
-        pop(front, back);
+        int idx = (tempFront + i) % BUFFER_LENGTH;
+        void* ptr = (unsigned char*)circBuf->m_Data + (idx * circBuf->m_TypeSize);
+        printf("%d ", *((int*)ptr));
     }
-    //array[*back] = value;
-    void* ptr = (unsigned char*)array->m_Data + (*back * array->m_TypeSize);
-    memcpy(ptr, &value, array->m_TypeSize);
-    *back = (*back + 1) % BUFFER_LENGTH;
+    printf("\n");
 }
 
 void test()
 {
-    //Array a = createNewArray(sizeof(int));
-    //int array[BUFFER_LENGTH] = { 1,2,3,4,5 };
-    Array array = createNewCircBuffer(sizeof(int));
-    int front = 0;
-    int back = 0;
+    c_init();
+    int empty = 0;
+    //init fixed empty array
+    Array circBuf = a_create_new_filled(BUFFER_LENGTH, &empty, sizeof(int));
 
-    push(&array, 6, &front, &back);
-    push(&array, 7, &front, &back);
-    push(&array, 8, &front, &back);
-    push(&array, 9, &front, &back);
-    push(&array, 10, &front, &back);
-    push(&array, 11, &front, &back);
-    ////reading
-    //printf("Reading..\n");
-    //for (int i = 0; i < BUFFER_LENGTH; ++i)
-    //{
-    //    printf("%d ", array[(front+i)%BUFFER_LENGTH]);
-    //}
-    //printf("\n");
+
+    for (int i = 0; i < 10; ++i)
+    {
+        c_push(&circBuf, &i);
+    }
+
+    c_read(&circBuf);
 }
