@@ -6,7 +6,8 @@
 
 static void printArray(const Array* const a);
 
-Array createNewArray(unsigned int sizeElem) {
+Array createNewArray(unsigned int sizeElem) 
+{
     Array a;
     a.m_Data = nullptr;
     a.m_Size = 0;

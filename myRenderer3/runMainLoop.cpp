@@ -8,13 +8,13 @@
 #include "frameRateController.h"
 #include "windowHandler.h"
 #include "profiler.h"
-#include "array.h"
+#include "test.h"
 
 void runMainLoop()
 {
     initialiseTimer();
     initProfile();
-    testArray();
+    test();
     //testProfiler();
     //PROFILE_BEGIN(test1);
     beginProfile("createWindow");
