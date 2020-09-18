@@ -4,7 +4,7 @@
 #include "array.h"
 #include "stdio.h"
 
-static void printArray(const Array* const a);
+void printTestArray(const Array* const a);
 
 Array a_create_new(unsigned int sizeElem) 
 {
@@ -212,7 +212,7 @@ void testArray()
         a_push_back(&a, &num);
         num++;
     }
-    printArray(&a);
+    printTestArray(&a);
 
     //print first
     int getFirst = *((int*)a_front(&a));
@@ -229,12 +229,12 @@ void testArray()
     a_insert(&a, 6, &newNum);
     printf("a[%d] is now = %d\n", 6, *((int*)a_at(&a, 6)));
     
-    printArray(&a);
+    printTestArray(&a);
     //remove at fast idx 5
     printf("RemoveAtFast 5...\n");
     a_remove_at_fast(&a, 5);
 
-    printArray(&a);
+    printTestArray(&a);
 
     //remove last
     printf("popping last element...\n");
@@ -255,7 +255,7 @@ void testArray()
     a_free(&a);
 }
 
-static void printArray(const Array* const a)
+void printTestArray(const Array* const a)
 {
     printf("==============\n");
     printf("printing updated table\n");
