@@ -48,6 +48,7 @@ void cb_push(CircularBuffer* const cb, const void* srcData)
 
 void cb_free(CircularBuffer* const cb)
 {
+    assert(cb);
     a_free(&cb->array);
 }
 
