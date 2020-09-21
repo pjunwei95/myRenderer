@@ -3,8 +3,9 @@
 
 struct CircularBuffer
 {
-    Array array;
-    int front, back;
+    Array m_Array;
+    int m_Front;
+    int m_Back;
 };
 
 void testCircularBuffer();
