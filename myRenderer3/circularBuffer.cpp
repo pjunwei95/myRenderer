@@ -1,70 +1,89 @@
 #include "circularBuffer.h"
 #include <iostream>
-#include "array.h"
 #include "assert.h"
 
 #define BUFFER_LENGTH 3
 
-int front, back;
+void printCircBuf(const CircularBuffer* const cb);
 
-//A circular buffer is simply an array but with 2 cursors, front & back
-//the cursors are simply index values
-void c_init()
+// A circular buffer is simply an array but with 2 cursors, front & back
+// the cursors are simply index values
+CircularBuffer cb_create_new(const void* const elemVal, unsigned int sizeElem)
 {
-    front = 0;
-    back = 0;
+    CircularBuffer cb;
+    cb.array = a_create_new_filled(BUFFER_LENGTH, elemVal, sizeElem);
+    cb.front = 0;
+    cb.back = 0;
+    return cb;
 }
 
-void c_read(const Array* const circBuf)
+void cb_pop(CircularBuffer* const cb)
 {
-    
-    int tempFront = front;
-    printf("Reading..\n");
-    for (int i = 0; i < BUFFER_LENGTH; ++i)
+    assert(cb->array.m_Data);
+    if (cb->front == cb->back)
     {
-        int idx = (tempFront + i) % BUFFER_LENGTH;
-        void* ptr = (unsigned char*)circBuf->m_Data + (idx * circBuf->m_TypeSize);
-        printf("%d ", *((int*)ptr));
+        cb->front = (cb->front + 1) % BUFFER_LENGTH;
     }
-    printf("\n");
 }
 
-void c_push(Array* const array, const void* srcData)
+//Assuming fixed size buffer
+void cb_push(CircularBuffer* const cb, const void* srcData)
 {
-    assert(array->m_Data);
+    assert(cb->array.m_Data);
     assert(srcData);
+    assert(cb->array.m_Size < cb->array.m_Capacity);
 
     //'push' a value directly into the 'back' slot
-    //array[back] = value;
-    void* element = a_at(array, back);
-    memcpy(element, srcData, array->m_TypeSize);
+    void* dstIdx = a_at(&cb->array, cb->back);
+    //array[back] = srcData;
+    memcpy(dstIdx, srcData, cb->array.m_TypeSize);
 
     // When you 'pop', you simply move the 'front' cursor forward by one
     // Advances front to be always in front of back
-    if (front == back)
-    {
-        front = (front + 1) % BUFFER_LENGTH;
-    }
+    cb_pop(cb);
 
     // Advances back
-    back = (back + 1) % BUFFER_LENGTH;
+    cb->back = (cb->back + 1) % BUFFER_LENGTH;
+}
+
+void cb_free(CircularBuffer* const cb)
+{
+    a_free(&cb->array);
 }
 
 void testCircularBuffer()
 {
-    c_init();
     int empty = 0;
-    //init fixed empty array
-    Array intCircBuf = a_create_new_filled(BUFFER_LENGTH, &empty, sizeof(int));
+    CircularBuffer intCircBuf = cb_create_new(&empty, sizeof(int));
 
     //push 10 numbers
-    for (int i = 0; i < 10; ++i)
+    for (int i = 0; i < 15; ++i)
     {
-        c_push(&intCircBuf, &i);
+        cb_push(&intCircBuf, &i);
     }
 
     //print to console
-    c_read(&intCircBuf);
+    printCircBuf(&intCircBuf);
 
-    a_free(&intCircBuf);
+    printf("Popping and pushing 99...\n");
+    cb_pop(&intCircBuf);
+    int rand = 99;
+    cb_push(&intCircBuf, &rand);
+
+    printCircBuf(&intCircBuf);
+
+    cb_free(&intCircBuf);
+}
+
+void printCircBuf(const CircularBuffer* const cb)
+{
+    int tempFront = cb->front;
+    printf("Reading..\n");
+    for (int i = 0; i < BUFFER_LENGTH; ++i)
+    {
+        int idx = (tempFront + i) % BUFFER_LENGTH;
+        void* ptr = (unsigned char*)cb->array.m_Data + (idx * cb->array.m_TypeSize);
+        printf("%d ", *((int*)ptr));
+    }
+    printf("\n");
 }
