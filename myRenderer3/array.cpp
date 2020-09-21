@@ -21,16 +21,17 @@ Array a_create_new(unsigned int sizeElem)
 Array a_create_new_filled(unsigned int numElem, const void* const elemVal, unsigned int sizeElem)
 {
     assert(elemVal);
+    assert(sizeElem);
     Array a;
     a.m_Data = malloc(numElem * sizeElem);
     assert(a.m_Data);
     a.m_Size = numElem;
     a.m_Capacity = numElem;
     a.m_TypeSize = sizeElem;
-    unsigned char* ptr;
+
     for (unsigned int i = 0; i < numElem; ++i)
     {
-        ptr = (unsigned char*)a.m_Data + (i * sizeElem);
+        unsigned char* ptr = (unsigned char*)a.m_Data + (i * sizeElem);
         memcpy(ptr, elemVal, sizeElem);
     }
     return a;
