@@ -15,6 +15,10 @@ Array createNewFilledArray(unsigned int numElem, const void * const elemVal, uns
 
 bool isArrayEmpty(const Array * const arr);
 
+int getArraySize(const Array * const arr);
+
+int getArrayCapacity(const Array * const arr);
+
 void pushBackArray(Array * const dstArr, const void * srcData);
 
 void insertArray(Array * const dstArr, unsigned int index, const void * srcData);
