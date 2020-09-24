@@ -67,10 +67,11 @@ void pushFrontCircBuf(CircularBuffer* const cb, const void* srcData)
     //if(cb->m_Front == cb->m_Back)
 }
 
-void popFrontCircBuf(CircularBuffer* const cb)
+void popBackCircBuf(CircularBuffer* const cb)
 {
     assert(!isCircBufEmpty(cb));
-
+    void* addressAtBack = getArrayAt(&cb->m_Array, cb->m_Back);
+    cb->m_Back = (cb->m_Back + 1) % cb->m_Buffer_Length;
 }
 
 //void popCircBuf(CircularBuffer* const cb)
