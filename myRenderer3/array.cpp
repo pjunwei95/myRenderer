@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "array.h"
 #include "stdio.h"
+#include <stdint.h>
 
 void printTestArray(const Array* const a);
 
@@ -25,7 +26,8 @@ Array createNewFilledArray(unsigned int numElem, const void* const elemVal, unsi
     Array a;
     a.m_Data = malloc(numElem * sizeElem);
     assert(a.m_Data);
-    a.m_Size = numElem;
+
+    a.m_Size = 0;
     a.m_Capacity = numElem;
     a.m_TypeSize = sizeElem;
 
@@ -49,10 +51,23 @@ int getArraySize(const Array* const arr)
     return arr->m_Size;
 }
 
+void addArraySize(Array* const arr, int increment)
+{
+    assert(arr);
+    assert(increment);
+    arr->m_Size += increment;
+}
+
 int getArrayCapacity(const Array* const arr)
 {
     assert(arr);
     return arr->m_Capacity;
+}
+
+int getArrayTypeSize(const Array* const arr)
+{
+    assert(arr);
+    return arr->m_TypeSize;
 }
 
 void clearArray(Array* const arr)

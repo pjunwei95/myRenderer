@@ -17,7 +17,11 @@ bool isArrayEmpty(const Array * const arr);
 
 int getArraySize(const Array * const arr);
 
+void addArraySize(Array * const arr, int increment);
+
 int getArrayCapacity(const Array * const arr);
+
+int getArrayTypeSize(const Array * const arr);
 
 void pushBackArray(Array * const dstArr, const void * srcData);
 
