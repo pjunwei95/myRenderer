@@ -9,20 +9,20 @@ struct Array {
 
 void testArray();
 
-Array a_create_new(unsigned int sizeElem);
+Array createNewArray(unsigned int sizeElem);
 
-Array a_create_new_filled(unsigned int numElem, const void * const elemVal, unsigned int sizeElem);
+Array createNewFilledArray(unsigned int numElem, const void * const elemVal, unsigned int sizeElem);
 
-bool a_empty(const Array * const arr);
+bool isArrayEmpty(const Array * const arr);
 
-void a_push_back(Array * const dstArr, const void * srcData);
+void pushBackArray(Array * const dstArr, const void * srcData);
 
-void a_insert(Array * const dstArr, unsigned int index, const void * srcData);
+void insertArray(Array * const dstArr, unsigned int index, const void * srcData);
 
-void * a_back(const Array * const arr);
+void * getArrayBack(const Array * const arr);
 
-void a_free(Array * const dstArr);
+void freeArray(Array * const dstArr);
 
-void * a_at(const Array * const arr, unsigned int index);
+void * getArrayAt(const Array * const arr, unsigned int index);
 
-void a_pop_back(Array * const arr);
+void popBackArray(Array * const arr);

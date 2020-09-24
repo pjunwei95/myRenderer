@@ -11,7 +11,7 @@ void printCircBuf(const CircularBuffer* const cb);
 CircularBuffer createNewCircBuf(const void* const elemVal, unsigned int sizeElem)
 {
     CircularBuffer cb;
-    cb.m_Array = a_create_new_filled(BUFFER_LENGTH, elemVal, sizeElem);
+    cb.m_Array = createNewFilledArray(BUFFER_LENGTH, elemVal, sizeElem);
     cb.m_Front = 0;
     cb.m_Back = 0;
     return cb;
@@ -31,10 +31,10 @@ void pushCircBuf(CircularBuffer* const cb, const void* srcData)
 {
     assert(cb->m_Array.m_Data);
     assert(srcData);
-    assert(cb->m_Array.m_Size < cb->m_Array.m_Capacity);//check for indices instead
+    assert(cb->m_Array.m_Size <= cb->m_Array.m_Capacity);//check for indices instead
 
     //'push' a value directly into the 'back' slot
-    void* dstIdx = a_at(&cb->m_Array, cb->m_Back);
+    void* dstIdx = getArrayAt(&cb->m_Array, cb->m_Back);
     //array[back] = srcData;
     memcpy(dstIdx, srcData, cb->m_Array.m_TypeSize);
 
@@ -49,7 +49,7 @@ void pushCircBuf(CircularBuffer* const cb, const void* srcData)
 void freeCircBuf(CircularBuffer* const cb)
 {
     assert(cb);
-    a_free(&cb->m_Array);
+    freeArray(&cb->m_Array);
 }
 
 void testCircularBuffer()
