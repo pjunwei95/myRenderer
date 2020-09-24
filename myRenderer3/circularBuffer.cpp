@@ -46,7 +46,7 @@ int getCircBufSize(const CircularBuffer* const cb)
 
 bool isCircBufEmpty(const CircularBuffer* const cb)
 {
-    return isArrayEmpty(&cb->m_Array);
+    return  cb->m_Front == cb->m_Back && !isCircBufFull(cb);
 }
 
 bool isCircBufFull(const CircularBuffer* const cb)
@@ -56,22 +56,25 @@ bool isCircBufFull(const CircularBuffer* const cb)
 
 void pushFrontCircBuf(CircularBuffer* const cb, const void* srcData)
 {
-    assert(!isCircBufFull(cb));
+    assert(cb);
+    assert(srcData);
+    if (!isCircBufFull(cb))
+        addArraySize(&cb->m_Array, 1);
+
     // buffer[front]
     void* addressAtFront = getArrayAt(&cb->m_Array, cb->m_Front);
     memcpy(addressAtFront, srcData, getArrayTypeSize(&cb->m_Array));
-    addArraySize(&cb->m_Array, 1);
 
     cb->m_Front = (cb->m_Front + 1) % cb->m_Buffer_Length;
-    
-    //if(cb->m_Front == cb->m_Back)
 }
 
-void popBackCircBuf(CircularBuffer* const cb)
+void* popBackCircBuf(CircularBuffer* const cb)
 {
     assert(!isCircBufEmpty(cb));
     void* addressAtBack = getArrayAt(&cb->m_Array, cb->m_Back);
     cb->m_Back = (cb->m_Back + 1) % cb->m_Buffer_Length;
+
+    return addressAtBack;
 }
 
 //void popCircBuf(CircularBuffer* const cb)
@@ -103,35 +106,36 @@ void popBackCircBuf(CircularBuffer* const cb)
 //    cb->m_Back = (cb->m_Back + 1) % cb->m_Buffer_Length;
 //}
 //
-//void freeCircBuf(CircularBuffer* const cb)
-//{
-//    assert(cb);
-//    freeArray(&cb->m_Array);
-//}
-//
-//void testCircularBuffer()
-//{
-//    int empty = 0;
-//    CircularBuffer intCircBuf = createNewCircBuf(3, &empty, sizeof(int));
-//
-//    //push 10 numbers
-//    for (int i = 0; i < 15; ++i)
-//    {
-//        pushCircBuf(&intCircBuf, &i);
-//    }
-//
-//    //print to console
-//    printCircBuf(&intCircBuf);
-//
-//    printf("Popping and pushing 99...\n");
-//    popCircBuf(&intCircBuf);
-//    int rand = 99;
-//    pushCircBuf(&intCircBuf, &rand);
-//
-//    printCircBuf(&intCircBuf);
-//
-//    freeCircBuf(&intCircBuf);
-//}
+void freeCircBuf(CircularBuffer* const cb)
+{
+    assert(cb);
+    freeArray(&cb->m_Array);
+}
+
+void testCircularBuffer()
+{
+    int empty = 0;
+    CircularBuffer intCircBuf = createNewCircBuf(3, &empty, sizeof(int));
+
+    //push 10 numbers
+    for (int i = 0; i < 15; ++i)
+    {
+        //pushCircBuf(&intCircBuf, &i);
+        pushFrontCircBuf(&intCircBuf, &i);
+    }
+
+    //print to console
+    printCircBuf(&intCircBuf);
+
+    printf("Popping and pushing 99...\n");
+    popBackCircBuf(&intCircBuf);
+    int rand = 99;
+    pushFrontCircBuf(&intCircBuf, &rand);
+
+    printCircBuf(&intCircBuf);
+
+    freeCircBuf(&intCircBuf);
+}
 
 void printCircBuf(const CircularBuffer* const cb)
 {
