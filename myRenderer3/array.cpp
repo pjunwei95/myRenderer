@@ -3,10 +3,11 @@
 #include <stdlib.h>
 #include "array.h"
 #include "stdio.h"
+#include <stdint.h>
 
 void printTestArray(const Array* const a);
 
-Array a_create_new(unsigned int sizeElem) 
+Array createNewArray(unsigned int sizeElem) 
 {
     Array a;
     a.m_Data = nullptr;
@@ -18,14 +19,15 @@ Array a_create_new(unsigned int sizeElem)
 
 // Function that takes in capacity that returns you 
 // an Array with the appropriate size & capacity
-Array a_create_new_filled(unsigned int numElem, const void* const elemVal, unsigned int sizeElem)
+Array createNewFilledArray(unsigned int numElem, const void* const elemVal, unsigned int sizeElem)
 {
     assert(elemVal);
     assert(sizeElem);
     Array a;
     a.m_Data = malloc(numElem * sizeElem);
     assert(a.m_Data);
-    a.m_Size = numElem;
+
+    a.m_Size = 0;
     a.m_Capacity = numElem;
     a.m_TypeSize = sizeElem;
 
@@ -37,69 +39,82 @@ Array a_create_new_filled(unsigned int numElem, const void* const elemVal, unsig
     return a;
 }
 
-bool a_empty(const Array* const arr)
+bool isArrayEmpty(const Array* const arr)
 {
     assert(arr);
     return 0 == arr->m_Size;
 }
 
-int a_size(const Array* const arr)
+int getArraySize(const Array* const arr)
 {
     assert(arr);
     return arr->m_Size;
 }
 
-int a_capacity(const Array* const arr)
+void addArraySize(Array* const arr, int increment)
+{
+    assert(arr);
+    assert(increment);
+    arr->m_Size += increment;
+}
+
+int getArrayCapacity(const Array* const arr)
 {
     assert(arr);
     return arr->m_Capacity;
 }
 
-void a_clear(Array* const arr)
+int getArrayTypeSize(const Array* const arr)
+{
+    assert(arr);
+    return arr->m_TypeSize;
+}
+
+void clearArray(Array* const arr)
 {
     assert(arr);
     arr->m_Size = 0;
 }
 
-void* a_front(const Array* const arr)
+void* getArrayFront(const Array* const arr)
 {
     assert(arr);
-    assert(!a_empty(arr));
+    assert(!isArrayEmpty(arr));
     assert(arr->m_Data);
     return (unsigned char*)arr->m_Data;
 }
 
-void* a_back(const Array* const arr)
+void* getArrayBack(const Array* const arr)
 {
-    assert(!a_empty(arr));
+    assert(!isArrayEmpty(arr));
     assert(arr->m_Data);
     int lastIdx = arr->m_Size - 1;
     return (unsigned char*)arr->m_Data + lastIdx * arr->m_TypeSize;
 }
 
-void a_free(Array* const dstArr)
+void freeArray(Array* const dstArr)
 {
     assert(dstArr->m_Data);
     free(dstArr->m_Data);
 }
 
-void* a_at(const Array* const arr, unsigned int index)
+void* getArrayAt(const Array* const arr, unsigned int index)
 {
-    assert(!a_empty(arr));
+    assert(!isArrayEmpty(arr));
     assert(arr->m_Data);
     assert(index >= 0);
     assert(index < arr->m_Size);
     return (unsigned char*)arr->m_Data + index * arr->m_TypeSize;
 }
 
-void a_pop_back(Array* const arr)
+void popBackArray(Array* const arr)
 {
     assert(arr);
-    assert(!a_empty(arr));
+    assert(!isArrayEmpty(arr));
     arr->m_Size--;
 }
 
-static void* a_realloc(void* block, size_t oldSize, size_t newSize)
+static void* reallocArray(void* block, size_t oldSize, size_t newSize)
 {
     assert(block);
     assert(oldSize < newSize);
@@ -111,7 +126,7 @@ static void* a_realloc(void* block, size_t oldSize, size_t newSize)
     return newBlock;
 }
 
-void check_suff_mem(Array *const dstArr, void * ptr)
+void checkArraySuffMem(Array *const dstArr, void * ptr)
 {
     assert(dstArr);
     assert(ptr);
@@ -125,32 +140,32 @@ void check_suff_mem(Array *const dstArr, void * ptr)
     else if (dstArr->m_Size == dstArr->m_Capacity) // array memory exceeded
     {
         // *Block, oldSize, newSize
-        ptr = a_realloc(dstArr->m_Data, dstArr->m_Capacity * dstArr->m_TypeSize, dstArr->m_Capacity * dstArr->m_TypeSize * 2);
+        ptr = reallocArray(dstArr->m_Data, dstArr->m_Capacity * dstArr->m_TypeSize, dstArr->m_Capacity * dstArr->m_TypeSize * 2);
         assert(ptr);
         dstArr->m_Data = ptr;
         dstArr->m_Capacity *= 2;
     }
 }
 
-void a_push_back(Array* const dstArr, const void* srcData)
+void pushBackArray(Array* const dstArr, const void* srcData)
 {
     assert(dstArr);
     assert(srcData);
     assert(dstArr->m_TypeSize > 0);
     void* ptr;
-    check_suff_mem(dstArr, &ptr);
+    checkArraySuffMem(dstArr, &ptr);
     ptr = (unsigned char *)dstArr->m_Data + dstArr->m_TypeSize * dstArr->m_Size;
     memcpy(ptr, srcData, dstArr->m_TypeSize);
     dstArr->m_Size++;
 }
 
-void a_insert(Array* const dstArr, unsigned int index, const void* srcData)
+void insertArray(Array* const dstArr, unsigned int index, const void* srcData)
 {
     assert(dstArr);
     assert(srcData);
     assert(index >= 0 && index <= dstArr->m_Size);
     void* ptr;
-    check_suff_mem(dstArr, &ptr);
+    checkArraySuffMem(dstArr, &ptr);
     unsigned char* newPtr = (unsigned char*)dstArr->m_Data;
     //shift array right
     // for i = size-1; i > index-1; i--
@@ -166,13 +181,13 @@ void a_insert(Array* const dstArr, unsigned int index, const void* srcData)
     dstArr->m_Size++;
 }
 
-void a_erase(Array* const arr, unsigned int index)
+void eraseArrayAt(Array* const arr, unsigned int index)
 {
-    assert(!a_empty(arr));
+    assert(!isArrayEmpty(arr));
     assert(index >= 0 && index < arr->m_Size);
     if (index == arr->m_Size - 1) // last index
     {
-        a_pop_back(arr); //CHECK SIZE
+        popBackArray(arr); //CHECK SIZE
         return;
     }
     //shift array left
@@ -192,9 +207,9 @@ void a_erase(Array* const arr, unsigned int index)
 // This method will remove the element at the specified index but
 // will not preserve the order in the array(the element is swapped with
 // the last one of the array)
-void a_remove_at_fast(Array* const arr, unsigned int index)
+void removeAtFastArray(Array* const arr, unsigned int index)
 {
-    assert(!a_empty(arr));
+    assert(!isArrayEmpty(arr));
     assert(index >= 0 && index < arr->m_Size);
     unsigned char* ptr = (unsigned char*)arr->m_Data;
     unsigned char* ptrToLast = ptr + (arr->m_Size - 1) * arr->m_TypeSize;
@@ -205,55 +220,55 @@ void a_remove_at_fast(Array* const arr, unsigned int index)
 
 void testArray()
 {
-    Array a = a_create_new(sizeof(int));
+    Array a = createNewArray(sizeof(int));
     int num = 0;
     //push 10 elements and print (init)
     for (int i = 0; i < 10; ++i)
     {
-        a_push_back(&a, &num);
+        pushBackArray(&a, &num);
         num++;
     }
     printTestArray(&a);
 
     //print first
-    int getFirst = *((int*)a_front(&a));
+    int getFirst = *((int*)getArrayFront(&a));
     printf("first = %d\n", getFirst);
 
     //erase at idx
-    printf("erasing a[%d] = %d...\n", 6, *((int*)a_at(&a, 6) ));
-    a_erase(&a, 6);
-    printf("a[%d] is now = %d\n", 6, *((int*)a_at(&a, 6) ) );
+    printf("erasing a[%d] = %d...\n", 6, *((int*)getArrayAt(&a, 6) ));
+    eraseArrayAt(&a, 6);
+    printf("a[%d] is now = %d\n", 6, *((int*)getArrayAt(&a, 6) ) );
 
     //insert at idx
     int newNum = 99;
     printf("inserting a[%d] = %d...\n", 6, newNum);
-    a_insert(&a, 6, &newNum);
-    printf("a[%d] is now = %d\n", 6, *((int*)a_at(&a, 6)));
+    insertArray(&a, 6, &newNum);
+    printf("a[%d] is now = %d\n", 6, *((int*)getArrayAt(&a, 6)));
     
     printTestArray(&a);
     //remove at fast idx 5
     printf("RemoveAtFast 5...\n");
-    a_remove_at_fast(&a, 5);
+    removeAtFastArray(&a, 5);
 
     printTestArray(&a);
 
     //remove last
     printf("popping last element...\n");
-    a_pop_back(&a);
+    popBackArray(&a);
 
     //print last
-    int getLast = *((int*)a_back(&a));
+    int getLast = *((int*)getArrayBack(&a));
     printf("last = %d\n", getLast);
 
     //clears array
-    a_clear(&a);
+    clearArray(&a);
 
     //print first
     /*int getFirst = *((int*)a_front(&a));
     printf("first = %d\n", getFirst);*/
 
     //free after usage
-    a_free(&a);
+    freeArray(&a);
 }
 
 void printTestArray(const Array* const a)
@@ -263,7 +278,7 @@ void printTestArray(const Array* const a)
     int numAtIdx;
     for (unsigned int i = 0; i < a->m_Size; ++i)
     {
-        numAtIdx = *((int*)a_at(a, i));
+        numAtIdx = *((int*)getArrayAt(a, i));
         printf("array [%d] = %d\n", i, numAtIdx);
     }
     printf("==============\n");

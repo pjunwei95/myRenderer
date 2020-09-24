@@ -8,7 +8,7 @@ Array profileStack;
 
 void initProfile()
 {
-    profileStack = a_create_new(sizeof(Profile));
+    profileStack = createNewArray(sizeof(Profile));
 }
 
 void beginProfile(const char * string)
@@ -16,18 +16,18 @@ void beginProfile(const char * string)
     Profile profile;
     strcpy_s(profile.m_ProfileName, sizeof(profile.m_ProfileName), string); //easy conversion to macros
     updateTimeStamp(&profile.m_Start);
-    a_push_back(&profileStack, &profile);
+    pushBackArray(&profileStack, &profile);
 }
 
 void endProfile() 
 {
-    assert(!a_empty(&profileStack));
+    assert(!isArrayEmpty(&profileStack));
     //dereference from peek()
-    Profile profile = *((Profile*)a_back(&profileStack));
+    Profile profile = *((Profile*)getArrayBack(&profileStack));
     updateTimeStamp(&profile.m_Elapsed);
     getTimerElapsedUs(&profile.m_Elapsed, &profile.m_Start);
     logmsg("Time elapsed for |%s| profile = %.2f ms\n", profile.m_ProfileName, getTimerElapsedMs(&profile.m_Elapsed));
-    a_pop_back(&profileStack);
+    popBackArray(&profileStack);
 }
 
 void testProfiler()
