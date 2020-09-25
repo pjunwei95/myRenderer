@@ -15,14 +15,14 @@ void runMainLoop()
 {
     initialiseTimer();
     initProfile();
-    testCircularBuffer();
-    //testProfiler();
+    //testCircularBuffer();
+    testProfiler();
     //PROFILE_BEGIN(test1);
-    beginProfile("createWindow");
+    //beginProfile("createWindow");
 
     if(createWindow())
     {
-        endProfile();
+        //endProfile();
 
         while (!getIsDone())
         {

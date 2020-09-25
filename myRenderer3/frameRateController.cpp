@@ -30,7 +30,7 @@ bool isWithinFrameRate(TimerHandle nStartTime)
     Timer nStopTime;
     updateTimeStamp(&nStopTime);
 
-    getTimerElapsedUs(&nStopTime, nStartTime);
+    calcTimerElapsedUs(&nStopTime, nStartTime);
     if (nStopTime.QuadPart > defaultFrameTime.QuadPart) {
         //printf("frametime = %.2f ms\n", getTimerElapsedMs(&nStopTime));
         //printf("frametime = %f s\n", GetTimerElapsedSeconds(nStopTime));
@@ -40,7 +40,7 @@ bool isWithinFrameRate(TimerHandle nStartTime)
     return false;
 }
 
-void getTimerElapsedUs(TimerHandle nStopTime, const TimerHandle nStartTime)
+void calcTimerElapsedUs(TimerHandle nStopTime, const TimerHandle nStartTime)
 {
     nStopTime->QuadPart = (nStopTime->QuadPart - nStartTime->QuadPart); //the units here are in seconds
     nStopTime->QuadPart *= 1000000; //convert seconds to microseconds

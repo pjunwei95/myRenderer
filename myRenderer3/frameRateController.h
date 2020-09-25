@@ -11,7 +11,7 @@ void idleUntilFPSLimit(TimerHandle timer);
 
 bool isWithinFrameRate(TimerHandle nStartTime);
 
-void getTimerElapsedUs(TimerHandle nStopTime, const TimerHandle nStartTime);
+void calcTimerElapsedUs(TimerHandle nStopTime, const TimerHandle nStartTime);
 
 void updateTimeStamp(TimerHandle timer);
 

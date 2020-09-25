@@ -1,5 +1,6 @@
 #pragma once
 #include "frameRateController.h"
+#include "circularBuffer.h"
 //#include <string.h>
 //#include <cassert>
 
@@ -9,6 +10,7 @@ struct Profile {
     Timer m_Start;
     Timer m_Elapsed;
     char m_ProfileName[CHAR_MAX_LIMIT];
+    CircularBuffer m_CircBuf;
 };
 
 
@@ -31,7 +33,7 @@ struct Profile {
 //    {\
 //        Profile profile = profileStack.back();\
 //        updateTimeStamp(&profile.elapsed);\
-//        getTimerElapsedUs(&profile.elapsed, &profile.start);\
+//        calcTimerElapsedUs(&profile.elapsed, &profile.start);\
 //        logmsg("Time elapsed for Profile %s = %.2f ms\n", \
 //        profile.profileName, getTimerElapsedMs(&profile.elapsed));\
 //        profileStack.pop_back();\

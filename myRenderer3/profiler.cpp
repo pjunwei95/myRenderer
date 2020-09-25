@@ -16,18 +16,18 @@ void beginProfile(const char * string)
     Profile profile;
     strcpy_s(profile.m_ProfileName, sizeof(profile.m_ProfileName), string); //easy conversion to macros
     updateTimeStamp(&profile.m_Start);
-    pushBackArray(&profileStack, &profile);
+    pushBackArray(&profileStack, &profile); // stack push
 }
 
 void endProfile() 
 {
     assert(!isArrayEmpty(&profileStack));
     //dereference from peek()
-    Profile profile = *((Profile*)getArrayBack(&profileStack));
+    Profile profile = *((Profile*)getArrayBack(&profileStack)); 
     updateTimeStamp(&profile.m_Elapsed);
-    getTimerElapsedUs(&profile.m_Elapsed, &profile.m_Start);
+    calcTimerElapsedUs(&profile.m_Elapsed, &profile.m_Start);
     logmsg("Time elapsed for |%s| profile = %.2f ms\n", profile.m_ProfileName, getTimerElapsedMs(&profile.m_Elapsed));
-    popBackArray(&profileStack);
+    popBackArray(&profileStack); //stack pop
 }
 
 void testProfiler()
@@ -46,7 +46,7 @@ void testProfiler()
 //{
 //    Timer frameElapsedUs;
 //    updateTimeStamp(&frameElapsedUs);
-//    getTimerElapsedUs(&frameElapsedUs, frameStart);
+//    calcTimerElapsedUs(&frameElapsedUs, frameStart);
 //    float frameElapsedMs = getTimerElapsedMs(&frameElapsedUs);
 //    //logmsg("frametime #%d for %s = %.2f ms\n",)
 //
