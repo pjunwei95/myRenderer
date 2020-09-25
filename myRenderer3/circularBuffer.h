@@ -5,7 +5,6 @@
 struct CircularBuffer
 {
     Array m_Array;
-    bool m_IsFull;
     int m_Front;
     int m_Back;
 };
