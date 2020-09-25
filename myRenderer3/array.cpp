@@ -27,7 +27,7 @@ Array createNewFilledArray(unsigned int numElem, const void* const elemVal, unsi
     a.m_Data = malloc(numElem * sizeElem);
     assert(a.m_Data);
 
-    a.m_Size = 0;
+    a.m_Size = numElem;
     a.m_Capacity = numElem;
     a.m_TypeSize = sizeElem;
 
