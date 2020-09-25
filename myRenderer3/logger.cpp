@@ -3,6 +3,7 @@
 #include <stdarg.h>
 #include <cassert>
 #include <string.h>
+#include <Windows.h>
 
 #define FILE_NAME "debug.txt"
 #define CHAR_MAX_LIMIT 256
@@ -20,6 +21,7 @@ void logmsg(const char *format, ...)
 
     assert(vsnprintf(buffer, CHAR_MAX_LIMIT, format, args) < CHAR_MAX_LIMIT);
 
+    OutputDebugString(buffer);
     printf(buffer);
     vfprintf(fileHandle, format, args);
     va_end(args);
