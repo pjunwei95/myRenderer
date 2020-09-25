@@ -1,7 +1,8 @@
 #include "circularBuffer.h"
-#include <iostream>
+//#include <iostream>
 #include "assert.h"
 #include <stdlib.h>
+#include <string.h>
 #include "logger.h"
 
 void printCircBuf(const CircularBuffer* const cb);
@@ -29,15 +30,14 @@ void* getBackCircBuf(const CircularBuffer* const cb)
 
 int getSizeCircBuf(const CircularBuffer* const cb)
 {
-    //difference in m_Front & m_Back
     if (cb->m_Front == cb->m_Back)
     {
-        //TODO handle empty or full
         if (isArrayEmpty(&cb->m_Array))
             return 0;
         else
             return getArrayCapacity(&cb->m_Array);
     }
+    //difference in m_Front & m_Back
     else
         return abs(cb->m_Front - cb->m_Back);
 }
@@ -58,15 +58,22 @@ void pushBackCircBuf(CircularBuffer* const cb, const void* srcData)
     assert(cb);
     assert(srcData);
     assert(!isFullCircBuf(cb));
-    cb->m_Array.m_Size++;
 
-    // buffer[back]
-    void* addressAtBack = getArrayAt(&cb->m_Array, cb->m_Back);
-    memcpy(addressAtBack, srcData, getArrayTypeSize(&cb->m_Array));
-
+    addArraySize(&cb->m_Array, 1);
+    memcpy(getBackCircBuf(cb), srcData, getArrayTypeSize(&cb->m_Array));
     cb->m_Back = (cb->m_Back + 1) % getArrayCapacity(&cb->m_Array);
 }
 
+void pushFrontCircBuf(CircularBuffer* const cb, const void* srcData)
+{
+    assert(cb);
+    assert(srcData);
+    assert(!isFullCircBuf(cb));
+
+    addArraySize(&cb->m_Array, 1);
+    memcpy(getFrontCircBuf(cb), srcData, getArrayTypeSize(&cb->m_Array));
+    cb->m_Front = (cb->m_Front + 1) % getArrayCapacity(&cb->m_Array);
+}
 
 // When you 'pop', you simply move the 'front' cursor forward by one
 void* popFrontCircBuf(CircularBuffer* const cb)
@@ -93,11 +100,12 @@ void freeCircBuf(CircularBuffer* const cb)
 
 void testCircularBuffer()
 {
-    //int empty = 0;
     CircularBuffer intCircBuf = createNewCircBuf(3, sizeof(int));
 
-    for (int i = 0; i < 3; ++i)
+    for (int i = 0; i < 10; ++i)
     {
+        if (isFullCircBuf(&intCircBuf))
+            popFrontCircBuf(&intCircBuf);
         pushBackCircBuf(&intCircBuf, &i);
     }
 
@@ -129,7 +137,7 @@ void printCircBuf(const CircularBuffer* const cb)
         int idx = (tempFront + i) % getArrayCapacity(&cb->m_Array);
         if (idx == cb->m_Back && !isFullCircBuf(cb))
             break;
-        void* ptr = (unsigned char*)cb->m_Array.m_Data + (idx * cb->m_Array.m_TypeSize);
+        void* ptr = (uint8_t*)cb->m_Array.m_Data + (idx * cb->m_Array.m_TypeSize);
         logmsg("%d ", *((int*)ptr));
     }
     logmsg("\n==========\n");
