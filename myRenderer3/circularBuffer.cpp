@@ -112,6 +112,35 @@ void freeCircBuf(CircularBuffer* const cb)
     freeArray(&cb->m_Array);
 }
 
+void testCircularBuffer()
+{
+    int empty = 0;
+    CircularBuffer intCircBuf = createNewCircBuf(5, &empty, sizeof(int));
+
+    for (int i = 1; i <= 5; ++i)
+    {
+        //pushCircBuf(&intCircBuf, &i);
+        pushBackCircBuf(&intCircBuf, &i);
+    }
+
+    //print to console
+    printCircBuf(&intCircBuf);
+
+    printf("Popping...\n");
+    popFrontCircBuf(&intCircBuf);
+    printCircBuf(&intCircBuf);
+
+    printf("Popping...\n");
+    popFrontCircBuf(&intCircBuf);
+    printCircBuf(&intCircBuf);
+
+    printf("Pushing 99...\n");
+    int rand = 99;
+    pushBackCircBuf(&intCircBuf, &rand);
+    printCircBuf(&intCircBuf);
+
+    freeCircBuf(&intCircBuf);
+}
 
 void printCircBuf(const CircularBuffer* const cb)
 {
