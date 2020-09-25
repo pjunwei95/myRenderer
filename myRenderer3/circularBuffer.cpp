@@ -2,8 +2,7 @@
 #include <iostream>
 #include "assert.h"
 #include <stdlib.h>
-
-#define BUFFER_LENGTH 3
+#include "logger.h"
 
 void printCircBuf(const CircularBuffer* const cb);
 
@@ -126,15 +125,15 @@ void testCircularBuffer()
     //print to console
     printCircBuf(&intCircBuf);
 
-    printf("Popping...\n");
+    logmsg("Popping...\n");
     popFrontCircBuf(&intCircBuf);
     printCircBuf(&intCircBuf);
 
-    printf("Popping...\n");
+    logmsg("Popping...\n");
     popFrontCircBuf(&intCircBuf);
     printCircBuf(&intCircBuf);
 
-    printf("Pushing 99...\n");
+    logmsg("Pushing 99...\n");
     int rand = 99;
     pushBackCircBuf(&intCircBuf, &rand);
     printCircBuf(&intCircBuf);
@@ -145,14 +144,14 @@ void testCircularBuffer()
 void printCircBuf(const CircularBuffer* const cb)
 {
     int tempFront = cb->m_Front;
-    printf("=========\n");
+    logmsg("=========\n");
     for (int i = 0; i < getArraySize(&cb->m_Array); ++i)
     {
         int idx = (tempFront + i) % getArraySize(&cb->m_Array);
         if (idx == cb->m_Back && !isCircBufFull(cb))
             break;
         void* ptr = (unsigned char*)cb->m_Array.m_Data + (idx * cb->m_Array.m_TypeSize);
-        printf("%d ", *((int*)ptr));
+        logmsg("%d ", *((int*)ptr));
     }
-    printf("\n==========\n");
+    logmsg("\n==========\n");
 }
