@@ -5,7 +5,7 @@
 //#define NDEBUG
 #include <assert.h>
 
-bool openFile(const char* fileName, OpenType openType, FileMode fileMode, FileHandle* fileHandle)
+bool FileManager::openFile(const char* fileName, OpenType openType, FileMode fileMode, FileHandle* fileHandle)
 {
     assert(fileName);
     assert(fileHandle);
@@ -28,21 +28,23 @@ bool openFile(const char* fileName, OpenType openType, FileMode fileMode, FileHa
     return true;
 }
 
-void closeFile(FileHandle fileHandle) 
+void FileManager::closeFile(FileHandle fileHandle)
 {
     assert(fileHandle);
     fclose(fileHandle);
 }
 
-void readToBuffer(const FileHandle fileHandle, char * buffer, long length)
+void readToBuffer(const FileHandle fileHandle, char* buffer, long length)
 {
-    assert(fileHandle && buffer && length);
+    assert(fileHandle);
+    assert(buffer);
+    assert(length);
     size_t value = fread(buffer, 1, length, fileHandle);
     assert(value < length);
     buffer[value] = '\0';
 }
 
-void readAndProcessFile(const char * fileName, OpenType openType)
+void FileManager::readAndProcessFile(const char* fileName, OpenType openType)
 {
     FileHandle fileHandle;
 

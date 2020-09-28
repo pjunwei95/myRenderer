@@ -8,10 +8,11 @@ void loadConfig()
 {
     //TODO 
     //you can always assume the "config.txt" file will always be present. if not, init default values
+    FileManager fm;
 
     logmsg("Loading default configurations\n");
 
-    readAndProcessFile("config.txt", TYPE_TEXT);
+    fm.readAndProcessFile("config.txt", TYPE_TEXT);
 }
 
 void processArgs(int argc, char *argsv[])
