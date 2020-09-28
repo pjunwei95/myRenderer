@@ -16,8 +16,14 @@ enum FileMode
     MODE_APPEND
 };
 
+class FileManager
+{
+public:
+private:
+};
+
 bool openFile(const char * fileName, OpenType openType, FileMode fileMode, FileHandle * fileHandle);
 
-bool closeFile(FileHandle fileHandle);
+void closeFile(FileHandle fileHandle);
 
 void readAndProcessFile(const char * fileName, OpenType openType);

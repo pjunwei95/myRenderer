@@ -3,10 +3,13 @@
 #include <stdio.h>
 #include "bufferOps.h"
 //#define NDEBUG
-#include <cassert>
+#include <assert.h>
 
-bool openFile(const char* fileName, OpenType openType, FileMode fileMode, FileHandle * fileHandle)
+bool openFile(const char* fileName, OpenType openType, FileMode fileMode, FileHandle* fileHandle)
 {
+    assert(fileName);
+    assert(fileHandle);
+
     errno_t err = NULL;
     if (fileMode == MODE_WRITE)
         err = fopen_s(fileHandle, fileName, "w");
@@ -17,7 +20,6 @@ bool openFile(const char* fileName, OpenType openType, FileMode fileMode, FileHa
     else if (fileMode == MODE_READ && openType == TYPE_BIN)
         err = fopen_s(fileHandle, fileName, "rb");
 
-
     if (err)
     {
         printf("Error opening data file %s\n", fileName);
@@ -26,14 +28,10 @@ bool openFile(const char* fileName, OpenType openType, FileMode fileMode, FileHa
     return true;
 }
 
-bool closeFile(FileHandle fileHandle) 
+void closeFile(FileHandle fileHandle) 
 {
-    if (fileHandle) 
-    {
-        fclose(fileHandle);
-        return true;
-    }
-    return false;
+    assert(fileHandle);
+    fclose(fileHandle);
 }
 
 void readToBuffer(const FileHandle fileHandle, char * buffer, long length)
