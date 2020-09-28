@@ -17,6 +17,11 @@ CircularBuffer createNewCircBuf(unsigned int bufferLength, unsigned int sizeElem
     return cb;
 }
 
+int getFrontIdxCircBuf(const CircularBuffer* const cb)
+{
+    return cb->m_Front;
+}
+
 void* getFrontCircBuf(const CircularBuffer* const cb)
 {
     return getArrayAt(&cb->m_Array, cb->m_Front);
@@ -25,6 +30,11 @@ void* getFrontCircBuf(const CircularBuffer* const cb)
 void* getBackCircBuf(const CircularBuffer* const cb)
 {
     return getArrayAt(&cb->m_Array, cb->m_Back);
+}
+
+int getCapacityCircBuff(const CircularBuffer* const cb)
+{
+    return getArrayCapacity(&cb->m_Array);
 }
 
 int getSizeCircBuf(const CircularBuffer* const cb)

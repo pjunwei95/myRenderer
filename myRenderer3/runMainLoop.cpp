@@ -16,7 +16,7 @@ void runMainLoop()
     initialiseTimer();
     initProfile();
     //testCircularBuffer();
-    //testProfiler();
+    testProfiler();
     //PROFILE_BEGIN(test1);
     //beginProfile("createWindow");
 
@@ -28,7 +28,7 @@ void runMainLoop()
 
         while (!getIsDone())
         {
-            beginProfile("beforeidle");
+            //beginProfile("beforeidle");
 
             Timer timer;
 
@@ -39,7 +39,7 @@ void runMainLoop()
             getKeyInput();
 
             wh.updateWindow();
-            endProfile();
+            //endProfile();
 
             //profileFrameTime(&timer);
 
