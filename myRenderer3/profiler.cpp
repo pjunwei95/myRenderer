@@ -82,6 +82,8 @@ void testProfiler()
 
 bool circBuffContains(CircularBuffer* cb, char* stringName)
 {
+    cb;
+    stringName;
     return false;
 }
 
