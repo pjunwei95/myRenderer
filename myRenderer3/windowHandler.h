@@ -1,13 +1,20 @@
 #pragma once
-typedef SDL_Window * WindowHandle;
-typedef SDL_Surface * SurfaceHandle;
+typedef SDL_Window* WindowHandle;
+typedef SDL_Surface* SurfaceHandle;
 
-void initWindow();
+class WindowHandler
+{
+public:
+    void initWindow();
+    bool createWindow();
+    void drawWindow();
+    void updateWindow();
+    void destroyWindow();
 
-bool createWindow();
+private:
+    WindowHandle window;
+    SurfaceHandle screenSurface;
+};
 
-void drawWindow();
 
-void updateWindow();
 
-void destroyWindow();

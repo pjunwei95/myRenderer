@@ -20,7 +20,9 @@ void runMainLoop()
     //PROFILE_BEGIN(test1);
     //beginProfile("createWindow");
 
-    if(createWindow())
+    WindowHandler wh;
+
+    if(wh.createWindow())
     {
         //endProfile();
 
@@ -32,18 +34,18 @@ void runMainLoop()
 
             updateTimeStamp(&timer);
 
-            drawWindow();
+            wh.drawWindow();
 
             getKeyInput();
 
-            updateWindow();
+            wh.updateWindow();
             endProfile();
 
             //profileFrameTime(&timer);
 
             idleUntilFPSLimit(&timer);
         }
-        destroyWindow();
+        wh.destroyWindow();
     }
     //PROFILE_END();
 
