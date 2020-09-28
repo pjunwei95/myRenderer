@@ -11,7 +11,7 @@ void testArray();
 
 Array createNewArray(unsigned int sizeElem);
 
-Array createNewFilledArray(unsigned int numElem, const void * const elemVal, unsigned int sizeElem);
+Array createNewFilledArray(unsigned int numElem, unsigned int sizeElem);
 
 bool isArrayEmpty(const Array * const arr);
 

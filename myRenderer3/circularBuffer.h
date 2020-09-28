@@ -5,9 +5,16 @@
 struct CircularBuffer
 {
     Array m_Array;
-    bool m_IsFull;
     int m_Front;
     int m_Back;
 };
 
+void pushBackCircBuf(CircularBuffer * const cb, const void * srcData);
+
+void * popFrontCircBuf(CircularBuffer * const cb);
+
+void freeCircBuf(CircularBuffer * const cb);
+
 void testCircularBuffer();
+
+CircularBuffer createNewCircBuf(unsigned int bufferLength, unsigned int sizeElem);

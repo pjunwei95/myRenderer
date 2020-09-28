@@ -5,10 +5,10 @@
 #include "drawScreen.h"
 #include "logger.h"
 
-WindowHandle window;
-SurfaceHandle screenSurface;
+//WindowHandle window;
+//SurfaceHandle screenSurface;
 
-void initWindow()
+void WindowHandler::initWindow()
 {
     //SDL Properties
     //The window we'll be rendering to
@@ -17,7 +17,7 @@ void initWindow()
     screenSurface = NULL;
 }
 // bool initWindow(WindowHandle windowHandle)
-bool createWindow()
+bool WindowHandler::createWindow()
 {
     //Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -42,7 +42,7 @@ bool createWindow()
     }
 }
 
-void drawWindow()
+void WindowHandler::drawWindow()
 {
     //Get window surface
     screenSurface = SDL_GetWindowSurface(window);
@@ -50,12 +50,12 @@ void drawWindow()
     //Fill the surface white
     drawScreen(screenSurface);
 }
-void updateWindow()
+void WindowHandler::updateWindow()
 {
     //Update the surface
     SDL_UpdateWindowSurface(window);
 }
-void destroyWindow()
+void WindowHandler::destroyWindow()
 {
     //Destroy window
     SDL_DestroyWindow(window);

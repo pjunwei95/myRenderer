@@ -19,23 +19,17 @@ Array createNewArray(unsigned int sizeElem)
 
 // Function that takes in capacity that returns you 
 // an Array with the appropriate size & capacity
-Array createNewFilledArray(unsigned int numElem, const void* const elemVal, unsigned int sizeElem)
+Array createNewFilledArray(unsigned int numElem, unsigned int sizeElem)
 {
-    assert(elemVal);
     assert(sizeElem);
     Array a;
     a.m_Data = malloc(numElem * sizeElem);
     assert(a.m_Data);
 
-    a.m_Size = numElem;
+    a.m_Size = 0;
     a.m_Capacity = numElem;
     a.m_TypeSize = sizeElem;
-
-    for (unsigned int i = 0; i < numElem; ++i)
-    {
-        unsigned char* ptr = (unsigned char*)a.m_Data + (i * sizeElem);
-        memcpy(ptr, elemVal, sizeElem);
-    }
+   
     return a;
 }
 

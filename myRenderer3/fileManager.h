@@ -1,7 +1,7 @@
 #pragma once
 #include <stdio.h>
 
-typedef FILE * FileHandle;
+typedef FILE* FileHandle;
 
 enum OpenType
 {
@@ -16,8 +16,12 @@ enum FileMode
     MODE_APPEND
 };
 
-bool openFile(const char * fileName, OpenType openType, FileMode fileMode, FileHandle * fileHandle);
+class FileManager
+{
+public:
+    bool openFile(const char * fileName, OpenType openType, FileMode fileMode, FileHandle * fileHandle);
 
-bool closeFile(FileHandle fileHandle);
+    void closeFile(FileHandle fileHandle);
 
-void readAndProcessFile(const char * fileName, OpenType openType);
+    void readAndProcessFile(const char * fileName, OpenType openType);
+};
