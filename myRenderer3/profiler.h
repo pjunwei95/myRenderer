@@ -10,7 +10,6 @@ struct Profile {
     Timer m_Start;
     Timer m_Elapsed;
     char m_ProfileName[CHAR_MAX_LIMIT];
-    CircularBuffer m_CircBuf;
 };
 
 
