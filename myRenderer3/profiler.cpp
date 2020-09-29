@@ -4,20 +4,24 @@
 #include "logger.h"
 #include "array.h"
 #include "circularBuffer.h"
+#include "stack.h"
 
-Array profileStack;
+//Array profileStack;
+
+Stack* profileStack;
 CircularBuffer profileCircBuff;
 
 void initProfile()
 {
-    profileStack = createNewArray(sizeof(Profile));
+    //profileStack = createNewArray(sizeof(Profile));
+    profileStack = new Stack(sizeof(Profile));
     profileCircBuff = createNewCircBuf(50, sizeof(Profile));
 }
 
 Profile getProfile()
 {
-    assert(!isArrayEmpty(&profileStack));
-    Profile profile = *((Profile*)getArrayBack(&profileStack));
+    Profile profile = *((Profile*)profileStack->peek());
+    assert(&profile);
     return profile;
 }
 
@@ -27,7 +31,8 @@ void beginProfile(const char* string)
     Profile profile;
     strcpy_s(profile.m_ProfileName, sizeof(profile.m_ProfileName), string); //easy conversion to macros
     updateTimeStamp(&profile.m_Start);
-    pushBackArray(&profileStack, &profile); // stack push
+    //pushBackArray(&profileStack, &profile); // stack push
+    profileStack->push(&profile);
 }
 
 void endProfile()
@@ -51,13 +56,14 @@ void endProfile()
     }
     pushBackCircBuf(&profileCircBuff, ptrToProfile);
 
-    //pop stack
-    popBackArray(&profileStack); //stack pop
+    //popBackArray(&profileStack);
+    profileStack->pop();
+
 }
 
 void destroyProfile()
 {
-    freeArray(&profileStack);
+    //freeArray(&profileStack);
     freeCircBuf(&profileCircBuff);
 }
 

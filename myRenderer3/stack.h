@@ -5,6 +5,7 @@ class Stack {
 public:
     Stack(int sizeElem);
     ~Stack();
+    //void createNewStack();
     void push(void* srcData);
     void* peek();
     void pop();

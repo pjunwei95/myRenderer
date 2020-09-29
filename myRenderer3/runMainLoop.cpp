@@ -33,7 +33,11 @@ void runMainLoop()
 
             updateTimeStamp(&timer);
 
+            beginProfile("drawWindow");
+
             wh.drawWindow();
+
+            endProfile();
 
             getKeyInput();
 
