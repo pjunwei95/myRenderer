@@ -44,6 +44,7 @@ void runMainLoop()
         }
         wh.destroyWindow();
     }
+    destroyProfile();
     //PROFILE_END();
 
 }
