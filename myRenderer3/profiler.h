@@ -45,9 +45,13 @@ struct Profile {
 
 void initProfile();
 
+void printPastFrames();
+
 // Header functions
 void testProfiler();
 
 void beginProfile(const char * string);
 
 void endProfile();
+
+void destroyProfile();

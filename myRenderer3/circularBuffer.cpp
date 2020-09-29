@@ -17,6 +17,11 @@ CircularBuffer createNewCircBuf(unsigned int bufferLength, unsigned int sizeElem
     return cb;
 }
 
+int getFrontIdxCircBuf(const CircularBuffer* const cb)
+{
+    return cb->m_Front;
+}
+
 void* getFrontCircBuf(const CircularBuffer* const cb)
 {
     return getArrayAt(&cb->m_Array, cb->m_Front);
@@ -25,6 +30,11 @@ void* getFrontCircBuf(const CircularBuffer* const cb)
 void* getBackCircBuf(const CircularBuffer* const cb)
 {
     return getArrayAt(&cb->m_Array, cb->m_Back);
+}
+
+int getCapacityCircBuff(const CircularBuffer* const cb)
+{
+    return getArrayCapacity(&cb->m_Array);
 }
 
 int getSizeCircBuf(const CircularBuffer* const cb)
@@ -91,6 +101,12 @@ void clearCircBuf(CircularBuffer* cb)
     cb->m_Back = 0;
 }
 
+void* getCircBufAt(const CircularBuffer* const cb, int index)
+{
+    assert(cb);
+    return getArrayAt(&cb->m_Array, index);
+}
+
 void freeCircBuf(CircularBuffer* const cb)
 {
     assert(cb);
@@ -136,8 +152,11 @@ void printCircBuf(const CircularBuffer* const cb)
         int idx = (tempFront + i) % getArrayCapacity(&cb->m_Array);
         if (idx == cb->m_Back && !isFullCircBuf(cb))
             break;
-        void* ptr = (uint8_t*)cb->m_Array.m_Data + (idx * cb->m_Array.m_TypeSize);
+        //void* ptr = (uint8_t*)cb->m_Array.m_Data + (idx * cb->m_Array.m_TypeSize);
+        //void* ptr = getArrayAt(&cb->m_Array, idx);
+        void* ptr = getCircBufAt(cb, idx);
         logmsg("%d ", *((int*)ptr));
     }
     logmsg("\n==========\n");
 }
+

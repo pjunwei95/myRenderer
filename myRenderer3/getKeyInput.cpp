@@ -26,6 +26,7 @@ void getKeyInput()
                 setIsDone(true);
                 break;
             case SDLK_p:
+                printPastFrames();
                 break;
             default:
                 break;
