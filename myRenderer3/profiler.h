@@ -45,6 +45,8 @@ struct Profile {
 
 void initProfile();
 
+void printPastFrames();
+
 // Header functions
 void testProfiler();
 

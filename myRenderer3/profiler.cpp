@@ -21,10 +21,11 @@ Profile getProfile()
     return profile;
 }
 
-void beginProfile(const char* string, int stringSize)
+void beginProfile(const char* string)
 {
+    assert(string);
     Profile profile;
-    strcpy_s(profile.m_ProfileName, stringSize, string); //easy conversion to macros
+    strcpy_s(profile.m_ProfileName, sizeof(profile.m_ProfileName), string); //easy conversion to macros
     updateTimeStamp(&profile.m_Start);
     pushBackArray(&profileStack, &profile); // stack push
 }
@@ -33,64 +34,69 @@ void endProfile()
 {
     //dereference from peek()
     Profile profile = getProfile();
+
+    //update time elapsed
     updateTimeStamp(&profile.m_Elapsed);
     calcTimerElapsedUs(&profile.m_Elapsed, &profile.m_Start);
 
+    /*logmsg("Time elapsed for |%s| profile = %.2f ms\n",
+        profile.m_ProfileName, getTimerElapsedMs(&profile.m_Elapsed));*/
+
+    //circular Buffer operations
     Profile* ptrToProfile = &profile;
+    
+    if (isFullCircBuf(&profileCircBuff))
+    {
+        popFrontCircBuf(&profileCircBuff);
+    }
     pushBackCircBuf(&profileCircBuff, ptrToProfile);
 
-    //logmsg("Time elapsed for |%s| profile = %.2f ms\n", 
-        //profile.m_ProfileName, getTimerElapsedMs(&profile.m_Elapsed));
+    //pop stack
     popBackArray(&profileStack); //stack pop
 }
 
-void function()
+void destroyProfile()
 {
-    //int tempFront = cb->m_Front;
+    freeArray(&profileStack);
+    freeCircBuf(&profileCircBuff);
+}
 
+void printPastFrames()
+{
     int tempFront = getFrontIdxCircBuf(&profileCircBuff);
-
-    //logmsg("=========\n");
-    //for (int i = 0; i < getArrayCapacity(&cb->m_Array); ++i)
     int size = getSizeCircBuf(&profileCircBuff);
+
     for (int i = 0; i < size; ++i)
     {
-        //int idx = (tempFront + i) % getArrayCapacity(&cb->m_Array);
         int idx = (tempFront + i) % getCapacityCircBuff(&profileCircBuff);
-        //if (idx == cb->m_Back && !isFullCircBuf(cb))
-            //break;
-        //void* ptr = (uint8_t*)cb->m_Array.m_Data + (idx * cb->m_Array.m_TypeSize);
-        //logmsg("%d ", *((int*)ptr));
+        Profile* ptrToProfile = (Profile*) getCircBufAt(&profileCircBuff, idx);
+        Profile profile = *ptrToProfile;
+        logmsg("Time elapsed for |%s| profile = %.2f ms\n", 
+            profile.m_ProfileName, getTimerElapsedMs(&profile.m_Elapsed)); 
     }
-    //logmsg("\n==========\n");
-
-
-
-    //logmsg("Time elapsed for |%s| profile = %.2f ms\n", 
-        //profile.m_ProfileName, getTimerElapsedMs(&profile.m_Elapsed));
 }
 
 void testProfiler()
 {
     initProfile();
-    const char* firstTest = "test1";
-    const char* secondTest = "test2";
-
+    //const char* firstTest = "test1";
+    //const char* secondTest = "test2";
+    
     while (1) {
         if (isFullCircBuf(&profileCircBuff))
         {
-            function();
+            printPastFrames();
+            break;
         }
 
 
-        beginProfile(firstTest, sizeof(firstTest));
-            beginProfile(secondTest, sizeof(secondTest));
-            Sleep(100);
+        beginProfile("test1");
+            beginProfile("test2");
+            Sleep(10);
             endProfile();
-        Sleep(100);
+        Sleep(10);
         endProfile();
     }
+    destroyProfile();
 }
-
-void destroyProfiles();
 

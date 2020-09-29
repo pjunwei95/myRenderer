@@ -19,6 +19,8 @@ void pushBackCircBuf(CircularBuffer * const cb, const void * srcData);
 
 void * popFrontCircBuf(CircularBuffer * const cb);
 
+void * getCircBufAt(const CircularBuffer * const cb, int index);
+
 void freeCircBuf(CircularBuffer * const cb);
 
 void testCircularBuffer();
