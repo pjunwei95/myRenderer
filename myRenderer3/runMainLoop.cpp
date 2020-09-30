@@ -8,42 +8,47 @@
 #include "frameRateController.h"
 #include "windowHandler.h"
 #include "profiler.h"
-#include "array.h"
+//#include "test.h"
+#include "circularBuffer.h"
 
 void runMainLoop()
 {
     initialiseTimer();
-    initProfile();
-    //testArray();
-    //testProfiler();
-    //PROFILE_BEGIN(test1);
-    beginProfile("createWindow");
+    initProfile(50);
+    //testCircularBuffer();
+    testProfiler();
+    //beginProfile("createWindow");
 
-    if(createWindow())
+    WindowHandler wh;
+
+    if(wh.createWindow())
     {
-        endProfile();
+        //endProfile();
 
         while (!getIsDone())
         {
-            beginProfile("beforeidle");
+            //beginProfile("beforeIdle");
 
             Timer timer;
 
             updateTimeStamp(&timer);
 
-            drawWindow();
+            //beginProfile("drawWindow");
+
+            wh.drawWindow();
+
+            //endProfile();
 
             getKeyInput();
 
-            updateWindow();
-            endProfile();
-
-            //profileFrameTime(&timer);
+            wh.updateWindow();
+            //endProfile();
 
             idleUntilFPSLimit(&timer);
         }
-        destroyWindow();
+        wh.destroyWindow();
     }
+    //destroyProfile();
     //PROFILE_END();
 
 }

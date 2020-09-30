@@ -51,10 +51,13 @@
     <ClCompile Include="test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="profileStack.cpp">
+    <ClCompile Include="array.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="array.cpp">
+    <ClCompile Include="circularBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -95,10 +98,13 @@
     <ClInclude Include="test.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="profileStack.h">
+    <ClInclude Include="array.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="array.h">
+    <ClInclude Include="circularBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
