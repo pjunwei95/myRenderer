@@ -12,28 +12,28 @@ Stack::~Stack()
     delete &m_Stack;
 }
 
-void Stack::Push(void* srcData)
+void Stack::push(void* srcData)
 {
     pushBackArray(&m_Stack, srcData);
 }
 
-void* Stack::Peek()
+void* Stack::peek()
 {
     assert(!isArrayEmpty(&m_Stack));
     return getArrayBack(&m_Stack);
 }
 
-void Stack::Pop()
+void Stack::pop()
 {
     popBackArray(&m_Stack);
 }
 
-void* Stack::At(int index)
+void* Stack::at(int index)
 {
     return getArrayAt(&m_Stack, index);
 }
 
-int Stack::Size() 
+int Stack::size() 
 {
     return getArraySize(&m_Stack);
 }

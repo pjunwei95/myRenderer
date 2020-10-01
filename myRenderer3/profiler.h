@@ -1,7 +1,5 @@
 #pragma once
 #include "frameRateController.h"
-//#include "circularBuffer.h"
-//#include <string.h>
 
 #define CHAR_MAX_LIMIT 256
 

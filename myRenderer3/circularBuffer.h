@@ -1,6 +1,5 @@
 #pragma once
 #include "array.h"
-#include <stdint.h>
 
 struct CircularBuffer
 {

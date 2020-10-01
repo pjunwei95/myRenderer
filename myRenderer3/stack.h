@@ -5,12 +5,11 @@ class Stack {
 public:
     Stack(int sizeElem);
     ~Stack();
-    //void createNewStack();
-    void Push(void* srcData);
-    void* Peek();
-    void Pop();
-    void* At(int index);
-    int Size();
+    void push(void* srcData);
+    void* peek();
+    void pop();
+    void* at(int index);
+    int size();
 private:
     Array m_Stack;
 };

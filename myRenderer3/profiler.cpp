@@ -19,7 +19,7 @@ void initProfile(int frameNum)
 
 Profile getProfile()
 {
-    Profile profile = *((Profile*)profileStack->Peek());
+    Profile profile = *((Profile*)profileStack->peek());
     assert(&profile);
     return profile;
 }
@@ -30,7 +30,7 @@ void beginProfile(const char* string)
     Profile profile;
     strcpy_s(profile.m_ProfileName, sizeof(profile.m_ProfileName), string); //easy conversion to macros
     frc.updateTimeStamp(&profile.m_Start);
-    profileStack->Push(&profile);
+    profileStack->push(&profile);
 }
 
 void endProfile()
@@ -42,7 +42,7 @@ void endProfile()
     frc.updateTimeStamp(&profile.m_Elapsed);
     frc.calcTimerElapsedUs(&profile.m_Elapsed, &profile.m_Start);
 
-    profileStack->Pop();
+    profileStack->pop();
 }
 
 void onProfilerFlip()
@@ -52,9 +52,9 @@ void onProfilerFlip()
     Array fpVec = createNewArray(sizeof(Profile));
 
     //iterate thru all profiles
-    for (int i = 0; i < profileStack->Size(); ++i)
+    for (int i = 0; i < profileStack->size(); ++i)
     {
-        Profile* ptrToProfile = (Profile*) profileStack->At(i);
+        Profile* ptrToProfile = (Profile*) profileStack->at(i);
         // update time elapsed
         frc.updateTimeStamp(&ptrToProfile->m_Elapsed);
         frc.calcTimerElapsedUs(&ptrToProfile->m_Elapsed, &ptrToProfile->m_Start);
