@@ -13,7 +13,8 @@
 
 void runMainLoop()
 {
-    initialiseTimer();
+    FrameRateController frc;
+    frc.initialiseTimer();
     initProfile(50);
     //testCircularBuffer();
     //testProfiler();
@@ -31,7 +32,7 @@ void runMainLoop()
 
             Timer timer;
 
-            updateTimeStamp(&timer);
+            frc.updateTimeStamp(&timer);
 
             wh.drawWindow();
 
@@ -41,7 +42,7 @@ void runMainLoop()
 
             wh.updateWindow();
 
-            idleUntilFPSLimit(&timer);
+            frc.idleUntilFPSLimit(&timer);
             endProfile();
             endProfile();
         }

@@ -8,9 +8,11 @@
 
 Stack* profileStack;
 CircularBuffer frameCircBuf;
+FrameRateController frc;
 
 void initProfile(int frameNum)
 {
+    frc.initialiseTimer();
     profileStack = new Stack(sizeof(Profile));
     frameCircBuf = createNewCircBuf(frameNum, sizeof(Array));
 }
@@ -27,7 +29,7 @@ void beginProfile(const char* string)
     assert(string);
     Profile profile;
     strcpy_s(profile.m_ProfileName, sizeof(profile.m_ProfileName), string); //easy conversion to macros
-    updateTimeStamp(&profile.m_Start);
+    frc.updateTimeStamp(&profile.m_Start);
     profileStack->Push(&profile);
 }
 
@@ -37,8 +39,8 @@ void endProfile()
     Profile profile = getProfile();
 
     //update time elapsed
-    updateTimeStamp(&profile.m_Elapsed);
-    calcTimerElapsedUs(&profile.m_Elapsed, &profile.m_Start);
+    frc.updateTimeStamp(&profile.m_Elapsed);
+    frc.calcTimerElapsedUs(&profile.m_Elapsed, &profile.m_Start);
 
     profileStack->Pop();
 }
@@ -54,8 +56,8 @@ void onProfilerFlip()
     {
         Profile* ptrToProfile = (Profile*) profileStack->At(i);
         // update time elapsed
-        updateTimeStamp(&ptrToProfile->m_Elapsed);
-        calcTimerElapsedUs(&ptrToProfile->m_Elapsed, &ptrToProfile->m_Start);
+        frc.updateTimeStamp(&ptrToProfile->m_Elapsed);
+        frc.calcTimerElapsedUs(&ptrToProfile->m_Elapsed, &ptrToProfile->m_Start);
         pushBackArray(&fpVec, ptrToProfile);
     }
 
@@ -102,7 +104,7 @@ void printPastFrames()
         {
             Profile* ptrToProfile = (Profile*)getArrayAt(&frameProfileList, j);
             Profile profile = *ptrToProfile;
-            logmsg("Frame #%d, Time elapsed for |%s| profile = %.2f ms\n", i, profile.m_ProfileName, getTimerElapsedMs(&profile.m_Elapsed));
+            logmsg("Frame #%d, Time elapsed for |%s| profile = %.2f ms\n", i, profile.m_ProfileName, frc.getTimerElapsedMs(&profile.m_Elapsed));
             //formatting for profiler: frame#, profileName, startTime, endTime
             //logmsg("#%d, %s, %.2f\n", i, profile.m_ProfileName, getTimerElapsedMs(&profile.m_Elapsed));
         }
