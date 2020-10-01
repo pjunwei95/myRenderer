@@ -1,15 +1,9 @@
-#include <stdio.h>
-
-#include "sdl/SDL.h"
 #include "engine.h"
-#include "drawScreen.h"
 #include "getKeyInput.h"
-#include "runMainLoop.h"
 #include "frameRateController.h"
 #include "windowHandler.h"
 #include "profiler.h"
-//#include "test.h"
-#include "circularBuffer.h"
+////#include "test.h"
 
 void runMainLoop()
 {
