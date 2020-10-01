@@ -8,6 +8,7 @@
 #include "fileManager.h"
 #include "logger.h"
 #include "profiler.h"
+#include <crtdbg.h>
 
 BOOL isDone;
 
@@ -18,8 +19,8 @@ int main(int argc, char *argsv[])
    //	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
    //#endif
 
-   ////int * pi = new int;
-   ////pi;
+   // /*int * pi = new int;
+   // pi;*/
 
     openLogStream();
 

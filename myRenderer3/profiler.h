@@ -22,4 +22,6 @@ void beginProfile(const char * string);
 
 void endProfile();
 
+void onProfilerFlip();
+
 void destroyProfile();

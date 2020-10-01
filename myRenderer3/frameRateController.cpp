@@ -2,6 +2,7 @@
 #include "engine.h"
 #include <stdio.h>
 #include "circularBuffer.h"
+#include "profiler.h"
 
 Timer nFrequency;
 Timer defaultFrameTime;
@@ -20,6 +21,7 @@ void idleUntilFPSLimit(TimerHandle timer)
     {
         if (isWithinFrameRate(timer))
         {
+            onProfilerFlip();
             break;
         }
     }
