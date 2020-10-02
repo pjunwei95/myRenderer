@@ -21,7 +21,6 @@ void idleUntilFPSLimit(TimerHandle timer)
     {
         if (isWithinFrameRate(timer))
         {
-            onProfilerFlip();
             break;
         }
     }

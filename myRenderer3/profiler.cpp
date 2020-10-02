@@ -15,10 +15,10 @@ void initProfile(int frameNum)
     frameCircBuf = createNewCircBuf(frameNum, sizeof(Array));
 }
 
-Profile getProfile()
+Profile* getProfile()
 {
-    Profile profile = *((Profile*)profileStack->Peek());
-    assert(&profile);
+    Profile* profile = (Profile*)profileStack->Peek();
+    assert(profile);
     return profile;
 }
 
@@ -34,11 +34,11 @@ void beginProfile(const char* string)
 void endProfile()
 {
     //dereference from peek()
-    Profile profile = getProfile();
+    Profile* profile = getProfile();
 
     //update time elapsed
-    updateTimeStamp(&profile.m_Elapsed);
-    calcTimerElapsedUs(&profile.m_Elapsed, &profile.m_Start);
+    updateTimeStamp(&profile->m_Elapsed);
+    calcTimerElapsedUs(&profile->m_Elapsed, &profile->m_Start);
 
     profileStack->Pop();
 }

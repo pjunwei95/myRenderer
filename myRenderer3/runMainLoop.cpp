@@ -14,9 +14,8 @@
 void runMainLoop()
 {
     initialiseTimer();
-    initProfile(50);
-    //testCircularBuffer();
-    //testProfiler();
+    //initProfile(50);
+    testProfiler();
     //beginProfile("createWindow");
 
     WindowHandler wh;
@@ -27,7 +26,7 @@ void runMainLoop()
 
         while (!getIsDone())
         {
-            beginProfile("beforeIdle");
+            //beginProfile("beforeIdle");
 
             Timer timer;
 
@@ -37,17 +36,19 @@ void runMainLoop()
 
             getKeyInput();
 
-            beginProfile("updateWindow");
+            //beginProfile("updateWindow");
 
             wh.updateWindow();
+            //endProfile();
 
             idleUntilFPSLimit(&timer);
-            endProfile();
-            endProfile();
+            //onProfilerFlip();
+
+            //endProfile();
         }
         wh.destroyWindow();
     }
-    destroyProfile();
+    //destroyProfile();
 
 }
 
