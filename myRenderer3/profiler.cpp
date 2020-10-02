@@ -83,7 +83,8 @@ void onProfilerFlip()
 void destroyProfile()
 {
     //profile stack is destructed
-    profileStack->free();
+    //profileStack->free();
+    //delete profileStack;
 
     //loop through circular buffer
     for (int i = 0; i < getSizeCircBuf(&frameCircBuf); ++i)

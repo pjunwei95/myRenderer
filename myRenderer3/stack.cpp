@@ -8,8 +8,6 @@ Stack::Stack(int sizeElem)
 
 Stack::~Stack()
 {
-    freeArray(&m_Stack);
-    delete &m_Stack;
 }
 
 void Stack::push(void* srcData)

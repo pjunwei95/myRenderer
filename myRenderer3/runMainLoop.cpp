@@ -6,6 +6,7 @@
 
 #include "profiler.h"
 #include "test.h"
+#include "stack.h"
 
 bool isTestProfile = true;
 
