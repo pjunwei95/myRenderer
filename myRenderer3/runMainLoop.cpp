@@ -10,8 +10,7 @@ void runMainLoop()
     FrameRateController frc;
     frc.initialiseTimer();
     initProfile(50);
-    //testCircularBuffer();
-    //testProfiler();
+    testProfiler();
     //beginProfile("createWindow");
 
     WindowHandler wh;
@@ -22,7 +21,7 @@ void runMainLoop()
 
         while (!getIsDone())
         {
-            beginProfile("beforeIdle");
+            //beginProfile("beforeIdle");
 
             Timer timer;
 
@@ -32,17 +31,18 @@ void runMainLoop()
 
             getKeyInput();
 
-            beginProfile("updateWindow");
+            //beginProfile("updateWindow");
 
             wh.updateWindow();
+            //endProfile();
 
             frc.idleUntilFPSLimit(&timer);
-            endProfile();
-            endProfile();
+            //endProfile();
+            //endProfile();
         }
         wh.destroyWindow();
     }
-    destroyProfile();
+    //destroyProfile();
 
 }
 

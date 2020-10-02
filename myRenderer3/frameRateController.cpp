@@ -18,7 +18,6 @@ void FrameRateController::idleUntilFPSLimit(TimerHandle timer)
     {
         if (isWithinFrameRate(timer))
         {
-            onProfilerFlip();
             break;
         }
     }
