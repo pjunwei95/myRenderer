@@ -10,6 +10,7 @@ public:
     void pop();
     void* at(int index);
     int size();
+    void free();
 private:
     Array m_Stack;
 };

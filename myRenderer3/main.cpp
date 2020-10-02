@@ -7,8 +7,8 @@
 #include "runMainLoop.h"
 #include "fileManager.h"
 #include "logger.h"
-#include "profiler.h"
 #include <crtdbg.h>
+#include "profiler.h"
 
 BOOL isDone;
 

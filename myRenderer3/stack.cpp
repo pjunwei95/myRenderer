@@ -37,3 +37,8 @@ int Stack::size()
 {
     return getArraySize(&m_Stack);
 }
+void Stack::free()
+{
+    freeArray(&m_Stack);
+    delete &m_Stack;
+}

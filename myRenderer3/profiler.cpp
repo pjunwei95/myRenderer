@@ -9,10 +9,12 @@
 Stack* profileStack;
 CircularBuffer frameCircBuf;
 FrameRateController frc;
+bool isProfileBegin; // This doesnt't work for nested profiling
 
 void initProfile(int frameNum)
 {
     frc.initialiseTimer();
+    isProfileBegin = false;
     profileStack = new Stack(sizeof(Profile));
     frameCircBuf = createNewCircBuf(frameNum, sizeof(Array));
 }
@@ -27,6 +29,9 @@ Profile* getProfile()
 void beginProfile(const char* string)
 {
     assert(string);
+    assert(!isProfileBegin);
+    isProfileBegin = true;
+
     Profile profile;
     strcpy_s(profile.m_ProfileName, sizeof(profile.m_ProfileName), string); //easy conversion to macros
     frc.updateTimeStamp(&profile.m_Start);
@@ -35,6 +40,9 @@ void beginProfile(const char* string)
 
 void endProfile()
 {
+    assert(isProfileBegin);
+    isProfileBegin = false;
+
     //dereference from peek()
     Profile* profile = getProfile();
 
@@ -75,7 +83,7 @@ void onProfilerFlip()
 void destroyProfile()
 {
     //profile stack is destructed
-    profileStack->~Stack();
+    profileStack->free();
 
     //loop through circular buffer
     for (int i = 0; i < getSizeCircBuf(&frameCircBuf); ++i)
@@ -116,11 +124,11 @@ void testProfiler()
     initProfile(50);
     for (int i = 0; i < 50; ++i)
     {
-        beginProfile("test1");
+        beginProfile(__FUNCDNAME__);
         {
             //beginProfile("nested");
             //simulate one frame = 33ms has passed
-            Sleep(33);
+            Sleep(10);
             onProfilerFlip();
             //endProfile();
         }
