@@ -5,8 +5,9 @@
 #include <crtdbg.h>
 
 #include "profiler.h"
-#include "test.h"
-#include "stack.h"
+//#include "test.h"
+#include "test2.h"
+//#include "stack.h"
 
 bool isTestProfile = true;
 
@@ -30,6 +31,7 @@ void runMainLoop()
     if (!isTestProfile)
         testProfiler();
     //test();
+    testArray2();
 
     //beginProfile("createWindow");
 
