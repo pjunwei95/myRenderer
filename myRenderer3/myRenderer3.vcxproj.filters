@@ -60,6 +60,9 @@
     <ClCompile Include="stack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="test2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine.h">
@@ -105,6 +108,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="bufferOps.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="test2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
