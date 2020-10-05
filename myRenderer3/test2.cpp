@@ -39,21 +39,21 @@
 //    return a;
 //}
 //
-template<class T>
-bool Array<T>::isArrayEmpty()
+template<typename T>
+bool Array<T>::isArrayEmpty() const
 {
     assert(m_Data);
     return 0 == m_Size;
 }
 
-template<class T>
-int Array<T>::getArraySize()
+template<typename T>
+int Array<T>::getArraySize() const
 {
     assert(m_Data);
     return m_Size;
 }
 
-template<class T>
+template<typename T>
 void Array<T>::addArraySize(int increment)
 {
     assert(m_Data);
@@ -61,34 +61,34 @@ void Array<T>::addArraySize(int increment)
     m_Size += increment;
 }
 
-template<class T>
-int Array<T>::getArrayCapacity()
+template<typename T>
+int Array<T>::getArrayCapacity() const
 {
     assert(m_Data);
     return m_Capacity;
 }
 
-template<class T>
-int Array<T>::getArrayTypeSize()
+template<typename T>
+int Array<T>::getArrayTypeSize() const
 {
     assert(m_Data);
     return m_TypeSize;
 }
 
-template<class T>
+template<typename T>
 void Array<T>::clearArray()
 {
     assert(m_Data);
     m_Size = 0;
 }
 
-//void* Array::getArrayFront(const Array* const arr)
-//{
-//    assert(arr);
-//    assert(!isArrayEmpty(arr));
-//    assert(arr->m_Data);
-//    return (unsigned char*)arr->m_Data;
-//}
+template<typename T>
+T* Array<T>::getArrayFront() const
+{
+    assert(!isArrayEmpty());
+    assert(m_Data);
+    return (T*)m_Data;
+}
 //
 //void* Array::getArrayBack(const Array* const arr)
 //{
@@ -104,23 +104,23 @@ void Array<T>::clearArray()
 //    free(dstArr->m_Data);
 //}
 //
-//void* Array::getArrayAt(const Array* const arr, unsigned int index)
-//{
-//    assert(!isArrayEmpty(arr));
-//    assert(arr->m_Data);
-//    assert(index >= 0);
-//    assert(index < arr->m_Size);
-//    return (unsigned char*)arr->m_Data + index * arr->m_TypeSize;
-//}
-//
-//void Array::popBackArray(Array* const arr)
-//{
-//    assert(arr);
-//    assert(!isArrayEmpty(arr));
-//    arr->m_Size--;
-//}
+template<typename T>
+T* Array<T>::getArrayAt(uint32_t index) const
+{
+    assert(!isArrayEmpty());
+    assert(m_Data);
+    assert(index < m_Size);
+    return (T*)((uint8_t*)m_Data + index * m_TypeSize);
+}
 
-template<class T>
+template<typename T>
+void Array<T>::popBackArray()
+{
+    assert(!isArrayEmpty());
+    m_Size--;
+}
+
+template<typename T>
 void* Array<T>::reallocArray(void* block, size_t oldSize, size_t newSize)
 {
     assert(block);
@@ -133,8 +133,8 @@ void* Array<T>::reallocArray(void* block, size_t oldSize, size_t newSize)
     return newBlock;
 }
 
-template<class T>
-void Array<T>::checkArraySuffMem(void * ptr)
+template<typename T>
+void Array<T>::checkArraySuffMem(void* ptr)
 {
     //assert(dstArr);
     assert(ptr);
@@ -155,7 +155,7 @@ void Array<T>::checkArraySuffMem(void * ptr)
     }
 }
 
-template<class T>
+template<typename T>
 void Array<T>::pushBackArray(const T* srcData)
 {
     //assert(dstArr);
@@ -191,30 +191,40 @@ void Array<T>::pushBackArray(const T* srcData)
 //    memcpy(newPtr + index * dstArr->m_TypeSize, srcData, dstArr->m_TypeSize);
 //    dstArr->m_Size++;
 //}
-//
-//void Array::eraseArrayAt(Array* const arr, unsigned int index)
-//{
-//    assert(!isArrayEmpty(arr));
-//    assert(index >= 0 && index < arr->m_Size);
-//    if (index == arr->m_Size - 1) // last index
-//    {
-//        popBackArray(arr); //CHECK SIZE
-//        return;
-//    }
-//    //shift array left
-//    unsigned char* ptr = (unsigned char*)arr->m_Data;
-//    // A[i] = *[A + i]
-//    // for i = index; i < size-1; i++
-//    for (unsigned char* i = ptr + index * arr->m_TypeSize;
-//        i < ptr + (arr->m_Size - 1) * arr->m_TypeSize;
-//        i += arr->m_TypeSize)
-//    {
-//        // A[i] = A[i+1]
-//        memcpy(i, i + arr->m_TypeSize, arr->m_TypeSize);
-//    }
-//    arr->m_Size--;
-//}
-//
+
+template<typename T>
+void Array<T>::eraseArrayAt(uint32_t index)
+{
+    assert(!isArrayEmpty());
+    assert(index < m_Size);
+    if (index == m_Size - 1) // last index
+    {
+        popBackArray(); //CHECK SIZE
+        return;
+    }
+    ////shift array left
+    //unsigned char* ptr = (unsigned char*)m_Data;
+    //// A[i] = *[A + i]
+    //// for i = index; i < size-1; i++
+    //for (unsigned char* i = ptr + index * arr->m_TypeSize;
+    //    i < ptr + (arr->m_Size - 1) * arr->m_TypeSize;
+    //    i += arr->m_TypeSize)
+    //{
+    //    // A[i] = A[i+1]
+    //    memcpy(i, i + arr->m_TypeSize, arr->m_TypeSize);
+    //}
+
+    //shift array left
+    // for i = index; i < size-1; i++
+    for (uint32_t i = 0; i < m_Size - 1; ++i)
+    {
+        uint8_t* ptr = (uint8_t*)m_Data + (index + i) * m_TypeSize;
+        // A[i] = A[i+1]
+        memcpy(ptr, ptr + m_TypeSize, m_TypeSize);
+    }
+    m_Size--;
+}
+
 //// This method will remove the element at the specified index but
 //// will not preserve the order in the array(the element is swapped with
 //// the last one of the array)
@@ -232,26 +242,28 @@ void Array<T>::pushBackArray(const T* srcData)
 void testArray2()
 {
     //Array a = createNewArray(sizeof(int));
-    Array<int>* a = new Array<int>(sizeof(int));
-    int num = 0;
-    a->pushBackArray(&num);
-    logmsg("testing = %d\n", a->isArrayEmpty());
+    Array<int>* a = new Array<int>();
+    int num = 1;
+    //a->pushBackArray(&num);
+    //logmsg("empty? %d\n", a->isArrayEmpty());
     //push 10 elements and print (init)
     for (int i = 0; i < 10; ++i)
     {
-        //a->pushBackArray(&num);
+        a->pushBackArray(&num);
         num++;
     }
     //printTestArray(&a);
+    a->printTestArray();
 
-    ////print first
+    //print first
     //int getFirst = *((int*)getArrayFront(&a));
-    //printf("first = %d\n", getFirst);
+    int getFirst = *a->getArrayFront();
+    printf("first = %d\n", getFirst);
 
-    ////erase at idx
-    //printf("erasing a[%d] = %d...\n", 6, *((int*)getArrayAt(&a, 6)));
-    //eraseArrayAt(&a, 6);
-    //printf("a[%d] is now = %d\n", 6, *((int*)getArrayAt(&a, 6)));
+    //erase at idx
+    printf("erasing a[%d] = %d...\n", 6, *a->getArrayAt(6));
+    a->eraseArrayAt(6);
+    printf("a[%d] is now = %d\n", 6, *a->getArrayAt(6));
 
     ////insert at idx
     //int newNum = 99;
@@ -285,15 +297,17 @@ void testArray2()
     //freeArray(&a);
 }
 
-//void Array::printTestArray(const Array* const a)
-//{
-//    printf("==============\n");
-//    printf("printing updated table\n");
-//    int numAtIdx;
-//    for (unsigned int i = 0; i < a->m_Size; ++i)
-//    {
-//        numAtIdx = *((int*)getArrayAt(a, i));
-//        printf("array [%d] = %d\n", i, numAtIdx);
-//    }
-//    printf("==============\n");
-//}
+template<typename T>
+void Array<T>::printTestArray()
+{
+    printf("==============\n");
+    printf("printing updated table\n");
+    int numAtIdx;
+    for (uint32_t i = 0; i < m_Size; ++i)
+    {
+        //numAtIdx = *((int*)getArrayAt(a, i));
+        numAtIdx = *getArrayAt(i);
+        printf("array [%d] = %d\n", i, numAtIdx);
+    }
+    printf("==============\n");
+}
