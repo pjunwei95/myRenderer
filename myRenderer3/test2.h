@@ -7,22 +7,21 @@ void testArray2();
 template<typename T>
 class Array {
 private:
-    void* m_Data; // pointer to array
+    T* m_Data; // pointer to array
     uint32_t m_Size; // number of elements
     uint32_t m_Capacity; // available memory size
     uint32_t m_TypeSize; // size of element type
 
-    void clearArray();
-    
-    
-    void* reallocArray(void* block, size_t oldSize, size_t newSize);
+    //void clearArray();
+    //
+    //
+    //void* reallocArray(void* block, size_t oldSize, size_t newSize);
 
-    
-    void checkArraySuffMem(void * ptr);
-    
     //
-    //void removeAtFastArray(Array* const arr, unsigned int index);
+    void checkArraySuffMem();
     //
+    //
+    
 public:
     Array()
         : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ 0 }, m_TypeSize{sizeof(T)}
@@ -35,13 +34,13 @@ public:
 
     bool isArrayEmpty() const;
 
-    int getArraySize() const;
+  /*  int getArraySize() const;
 
     void addArraySize(int increment);
 
     int getArrayCapacity() const;
 
-    int getArrayTypeSize() const;
+    int getArrayTypeSize() const;*/
 
     void pushBackArray(const T* srcData);
 
@@ -53,13 +52,15 @@ public:
     
     T* getArrayFront() const;
 
-    //void * getArrayBack(const Array * const arr);
+    T* getArrayBack() const;
 
     //void freeArray(Array * const dstArr);
 
     T* getArrayAt(uint32_t index) const;
 
     void popBackArray();
+    void removeAtFastArray(uint32_t index);
+
 };
 
 
