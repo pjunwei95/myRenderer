@@ -158,9 +158,7 @@ void Array<T>::checkArraySuffMem(void* ptr)
 template<typename T>
 void Array<T>::pushBackArray(const T* srcData)
 {
-    //assert(dstArr);
     assert(srcData);
-    //assert(dstArr->m_TypeSize > 0);
     assert(m_TypeSize > 0);
     assert(m_TypeSize == sizeof(*srcData));
     void* ptr;
@@ -170,27 +168,38 @@ void Array<T>::pushBackArray(const T* srcData)
     m_Size++;
 }
 
-//void Array::insertArray(Array* const dstArr, unsigned int index, const void* srcData)
-//{
-//    assert(dstArr);
-//    assert(srcData);
-//    assert(index >= 0 && index <= dstArr->m_Size);
-//    void* ptr;
-//    checkArraySuffMem(dstArr, &ptr);
-//    unsigned char* newPtr = (unsigned char*)dstArr->m_Data;
-//    //shift array right
-//    // for i = size-1; i > index-1; i--
-//    for (unsigned char* i = newPtr + (dstArr->m_Size - 1) * dstArr->m_TypeSize;
-//        i > newPtr + (index - 1) * dstArr->m_TypeSize;
-//        i -= dstArr->m_TypeSize)
-//    {
-//        //A[i+1] = A[i]
-//        memcpy(i + dstArr->m_TypeSize, i, dstArr->m_TypeSize);
-//    }
-//    //A[index] = data
-//    memcpy(newPtr + index * dstArr->m_TypeSize, srcData, dstArr->m_TypeSize);
-//    dstArr->m_Size++;
-//}
+template<typename T>
+void Array<T>::insertArray(uint32_t index, const T* srcData)
+{
+    assert(srcData);
+    assert(index <= m_Size);
+    void* ptr;
+    checkArraySuffMem(&ptr);
+
+    //for (uint8_t* i = newPtr + (m_Size - 1) * m_TypeSize;
+        //    i > newPtr + (index - 1) * m_TypeSize;
+        //    i -= m_TypeSize)
+        //{
+        //    //A[i+1] = A[i]
+        //    memcpy(i + m_TypeSize, i, m_TypeSize);
+        //}
+        ////A[index] = data
+        //memcpy(newPtr + index * m_TypeSize, srcData, m_TypeSize);
+
+    uint8_t* ptrArr = (uint8_t*)m_Data;
+    //shift array right
+    // for i = size-1; i > index-1; i--
+    for (uint32_t i = m_Size - 1; i > index - 1; --i)
+    {
+        ptrArr += i * m_TypeSize;
+        //A[i+1] = A[i]
+        memcpy(ptrArr + m_TypeSize, ptrArr, m_TypeSize);
+    }
+    //A[index] = data
+    uint8_t* newPtr = (uint8_t*)m_Data;
+    memcpy(newPtr + index * m_TypeSize, srcData, m_TypeSize);
+    m_Size++;
+}
 
 template<typename T>
 void Array<T>::eraseArrayAt(uint32_t index)
@@ -265,10 +274,10 @@ void testArray2()
     a->eraseArrayAt(6);
     printf("a[%d] is now = %d\n", 6, *a->getArrayAt(6));
 
-    ////insert at idx
-    //int newNum = 99;
-    //printf("inserting a[%d] = %d...\n", 6, newNum);
-    //insertArray(&a, 6, &newNum);
+    //insert at idx
+    int newNum = 99;
+    printf("inserting a[%d] = %d...\n", 6, newNum);
+    a->insertArray(6, &newNum);
     //printf("a[%d] is now = %d\n", 6, *((int*)getArrayAt(&a, 6)));
 
     //printTestArray(&a);

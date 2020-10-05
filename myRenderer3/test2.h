@@ -49,7 +49,7 @@ public:
 
     void eraseArrayAt(uint32_t index);
 
-    //void insertArray(Array * const dstArr, unsigned int index, const void * srcData);
+    void insertArray(uint32_t index, const T* srcData);
     
     T* getArrayFront() const;
 
