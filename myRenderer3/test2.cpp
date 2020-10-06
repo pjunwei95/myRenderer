@@ -30,41 +30,41 @@ bool Array<T>::isArrayEmpty() const
     return 0 == m_Size;
 }
 
-//template<typename T>
-//int Array<T>::getArraySize() const
-//{
-//    assert(m_Data);
-//    return m_Size;
-//}
-//
-//template<typename T>
-//void Array<T>::addArraySize(int increment)
-//{
-//    assert(m_Data);
-//    assert(increment);
-//    m_Size += increment;
-//}
-//
-//template<typename T>
-//int Array<T>::getArrayCapacity() const
-//{
-//    assert(m_Data);
-//    return m_Capacity;
-//}
-//
-//template<typename T>
-//int Array<T>::getArrayTypeSize() const
-//{
-//    assert(m_Data);
-//    return m_TypeSize;
-//}
+template<typename T>
+uint32_t Array<T>::getArraySize() const
+{
+    assert(m_Data);
+    return m_Size;
+}
 
-//template<typename T>
-//void Array<T>::clearArray()
-//{
-//    assert(m_Data);
-//    m_Size = 0;
-//}
+template<typename T>
+void Array<T>::addArraySize(int increment)
+{
+    assert(m_Data);
+    assert(increment);
+    m_Size += increment;
+}
+
+template<typename T>
+int Array<T>::getArrayCapacity() const
+{
+    assert(m_Data);
+    return m_Capacity;
+}
+
+template<typename T>
+int Array<T>::getArrayTypeSize() const
+{
+    assert(m_Data);
+    return m_TypeSize;
+}
+
+template<typename T>
+void Array<T>::clearArray()
+{
+    assert(m_Data);
+    m_Size = 0;
+}
 
 template<typename T>
 T* Array<T>::getArrayFront() const
@@ -82,12 +82,15 @@ T* Array<T>::getArrayBack() const
     return &m_Data[m_Size - 1];
 }
 
-//void Array::freeArray(Array* const dstArr)
-//{
-//    assert(dstArr->m_Data);
-//    free(dstArr->m_Data);
-//}
-//
+template<typename T>
+void Array<T>::freeArray()
+{
+    assert(m_Data);
+    delete[] m_Data;
+    m_Data = nullptr;
+    assert(!m_Data);
+}
+
 template<typename T>
 T* Array<T>::getArrayAt(uint32_t index) const
 {
@@ -179,20 +182,12 @@ void Array<T>::removeAtFastArray(uint32_t index)
     assert(index < m_Size);
     m_Data[index] = *getArrayBack();
     m_Size--;
-    /*unsigned char* ptr = (unsigned char*)arr->m_Data;
-    unsigned char* ptrToLast = ptr + (arr->m_Size - 1) * arr->m_TypeSize;
-    unsigned char* ptrToIdx = ptr + index * arr->m_TypeSize;
-    memcpy(ptrToIdx, ptrToLast, arr->m_TypeSize);
-    arr->m_Size--;*/
 }
 
 void testArray2()
 {
-    //Array a = createNewArray(sizeof(int));
     Array<int>* a = new Array<int>();
     int num = 0;
-    //a->pushBackArray(&num);
-    //logmsg("empty? %d\n", a->isArrayEmpty());
     //push 10 elements and print (init)
     for (int i = 0; i < 10; ++i)
     {
@@ -222,23 +217,19 @@ void testArray2()
     a->removeAtFastArray(5);
     a->printTestArray();
 
-    ////remove last
-    //printf("popping last element...\n");
-    //popBackArray(&a);
+    //remove last
+    printf("popping last element...\n");
+    a->popBackArray();
 
-    ////print last
-    //int getLast = *((int*)getArrayBack(&a));
-    //printf("last = %d\n", getLast);
+    //print last
+    int getLast = *a->getArrayBack();
+    printf("last = %d\n", getLast);
 
-    ////clears array
-    //clearArray(&a);
+    //clears array
+    a->clearArray();
 
-    ////print first
-    ///*int getFirst = *((int*)a_front(&a));
-    //printf("first = %d\n", getFirst);*/
-
-    ////free after usage
-    //freeArray(&a);
+    //free after usage
+    a->freeArray();
 }
 
 template<typename T>

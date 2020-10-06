@@ -1,8 +1,8 @@
 #pragma once
 
 #include <stdint.h>
-void testArray2();
 
+void testArray2();
 
 template<typename T>
 class Array {
@@ -12,35 +12,27 @@ private:
     uint32_t m_Capacity; // available memory size
     uint32_t m_TypeSize; // size of element type
 
-    //void clearArray();
-    //
-    //
-    //void* reallocArray(void* block, size_t oldSize, size_t newSize);
-
-    //
     void checkArraySuffMem();
-    //
-    //
-    
 public:
-    Array()
-        : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ 0 }, m_TypeSize{sizeof(T)}
-    {}
+    Array() : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ 0 }, m_TypeSize{ sizeof(T) } {}
 
-
-    //Array createNewArray(unsigned int sizeElem);
-
-    //Array createNewFilledArray(unsigned int numElem, unsigned int sizeElem);
-
+    ~Array()
+    {
+        assert(m_Data);
+        delete[] m_Data;
+        m_Data = nullptr;
+        assert(!m_Data);
+    }
+    
     bool isArrayEmpty() const;
 
-  /*  int getArraySize() const;
+    uint32_t getArraySize() const;
 
     void addArraySize(int increment);
 
     int getArrayCapacity() const;
 
-    int getArrayTypeSize() const;*/
+    int getArrayTypeSize() const;
 
     void pushBackArray(const T* srcData);
 
@@ -54,12 +46,22 @@ public:
 
     T* getArrayBack() const;
 
-    //void freeArray(Array * const dstArr);
+    void clearArray();
+
+    void freeArray();
 
     T* getArrayAt(uint32_t index) const;
 
     void popBackArray();
+
     void removeAtFastArray(uint32_t index);
+
+    //DEPRECATED
+    //Array createNewArray(unsigned int sizeElem);
+
+    //Array createNewFilledArray(unsigned int numElem, unsigned int sizeElem);
+
+    //void* reallocArray(void* block, size_t oldSize, size_t newSize);
 
 };
 
