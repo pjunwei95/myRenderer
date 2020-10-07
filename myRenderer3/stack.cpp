@@ -2,9 +2,9 @@
 #include <assert.h>
 
 template <typename T>
-Stack<T>::Stack(int sizeElem)
+Stack<T>::Stack()
 {
-    m_Stack = new Array(sizeElem);
+    m_Stack = new Array();
 }
 
 template <typename T>

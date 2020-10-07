@@ -4,7 +4,7 @@
 template <typename T>
 class Stack {
 public:
-    Stack(int sizeElem);
+    Stack();
     ~Stack();
     void push(void* srcData);
     void pop();
