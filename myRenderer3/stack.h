@@ -1,16 +1,18 @@
 #pragma once
 #include "array.h"
 
+void testStack();
+
 template <typename T>
 class Stack {
 public:
     Stack();
     ~Stack();
-    void push(void* srcData);
+    void push(T* srcData);
     void pop();
     T* peek();
-    T* at(int index);
+    T* at(uint32_t index);
     uint32_t size();
 private:
-    Array<T> m_Stack;
+    Array<T>* m_Stack;
 };

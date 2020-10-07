@@ -4,9 +4,9 @@
 #include "windowHandler.h"
 #include <crtdbg.h>
 
-#include "profiler.h"
+//#include "profiler.h"
 //#include "test.h"
-//#include "stack.h"
+#include "stack.h"
 
 bool isTestProfile = false;
 
@@ -24,13 +24,17 @@ void runMainLoop()
     FrameRateController frc;
     frc.initialiseTimer();
     
-    if (isTestProfile)
-        initProfile(50);   
-
-    if (!isTestProfile)
-        testProfiler();
+    // TESTS
     //test();
     //testArray2();
+    testStack();
+
+    //if (isTestProfile)
+    //    initProfile(50);   
+
+    //if (!isTestProfile)
+    //    testProfiler();
+    
 
     //beginProfile("createWindow");
 
@@ -52,25 +56,25 @@ void runMainLoop()
 
             getKeyInput();
 
-            if (isTestProfile)
-                beginProfile("updateWindow");
+            //if (isTestProfile)
+                //beginProfile("updateWindow");
 
             wh.updateWindow();
 
 
             frc.idleUntilFPSLimit(&timer);
 
-            if (isTestProfile)
-                onProfilerFlip();
+            //if (isTestProfile)
+                //onProfilerFlip();
             
-            if (isTestProfile)
-                endProfile();
+            //if (isTestProfile)
+                //endProfile();
             //endProfile();
         }
         wh.destroyWindow();
     }
-    if (isTestProfile)
-        destroyProfile();
+    //if (isTestProfile)
+    //    destroyProfile();
 
 }
 
