@@ -18,11 +18,12 @@ private:
     void clearCircBuf();
 
 public:
+    //CircularBuffer(){}
     CircularBuffer(uint32_t bufferLength);
     ~CircularBuffer();
 
     uint32_t getFrontIdxCircBuf() const;
-    uint32_t getCapacityCircBuff() const;
+    uint32_t getCapacityCircBuff();
     uint32_t getSizeCircBuf() const;
     T* popFrontCircBuf();
     T* getCircBufAt(uint32_t index) const;

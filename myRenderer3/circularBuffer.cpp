@@ -10,7 +10,8 @@ template<typename T>
 CircularBuffer<T>::CircularBuffer(uint32_t bufferLength)
     : m_Array{ nullptr }, m_Front{ 0 }, m_Back{ 0 }
 {
-    m_Array = new Array<T>(bufferLength);
+    m_Array = new Array<T>();
+    bufferLength;
     assert(m_Array);
 }
 
@@ -41,9 +42,10 @@ T* CircularBuffer<T>::getBackCircBuf() const
 }
 
 template<typename T>
-uint32_t CircularBuffer<T>::getCapacityCircBuff() const
+uint32_t CircularBuffer<T>::getCapacityCircBuff()
 {
-    return m_Array->getArrayCapacity();
+    //return m_Array->getArrayCapacity();
+    return 0;
 }
 
 template<typename T>
@@ -54,17 +56,19 @@ uint32_t CircularBuffer<T>::getSizeCircBuf() const
         if (m_Array->isArrayEmpty())
             return 0;
         else
+            return 0;
             return m_Array->getArrayCapacity();
     }
     //difference in m_Front & m_Back
     else
-        return (uint32_t) abs(m_Front - m_Back);
+        return (uint32_t)abs(m_Front - m_Back);
 }
 
 template<typename T>
 bool CircularBuffer<T>::isFullCircBuf() const
 {
-    return getSizeCircBuf() == m_Array->getArrayCapacity();
+    return false;
+    //return getSizeCircBuf() == m_Array->getArrayCapacity();
 }
 
 template<typename T>
@@ -126,16 +130,18 @@ T* CircularBuffer<T>::getCircBufAt(uint32_t index) const
 
 void testCircularBuffer()
 {
-    //CircularBuffer* intCircBuf = createNewCircBuf(3, sizeof(int));
-    CircularBuffer<int>* intCircBuf = new CircularBuffer<int>(3);
+    //CircularBuffer<int>* intCircBuf = new CircularBuffer<int>(3);
+    CircularBuffer<int>* cb = new CircularBuffer<int>(3);
+    cb;
 
-
-    for (int i = 0; i < 10; ++i)
-    {
-        if (intCircBuf->isFullCircBuf())
-            intCircBuf->popFrontCircBuf();
+    //intCircBuf->getCapacityCircBuff();
+    //intCircBuf->isFullCircBuf();
+    //for (int i = 0; i < 10; ++i)
+    //{
+        //if (intCircBuf->isFullCircBuf())
+            //intCircBuf->popFrontCircBuf();
         //pushBackCircBuf(&intCircBuf, &i);
-    }
+    //}
 
     ////print to console
     //printCircBuf(&intCircBuf);

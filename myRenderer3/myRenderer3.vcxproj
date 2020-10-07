@@ -126,7 +126,9 @@
   <ItemGroup>
     <ClCompile Include="carray.cpp" />
     <ClCompile Include="bufferOps.cpp" />
-    <ClCompile Include="circularBuffer.cpp" />
+    <ClCompile Include="circularBuffer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="fileManager.cpp" />
     <ClCompile Include="drawScreen.cpp" />
     <ClCompile Include="frameRateController.cpp" />
