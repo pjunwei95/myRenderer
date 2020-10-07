@@ -10,7 +10,7 @@ template<typename T>
 CircularBuffer<T>::CircularBuffer(uint32_t bufferLength)
     : m_Array{ nullptr }, m_Front{ 0 }, m_Back{ 0 }
 {
-    m_Array = new Array<T>();
+    m_Array = new Array<T>(bufferLength);
     bufferLength;
     assert(m_Array);
 }
@@ -130,18 +130,18 @@ T* CircularBuffer<T>::getCircBufAt(uint32_t index) const
 
 void testCircularBuffer()
 {
-    //CircularBuffer<int>* intCircBuf = new CircularBuffer<int>(3);
-    CircularBuffer<int>* cb = new CircularBuffer<int>(3);
-    cb;
+    CircularBuffer<int>* intCircBuf = new CircularBuffer<int>(3);
+    //CircularBuffer<int>* cb = new CircularBuffer<int>(3);
+    //cb;
 
-    //intCircBuf->getCapacityCircBuff();
-    //intCircBuf->isFullCircBuf();
-    //for (int i = 0; i < 10; ++i)
-    //{
-        //if (intCircBuf->isFullCircBuf())
-            //intCircBuf->popFrontCircBuf();
+    //cb->getCapacityCircBuff();
+    intCircBuf->isFullCircBuf();
+    for (int i = 0; i < 10; ++i)
+    {
+        if (intCircBuf->isFullCircBuf())
+            intCircBuf->popFrontCircBuf();
         //pushBackCircBuf(&intCircBuf, &i);
-    //}
+    }
 
     ////print to console
     //printCircBuf(&intCircBuf);
