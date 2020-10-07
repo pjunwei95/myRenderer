@@ -1,5 +1,4 @@
 #pragma once
-
 #include <stdint.h>
 
 void testArray2();
@@ -10,7 +9,9 @@ private:
     T* m_Data; // pointer to array
     uint32_t m_Size; // number of elements
     uint32_t m_Capacity; // available memory size
-    uint32_t m_TypeSize; // size of element type
+
+    //deprecated
+    //uint32_t m_TypeSize; // size of element type
 
     void checkArraySuffMem();
 public:
@@ -22,33 +23,31 @@ public:
     
     bool isArrayEmpty() const;
 
-    uint32_t getArraySize() const;
-
     void addArraySize(int increment);
 
-    int getArrayCapacity() const;
+    uint32_t getArraySize() const;
 
-    int getArrayTypeSize() const;
+    uint32_t getArrayCapacity() const;
+
+    T* getArrayFront() const;
+
+    T* getArrayBack() const;
+
+    T* getArrayAt(uint32_t index) const;
 
     void pushBackArray(const T* srcData);
 
-    void printTestArray();
+    void popBackArray();
 
     void eraseArrayAt(uint32_t index);
 
     void insertArray(uint32_t index, const T* srcData);
     
-    T* getArrayFront() const;
-
-    T* getArrayBack() const;
-
     void clearArray();
 
-    T* getArrayAt(uint32_t index) const;
-
-    void popBackArray();
-
     void removeAtFastArray(uint32_t index);
+
+    void printTestArray();
 
     //DEPRECATED
     //Array createNewArray(unsigned int sizeElem);
@@ -57,6 +56,7 @@ public:
 
     //void* reallocArray(void* block, size_t oldSize, size_t newSize);
 
+    //int getArrayTypeSize() const;
 
     //void freeArray();
 

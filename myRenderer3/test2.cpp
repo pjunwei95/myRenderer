@@ -4,11 +4,11 @@
 
 template<typename T>
 Array<T>::Array() 
-    : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ 0 }, m_TypeSize{ sizeof(T) } {}
+    : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ 0 } {}
 
 template<typename T>
 Array<T>::Array(uint32_t numElem)
-    : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ numElem }, m_TypeSize{ sizeof(T) }
+    : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ numElem } 
 {
     m_Data = new T[numElem];
     assert(m_Data);
@@ -52,12 +52,6 @@ int Array<T>::getArrayCapacity() const
     return m_Capacity;
 }
 
-template<typename T>
-int Array<T>::getArrayTypeSize() const
-{
-    assert(m_Data);
-    return m_TypeSize;
-}
 
 template<typename T>
 void Array<T>::clearArray()
@@ -88,7 +82,7 @@ T* Array<T>::getArrayAt(uint32_t index) const
     assert(!isArrayEmpty());
     assert(m_Data);
     assert(index < m_Size);
-    return (T*)((uint8_t*)m_Data + index * m_TypeSize);
+    return &m_Data[index];
 }
 
 template<typename T>
@@ -123,8 +117,6 @@ template<typename T>
 void Array<T>::pushBackArray(const T* srcData)
 {
     assert(srcData);
-    assert(m_TypeSize > 0);
-    assert(m_TypeSize == sizeof(*srcData));
     checkArraySuffMem();
     assert(m_Size < m_Capacity);
     m_Data[m_Size] = *srcData;

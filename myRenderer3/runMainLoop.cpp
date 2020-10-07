@@ -31,7 +31,7 @@ void runMainLoop()
     //if (!isTestProfile)
         //testProfiler();
     //test();
-    testArray2();
+    //testArray2();
 
     //beginProfile("createWindow");
 
