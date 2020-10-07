@@ -14,15 +14,11 @@ private:
 
     void checkArraySuffMem();
 public:
-    Array() : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ 0 }, m_TypeSize{ sizeof(T) } {}
+    Array();
 
-    ~Array()
-    {
-        assert(m_Data);
-        delete[] m_Data;
-        m_Data = nullptr;
-        assert(!m_Data);
-    }
+    Array(uint32_t numElem);
+
+    ~Array();
     
     bool isArrayEmpty() const;
 
@@ -48,8 +44,6 @@ public:
 
     void clearArray();
 
-    void freeArray();
-
     T* getArrayAt(uint32_t index) const;
 
     void popBackArray();
@@ -62,6 +56,9 @@ public:
     //Array createNewFilledArray(unsigned int numElem, unsigned int sizeElem);
 
     //void* reallocArray(void* block, size_t oldSize, size_t newSize);
+
+
+    //void freeArray();
 
 };
 

@@ -1,28 +1,28 @@
 #include <assert.h>
-#include <string.h>
-#include <stdlib.h>
 #include "stdio.h"
-#include <stdint.h>
 #include "test2.h"
-#include "logger.h"
 
+template<typename T>
+Array<T>::Array() 
+    : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ 0 }, m_TypeSize{ sizeof(T) } {}
 
-//// Function that takes in capacity that returns you 
-//// an Array with the appropriate size & capacity
-//Array Array::createNewFilledArray(unsigned int numElem, unsigned int sizeElem)
-//{
-//    assert(sizeElem);
-//    Array a;
-//    a.m_Data = malloc(numElem * sizeElem);
-//    assert(a.m_Data);
-//
-//    a.m_Size = 0;
-//    a.m_Capacity = numElem;
-//    a.m_TypeSize = sizeElem;
-//
-//    return a;
-//}
-//
+template<typename T>
+Array<T>::Array(uint32_t numElem)
+    : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ numElem }, m_TypeSize{ sizeof(T) }
+{
+    m_Data = new T[numElem];
+    assert(m_Data);
+}
+
+template<typename T>
+Array<T>::~Array()
+{
+    assert(m_Data);
+    delete[] m_Data;
+    m_Data = nullptr;
+    assert(!m_Data);
+}
+
 template<typename T>
 bool Array<T>::isArrayEmpty() const
 {
@@ -83,15 +83,6 @@ T* Array<T>::getArrayBack() const
 }
 
 template<typename T>
-void Array<T>::freeArray()
-{
-    assert(m_Data);
-    delete[] m_Data;
-    m_Data = nullptr;
-    assert(!m_Data);
-}
-
-template<typename T>
 T* Array<T>::getArrayAt(uint32_t index) const
 {
     assert(!isArrayEmpty());
@@ -124,6 +115,7 @@ void Array<T>::checkArraySuffMem()
 
         delete[] m_Data;
         m_Data = temp;
+
     }
 }
 
@@ -133,8 +125,8 @@ void Array<T>::pushBackArray(const T* srcData)
     assert(srcData);
     assert(m_TypeSize > 0);
     assert(m_TypeSize == sizeof(*srcData));
-
     checkArraySuffMem();
+    assert(m_Size < m_Capacity);
     m_Data[m_Size] = *srcData;
     m_Size++;
 }
@@ -225,11 +217,9 @@ void testArray2()
     int getLast = *a->getArrayBack();
     printf("last = %d\n", getLast);
 
-    //clears array
-    a->clearArray();
-
     //free after usage
-    a->freeArray();
+    //a->freeArray();
+    delete a;
 }
 
 template<typename T>
