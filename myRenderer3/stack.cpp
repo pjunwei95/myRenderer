@@ -1,42 +1,45 @@
 #include "stack.h"
 #include <assert.h>
 
-Stack::Stack(int sizeElem)
+template <typename T>
+Stack<T>::Stack(int sizeElem)
 {
-    m_Stack = createNewArray(sizeElem);
+    m_Stack = new Array(sizeElem);
 }
 
-Stack::~Stack()
+template <typename T>
+Stack<T>::~Stack()
 {
+    delete m_Stack;
 }
 
-void Stack::push(void* srcData)
+template <typename T>
+void Stack<T>::push(void* srcData)
 {
-    pushBackArray(&m_Stack, srcData);
+    m_Stack.pushBackArray(srcData);
 }
 
-void* Stack::peek()
+template <typename T>
+T* Stack<T>::peek()
 {
-    assert(!isArrayEmpty(&m_Stack));
-    return getArrayBack(&m_Stack);
+    assert(!m_Stack.isArrayEmpty());
+    return m_Stack.getArrayBack();
 }
 
-void Stack::pop()
+template <typename T>
+void Stack<T>::pop()
 {
-    popBackArray(&m_Stack);
+    m_Stack.popBackArray();
 }
 
-void* Stack::at(int index)
+template <typename T>
+T* Stack<T>::at(int index)
 {
-    return getArrayAt(&m_Stack, index);
+    return m_Stack.getArrayAt(index);
 }
 
-int Stack::size() 
+template <typename T>
+uint32_t Stack<T>::size()
 {
-    return getArraySize(&m_Stack);
-}
-void Stack::free()
-{
-    freeArray(&m_Stack);
-    delete &m_Stack;
+    return m_Stack.getArraySize();
 }
