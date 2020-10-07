@@ -46,7 +46,7 @@ void Array<T>::addArraySize(int increment)
 }
 
 template<typename T>
-int Array<T>::getArrayCapacity() const
+uint32_t Array<T>::getArrayCapacity() const
 {
     assert(m_Data);
     return m_Capacity;
