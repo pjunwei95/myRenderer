@@ -6,7 +6,6 @@
 
 #include "profiler.h"
 //#include "test.h"
-#include "test2.h"
 //#include "stack.h"
 
 bool isTestProfile = false;
@@ -28,8 +27,8 @@ void runMainLoop()
     if (isTestProfile)
         initProfile(50);   
 
-    //if (!isTestProfile)
-        //testProfiler();
+    if (!isTestProfile)
+        testProfiler();
     //test();
     //testArray2();
 
