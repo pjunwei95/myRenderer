@@ -1,31 +1,48 @@
 #pragma once
 #include "array.h"
 
-struct CircularBuffer
-{
-    Array m_Array;
-    int m_Front;
-    int m_Back;
-};
-
-int getCapacityCircBuff(const CircularBuffer * const cb);
-
-int getSizeCircBuf(const CircularBuffer * const cb);
-
-bool isFullCircBuf(const CircularBuffer * const cb);
-
-void pushBackCircBuf(CircularBuffer * const cb, const void * srcData);
-
-void * popFrontCircBuf(CircularBuffer * const cb);
-
-void * getCircBufAt(const CircularBuffer * const cb, int index);
-
-void freeCircBuf(CircularBuffer * const cb);
-
 void testCircularBuffer();
 
-CircularBuffer createNewCircBuf(unsigned int bufferLength, unsigned int sizeElem);
+template<typename T>
+class CircularBuffer
+{
+private:
+    Array<T> m_Array;
+    uint32_t m_Front;
+    uint32_t m_Back;
 
-int getFrontIdxCircBuf(const CircularBuffer * const cb);
+    T* getBackCircBuf() const;
 
-void * getFrontCircBuf(const CircularBuffer * const cb);
+    bool isCircBufEmpty() const;
+
+    void printCircBuf() const;
+    void pushFrontCircBuf(const T* srcData);
+    void clearCircBuf();
+
+public:
+    uint32_t getFrontIdxCircBuf() const;
+
+    uint32_t getCapacityCircBuff() const;
+
+    uint32_t getSizeCircBuf() const;
+
+    T* popFrontCircBuf();
+
+    T* getCircBufAt(uint32_t index) const;
+
+    T* getFrontCircBuf() const;
+
+    bool isFullCircBuf() const;
+
+    void pushBackCircBuf(const T* srcData);
+
+    //void freeCircBuf(CircularBuffer * const cb);
+
+
+    
+
+    //CircularBuffer createNewCircBuf(unsigned int bufferLength, unsigned int sizeElem);
+
+
+};
+
