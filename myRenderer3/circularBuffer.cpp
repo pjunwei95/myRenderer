@@ -4,17 +4,23 @@
 #include <string.h>
 #include "logger.h"
 
-
 // A circular buffer is simply an array but with 2 cursors, front & back
 // the cursors are simply index values
-//CircularBuffer createNewCircBuf(unsigned int bufferLength, unsigned int sizeElem)
-//{
-//    CircularBuffer cb;
-//    cb.m_Array = createNewFilledArray(bufferLength, sizeElem);
-//    cb.m_Front = 0;
-//    cb.m_Back = 0;
-//    return cb;
-//}
+template<typename T>
+CircularBuffer<T>::CircularBuffer(uint32_t bufferLength)
+    : m_Array{ nullptr }, m_Front{ 0 }, m_Back{ 0 }
+{
+    m_Array = new Array<T>(bufferLength);
+    assert(m_Array);
+}
+
+template<typename T>
+CircularBuffer<T>::~CircularBuffer()
+{
+    assert(m_Array);
+    delete m_Array;
+}
+
 
 template<typename T>
 uint32_t CircularBuffer<T>::getFrontIdxCircBuf() const
@@ -25,19 +31,19 @@ uint32_t CircularBuffer<T>::getFrontIdxCircBuf() const
 template<typename T>
 T* CircularBuffer<T>::getFrontCircBuf() const
 {
-    return &m_Array.getArrayAt(m_Front);
+    return &m_Array->getArrayAt(m_Front);
 }
 
 template<typename T>
 T* CircularBuffer<T>::getBackCircBuf() const
 {
-    return m_Array.getArrayAt(m_Back);
+    return m_Array->getArrayAt(m_Back);
 }
 
 template<typename T>
 uint32_t CircularBuffer<T>::getCapacityCircBuff() const
 {
-    return m_Array.getArrayCapacity();
+    return m_Array->getArrayCapacity();
 }
 
 template<typename T>
@@ -45,20 +51,20 @@ uint32_t CircularBuffer<T>::getSizeCircBuf() const
 {
     if (m_Front == m_Back)
     {
-        if (m_Array.isArrayEmpty())
+        if (m_Array->isArrayEmpty())
             return 0;
         else
-            return m_Array.getArrayCapacity();
+            return m_Array->getArrayCapacity();
     }
     //difference in m_Front & m_Back
     else
-        return abs(m_Front - m_Back);
+        return (uint32_t) abs(m_Front - m_Back);
 }
 
 template<typename T>
 bool CircularBuffer<T>::isFullCircBuf() const
 {
-    return getSizeCircBuf() == m_Array.getArrayCapacity();
+    return getSizeCircBuf() == m_Array->getArrayCapacity();
 }
 
 template<typename T>
@@ -98,8 +104,8 @@ template<typename T>
 T* CircularBuffer<T>::popFrontCircBuf()
 {
     assert(!isCircBufEmpty());
-    T* ptrFront = m_Array.getArrayAt(m_Front);
-    m_Front = (m_Front + 1) % m_Array.getArrayCapacity();
+    T* ptrFront = m_Array->getArrayAt(m_Front);
+    m_Front = (m_Front + 1) % m_Array->getArrayCapacity();
 
     return ptrFront;
 }
@@ -120,14 +126,16 @@ T* CircularBuffer<T>::getCircBufAt(uint32_t index) const
 
 void testCircularBuffer()
 {
-    //CircularBuffer intCircBuf = createNewCircBuf(3, sizeof(int));
+    //CircularBuffer* intCircBuf = createNewCircBuf(3, sizeof(int));
+    CircularBuffer<int>* intCircBuf = new CircularBuffer<int>(3);
 
-    //for (int i = 0; i < 10; ++i)
-    //{
-    //    if (isFullCircBuf(&intCircBuf))
-    //        popFrontCircBuf(&intCircBuf);
-    //    pushBackCircBuf(&intCircBuf, &i);
-    //}
+
+    for (int i = 0; i < 10; ++i)
+    {
+        if (intCircBuf->isFullCircBuf())
+            intCircBuf->popFrontCircBuf();
+        //pushBackCircBuf(&intCircBuf, &i);
+    }
 
     ////print to console
     //printCircBuf(&intCircBuf);

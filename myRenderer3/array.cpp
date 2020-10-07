@@ -6,6 +6,7 @@ template<typename T>
 Array<T>::Array() 
     : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ 0 } {}
 
+// new filled array of fixed size
 template<typename T>
 Array<T>::Array(uint32_t numElem)
     : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ numElem } 

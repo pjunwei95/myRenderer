@@ -3,10 +3,10 @@
 #include "frameRateController.h"
 #include "windowHandler.h"
 #include <crtdbg.h>
-
 //#include "profiler.h"
 //#include "test.h"
-#include "stack.h"
+#include "circularBuffer.h"
+//#include "stack.h"
 
 bool isTestProfile = false;
 
@@ -26,15 +26,15 @@ void runMainLoop()
     
     // TESTS
     //test();
-    //testArray2();
-    testStack();
+    testCircularBuffer();
+    //testStack();
 
     //if (isTestProfile)
     //    initProfile(50);   
 
     //if (!isTestProfile)
     //    testProfiler();
-    
+   
 
     //beginProfile("createWindow");
 

@@ -17,6 +17,7 @@ private:
 public:
     Array();
 
+    // new filled array of fixed size
     Array(uint32_t numElem);
 
     ~Array();

@@ -58,4 +58,5 @@ void testStack()
     s->pop();
     ++num;
     s->push(&num);
+    delete s;
 }
