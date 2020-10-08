@@ -1,39 +1,19 @@
 #include "stack.h"
 #include <assert.h>
+#include "logger.h"
 
-Stack::Stack(int sizeElem)
+void testStack()
 {
-    m_Stack = createNewArray(sizeElem);
-}
+    logmsg("test stack...\n");
 
-Stack::~Stack()
-{
-    freeArray(&m_Stack);
-    delete &m_Stack;
-}
+    Stack<int>* s = new Stack<int>();
+    int num = 1;
+    s->push(&num);
 
-void Stack::Push(void* srcData)
-{
-    pushBackArray(&m_Stack, srcData);
-}
+    logmsg("peeking value = %d\n", *s->peek());
 
-void* Stack::Peek()
-{
-    assert(!isArrayEmpty(&m_Stack));
-    return getArrayBack(&m_Stack);
-}
-
-void Stack::Pop()
-{
-    popBackArray(&m_Stack);
-}
-
-void* Stack::At(int index)
-{
-    return getArrayAt(&m_Stack, index);
-}
-
-int Stack::Size() 
-{
-    return getArraySize(&m_Stack);
+    s->pop();
+    ++num;
+    s->push(&num);
+    delete s;
 }

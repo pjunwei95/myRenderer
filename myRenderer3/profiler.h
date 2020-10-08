@@ -1,7 +1,6 @@
 #pragma once
 #include "frameRateController.h"
-//#include "circularBuffer.h"
-//#include <string.h>
+#include <stdint.h>
 
 #define CHAR_MAX_LIMIT 256
 
@@ -16,7 +15,7 @@ void printPastFrames();
 // Header functions
 void testProfiler();
 
-void initProfile(int frameNum);
+void initProfile(uint32_t frameNum);
 
 void beginProfile(const char * string);
 
@@ -25,3 +24,4 @@ void endProfile();
 void onProfilerFlip();
 
 void destroyProfile();
+

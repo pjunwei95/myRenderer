@@ -1,4 +1,6 @@
 #pragma once
+#include "sdl/SDL.h"
+
 typedef SDL_Window* WindowHandle;
 typedef SDL_Surface* SurfaceHandle;
 

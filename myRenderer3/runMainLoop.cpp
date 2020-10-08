@@ -1,22 +1,43 @@
-#include <stdio.h>
-
-#include "sdl/SDL.h"
 #include "engine.h"
-#include "drawScreen.h"
 #include "getKeyInput.h"
-#include "runMainLoop.h"
 #include "frameRateController.h"
 #include "windowHandler.h"
+#include <crtdbg.h>
 #include "profiler.h"
 //#include "test.h"
 #include "circularBuffer.h"
+//#include "stack.h"
+#include "array.h"
+
+bool isTestProfile = true;
 
 void runMainLoop()
 {
-    initialiseTimer();
-    initProfile(50);
+
+    // Enable run-time memory check for debug builds.
+    //#if defined(DEBUG) | defined(_DEBUG)
+    //_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+    //#endif
+
+    //int * pi = new int;
+    //pi;
+
+    FrameRateController frc;
+    frc.initialiseTimer();
+    
+    // TESTS
+    //test();
     //testCircularBuffer();
-    //testProfiler();
+    //testStack();
+    //testArray2();
+
+    if (isTestProfile)
+        initProfile(50);   
+
+    if (!isTestProfile)
+        testProfiler();
+   
+
     //beginProfile("createWindow");
 
     WindowHandler wh;
@@ -27,27 +48,35 @@ void runMainLoop()
 
         while (!getIsDone())
         {
-            beginProfile("beforeIdle");
+            //beginProfile("beforeIdle");
 
             Timer timer;
 
-            updateTimeStamp(&timer);
+            frc.updateTimeStamp(&timer);
 
             wh.drawWindow();
 
             getKeyInput();
 
-            beginProfile("updateWindow");
+            if (isTestProfile)
+                beginProfile("updateWindow");
 
             wh.updateWindow();
 
-            idleUntilFPSLimit(&timer);
-            endProfile();
-            endProfile();
+
+            frc.idleUntilFPSLimit(&timer);
+
+            if (isTestProfile)
+                onProfilerFlip();
+            
+            if (isTestProfile)
+                endProfile();
+            //endProfile();
         }
         wh.destroyWindow();
     }
-    destroyProfile();
+    if (isTestProfile)
+        destroyProfile();
 
 }
 

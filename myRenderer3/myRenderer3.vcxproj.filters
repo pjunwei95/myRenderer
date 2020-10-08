@@ -51,13 +51,16 @@
     <ClCompile Include="test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="array.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="circularBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="carray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="array.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -89,16 +92,10 @@
     <ClInclude Include="processArgs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="bufferOps.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="profiler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="test.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="array.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="circularBuffer.h">
@@ -107,10 +104,19 @@
     <ClInclude Include="stack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="bufferOps.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="carray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="array.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="config.txt">
-      <Filter>Source Files</Filter>
+      <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>
 </Project>

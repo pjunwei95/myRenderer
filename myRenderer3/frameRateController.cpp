@@ -4,37 +4,33 @@
 #include "circularBuffer.h"
 #include "profiler.h"
 
-Timer nFrequency;
-Timer defaultFrameTime;
-
-void initialiseTimer()
+void FrameRateController::initialiseTimer()
 {
     // 1s = 1 000 000 micro s = 30 frames
-    defaultFrameTime.QuadPart = 1000000 / FPS; // unit is in seconds, NOT microseconds
+    m_DefaultFrameTime.QuadPart = 1000000 / FPS; // unit is in seconds, NOT microseconds
 
-    QueryPerformanceFrequency(&nFrequency); //to be called only once. not per frame
+    QueryPerformanceFrequency(&m_Frequency); //to be called only once. not per frame
 }
 
-void idleUntilFPSLimit(TimerHandle timer)
+void FrameRateController::idleUntilFPSLimit(TimerHandle timer)
 {
     while (1) // frame drawing and blocking, or at gameStateCurr == next
     {
         if (isWithinFrameRate(timer))
         {
-            onProfilerFlip();
             break;
         }
     }
 }
 
 
-bool isWithinFrameRate(TimerHandle nStartTime)
+bool FrameRateController::isWithinFrameRate(TimerHandle nStartTime)
 {
     Timer nStopTime;
     updateTimeStamp(&nStopTime);
 
     calcTimerElapsedUs(&nStopTime, nStartTime);
-    if (nStopTime.QuadPart > defaultFrameTime.QuadPart) {
+    if (nStopTime.QuadPart > m_DefaultFrameTime.QuadPart) {
         //printf("frametime = %.2f ms\n", getTimerElapsedMs(&nStopTime));
         //printf("frametime = %f s\n", GetTimerElapsedSeconds(nStopTime));
         //logmsg("FPS = %f \n", 1.0 / getTimerElapsedSeconds(&nStopTime));
@@ -43,24 +39,24 @@ bool isWithinFrameRate(TimerHandle nStartTime)
     return false;
 }
 
-void calcTimerElapsedUs(TimerHandle nStopTime, const TimerHandle nStartTime)
+void FrameRateController::calcTimerElapsedUs(TimerHandle nStopTime, const TimerHandle nStartTime)
 {
     nStopTime->QuadPart = (nStopTime->QuadPart - nStartTime->QuadPart); //the units here are in seconds
     nStopTime->QuadPart *= 1000000; //convert seconds to microseconds
-    nStopTime->QuadPart /= nFrequency.QuadPart;
+    nStopTime->QuadPart /= m_Frequency.QuadPart;
 }
 
-void updateTimeStamp(TimerHandle timer)
+void FrameRateController::updateTimeStamp(TimerHandle timer)
 {
     QueryPerformanceCounter(timer);
 }
 
-float getTimerElapsedMs(const TimerHandle timeElapsed)
+float FrameRateController::getTimerElapsedMs(const TimerHandle timeElapsed)
 {
     return (float) timeElapsed->QuadPart / 1000;
 }
 
-float getTimerElapsedSeconds(const TimerHandle timeElapsed)
+float FrameRateController::getTimerElapsedSeconds(const TimerHandle timeElapsed)
 {
     return (float)timeElapsed->QuadPart / 1000000;
 }

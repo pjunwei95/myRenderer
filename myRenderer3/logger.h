@@ -1,6 +1,5 @@
 #pragma once
 
-
 void openLogStream();
 
 void closeLogStream();
