@@ -244,4 +244,6 @@ void testB()
     b->addArraySize(1);
     int num = 9;
     b->operator[](0) = num;
+
+    //for profiler
 }

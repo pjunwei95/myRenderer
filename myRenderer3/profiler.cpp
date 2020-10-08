@@ -6,19 +6,19 @@
 //#include "circularBuffer.h"
 //#include "stack.h"
 //
-//Stack* profileStack;
-//CircularBuffer frameCircBuf;
+//Stack<Profile>* profileStack;
+//CircularBuffer<Array<Profile>>* frameCircBuf;
 //FrameRateController frc;
 //bool isProfileBegin; // This doesnt't work for nested profiling
 //
-//void initProfile(int frameNum)
+//void initProfile(uint32_t frameNum)
 //{
 //    frc.initialiseTimer();
 //    isProfileBegin = false;
-//    profileStack = new Stack(sizeof(Profile));
-//    frameCircBuf = createNewCircBuf(frameNum, sizeof(Array));
+//    profileStack = new Stack<Profile>();
+//    frameCircBuf = new CircularBuffer<Array<Profile>>(frameNum);
 //}
-//
+
 //Profile* getProfile()
 //{
 //    Profile* profile = (Profile*)profileStack->peek();
@@ -43,10 +43,10 @@
 //    assert(isProfileBegin);
 //    isProfileBegin = false;
 //
-//    //dereference from peek()
+//    dereference from peek()
 //    Profile* profile = getProfile();
 //
-//    //update time elapsed
+//    update time elapsed
 //    frc.updateTimeStamp(&profile->m_Elapsed);
 //    frc.calcTimerElapsedUs(&profile->m_Elapsed, &profile->m_Start);
 //
@@ -55,74 +55,81 @@
 //
 //void onProfilerFlip()
 //{
-//    //create vector of profile for each frame
-//    //frame profile vector
+//    create vector of profile for each frame
+//    frame profile vector
 //    Array fpVec = createNewArray(sizeof(Profile));
+//    Array<Profile>* fpVec = new Array<Profile>();
 //
-//    //iterate thru all profiles
-//    for (int i = 0; i < profileStack->size(); ++i)
+//    iterate thru all profiles
+//    for (uint32_t i = 0; i < profileStack->size(); ++i)
 //    {
 //        Profile* ptrToProfile = (Profile*) profileStack->at(i);
-//        // update time elapsed
+//         update time elapsed
 //        frc.updateTimeStamp(&ptrToProfile->m_Elapsed);
 //        frc.calcTimerElapsedUs(&ptrToProfile->m_Elapsed, &ptrToProfile->m_Start);
-//        pushBackArray(&fpVec, ptrToProfile);
+//        fpVec->pushBackArray(ptrToProfile);
 //    }
 //
-//    //push array to circular buffer
-//    if (isFullCircBuf(&frameCircBuf))
+//    push array to circular buffer
+//    if (frameCircBuf->isFullCircBuf())
 //    {
-//        // when something is popped from circular buffer, it needs to be freed.
-//        Array* ptrFpVec = (Array*) popFrontCircBuf(&frameCircBuf);
+//         when something is popped from circular buffer, it needs to be freed.
+//        Array<Profile>* ptrFpVec = (Array<Profile>*) frameCircBuf->popFrontCircBuf();
 //        freeArray(ptrFpVec);
+//        delete ptrFpVec;
 //    }
 //    pushBackCircBuf(&frameCircBuf, &fpVec);
+//    frameCircBuf->pushBackCircBuf(fpVec);
 //    
 //}
 //
 //void destroyProfile()
 //{
-//    //profile stack is destructed
-//    //profileStack->free();
-//    //delete profileStack;
+//    profile stack is destructed
+//    profileStack->free();
+//    delete profileStack;
 //
-//    //loop through circular buffer
-//    for (int i = 0; i < getSizeCircBuf(&frameCircBuf); ++i)
+//    loop through circular buffer
+//    for (uint32_t i = 0; i < frameCircBuf->getSizeCircBuf(); ++i)
 //    {
-//        //get each vector of a frame
-//        Array fpVec = *((Array*)getCircBufAt(&frameCircBuf, i));
+//        get each vector of a frame
+//        Array<Profile> fpVec = *((Array*)getCircBufAt(&frameCircBuf, i));
+//        Array<Profile>* fpVec = (Array<Profile>*)frameCircBuf->getCircBufAt(i);
 //        freeArray(&fpVec);
+//        delete fpVec;
 //    }
 //
-//    //free circular buffer
+//    free circular buffer
 //    freeCircBuf(&frameCircBuf);
+//    delete frameCircBuf;
 //}
 //
 //void printPastFrames()
 //{
-//    int tempFront = getFrontIdxCircBuf(&frameCircBuf);
-//    int size = getSizeCircBuf(&frameCircBuf);
+//    int tempFront = frameCircBuf->getFrontIdxCircBuf();
+//    int size = frameCircBuf->getSizeCircBuf();
 //
 //    for (int i = 0; i < size; ++i)
 //    {
-//        //go through each frame in circular buffer
-//        int idx = (tempFront + i) % getCapacityCircBuff(&frameCircBuf);
+//        go through each frame in circular buffer
+//        int idx = (tempFront + i) % frameCircBuf->getCapacityCircBuff();
 //
-//        Array frameProfileList = *((Array*) getCircBufAt(&frameCircBuf, idx));
-//        for (int j = 0; j < getArraySize(&frameProfileList); ++j)
+//        Array frameProfileList = *((Array*)frameCircBuf->getCircBufAt(&frameCircBuf, idx));
+//        Array<Profile>* frameProfileList = (Array<Profile>*)frameCircBuf->getCircBufAt(idx);
+//        for (uint32_t j = 0; j < frameProfileList->getArraySize(); ++j)
 //        {
-//            Profile* ptrToProfile = (Profile*)getArrayAt(&frameProfileList, j);
+//            Profile* ptrToProfile = (Profile*)frameProfileList->getArrayAt(j);
 //            Profile profile = *ptrToProfile;
 //            logmsg("Frame #%d, Time elapsed for |%s| profile = %.2f ms\n", i, profile.m_ProfileName, frc.getTimerElapsedMs(&profile.m_Elapsed));
-//            //formatting for profiler: frame#, profileName, startTime, endTime
-//            //logmsg("#%d, %s, %.2f\n", i, profile.m_ProfileName, getTimerElapsedMs(&profile.m_Elapsed));
+//            formatting for profiler: frame#, profileName, startTime, endTime
+//            logmsg("#%d, %s, %.2f\n", i, profile.m_ProfileName, getTimerElapsedMs(&profile.m_Elapsed));
 //        }
 //    }
 //}
 //
 //void testProfiler()
 //{
-//    initProfile(50);
+//    initProfile((uint32_t)50);
 //    for (int i = 0; i < 50; ++i)
 //    {
 //        beginProfile(__FUNCDNAME__);

@@ -80,8 +80,8 @@ void CircularBuffer<T>::pushBackCircBuf(const T* srcData)
     assert(!isFullCircBuf());
 
     m_Array->addArraySize(1);
-    //memcpy(getBackCircBuf(), srcData, sizeof(T));
-    m_Array->operator[](m_Back) = *srcData;
+    memcpy(getBackCircBuf(), srcData, sizeof(T));
+    //m_Array->operator[](m_Back) = *srcData;
     m_Back = (m_Back + 1) % m_Array->getArrayCapacity();
 }
 
