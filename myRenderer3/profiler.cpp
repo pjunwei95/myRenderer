@@ -67,7 +67,7 @@ void onProfilerFlip()
          //update time elapsed
         frc.updateTimeStamp(&ptrToProfile->m_Elapsed);
         frc.calcTimerElapsedUs(&ptrToProfile->m_Elapsed, &ptrToProfile->m_Start);
-        fpVec->pushBackArray(ptrToProfile);
+        fpVec->pushBack(ptrToProfile);
     }
 
     //push array to circular buffer
@@ -110,9 +110,9 @@ void printPastFrames()
 
         //Array frameProfileList = *((Array*)frameCircBuf->getCircBufAt(&frameCircBuf, idx));
         Array<Profile>* frameProfileList = (Array<Profile>*)frameCircBuf->getCircBufAt(idx);
-        for (uint32_t j = 0; j < frameProfileList->getArraySize(); ++j)
+        for (uint32_t j = 0; j < frameProfileList->size(); ++j)
         {
-            Profile* ptrToProfile = (Profile*)frameProfileList->getArrayAt(j);
+            Profile* ptrToProfile = (Profile*)frameProfileList->at(j);
             Profile profile = *ptrToProfile;
             logmsg("Frame #%d, Time elapsed for |%s| profile = %.2f ms\n", i, profile.m_ProfileName, frc.getTimerElapsedMs(&profile.m_Elapsed));
             //formatting for profiler: frame#, profileName, startTime, endTime

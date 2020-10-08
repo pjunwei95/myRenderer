@@ -24,19 +24,19 @@ public:
     Array(uint32_t numElem);
     ~Array();
     
-    bool isArrayEmpty() const;
-    void addArraySize(int increment);
-    uint32_t getArraySize() const;
-    uint32_t getArrayCapacity() const;
-    T* getArrayFront() const;
-    T* getArrayBack() const;
-    T* getArrayAt(const uint32_t index) const;
-    void pushBackArray(const T* srcData);
-    void popBackArray();
-    void eraseArrayAt(uint32_t index);
-    void insertArray(uint32_t index, const T* srcData);
-    void clearArray();
-    void removeAtFastArray(uint32_t index);
+    bool isEmpty() const;
+    void addSize(int increment);
+    uint32_t size() const;
+    uint32_t capacity() const;
+    T* front() const;
+    T* back() const;
+    T* at(const uint32_t index) const;
+    void pushBack(const T* srcData);
+    void popBack();
+    void eraseAt(uint32_t index);
+    void insertAt(uint32_t index, const T* srcData);
+    void clear();
+    void removeAtFast(uint32_t index);
     //void printTestArray();
     T& operator[](const uint32_t index);
 
@@ -77,21 +77,21 @@ Array<T>::~Array()
 }
 
 template<typename T>
-bool Array<T>::isArrayEmpty() const
+bool Array<T>::isEmpty() const
 {
     assert(m_Data);
     return 0 == m_Size;
 }
 
 template<typename T>
-uint32_t Array<T>::getArraySize() const
+uint32_t Array<T>::size() const
 {
     assert(m_Data);
     return m_Size;
 }
 
 template<typename T>
-void Array<T>::addArraySize(int increment)
+void Array<T>::addSize(int increment)
 {
     assert(m_Data);
     assert(increment);
@@ -99,48 +99,48 @@ void Array<T>::addArraySize(int increment)
 }
 
 template<typename T>
-uint32_t Array<T>::getArrayCapacity() const
+uint32_t Array<T>::capacity() const
 {
     assert(m_Data);
     return m_Capacity;
 }
 
 template<typename T>
-void Array<T>::clearArray()
+void Array<T>::clear()
 {
     assert(m_Data);
     m_Size = 0;
 }
 
 template<typename T>
-T* Array<T>::getArrayFront() const
+T* Array<T>::front() const
 {
-    assert(!isArrayEmpty());
+    assert(!isEmpty());
     assert(m_Data);
     return &m_Data[0];
 }
 
 template<typename T>
-T* Array<T>::getArrayBack() const
+T* Array<T>::back() const
 {
-    assert(!isArrayEmpty());
+    assert(!isEmpty());
     assert(m_Data);
     return &m_Data[m_Size - 1];
 }
 
 template<typename T>
-T* Array<T>::getArrayAt(const uint32_t index) const
+T* Array<T>::at(const uint32_t index) const
 {
-    assert(!isArrayEmpty());
+    assert(!isEmpty());
     assert(m_Data);
     assert(index < m_Size);
     return &m_Data[index];
 }
 
 template<typename T>
-void Array<T>::popBackArray()
+void Array<T>::popBack()
 {
-    assert(!isArrayEmpty());
+    assert(!isEmpty());
     m_Size--;
 }
 
@@ -166,7 +166,7 @@ void Array<T>::checkArraySuffMem()
 }
 
 template<typename T>
-void Array<T>::pushBackArray(const T* srcData)
+void Array<T>::pushBack(const T* srcData)
 {
     assert(srcData);
     checkArraySuffMem();
@@ -176,7 +176,7 @@ void Array<T>::pushBackArray(const T* srcData)
 }
 
 template<typename T>
-void Array<T>::insertArray(uint32_t index, const T* srcData)
+void Array<T>::insertAt(uint32_t index, const T* srcData)
 {
     assert(srcData);
     assert(index <= m_Size);
@@ -191,13 +191,13 @@ void Array<T>::insertArray(uint32_t index, const T* srcData)
 }
 
 template<typename T>
-void Array<T>::eraseArrayAt(uint32_t index)
+void Array<T>::eraseAt(uint32_t index)
 {
-    assert(!isArrayEmpty());
+    assert(!isEmpty());
     assert(index < m_Size);
     if (index == m_Size - 1) // last index
     {
-        popBackArray(); //CHECK SIZE
+        popBack(); //CHECK SIZE
         return;
     }
     //shift array left
@@ -212,11 +212,11 @@ void Array<T>::eraseArrayAt(uint32_t index)
 // will not preserve the order in the array(the element is swapped with
 // the last one of the array)
 template<typename T>
-void Array<T>::removeAtFastArray(uint32_t index)
+void Array<T>::removeAtFast(uint32_t index)
 {
-    assert(!isArrayEmpty());
+    assert(!isEmpty());
     assert(index < m_Size);
-    m_Data[index] = *getArrayBack();
+    m_Data[index] = *back();
     m_Size--;
 }
 
