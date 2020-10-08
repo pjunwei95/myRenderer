@@ -7,6 +7,7 @@
 //#include "test.h"
 #include "circularBuffer.h"
 //#include "stack.h"
+#include "array.h"
 
 bool isTestProfile = false;
 
@@ -28,6 +29,7 @@ void runMainLoop()
     //test();
     //testCircularBuffer();
     //testStack();
+    testArray2();
 
     //if (isTestProfile)
     //    initProfile(50);   

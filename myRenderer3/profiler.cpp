@@ -1,31 +1,31 @@
-//#include "profiler.h"
-//#include <stdio.h>
-//#include <assert.h>
-//#include "logger.h"
-//#include "array.h"
-//#include "circularBuffer.h"
-//#include "stack.h"
-//
-//Stack<Profile>* profileStack;
-//CircularBuffer<Array<Profile>>* frameCircBuf;
-//FrameRateController frc;
-//bool isProfileBegin; // This doesnt't work for nested profiling
-//
-//void initProfile(uint32_t frameNum)
-//{
-//    frc.initialiseTimer();
-//    isProfileBegin = false;
-//    profileStack = new Stack<Profile>();
-//    frameCircBuf = new CircularBuffer<Array<Profile>>(frameNum);
-//}
+#include "profiler.h"
+#include <stdio.h>
+#include <assert.h>
+#include "logger.h"
+#include "array.h"
+#include "circularBuffer.h"
+#include "stack.h"
 
-//Profile* getProfile()
-//{
-//    Profile* profile = (Profile*)profileStack->peek();
-//    assert(profile);
-//    return profile;
-//}
-//
+Stack<Profile>* profileStack;
+CircularBuffer<Array<Profile>>* frameCircBuf;
+FrameRateController frc;
+bool isProfileBegin; // This doesnt't work for nested profiling
+
+void initProfile(uint32_t frameNum)
+{
+    frc.initialiseTimer();
+    isProfileBegin = false;
+    profileStack = new Stack<Profile>();
+    frameCircBuf = new CircularBuffer<Array<Profile>>(frameNum);
+}
+
+Profile* getProfile()
+{
+    Profile* profile = (Profile*)profileStack->peek();
+    assert(profile);
+    return profile;
+}
+
 //void beginProfile(const char* string)
 //{
 //    assert(string);
