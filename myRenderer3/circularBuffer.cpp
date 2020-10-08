@@ -11,7 +11,6 @@ CircularBuffer<T>::CircularBuffer(uint32_t bufferLength)
     : m_Array{ nullptr }, m_Front{ 0 }, m_Back{ 0 }
 {
     m_Array = new Array<T>(bufferLength);
-    bufferLength;
     assert(m_Array);
 }
 
@@ -21,7 +20,6 @@ CircularBuffer<T>::~CircularBuffer()
     assert(m_Array);
     delete m_Array;
 }
-
 
 template<typename T>
 uint32_t CircularBuffer<T>::getFrontIdxCircBuf() const
@@ -44,8 +42,7 @@ T* CircularBuffer<T>::getBackCircBuf() const
 template<typename T>
 uint32_t CircularBuffer<T>::getCapacityCircBuff()
 {
-    //return m_Array->getArrayCapacity();
-    return 0;
+    return m_Array->getArrayCapacity();
 }
 
 template<typename T>
@@ -56,7 +53,6 @@ uint32_t CircularBuffer<T>::getSizeCircBuf() const
         if (m_Array->isArrayEmpty())
             return 0;
         else
-            return 0;
             return m_Array->getArrayCapacity();
     }
     //difference in m_Front & m_Back
@@ -67,8 +63,7 @@ uint32_t CircularBuffer<T>::getSizeCircBuf() const
 template<typename T>
 bool CircularBuffer<T>::isFullCircBuf() const
 {
-    return false;
-    //return getSizeCircBuf() == m_Array->getArrayCapacity();
+    return getSizeCircBuf() == m_Array->getArrayCapacity();
 }
 
 template<typename T>
@@ -84,23 +79,10 @@ void CircularBuffer<T>::pushBackCircBuf(const T* srcData)
     assert(srcData);
     assert(!isFullCircBuf());
 
-    m_Array.addArraySize(1);
-    //memcpy(getBackCircBuf(cb), srcData, getArrayTypeSize(&cb->m_Array));
-    T* back = getBackCircBuf();
-    back = srcData;
-    m_Back = (m_Back + 1) % m_Array.getArrayCapacity();
-}
-
-template<typename T>
-void CircularBuffer<T>::pushFrontCircBuf(const T* srcData)
-{
-    assert(srcData);
-    assert(!isFullCircBuf());
-
-    m_Array.addArraySize(1);
-    T* front = getFrontCircBuf();
-    front = srcData;
-    m_Front = (m_Front + 1) % m_Array.getArrayCapacity();
+    m_Array->addArraySize(1);
+    //memcpy(getBackCircBuf(), srcData, sizeof(T));
+    m_Array->operator[](m_Back) = *srcData;
+    m_Back = (m_Back + 1) % m_Array->getArrayCapacity();
 }
 
 // When you 'pop', you simply move the 'front' cursor forward by one
@@ -125,41 +107,7 @@ void CircularBuffer<T>::clearCircBuf()
 template<typename T>
 T* CircularBuffer<T>::getCircBufAt(uint32_t index) const
 {
-    return m_Array.getArrayAt(index);
-}
-
-void testCircularBuffer()
-{
-    CircularBuffer<int>* intCircBuf = new CircularBuffer<int>(3);
-    //CircularBuffer<int>* cb = new CircularBuffer<int>(3);
-    //cb;
-
-    //cb->getCapacityCircBuff();
-    intCircBuf->isFullCircBuf();
-    for (int i = 0; i < 10; ++i)
-    {
-        if (intCircBuf->isFullCircBuf())
-            intCircBuf->popFrontCircBuf();
-        //pushBackCircBuf(&intCircBuf, &i);
-    }
-
-    ////print to console
-    //printCircBuf(&intCircBuf);
-
-    //logmsg("Popping...\n");
-    //popFrontCircBuf(&intCircBuf);
-    //printCircBuf(&intCircBuf);
-
-    //logmsg("Popping...\n");
-    //popFrontCircBuf(&intCircBuf);
-    //printCircBuf(&intCircBuf);
-
-    //logmsg("Pushing 99...\n");
-    //int rand = 99;
-    //pushBackCircBuf(&intCircBuf, &rand);
-    //printCircBuf(&intCircBuf);
-
-    //freeCircBuf(&intCircBuf);
+    return m_Array->getArrayAt(index);
 }
 
 template<typename T>
@@ -167,9 +115,9 @@ void CircularBuffer<T>::printCircBuf() const
 {
     int tempFront = m_Front;
     logmsg("=========\n");
-    for (int i = 0; i < m_Array.getArrayCapacity(); ++i)
+    for (uint32_t i = 0; i < m_Array->getArrayCapacity(); ++i)
     {
-        int idx = (tempFront + i) % m_Array.getArrayCapacity();
+        uint32_t idx = (tempFront + i) % m_Array->getArrayCapacity();
         if (idx == m_Back && !isFullCircBuf())
             break;
         //void* ptr = (uint8_t*)cb->m_Array.m_Data + (idx * cb->m_Array.m_TypeSize);
@@ -180,3 +128,33 @@ void CircularBuffer<T>::printCircBuf() const
     logmsg("\n==========\n");
 }
 
+void testCircularBuffer()
+{
+    CircularBuffer<int>* intCircBuf = new CircularBuffer<int>(3);
+
+    intCircBuf->isFullCircBuf();
+    for (int i = 0; i < 10; ++i)
+    {
+        if (intCircBuf->isFullCircBuf())
+            intCircBuf->popFrontCircBuf();
+        intCircBuf->pushBackCircBuf(&i);
+    }
+
+    //print to console
+    intCircBuf->printCircBuf();
+
+    logmsg("Popping...\n");
+    intCircBuf->popFrontCircBuf();
+    intCircBuf->printCircBuf();
+
+    logmsg("Popping...\n");
+    intCircBuf->popFrontCircBuf();
+    intCircBuf->printCircBuf();
+
+    logmsg("Pushing 99...\n");
+    int rand = 99;
+    intCircBuf->pushBackCircBuf(&rand);
+    intCircBuf->printCircBuf();
+
+    delete intCircBuf;
+}

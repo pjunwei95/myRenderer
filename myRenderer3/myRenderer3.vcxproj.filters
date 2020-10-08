@@ -116,7 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="config.txt">
-      <Filter>Source Files</Filter>
+      <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>
 </Project>

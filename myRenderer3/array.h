@@ -1,7 +1,9 @@
 #pragma once
 #include <stdint.h>
+#include <assert.h>
+#include "stdio.h"
+#include "array.h"
 
-void testArray2();
 
 template<typename T>
 class Array {
@@ -26,7 +28,7 @@ public:
     uint32_t getArrayCapacity() const;
     T* getArrayFront() const;
     T* getArrayBack() const;
-    T* getArrayAt(uint32_t index) const;
+    T* getArrayAt(const uint32_t index) const;
     void pushBackArray(const T* srcData);
     void popBackArray();
     void eraseArrayAt(uint32_t index);
@@ -34,6 +36,8 @@ public:
     void clearArray();
     void removeAtFastArray(uint32_t index);
     void printTestArray();
+    T& operator[](const uint32_t index);
+
 
     //DEPRECATED
     //Array createNewArray(unsigned int sizeElem);
@@ -47,5 +51,4 @@ public:
     //void freeArray();
 
 };
-
 

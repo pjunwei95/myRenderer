@@ -124,6 +124,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="array.cpp" />
     <ClCompile Include="carray.cpp" />
     <ClCompile Include="bufferOps.cpp" />
     <ClCompile Include="circularBuffer.cpp">
@@ -140,7 +141,6 @@
     <ClCompile Include="runMainLoop.cpp" />
     <ClCompile Include="stack.cpp" />
     <ClCompile Include="test.cpp" />
-    <ClCompile Include="array.cpp" />
     <ClCompile Include="windowHandler.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -13,9 +13,8 @@ private:
 
     T* getBackCircBuf() const;
     bool isCircBufEmpty() const;
-    void printCircBuf() const;
-    void pushFrontCircBuf(const T* srcData);
     void clearCircBuf();
+    //void pushFrontCircBuf(const T* srcData);
 
 public:
     //CircularBuffer(){}
@@ -30,6 +29,8 @@ public:
     T* getFrontCircBuf() const;
     bool isFullCircBuf() const;
     void pushBackCircBuf(const T* srcData);
+    void printCircBuf() const;
+
 
     //Deprecated
     //void freeCircBuf(CircularBuffer * const cb);

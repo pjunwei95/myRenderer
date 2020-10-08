@@ -3,13 +3,13 @@
 #include "array.h"
 
 template<typename T>
-Array<T>::Array() 
+Array<T>::Array()
     : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ 0 } {}
 
 // new filled array of fixed size
 template<typename T>
 Array<T>::Array(uint32_t numElem)
-    : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ numElem } 
+    : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ numElem }
 {
     m_Data = new T[numElem];
     assert(m_Data);
@@ -78,7 +78,7 @@ T* Array<T>::getArrayBack() const
 }
 
 template<typename T>
-T* Array<T>::getArrayAt(uint32_t index) const
+T* Array<T>::getArrayAt(const uint32_t index) const
 {
     assert(!isArrayEmpty());
     assert(m_Data);
@@ -183,6 +183,13 @@ void Array<T>::printTestArray()
     printf("==============\n");
 }
 
+template<typename T>
+T& Array<T>::operator[](const uint32_t index)
+{
+    assert(index < m_Size);
+    return m_Data[index];
+}
+
 void testArray2()
 {
     Array<int>* a = new Array<int>();
@@ -228,10 +235,13 @@ void testArray2()
     delete a;
 }
 
+
 void testB()
 {
     // for circular buffer, without this constructors will give linker errors
     Array<int>* b = new Array<int>(3);
     b->getArrayCapacity();
+    b->addArraySize(1);
+    int num = 9;
+    b->operator[](0) = num;
 }
-
