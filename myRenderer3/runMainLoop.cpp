@@ -9,15 +9,15 @@
 //#include "stack.h"
 #include "array.h"
 
-bool isTestProfile = false;
+bool isTestProfile = true;
 
 void runMainLoop()
 {
 
     // Enable run-time memory check for debug builds.
-    #if defined(DEBUG) | defined(_DEBUG)
-    _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
-    #endif
+    //#if defined(DEBUG) | defined(_DEBUG)
+    //_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+    //#endif
 
     //int * pi = new int;
     //pi;
@@ -31,8 +31,8 @@ void runMainLoop()
     //testStack();
     //testArray2();
 
-    //if (isTestProfile)
-    //    initProfile(50);   
+    if (isTestProfile)
+        initProfile(50);   
 
     if (!isTestProfile)
         testProfiler();
@@ -58,25 +58,25 @@ void runMainLoop()
 
             getKeyInput();
 
-            //if (isTestProfile)
-                //beginProfile("updateWindow");
+            if (isTestProfile)
+                beginProfile("updateWindow");
 
             wh.updateWindow();
 
 
             frc.idleUntilFPSLimit(&timer);
 
-            //if (isTestProfile)
-                //onProfilerFlip();
+            if (isTestProfile)
+                onProfilerFlip();
             
-            //if (isTestProfile)
-                //endProfile();
+            if (isTestProfile)
+                endProfile();
             //endProfile();
         }
         wh.destroyWindow();
     }
-    //if (isTestProfile)
-    //    destroyProfile();
+    if (isTestProfile)
+        destroyProfile();
 
 }
 

@@ -75,8 +75,10 @@ void onProfilerFlip()
     {
          //when something is popped from circular buffer, it needs to be freed.
         Array<Profile>* ptrFpVec = (Array<Profile>*) frameCircBuf->popFrontCircBuf();
+        ptrFpVec;
+        //TODO handle memleak
         //freeArray(ptrFpVec);
-        delete ptrFpVec;
+        //delete ptrFpVec;
     }
     //pushBackCircBuf(&frameCircBuf, &fpVec);
     frameCircBuf->pushBackCircBuf(fpVec);

@@ -1,5 +1,6 @@
 #pragma once
 #include "frameRateController.h"
+#include <stdint.h>
 
 #define CHAR_MAX_LIMIT 256
 
@@ -14,7 +15,7 @@ void printPastFrames();
 // Header functions
 void testProfiler();
 
-void initProfile(int frameNum);
+void initProfile(uint32_t frameNum);
 
 void beginProfile(const char * string);
 
