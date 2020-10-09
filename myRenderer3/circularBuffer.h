@@ -14,9 +14,9 @@ private:
     uint32_t m_Front;
     uint32_t m_Back;
 
-    T* getBackCircBuf() const;
-    bool isCircBufEmpty() const;
-    void clearCircBuf();
+    T* back() const;
+    bool isEmpty() const;
+    void clear();
     //void pushFrontCircBuf(const T* srcData);
 
 public:
@@ -24,15 +24,15 @@ public:
     CircularBuffer(uint32_t bufferLength);
     ~CircularBuffer();
 
-    uint32_t getFrontIdxCircBuf() const;
-    uint32_t getBackIdxCircBuf() const;
-    uint32_t getCapacityCircBuff();
-    uint32_t getSizeCircBuf() const;
-    T* popFrontCircBuf();
-    T* getCircBufAt(uint32_t index) const;
-    T* getFrontCircBuf() const;
-    bool isFullCircBuf() const;
-    void pushBackCircBuf(const T* srcData);
+    uint32_t frontIndex() const;
+    uint32_t backIndex() const;
+    uint32_t capacity();
+    uint32_t size() const;
+    T* front() const;
+    T* popFront();
+    T* at(uint32_t index) const;
+    bool isFull() const;
+    void pushBack(const T* srcData);
     //void printCircBuf() const;
 
 
@@ -59,44 +59,44 @@ CircularBuffer<T>::~CircularBuffer()
 }
 
 template<typename T>
-uint32_t CircularBuffer<T>::getFrontIdxCircBuf() const
+uint32_t CircularBuffer<T>::frontIndex() const
 {
     return m_Front;
 }
 
 template<typename T>
-uint32_t CircularBuffer<T>::getBackIdxCircBuf() const
+uint32_t CircularBuffer<T>::backIndex() const
 {
     return m_Back;
 }
 
 template<typename T>
-T* CircularBuffer<T>::getFrontCircBuf() const
+T* CircularBuffer<T>::front() const
 {
-    return &m_Array->getArrayAt(m_Front);
+    return &m_Array->at(m_Front);
 }
 
 template<typename T>
-T* CircularBuffer<T>::getBackCircBuf() const
+T* CircularBuffer<T>::back() const
 {
-    return m_Array->getArrayAt(m_Back);
+    return m_Array->at(m_Back);
 }
 
 template<typename T>
-uint32_t CircularBuffer<T>::getCapacityCircBuff()
+uint32_t CircularBuffer<T>::capacity()
 {
-    return m_Array->getArrayCapacity();
+    return m_Array->capacity();
 }
 
 template<typename T>
-uint32_t CircularBuffer<T>::getSizeCircBuf() const
+uint32_t CircularBuffer<T>::size() const
 {
     if (m_Front == m_Back)
     {
-        if (m_Array->isArrayEmpty())
+        if (m_Array->isEmpty())
             return 0;
         else
-            return m_Array->getArrayCapacity();
+            return m_Array->capacity();
     }
     //difference in m_Front & m_Back
     else
@@ -104,52 +104,52 @@ uint32_t CircularBuffer<T>::getSizeCircBuf() const
 }
 
 template<typename T>
-bool CircularBuffer<T>::isFullCircBuf() const
+bool CircularBuffer<T>::isFull() const
 {
-    return getSizeCircBuf() == m_Array->getArrayCapacity();
+    return size() == m_Array->capacity();
 }
 
 template<typename T>
-bool CircularBuffer<T>::isCircBufEmpty() const
+bool CircularBuffer<T>::isEmpty() const
 {
-    return m_Front == m_Back && !isFullCircBuf();
+    return m_Front == m_Back && !isFull();
 }
 
 //'push' a value directly into the 'back' slot
 template<typename T>
-void CircularBuffer<T>::pushBackCircBuf(const T* srcData)
+void CircularBuffer<T>::pushBack(const T* srcData)
 {
     assert(srcData);
-    assert(!isFullCircBuf());
+    assert(!isFull());
 
-    m_Array->addArraySize(1);
-    memcpy(getBackCircBuf(), srcData, sizeof(T));
+    m_Array->addSize(1);
+    memcpy(back(), srcData, sizeof(T));
     //m_Array->operator[](m_Back) = *srcData;
-    m_Back = (m_Back + 1) % m_Array->getArrayCapacity();
+    m_Back = (m_Back + 1) % m_Array->capacity();
 }
 
 // When you 'pop', you simply move the 'front' cursor forward by one
 template<typename T>
-T* CircularBuffer<T>::popFrontCircBuf()
+T* CircularBuffer<T>::popFront()
 {
-    assert(!isCircBufEmpty());
-    T* ptrFront = m_Array->getArrayAt(m_Front);
-    m_Front = (m_Front + 1) % m_Array->getArrayCapacity();
+    assert(!isEmpty());
+    T* ptrFront = m_Array->at(m_Front);
+    m_Front = (m_Front + 1) % m_Array->capacity();
 
     return ptrFront;
 }
 
 template<typename T>
-void CircularBuffer<T>::clearCircBuf()
+void CircularBuffer<T>::clear()
 {
-    assert(!isCircBufEmpty());
+    assert(!isEmpty());
     m_Front = 0;
     m_Back = 0;
 }
 
 template<typename T>
-T* CircularBuffer<T>::getCircBufAt(uint32_t index) const
+T* CircularBuffer<T>::at(uint32_t index) const
 {
-    return m_Array->getArrayAt(index);
+    return m_Array->at(index);
 }
 
