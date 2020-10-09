@@ -1,6 +1,13 @@
 #include "stdio.h"
 #include "array.h"
 
+//TODO 
+//Separate all of your testing code into files like "Array_UnitTest.h/cpp"
+//
+//You should run suites of unit tests based off the commandline
+//unit tests will meticulously test every functionality of  your Array / Circular buffer etc, with hardcoded inputs, and will compare them with hard coded expected values to ensure nothing breaks
+
+
 void printTestArray(const Array<int>* const a)
 {
     printf("==============\n");
@@ -67,7 +74,6 @@ void testArray1()
     //delete a;
 }
 
-
 void testArray2()
 {
     // for circular buffer, without this constructors will give linker errors
@@ -77,6 +83,6 @@ void testArray2()
     //int num = 9;
     //b[0] = num;
     //int *num = b[0];
-
+    delete b;
     //for profiler
 }
