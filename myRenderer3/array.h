@@ -22,11 +22,13 @@ private:
 public:
     Array() 
         : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ 0 } {}
+
     explicit Array(uint32_t numElem) // new filled array of fixed size
         : m_Data{ new T[numElem] }, m_Size{ 0 }, m_Capacity{ numElem } {}
+
     ~Array() { delete[] m_Data; }
 
-    T const& operator[](const uint32_t index) const;
+    const T& operator[](const uint32_t index) const;
     Array& operator=(const Array& oldArray); //copy assignment, not move
 
     uint32_t size() const { return m_Size; }
@@ -34,13 +36,15 @@ public:
     bool isEmpty() const { return 0 == m_Size; }
     void popBack() { m_Size--; }
 
-    void addSize(uint32_t increment) { m_Size += increment; }
+    //TODO change T* to const T&
     T* front() const;
     T* back() const;
     T* at(const uint32_t index) const;
     void pushBack(const T* srcData);
-    void eraseAt(uint32_t index);
     void insertAt(uint32_t index, const T* srcData);
+
+    void addSize(uint32_t increment) { m_Size += increment; }
+    void eraseAt(uint32_t index);
     void clear();
     void removeAtFast(uint32_t index);
 
@@ -72,7 +76,7 @@ Array<T>& Array<T>::operator=(const Array<T>& oldArray)
 }
 
 template<typename T>
-T const& Array<T>::operator[](const uint32_t index) const
+const T& Array<T>::operator[](const uint32_t index) const
 {
     assert(index < m_Size);
     return m_Data[index];
