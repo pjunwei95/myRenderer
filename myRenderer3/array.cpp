@@ -66,8 +66,8 @@ void testB()
     Array<int>* b = new Array<int>(3);
     b->capacity();
     b->addSize(1);
-    int num = 9;
-    b->operator[](0) = num;
+    //int num = 9;
+    //b[0] = &num;
 
     //for profiler
 }

@@ -14,14 +14,14 @@ private:
     uint32_t m_Size; // number of elements
     uint32_t m_Capacity; // available memory size
 
-    //deprecated
+    //DEPRECATED
     //uint32_t m_TypeSize; // size of element type
 
     void checkArraySuffMem();
 public:
     Array();
     // new filled array of fixed size
-    Array(uint32_t numElem);
+    explicit Array(uint32_t numElem);
     ~Array();
     
     bool isEmpty() const;
@@ -72,8 +72,6 @@ Array<T>::~Array()
 {
     assert(m_Data);
     delete[] m_Data;
-    m_Data = nullptr;
-    assert(!m_Data);
 }
 
 template<typename T>
@@ -115,7 +113,6 @@ void Array<T>::clear()
 template<typename T>
 T* Array<T>::front() const
 {
-    assert(!isEmpty());
     assert(m_Data);
     return &m_Data[0];
 }
@@ -123,7 +120,6 @@ T* Array<T>::front() const
 template<typename T>
 T* Array<T>::back() const
 {
-    assert(!isEmpty());
     assert(m_Data);
     return &m_Data[m_Size - 1];
 }
@@ -131,7 +127,6 @@ T* Array<T>::back() const
 template<typename T>
 T* Array<T>::at(const uint32_t index) const
 {
-    assert(!isEmpty());
     assert(m_Data);
     assert(index < m_Size);
     return &m_Data[index];
@@ -140,7 +135,6 @@ T* Array<T>::at(const uint32_t index) const
 template<typename T>
 void Array<T>::popBack()
 {
-    assert(!isEmpty());
     m_Size--;
 }
 
