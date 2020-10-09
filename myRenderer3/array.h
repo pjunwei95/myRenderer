@@ -6,6 +6,7 @@
 
 // tests in array.cpp file
 void testArray2();
+void testB();
 
 template<typename T>
 class Array {
@@ -70,21 +71,18 @@ Array<T>::Array(uint32_t numElem)
 template<typename T>
 Array<T>::~Array()
 {
-    assert(m_Data);
     delete[] m_Data;
 }
 
 template<typename T>
 bool Array<T>::isEmpty() const
 {
-    assert(m_Data);
     return 0 == m_Size;
 }
 
 template<typename T>
 uint32_t Array<T>::size() const
 {
-    assert(m_Data);
     return m_Size;
 }
 
@@ -189,15 +187,15 @@ void Array<T>::eraseAt(uint32_t index)
 {
     assert(!isEmpty());
     assert(index < m_Size);
-    if (index == m_Size - 1) // last index
-    {
-        popBack(); //CHECK SIZE
-        return;
-    }
+    //if (index == m_Size - 1) // last index
+    //{
+    //    popBack(); //CHECK SIZE
+    //    return;
+    //}
     //shift array left
     // for i = index; i < size-1; i++
     //    A[i] = A[i+1]
-    for (uint32_t i = index; i < m_Size - 1; ++i)
+    for (uint32_t i = index; i < m_Size ; ++i)
         m_Data[i] = m_Data[i + 1];
     m_Size--;
 }

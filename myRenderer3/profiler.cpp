@@ -71,17 +71,17 @@ void onProfilerFlip()
     }
 
     //push array to circular buffer
-    if (frameCircBuf->isFullCircBuf())
+    if (frameCircBuf->isFull())
     {
          //when something is popped from circular buffer, it needs to be freed.
-        Array<Profile>* ptrFpVec = (Array<Profile>*) frameCircBuf->popFrontCircBuf();
+        Array<Profile>* ptrFpVec = (Array<Profile>*) frameCircBuf->popFront();
         ptrFpVec;
         //TODO handle memleak
         //freeArray(ptrFpVec);
         //delete ptrFpVec;
     }
     //pushBackCircBuf(&frameCircBuf, &fpVec);
-    frameCircBuf->pushBackCircBuf(fpVec);
+    frameCircBuf->pushBack(fpVec);
     
 }
 
@@ -100,16 +100,16 @@ void destroyProfile()
 
 void printPastFrames()
 {
-    int tempFront = frameCircBuf->getFrontIdxCircBuf();
-    int size = frameCircBuf->getSizeCircBuf();
+    int tempFront = frameCircBuf->frontIndex();
+    int size = frameCircBuf->size();
 
     for (int i = 0; i < size; ++i)
     {
         //go through each frame in circular buffer
-        int idx = (tempFront + i) % frameCircBuf->getCapacityCircBuff();
+        int idx = (tempFront + i) % frameCircBuf->capacity();
 
         //Array frameProfileList = *((Array*)frameCircBuf->getCircBufAt(&frameCircBuf, idx));
-        Array<Profile>* frameProfileList = (Array<Profile>*)frameCircBuf->getCircBufAt(idx);
+        Array<Profile>* frameProfileList = (Array<Profile>*)frameCircBuf->at(idx);
         for (uint32_t j = 0; j < frameProfileList->size(); ++j)
         {
             Profile* ptrToProfile = (Profile*)frameProfileList->at(j);

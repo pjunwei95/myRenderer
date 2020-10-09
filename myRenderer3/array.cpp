@@ -67,7 +67,8 @@ void testB()
     b->capacity();
     b->addSize(1);
     //int num = 9;
-    //b[0] = &num;
+    //b[0] = num;
+    //int *num = b[0];
 
     //for profiler
 }
