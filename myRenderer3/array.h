@@ -20,79 +20,37 @@ private:
 
     void checkArraySuffMem();
 public:
-    Array();
+    Array() : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ 0 } {}
+    ~Array() { delete[] m_Data; }
+
     // new filled array of fixed size
-    explicit Array(uint32_t numElem);
-    ~Array();
+    explicit Array(uint32_t numElem) : m_Data{ new T[numElem] }, m_Size{ 0 }, m_Capacity{ numElem } {}
     
-    bool isEmpty() const;
-    void addSize(int increment);
-    uint32_t size() const;
+    T& operator[](const uint32_t index) const { return m_Data[index]; }
+    uint32_t size() const { return m_Size; }
+    bool isEmpty() const { return 0 == m_Size; }
+    void popBack() { m_Size--; }
+
+    void addSize(uint32_t increment) { m_Size += increment; }
     uint32_t capacity() const;
     T* front() const;
     T* back() const;
     T* at(const uint32_t index) const;
     void pushBack(const T* srcData);
-    void popBack();
     void eraseAt(uint32_t index);
     void insertAt(uint32_t index, const T* srcData);
     void clear();
     void removeAtFast(uint32_t index);
-    //void printTestArray();
-    T& operator[](const uint32_t index);
-
 
     //DEPRECATED
     //Array createNewArray(unsigned int sizeElem);
-
     //Array createNewFilledArray(unsigned int numElem, unsigned int sizeElem);
-
     //void* reallocArray(void* block, size_t oldSize, size_t newSize);
-
     //int getArrayTypeSize() const;
-
     //void freeArray();
+    //void printTestArray();
 
 };
-
-template<typename T>
-Array<T>::Array()
-    : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ 0 } {}
-
-// new filled array of fixed size
-template<typename T>
-Array<T>::Array(uint32_t numElem)
-    : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ numElem }
-{
-    m_Data = new T[numElem];
-    assert(m_Data);
-}
-
-template<typename T>
-Array<T>::~Array()
-{
-    delete[] m_Data;
-}
-
-template<typename T>
-bool Array<T>::isEmpty() const
-{
-    return 0 == m_Size;
-}
-
-template<typename T>
-uint32_t Array<T>::size() const
-{
-    return m_Size;
-}
-
-template<typename T>
-void Array<T>::addSize(int increment)
-{
-    assert(m_Data);
-    assert(increment);
-    m_Size += increment;
-}
 
 template<typename T>
 uint32_t Array<T>::capacity() const
@@ -128,12 +86,6 @@ T* Array<T>::at(const uint32_t index) const
     assert(m_Data);
     assert(index < m_Size);
     return &m_Data[index];
-}
-
-template<typename T>
-void Array<T>::popBack()
-{
-    m_Size--;
 }
 
 template<typename T>
@@ -187,15 +139,10 @@ void Array<T>::eraseAt(uint32_t index)
 {
     assert(!isEmpty());
     assert(index < m_Size);
-    //if (index == m_Size - 1) // last index
-    //{
-    //    popBack(); //CHECK SIZE
-    //    return;
-    //}
     //shift array left
     // for i = index; i < size-1; i++
     //    A[i] = A[i+1]
-    for (uint32_t i = index; i < m_Size ; ++i)
+    for (uint32_t i = index; i < m_Size; ++i)
         m_Data[i] = m_Data[i + 1];
     m_Size--;
 }
@@ -211,11 +158,3 @@ void Array<T>::removeAtFast(uint32_t index)
     m_Data[index] = *back();
     m_Size--;
 }
-
-template<typename T>
-T& Array<T>::operator[](const uint32_t index)
-{
-    assert(index < m_Size);
-    return m_Data[index];
-}
-
