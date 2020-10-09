@@ -9,13 +9,13 @@
 //#include "stack.h"
 #include "array.h"
 
-bool isTestProfile = true;
+bool isTestProfile = false;
 
 void runMainLoop()
 {
     // Enable run-time memory check for debug builds.
     //#if defined(DEBUG) | defined(_DEBUG)
-    //_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+    _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
     //#endif
 
     //int * pi = new int;
@@ -28,14 +28,14 @@ void runMainLoop()
     //test();
     //testCircularBuffer();
     //testStack();
-    //testArray2();
-    testB();
+    testArray1();
+    //testB();
 
     if (isTestProfile)
         initProfile(50);   
 
-    if (!isTestProfile)
-        testProfiler();
+    //if (!isTestProfile)
+        //testProfiler();
    
 
     //beginProfile("createWindow");

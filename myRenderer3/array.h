@@ -5,7 +5,7 @@
 #include "array.h"
 
 // tests in array.cpp file
-void testArray2();
+void testArray1();
 void testB();
 
 template<typename T>
