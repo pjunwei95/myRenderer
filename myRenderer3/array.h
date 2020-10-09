@@ -20,19 +20,21 @@ private:
 
     void checkArraySuffMem();
 public:
-    Array() : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ 0 } {}
+    Array() 
+        : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ 0 } {}
+    explicit Array(uint32_t numElem) // new filled array of fixed size
+        : m_Data{ new T[numElem] }, m_Size{ 0 }, m_Capacity{ numElem } {}
     ~Array() { delete[] m_Data; }
 
-    // new filled array of fixed size
-    explicit Array(uint32_t numElem) : m_Data{ new T[numElem] }, m_Size{ 0 }, m_Capacity{ numElem } {}
-    
-    T& operator[](const uint32_t index) const { return m_Data[index]; }
+    T& operator[](const uint32_t index) const;
+    Array& operator=(const Array& oldArray); //copy assignment, not move
+
     uint32_t size() const { return m_Size; }
+    uint32_t capacity() const { return m_Capacity; }
     bool isEmpty() const { return 0 == m_Size; }
     void popBack() { m_Size--; }
 
     void addSize(uint32_t increment) { m_Size += increment; }
-    uint32_t capacity() const;
     T* front() const;
     T* back() const;
     T* at(const uint32_t index) const;
@@ -52,11 +54,28 @@ public:
 
 };
 
+//copy assignment, not move
 template<typename T>
-uint32_t Array<T>::capacity() const
+Array<T>& Array<T>::operator=(const Array<T>& oldArray)
 {
-    assert(m_Data);
-    return m_Capacity;
+    if (this == &oldArray)
+        return *this;
+
+    delete[] m_Data;
+    m_Size = oldArray.m_Size;
+    m_Capacity = oldArray.m_Capacity;
+    m_Data = new T[m_Capacity];
+
+    for (uint32_t i = 0; i < m_Capacity; i++)
+        m_Data[i] = oldArray.m_Data[i];
+    return *this;
+}
+
+template<typename T>
+T& Array<T>::operator[](const uint32_t index) const
+{
+    assert(index < m_Size);
+    return m_Data[index];
 }
 
 template<typename T>
@@ -123,7 +142,7 @@ template<typename T>
 void Array<T>::insertAt(uint32_t index, const T* srcData)
 {
     assert(srcData);
-    assert(index <= m_Size);
+    assert(index < m_Size);
 
     checkArraySuffMem();
     //shift array right

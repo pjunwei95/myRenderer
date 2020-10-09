@@ -43,6 +43,13 @@ void testArray1()
     printf("a[%d] is now = %d\n", 6, *a.at(6));
     printTestArray(&a);
 
+    //insert at idx
+    int anotherNum = 333;
+    printf("inserting a[%d] = %d...\n", 0, anotherNum);
+    a.insertAt(0, &anotherNum);
+    printf("a[%d] is now = %d\n", 0, *a.at(0));
+    printTestArray(&a);
+
     //remove at fast idx 5
     printf("RemoveAtFast 5...\n");
     a.removeAtFast(5);
