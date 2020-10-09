@@ -26,7 +26,7 @@ public:
         : m_Data{ new T[numElem] }, m_Size{ 0 }, m_Capacity{ numElem } {}
     ~Array() { delete[] m_Data; }
 
-    T& operator[](const uint32_t index) const;
+    T const& operator[](const uint32_t index) const;
     Array& operator=(const Array& oldArray); //copy assignment, not move
 
     uint32_t size() const { return m_Size; }
@@ -72,7 +72,7 @@ Array<T>& Array<T>::operator=(const Array<T>& oldArray)
 }
 
 template<typename T>
-T& Array<T>::operator[](const uint32_t index) const
+T const& Array<T>::operator[](const uint32_t index) const
 {
     assert(index < m_Size);
     return m_Data[index];
