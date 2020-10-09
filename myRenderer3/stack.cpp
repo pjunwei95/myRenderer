@@ -2,6 +2,7 @@
 #include <assert.h>
 #include "logger.h"
 
+//TODO also dont ever write stuff like "new Array".There's no point anymore.
 void testStack()
 {
     logmsg("test stack...\n");

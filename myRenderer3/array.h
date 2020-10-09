@@ -151,7 +151,7 @@ void Array<T>::insertAt(uint32_t index, const T* srcData)
     checkArraySuffMem();
     //shift array right
     // for i = size-1; i > index-1; i--
-    for (uint32_t i = m_Size - 1; i != index - 1; --i)
+    for (int i = m_Size - 1; i > (int) index - 1; --i)
         m_Data[i + 1] = m_Data[i];
     m_Data[index] = *srcData;
     m_Size++;

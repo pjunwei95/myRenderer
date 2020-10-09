@@ -24,6 +24,7 @@ void printTestArray(const Array<int>* const a)
 void testArray1()
 {
     //Array<int>* a = new Array<int>();
+    
     Array<int> a;
     int num = 0;
     //push 10 elements and print (init)
