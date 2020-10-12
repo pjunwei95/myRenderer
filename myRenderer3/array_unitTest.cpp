@@ -79,17 +79,22 @@ void testArray1()
 void testArray2()
 {
     // for circular buffer, without this constructors will give linker errors
-    Array<int>* b = new Array<int>(3);
-    b->capacity();
-    b->addSize(1);
-    //int num = 9;
-    //b[0] = num;
+    Array<int> b;
+    b.reserve(10);
+    int num = 1;
+    b.pushBack(&num);
+    num++;
+    b.pushBack(&num);
+    num++;
+    //b->addSize(1);
+    b[0] = num;
+    logmsg("capacity of b = %d\n", b.capacity());
     //int *num = b[0];
-    delete b;
     //for profiler
 }
 
 void testArray()
 {
-    testArray1();
+    //testArray1();
+    testArray2();
 }

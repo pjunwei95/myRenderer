@@ -11,26 +11,19 @@ private:
     uint32_t m_Size; // number of elements
     uint32_t m_Capacity; // available memory size
 
+    void checkMem();
+
     //DEPRECATED
     //uint32_t m_TypeSize; // size of element type
 
-    void checkMem();
 public:
     Array() 
         : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ 0 }
     {
     }
-
-    explicit Array(uint32_t numElem) // new filled array of fixed size
-        : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ numElem } 
-    {
-        m_Data = static_cast<T*>(malloc(numElem * sizeof(T)));
-    }
-
     ~Array()
     {
-        if (m_Data)
-            free(m_Data); 
+        free(m_Data); 
     }
 
     T& operator[](uint32_t index)
@@ -63,10 +56,10 @@ public:
     {
         m_Size += increment; 
     }
+    void reserve(uint32_t numElem);
 
     Array& operator=(const Array& oldArray); //copy assignment, not move
 
-    //TODO change T* to const T&
     const T& front() const;
     const T& back() const;
     const T& at(const uint32_t index) const;
@@ -86,6 +79,14 @@ public:
     //void printTestArray();
 
 };
+
+template<typename T>
+void Array<T>::reserve(uint32_t numElem) // new filled array of fixed size
+{
+    m_Data = static_cast<T*>(malloc(numElem * sizeof(T)));
+    assert(m_Data);
+    m_Capacity = numElem;
+}
 
 //copy assignment, not move
 template<typename T>
