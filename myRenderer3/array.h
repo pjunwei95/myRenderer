@@ -3,6 +3,7 @@
 #include <assert.h>
 //#include "stdio.h"
 #include "array.h"
+#include "stdlib.h"
 
 // tests in array.cpp file
 void testArray1();
@@ -18,7 +19,7 @@ private:
     //DEPRECATED
     //uint32_t m_TypeSize; // size of element type
 
-    void checkArraySuffMem();
+    void checkMem();
 public:
     Array() 
         : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ 0 }
@@ -26,19 +27,39 @@ public:
     }
 
     explicit Array(uint32_t numElem) // new filled array of fixed size
-        : m_Data{ new T[numElem] }, m_Size{ 0 }, m_Capacity{ numElem } 
+        : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ numElem } 
     {
+        m_Data = static_cast<T*>(malloc(numElem * sizeof(T)));
     }
 
-    ~Array() { delete[] m_Data; }
+    ~Array()
+    {
+        free(m_Data); 
+    }
+
+    uint32_t size() const 
+    {
+        return m_Size; 
+    }
+    uint32_t capacity() const
+    {
+        return m_Capacity; 
+    }
+    bool isEmpty() const
+    {
+        return 0 == m_Size; 
+    }
+    void popBack()
+    {
+        m_Size--; 
+    }
+    void addSize(uint32_t increment) 
+    {
+        m_Size += increment; 
+    }
 
     const T& operator[](const uint32_t index) const;
     Array& operator=(const Array& oldArray); //copy assignment, not move
-
-    uint32_t size() const { return m_Size; }
-    uint32_t capacity() const { return m_Capacity; }
-    bool isEmpty() const { return 0 == m_Size; }
-    void popBack() { m_Size--; }
 
     //TODO change T* to const T&
     T* front() const;
@@ -47,7 +68,6 @@ public:
     void pushBack(const T* srcData);
     void insertAt(uint32_t index, const T* srcData);
 
-    void addSize(uint32_t increment) { m_Size += increment; }
     void eraseAt(uint32_t index);
     void clear();
     void removeAtFast(uint32_t index);
@@ -71,14 +91,14 @@ Array<T>& Array<T>::operator=(const Array<T>& oldArray)
 
     //TODO in your copy assignment is wrong. copy the memory of the oldArray into a temporary buffer first before deleting your own data. 
 
-    delete[] m_Data;
+    /*delete[] m_Data;
     m_Size = oldArray.m_Size;
     m_Capacity = oldArray.m_Capacity;
     m_Data = new T[m_Capacity];
 
     for (uint32_t i = 0; i < m_Capacity; i++)
         m_Data[i] = oldArray.m_Data[i];
-    return *this;
+    return *this;*/
 }
 
 template<typename T>
@@ -118,23 +138,22 @@ T* Array<T>::at(const uint32_t index) const
 }
 
 template<typename T>
-void Array<T>::checkArraySuffMem()
+void Array<T>::checkMem()
 {
     if (!m_Data) // array memory uninitialised
     {
+        m_Data = static_cast<T*>(malloc(sizeof(T)));
+        assert(m_Data);
         m_Capacity++;
-        m_Data = new T[m_Capacity];
     }
     else if (m_Size == m_Capacity) // array memory exceeded
     {
-        m_Capacity *= 2;
-        T* temp = new T[m_Capacity];
+        T* temp = static_cast<T*>(malloc(sizeof(T) * 2 * m_Capacity));
         for (uint32_t i = 0; i < m_Size; ++i)
             temp[i] = m_Data[i];
-
-        delete[] m_Data;
+        free(m_Data);
         m_Data = temp;
-
+        m_Capacity *= 2;
     }
 }
 
@@ -142,7 +161,7 @@ template<typename T>
 void Array<T>::pushBack(const T* srcData)
 {
     assert(srcData);
-    checkArraySuffMem();
+    checkMem();
     assert(m_Size < m_Capacity);
     m_Data[m_Size] = *srcData;
     m_Size++;
@@ -154,10 +173,10 @@ void Array<T>::insertAt(uint32_t index, const T* srcData)
     assert(srcData);
     assert(index < m_Size);
 
-    checkArraySuffMem();
+    checkMem();
     //shift array right
     // for i = size-1; i > index-1; i--
-    for (int i = m_Size - 1; i > (int) index - 1; --i)
+    for (int i = m_Size - 1; i > static_cast<int>(index) - 1; --i)
         m_Data[i + 1] = m_Data[i];
     m_Data[index] = *srcData;
     m_Size++;
