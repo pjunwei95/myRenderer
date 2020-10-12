@@ -29,7 +29,8 @@ public:
 
     ~Array()
     {
-        free(m_Data); 
+        if (m_Data)
+            free(m_Data); 
     }
 
     uint32_t size() const 
@@ -93,16 +94,20 @@ Array<T>& Array<T>::operator=(const Array<T>& oldArray)
     if (this == &oldArray)
         return *this;
 
-    //TODO in your copy assignment is wrong. copy the memory of the oldArray into a temporary buffer first before deleting your own data. 
+    T* temp = static_cast<T*>(malloc(m_Capacity * sizeof(T)));
+    uint32_t tempSize = oldArray.m_Size;
+    uint32_t tempCap = oldArray.m_Capacity;
 
-    /*delete[] m_Data;
-    m_Size = oldArray.m_Size;
-    m_Capacity = oldArray.m_Capacity;
-    m_Data = new T[m_Capacity];
+    for (uint32_t i = 0; i < tempCap; ++i)
+        temp[i] = oldArray.m_Data[i];
 
-    for (uint32_t i = 0; i < m_Capacity; i++)
-        m_Data[i] = oldArray.m_Data[i];
-    return *this;*/
+    swap(tempSize, m_Size);
+    swap(tempCap, m_Capacity);
+    swap(temp, m_Data);
+
+    free(temp);
+
+    return *this;
 }
 
 template<typename T>
