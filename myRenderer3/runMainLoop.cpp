@@ -3,7 +3,7 @@
 #include "frameRateController.h"
 #include "windowHandler.h"
 #include <crtdbg.h>
-#include "profiler.h"
+//#include "profiler.h"
 //#include "test.h"
 #include "circularBuffer.h"
 //#include "stack.h"

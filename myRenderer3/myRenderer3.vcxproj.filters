@@ -45,9 +45,6 @@
     <ClCompile Include="bufferOps.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="profiler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -61,6 +58,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="array.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="profileManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -92,9 +92,6 @@
     <ClInclude Include="processArgs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="profiler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="test.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -111,6 +108,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="array.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="profileManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
