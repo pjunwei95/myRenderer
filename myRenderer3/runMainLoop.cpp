@@ -30,9 +30,10 @@ void runMainLoop()
     //testStack();
     //testArray1();
     //testB();
+    //testProfile();
 
-    if (isTestProfile)
-        initProfile(50);   
+    //if (isTestProfile)
+        //initProfile(50);   
 
     //if (!isTestProfile)
         //testProfiler();
@@ -58,25 +59,25 @@ void runMainLoop()
 
             getKeyInput();
 
-            if (isTestProfile)
-                beginProfile("updateWindow");
+            //if (isTestProfile)
+                //beginProfile("updateWindow");
 
             wh.updateWindow();
 
 
             frc.idleUntilFPSLimit(&timer);
 
-            if (isTestProfile)
-                onProfilerFlip();
+            //if (isTestProfile)
+                //onProfilerFlip();
             
-            if (isTestProfile)
-                endProfile();
+            //if (isTestProfile)
+                //endProfile();
             //endProfile();
         }
         wh.destroyWindow();
     }
-    if (isTestProfile)
-        destroyProfile();
+    //if (isTestProfile)
+        //destroyProfile();
 
 }
 

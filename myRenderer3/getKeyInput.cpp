@@ -4,7 +4,7 @@
 #include "sdl/SDL.h"
 #include "getKeyInput.h"
 #include "logger.h"
-#include "profiler.h"
+//#include "profiler.h"
 
 void getKeyInput()
 {
@@ -26,7 +26,7 @@ void getKeyInput()
                 setIsDone(true);
                 break;
             case SDLK_p:
-                printPastFrames();
+                //printPastFrames();
                 break;
             default:
                 break;
