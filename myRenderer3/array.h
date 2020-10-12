@@ -33,6 +33,16 @@ public:
             free(m_Data); 
     }
 
+    T& operator[](uint32_t index)
+    {
+        return m_Data[index];
+    }
+
+    const T& operator[](uint32_t index) const
+    {
+        return m_Data[index];
+    }
+
     uint32_t size() const 
     {
         return m_Size; 
@@ -54,22 +64,12 @@ public:
         m_Size += increment; 
     }
 
-    T& operator[](uint32_t index)
-    {
-        return m_Data[index];
-    }
-
-    const T& operator[](uint32_t index) const
-    {
-        return m_Data[index];
-    }
-
     Array& operator=(const Array& oldArray); //copy assignment, not move
 
     //TODO change T* to const T&
-    T* front() const;
-    T* back() const;
-    T* at(const uint32_t index) const;
+    const T& front() const;
+    const T& back() const;
+    const T& at(const uint32_t index) const;
     void pushBack(const T* srcData);
     void insertAt(uint32_t index, const T* srcData);
 
@@ -118,25 +118,25 @@ void Array<T>::clear()
 }
 
 template<typename T>
-T* Array<T>::front() const
+const T& Array<T>::front() const
 {
     assert(m_Data);
-    return &m_Data[0];
+    return m_Data[0];
 }
 
 template<typename T>
-T* Array<T>::back() const
+const T& Array<T>::back() const
 {
     assert(m_Data);
-    return &m_Data[m_Size - 1];
+    return m_Data[m_Size - 1];
 }
 
 template<typename T>
-T* Array<T>::at(const uint32_t index) const
+const T& Array<T>::at(const uint32_t index) const
 {
     assert(m_Data);
     assert(index < m_Size);
-    return &m_Data[index];
+    return m_Data[index];
 }
 
 template<typename T>
@@ -205,6 +205,6 @@ void Array<T>::removeAtFast(uint32_t index)
 {
     assert(!isEmpty());
     assert(index < m_Size);
-    m_Data[index] = *back();
+    m_Data[index] = back();
     m_Size--;
 }

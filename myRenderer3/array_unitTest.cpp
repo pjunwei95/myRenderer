@@ -16,7 +16,7 @@ void printTestArray(const Array<int>* const a)
     int numAtIdx;
     for (uint32_t i = 0; i < a->size(); ++i)
     {
-        numAtIdx = *a->at(i);
+        numAtIdx = a->at(i);
         logmsg("array [%d] = %d\n", i, numAtIdx);
     }
     logmsg("==============\n");
@@ -37,26 +37,26 @@ void testArray1()
     printTestArray(&a);
 
     //print first
-    int getFirst = *a.front();
+    int getFirst = a.front();
     logmsg("first = %d\n", getFirst);
 
     //erase at idx
-    logmsg("erasing a[%d] = %d...\n", 6, *a.at(6));
+    logmsg("erasing a[%d] = %d...\n", 6, a.at(6));
     a.eraseAt(6);
-    logmsg("a[%d] is now = %d\n", 6, *a.at(6));
+    logmsg("a[%d] is now = %d\n", 6, a.at(6));
 
     //insert at idx
     int newNum = 99;
     logmsg("inserting a[%d] = %d...\n", 6, newNum);
     a.insertAt(6, &newNum);
-    logmsg("a[%d] is now = %d\n", 6, *a.at(6));
+    logmsg("a[%d] is now = %d\n", 6, a.at(6));
     printTestArray(&a);
 
     //insert at idx
     int anotherNum = 333;
     logmsg("inserting a[%d] = %d...\n", 0, anotherNum);
     a.insertAt(0, &anotherNum);
-    logmsg("a[%d] is now = %d\n", 0, *a.at(0));
+    logmsg("a[%d] is now = %d\n", 0, a.at(0));
     printTestArray(&a);
 
     //remove at fast idx 5
@@ -69,7 +69,7 @@ void testArray1()
     a.popBack();
 
     //print last
-    int getLast = *a.back();
+    int getLast = a.back();
     logmsg("last = %d\n", getLast);
 
     //free after usage
