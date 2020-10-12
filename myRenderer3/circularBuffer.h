@@ -14,8 +14,8 @@ private:
     uint32_t m_Front;
     uint32_t m_Back;
 
-    T* back() const;
-    bool isEmpty() const;
+    T* back() const { return m_Array->at(m_Back); }
+    bool isEmpty() const { return m_Front == m_Back && !isFull(); }
     void clear();
     //void pushFrontCircBuf(const T* srcData);
 
@@ -24,15 +24,17 @@ public:
     CircularBuffer(uint32_t bufferLength);
     ~CircularBuffer();
 
-    uint32_t frontIndex() const;
-    uint32_t backIndex() const;
-    uint32_t capacity();
     uint32_t size() const;
-    T* front() const;
     T* popFront();
-    T* at(uint32_t index) const;
-    bool isFull() const;
     void pushBack(const T* srcData);
+
+    uint32_t frontIndex() const { return m_Front; }
+    uint32_t backIndex() const { return m_Back; }
+    uint32_t capacity() { return m_Array->capacity(); }
+    T* front() const { return &m_Array->at(m_Front); }
+    T* at(uint32_t index) const { return m_Array->at(index); }
+    bool isFull() const { return size() == m_Array->capacity(); }
+
     //void printCircBuf() const;
 
 
@@ -59,36 +61,6 @@ CircularBuffer<T>::~CircularBuffer()
 }
 
 template<typename T>
-uint32_t CircularBuffer<T>::frontIndex() const
-{
-    return m_Front;
-}
-
-template<typename T>
-uint32_t CircularBuffer<T>::backIndex() const
-{
-    return m_Back;
-}
-
-template<typename T>
-T* CircularBuffer<T>::front() const
-{
-    return &m_Array->at(m_Front);
-}
-
-template<typename T>
-T* CircularBuffer<T>::back() const
-{
-    return m_Array->at(m_Back);
-}
-
-template<typename T>
-uint32_t CircularBuffer<T>::capacity()
-{
-    return m_Array->capacity();
-}
-
-template<typename T>
 uint32_t CircularBuffer<T>::size() const
 {
     if (m_Front == m_Back)
@@ -101,18 +73,6 @@ uint32_t CircularBuffer<T>::size() const
     //difference in m_Front & m_Back
     else
         return (uint32_t)abs(m_Front - m_Back);
-}
-
-template<typename T>
-bool CircularBuffer<T>::isFull() const
-{
-    return size() == m_Array->capacity();
-}
-
-template<typename T>
-bool CircularBuffer<T>::isEmpty() const
-{
-    return m_Front == m_Back && !isFull();
 }
 
 //'push' a value directly into the 'back' slot
@@ -145,11 +105,5 @@ void CircularBuffer<T>::clear()
     assert(!isEmpty());
     m_Front = 0;
     m_Back = 0;
-}
-
-template<typename T>
-T* CircularBuffer<T>::at(uint32_t index) const
-{
-    return m_Array->at(index);
 }
 
