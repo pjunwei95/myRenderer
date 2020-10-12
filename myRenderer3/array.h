@@ -6,7 +6,7 @@
 
 // tests in array.cpp file
 void testArray1();
-void testB();
+void testArray2();
 
 template<typename T>
 class Array {
@@ -21,10 +21,14 @@ private:
     void checkArraySuffMem();
 public:
     Array() 
-        : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ 0 } {}
+        : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ 0 }
+    {
+    }
 
     explicit Array(uint32_t numElem) // new filled array of fixed size
-        : m_Data{ new T[numElem] }, m_Size{ 0 }, m_Capacity{ numElem } {}
+        : m_Data{ new T[numElem] }, m_Size{ 0 }, m_Capacity{ numElem } 
+    {
+    }
 
     ~Array() { delete[] m_Data; }
 
@@ -64,6 +68,8 @@ Array<T>& Array<T>::operator=(const Array<T>& oldArray)
 {
     if (this == &oldArray)
         return *this;
+
+    //TODO in your copy assignment is wrong. copy the memory of the oldArray into a temporary buffer first before deleting your own data. 
 
     delete[] m_Data;
     m_Size = oldArray.m_Size;
