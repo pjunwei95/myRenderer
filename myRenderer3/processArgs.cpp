@@ -12,7 +12,7 @@ void loadConfig()
 
     logmsg("Loading default configurations\n");
 
-    fm.readAndProcessFile("config.txt", TYPE_TEXT);
+    fm.readAndProcessFile("config.txt", FileManager::TYPE_TEXT);
 }
 
 void processArgs(int argc, char *argsv[])

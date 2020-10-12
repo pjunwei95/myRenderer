@@ -34,7 +34,7 @@ void FileManager::closeFile(FileHandle fileHandle)
     fclose(fileHandle);
 }
 
-void readToBuffer(const FileHandle fileHandle, char* buffer, long length)
+void readToBuffer(const FileManager::FileHandle fileHandle, char* buffer, long length)
 {
     assert(fileHandle);
     assert(buffer);

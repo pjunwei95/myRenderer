@@ -8,7 +8,7 @@
 #define FILE_NAME "debug.txt"
 #define CHAR_MAX_LIMIT 256
 
-FileHandle fileHandle;
+FileManager::FileHandle fileHandle;
 
 void logmsg(const char *format, ...)
 {
@@ -30,7 +30,7 @@ void logmsg(const char *format, ...)
 void openLogStream()
 {
     FileManager fm;
-    fm.openFile(FILE_NAME, TYPE_TEXT, MODE_WRITE, &fileHandle);
+    fm.openFile(FILE_NAME, FileManager::TYPE_TEXT, FileManager::MODE_WRITE, &fileHandle);
     OutputDebugString("===========Logging Begin===========\n");
     printf("===========Logging Begin===========\n");
     fprintf(fileHandle, "===========Logging Begin===========\n");
