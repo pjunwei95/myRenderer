@@ -28,7 +28,7 @@ void runMainLoop()
     //test();
     //testCircularBuffer();
     //testStack();
-    testArray1();
+    //testArray1();
     //testB();
 
     if (isTestProfile)

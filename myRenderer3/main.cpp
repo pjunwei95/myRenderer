@@ -28,7 +28,7 @@ int main(int argc, char *argsv[])
 
     setIsDone(FALSE);
     
-    printf("Press ESC to exit the application\n");
+    //printf("Press ESC to exit the application\n");
 
 	runMainLoop();
 
