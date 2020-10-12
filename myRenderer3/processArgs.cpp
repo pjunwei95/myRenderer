@@ -3,6 +3,7 @@
 #include <string.h>
 #include "fileManager.h"
 #include "logger.h"
+#include "runTest.h"
 
 void loadConfig()
 {
@@ -26,10 +27,10 @@ void processArgs(int argc, char *argsv[])
     //check args
     for (int i = 0; i < argc; ++i)
     {
-        // string is address of first element of string
-        // argsv is pointer to char pointer
         char *string = argsv[i];
         logmsg("argsv[%d] is \"%s\"\n", i, string);
+        if (string == "test")
+            runTest();
     }
     loadConfig();
 }

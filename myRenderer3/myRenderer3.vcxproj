@@ -156,6 +156,7 @@
     <ClInclude Include="processArgs.h" />
     <ClInclude Include="profileManager.h" />
     <ClInclude Include="runMainLoop.h" />
+    <ClInclude Include="runTest.h" />
     <ClInclude Include="stack.h" />
     <ClInclude Include="test.h" />
     <ClInclude Include="array.h" />

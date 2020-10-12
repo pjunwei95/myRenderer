@@ -113,6 +113,9 @@
     <ClInclude Include="profileManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="runTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="config.txt">

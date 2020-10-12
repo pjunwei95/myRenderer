@@ -58,7 +58,16 @@ public:
         m_Size += increment; 
     }
 
-    const T& operator[](const uint32_t index) const;
+    T& operator[](uint32_t index)
+    {
+        return m_Data[index];
+    }
+
+    const T& operator[](uint32_t index) const
+    {
+        return m_Data[index];
+    }
+
     Array& operator=(const Array& oldArray); //copy assignment, not move
 
     //TODO change T* to const T&
@@ -99,13 +108,6 @@ Array<T>& Array<T>::operator=(const Array<T>& oldArray)
     for (uint32_t i = 0; i < m_Capacity; i++)
         m_Data[i] = oldArray.m_Data[i];
     return *this;*/
-}
-
-template<typename T>
-const T& Array<T>::operator[](const uint32_t index) const
-{
-    assert(index < m_Size);
-    return m_Data[index];
 }
 
 template<typename T>
