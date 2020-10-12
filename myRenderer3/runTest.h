@@ -1,5 +1,5 @@
 #pragma once
-#include "array.h"
+#include "array_unitTest.h"
 
 void runTest()
 {

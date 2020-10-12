@@ -124,7 +124,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="array.cpp" />
+    <ClCompile Include="array_unitTest.cpp" />
     <ClCompile Include="carray.cpp" />
     <ClCompile Include="bufferOps.cpp" />
     <ClCompile Include="circularBuffer.cpp">
@@ -144,6 +144,7 @@
     <ClCompile Include="windowHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="array_unitTest.h" />
     <ClInclude Include="carray.h" />
     <ClInclude Include="bufferOps.h" />
     <ClInclude Include="circularBuffer.h" />

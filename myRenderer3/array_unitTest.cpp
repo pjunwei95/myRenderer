@@ -1,6 +1,6 @@
-#include "stdio.h"
 #include "array.h"
-
+#include "array_unitTest.h"
+#include "logger.h"
 //TODO 
 //Separate all of your testing code into files like "Array_UnitTest.h/cpp"
 //
@@ -8,17 +8,18 @@
 //unit tests will meticulously test every functionality of  your Array / Circular buffer etc, with hardcoded inputs, and will compare them with hard coded expected values to ensure nothing breaks
 
 
+
 void printTestArray(const Array<int>* const a)
 {
-    printf("==============\n");
-    printf("printing updated table\n");
+    logmsg("==============\n");
+    logmsg("printing updated table\n");
     int numAtIdx;
     for (uint32_t i = 0; i < a->size(); ++i)
     {
         numAtIdx = *a->at(i);
-        printf("array [%d] = %d\n", i, numAtIdx);
+        logmsg("array [%d] = %d\n", i, numAtIdx);
     }
-    printf("==============\n");
+    logmsg("==============\n");
 }
 
 void testArray1()
@@ -37,39 +38,39 @@ void testArray1()
 
     //print first
     int getFirst = *a.front();
-    printf("first = %d\n", getFirst);
+    logmsg("first = %d\n", getFirst);
 
     //erase at idx
-    printf("erasing a[%d] = %d...\n", 6, *a.at(6));
+    logmsg("erasing a[%d] = %d...\n", 6, *a.at(6));
     a.eraseAt(6);
-    printf("a[%d] is now = %d\n", 6, *a.at(6));
+    logmsg("a[%d] is now = %d\n", 6, *a.at(6));
 
     //insert at idx
     int newNum = 99;
-    printf("inserting a[%d] = %d...\n", 6, newNum);
+    logmsg("inserting a[%d] = %d...\n", 6, newNum);
     a.insertAt(6, &newNum);
-    printf("a[%d] is now = %d\n", 6, *a.at(6));
+    logmsg("a[%d] is now = %d\n", 6, *a.at(6));
     printTestArray(&a);
 
     //insert at idx
     int anotherNum = 333;
-    printf("inserting a[%d] = %d...\n", 0, anotherNum);
+    logmsg("inserting a[%d] = %d...\n", 0, anotherNum);
     a.insertAt(0, &anotherNum);
-    printf("a[%d] is now = %d\n", 0, *a.at(0));
+    logmsg("a[%d] is now = %d\n", 0, *a.at(0));
     printTestArray(&a);
 
     //remove at fast idx 5
-    printf("RemoveAtFast 5...\n");
+    logmsg("RemoveAtFast 5...\n");
     a.removeAtFast(5);
     printTestArray(&a);
 
     //remove last
-    printf("popping last element...\n");
+    logmsg("popping last element...\n");
     a.popBack();
 
     //print last
     int getLast = *a.back();
-    printf("last = %d\n", getLast);
+    logmsg("last = %d\n", getLast);
 
     //free after usage
     //delete a;
@@ -86,4 +87,9 @@ void testArray2()
     //int *num = b[0];
     delete b;
     //for profiler
+}
+
+void testArray()
+{
+    testArray1();
 }

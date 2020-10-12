@@ -24,13 +24,14 @@ void processArgs(int argc, char *argsv[])
         logmsg("Usage: ./app.exe (int)numArgs (string)args\n");
     }
 
+    loadConfig();
+
     //check args
     for (int i = 0; i < argc; ++i)
     {
         char *string = argsv[i];
         logmsg("argsv[%d] is \"%s\"\n", i, string);
-        if (string == "test")
+        if (0 == strcmp(string, "test"))
             runTest();
     }
-    loadConfig();
 }

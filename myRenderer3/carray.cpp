@@ -212,7 +212,7 @@ void removeAtFastArray(Array* const arr, unsigned int index)
     arr->m_Size--;
 }
 
-void testArray()
+void testArrayC()
 {
     Array a = createNewArray(sizeof(int));
     int num = 0;

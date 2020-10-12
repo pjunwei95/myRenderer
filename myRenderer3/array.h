@@ -2,12 +2,7 @@
 #include <stdint.h>
 #include <assert.h>
 //#include "stdio.h"
-#include "array.h"
 #include "stdlib.h"
-
-// tests in array.cpp file
-void testArray1();
-void testArray2();
 
 template<typename T>
 class Array {
