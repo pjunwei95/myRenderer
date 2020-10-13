@@ -61,12 +61,18 @@ public:
     const T& front() const;
     const T& back() const;
     const T& at(const uint32_t index) const;
-    void pushBack(const T* srcData);
-    void insertAt(uint32_t index, const T* srcData);
+    void pushBack(const T& srcData);
+    void insertAt(uint32_t index, const T& srcData);
     void reserve(uint32_t numElem);
     void eraseAt(uint32_t index);
     void removeAtFast(uint32_t index);
     void clear();
+
+    //TODO
+    /*void insertAtFast();
+    T& front() const;
+    T& back() const;
+    T& at(const uint32_t index) const;*/
 
     //DEPRECATED
     //Array createNewArray(unsigned int sizeElem);
@@ -77,13 +83,27 @@ public:
     //void printTestArray();
 
 };
-
 template<typename T>
-void Array<T>::reserve(uint32_t numElem) // new filled array of fixed size
+void Array<T>::reserve(uint32_t newCap) // new filled array of fixed size
 {
-    m_Data = static_cast<T*>(malloc(numElem * sizeof(T)));
-    assert(m_Data);
-    m_Capacity = numElem;
+    if (newCap < m_Capacity)
+        return;
+
+    if (m_Data)
+    {
+        T* temp = static_cast<T*>(malloc(newCap * sizeof(T)));
+        assert(temp);
+        for (uint32_t i = 0; i < m_Size; ++i)
+            temp[i] = m_Data[i];
+        free(m_Data);
+        m_Data = temp;
+    }
+    else
+    {
+        m_Data = static_cast<T*>(malloc(newCap * sizeof(T)));
+        assert(m_Data);
+    }
+    m_Capacity = newCap;
 }
 
 //copy assignment, not move
@@ -98,7 +118,7 @@ Array<T>& Array<T>::operator=(const Array<T>& oldArray)
     uint32_t tempSize = oldArray.m_Size;
     uint32_t tempCap = oldArray.m_Capacity;
 
-    for (uint32_t i = 0; i < tempCap; ++i)
+    for (uint32_t i = 0; i < tempSize; ++i)
         temp[i] = oldArray.m_Data[i];
 
     swap(tempSize, m_Size);
@@ -110,6 +130,8 @@ Array<T>& Array<T>::operator=(const Array<T>& oldArray)
     return *this;
 }
 
+//you must destroy every element by calling their destructors.setting array size to 0 is not enough
+//iterating through every element calling their destructors.
 template<typename T>
 void Array<T>::clear()
 {
@@ -160,27 +182,24 @@ void Array<T>::checkMem()
 }
 
 template<typename T>
-void Array<T>::pushBack(const T* srcData)
+void Array<T>::pushBack(const T& srcData)
 {
-    assert(srcData);
     checkMem();
     assert(m_Size < m_Capacity);
-    m_Data[m_Size] = *srcData;
+    m_Data[m_Size] = srcData;
     m_Size++;
 }
 
 template<typename T>
-void Array<T>::insertAt(uint32_t index, const T* srcData)
+void Array<T>::insertAt(uint32_t index, const T& srcData)
 {
-    assert(srcData);
     assert(index < m_Size);
-
     checkMem();
     //shift array right
     // for i = size-1; i > index-1; i--
     for (int i = m_Size - 1; i > static_cast<int>(index) - 1; --i)
         m_Data[i + 1] = m_Data[i];
-    m_Data[index] = *srcData;
+    m_Data[index] = srcData;
     m_Size++;
 }
 

@@ -31,7 +31,7 @@ void testArray1()
     //push 10 elements and print (init)
     for (int i = 0; i < 10; ++i)
     {
-        a.pushBack(&num);
+        a.pushBack(num);
         num++;
     }
     printTestArray(&a);
@@ -48,14 +48,14 @@ void testArray1()
     //insert at idx
     int newNum = 99;
     logmsg("inserting a[%d] = %d...\n", 6, newNum);
-    a.insertAt(6, &newNum);
+    a.insertAt(6, newNum);
     logmsg("a[%d] is now = %d\n", 6, a.at(6));
     printTestArray(&a);
 
     //insert at idx
     int anotherNum = 333;
     logmsg("inserting a[%d] = %d...\n", 0, anotherNum);
-    a.insertAt(0, &anotherNum);
+    a.insertAt(0, anotherNum);
     logmsg("a[%d] is now = %d\n", 0, a.at(0));
     printTestArray(&a);
 
@@ -74,7 +74,7 @@ void testArray1()
 
     //free after usage
     //delete a;
-}
+ }
 
 void testArray2()
 {
@@ -82,9 +82,9 @@ void testArray2()
     Array<int> b;
     b.reserve(10);
     int num = 1;
-    b.pushBack(&num);
+    b.pushBack(num);
     num++;
-    b.pushBack(&num);
+    b.pushBack(num);
     num++;
     //b->addSize(1);
     b[0] = num;
