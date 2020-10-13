@@ -8,7 +8,6 @@
 //unit tests will meticulously test every functionality of  your Array / Circular buffer etc, with hardcoded inputs, and will compare them with hard coded expected values to ensure nothing breaks
 
 
-
 void printTestArray(const Array<int>* const a)
 {
     logmsg("==============\n");
@@ -93,8 +92,29 @@ void testArray2()
     //for profiler
 }
 
+void testArray3()
+{
+    Array<int> container;
+    container.pushBack(1);
+    container.pushBack(2);
+    container.pushBack(3);
+
+
+    logmsg("Before clear:\n");
+    printTestArray(&container);
+    logmsg("Size=%d\n", container.size());
+
+    logmsg("Clear\n");
+    container.clear();
+
+    logmsg("After clear:\n");
+    printTestArray(&container);
+    logmsg("Size=%d\n", container.size());
+}
+
 void testArray()
 {
     testArray1();
     testArray2();
+    testArray3();
 }

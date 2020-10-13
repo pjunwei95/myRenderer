@@ -17,7 +17,7 @@ void logmsg(const char *format, ...)
     char buffer[CHAR_MAX_LIMIT];
     va_list args;
     va_start(args, format);
-    int err = vsnprintf_s(buffer, CHAR_MAX_LIMIT, format, args)
+    int err = vsnprintf_s(buffer, CHAR_MAX_LIMIT, format, args);
     assert(err > 0);    
     assert(err < CHAR_MAX_LIMIT);
 
