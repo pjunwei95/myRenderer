@@ -56,19 +56,17 @@ public:
     {
         m_Size += increment; 
     }
-    void reserve(uint32_t numElem);
 
     Array& operator=(const Array& oldArray); //copy assignment, not move
-
     const T& front() const;
     const T& back() const;
     const T& at(const uint32_t index) const;
     void pushBack(const T* srcData);
     void insertAt(uint32_t index, const T* srcData);
-
+    void reserve(uint32_t numElem);
     void eraseAt(uint32_t index);
-    void clear();
     void removeAtFast(uint32_t index);
+    void clear();
 
     //DEPRECATED
     //Array createNewArray(unsigned int sizeElem);

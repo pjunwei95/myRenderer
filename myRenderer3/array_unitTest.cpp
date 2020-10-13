@@ -95,6 +95,6 @@ void testArray2()
 
 void testArray()
 {
-    //testArray1();
+    testArray1();
     testArray2();
 }

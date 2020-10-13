@@ -5,9 +5,7 @@
 #include <crtdbg.h>
 //#include "profiler.h"
 //#include "test.h"
-#include "circularBuffer.h"
-//#include "stack.h"
-#include "array.h"
+
 
 bool isTestProfile = false;
 
@@ -15,7 +13,7 @@ void runMainLoop()
 {
     // Enable run-time memory check for debug builds.
     //#if defined(DEBUG) | defined(_DEBUG)
-    _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+    //_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
     //#endif
 
     //int * pi = new int;
@@ -23,21 +21,12 @@ void runMainLoop()
 
     FrameRateController frc;
     frc.initialiseTimer();
-    
-    // TESTS
-    //test();
-    //testCircularBuffer();
-    //testStack();
-    //testArray1();
-    //testB();
-    //testProfile();
-
+  
     //if (isTestProfile)
         //initProfile(50);   
 
     //if (!isTestProfile)
         //testProfiler();
-   
 
     //beginProfile("createWindow");
 
