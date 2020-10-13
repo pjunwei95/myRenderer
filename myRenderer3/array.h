@@ -94,6 +94,7 @@ Array<T>& Array<T>::operator=(const Array<T>& oldArray)
         return *this;
 
     T* temp = static_cast<T*>(malloc(m_Capacity * sizeof(T)));
+    assert(temp);
     uint32_t tempSize = oldArray.m_Size;
     uint32_t tempCap = oldArray.m_Capacity;
 
