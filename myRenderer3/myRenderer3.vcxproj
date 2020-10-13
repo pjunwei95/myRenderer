@@ -124,10 +124,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="array.cpp" />
+    <ClCompile Include="array_unitTest.cpp" />
     <ClCompile Include="carray.cpp" />
     <ClCompile Include="bufferOps.cpp" />
-    <ClCompile Include="circularBuffer.cpp">
+    <ClCompile Include="circularBuffer_unitTest.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="fileManager.cpp" />
@@ -137,16 +137,18 @@
     <ClCompile Include="logger.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="processArgs.cpp" />
-    <ClCompile Include="profiler.cpp" />
+    <ClCompile Include="profileManager.cpp" />
     <ClCompile Include="runMainLoop.cpp" />
-    <ClCompile Include="stack.cpp" />
+    <ClCompile Include="stack_unitTest.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="windowHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="array_unitTest.h" />
     <ClInclude Include="carray.h" />
     <ClInclude Include="bufferOps.h" />
     <ClInclude Include="circularBuffer.h" />
+    <ClInclude Include="circularBuffer_unitTest.h" />
     <ClInclude Include="fileManager.h" />
     <ClInclude Include="drawScreen.h" />
     <ClInclude Include="engine.h" />
@@ -154,9 +156,11 @@
     <ClInclude Include="getKeyInput.h" />
     <ClInclude Include="logger.h" />
     <ClInclude Include="processArgs.h" />
-    <ClInclude Include="profiler.h" />
+    <ClInclude Include="profileManager.h" />
     <ClInclude Include="runMainLoop.h" />
+    <ClInclude Include="runTest.h" />
     <ClInclude Include="stack.h" />
+    <ClInclude Include="stack_unitTest.h" />
     <ClInclude Include="test.h" />
     <ClInclude Include="array.h" />
     <ClInclude Include="windowHandler.h" />

@@ -3,6 +3,7 @@
 #include <string.h>
 #include "fileManager.h"
 #include "logger.h"
+#include "runTest.h"
 
 void loadConfig()
 {
@@ -12,7 +13,7 @@ void loadConfig()
 
     logmsg("Loading default configurations\n");
 
-    fm.readAndProcessFile("config.txt", TYPE_TEXT);
+    fm.readAndProcessFile("config.txt", FileManager::TYPE_TEXT);
 }
 
 void processArgs(int argc, char *argsv[])
@@ -23,13 +24,14 @@ void processArgs(int argc, char *argsv[])
         logmsg("Usage: ./app.exe (int)numArgs (string)args\n");
     }
 
+    loadConfig();
+
     //check args
     for (int i = 0; i < argc; ++i)
     {
-        // string is address of first element of string
-        // argsv is pointer to char pointer
         char *string = argsv[i];
         logmsg("argsv[%d] is \"%s\"\n", i, string);
+        if (0 == strcmp(string, "test"))
+            runTest();
     }
-    loadConfig();
 }

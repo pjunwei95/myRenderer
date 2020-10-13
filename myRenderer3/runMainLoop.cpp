@@ -3,11 +3,9 @@
 #include "frameRateController.h"
 #include "windowHandler.h"
 #include <crtdbg.h>
-#include "profiler.h"
+//#include "profiler.h"
 //#include "test.h"
-#include "circularBuffer.h"
-//#include "stack.h"
-#include "array.h"
+
 
 bool isTestProfile = false;
 
@@ -15,7 +13,7 @@ void runMainLoop()
 {
     // Enable run-time memory check for debug builds.
     //#if defined(DEBUG) | defined(_DEBUG)
-    _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+    //_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
     //#endif
 
     //int * pi = new int;
@@ -23,20 +21,12 @@ void runMainLoop()
 
     FrameRateController frc;
     frc.initialiseTimer();
-    
-    // TESTS
-    //test();
-    //testCircularBuffer();
-    //testStack();
-    testArray1();
-    //testB();
-
-    if (isTestProfile)
-        initProfile(50);   
+  
+    //if (isTestProfile)
+        //initProfile(50);   
 
     //if (!isTestProfile)
         //testProfiler();
-   
 
     //beginProfile("createWindow");
 
@@ -58,25 +48,25 @@ void runMainLoop()
 
             getKeyInput();
 
-            if (isTestProfile)
-                beginProfile("updateWindow");
+            //if (isTestProfile)
+                //beginProfile("updateWindow");
 
             wh.updateWindow();
 
 
             frc.idleUntilFPSLimit(&timer);
 
-            if (isTestProfile)
-                onProfilerFlip();
+            //if (isTestProfile)
+                //onProfilerFlip();
             
-            if (isTestProfile)
-                endProfile();
+            //if (isTestProfile)
+                //endProfile();
             //endProfile();
         }
         wh.destroyWindow();
     }
-    if (isTestProfile)
-        destroyProfile();
+    //if (isTestProfile)
+        //destroyProfile();
 
 }
 

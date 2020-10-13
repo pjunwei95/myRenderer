@@ -2,7 +2,7 @@
 #include "engine.h"
 #include <stdio.h>
 #include "circularBuffer.h"
-#include "profiler.h"
+//#include "profiler.h"
 
 void FrameRateController::initialiseTimer()
 {

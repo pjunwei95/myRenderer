@@ -7,7 +7,7 @@ struct Array {
     unsigned int m_TypeSize; // size of element type
 };
 
-void testArray();
+//void testArray();
 
 Array createNewArray(unsigned int sizeElem);
 
