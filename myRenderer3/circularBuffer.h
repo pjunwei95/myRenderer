@@ -10,7 +10,7 @@
 //class CircularBuffer
 //{
 //private:
-//    Array<T>* m_Array;
+//    Array<T> m_Array;
 //    uint32_t m_Front;
 //    uint32_t m_Back;
 //

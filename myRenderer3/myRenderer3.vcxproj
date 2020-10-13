@@ -127,7 +127,7 @@
     <ClCompile Include="array_unitTest.cpp" />
     <ClCompile Include="carray.cpp" />
     <ClCompile Include="bufferOps.cpp" />
-    <ClCompile Include="circularBuffer.cpp">
+    <ClCompile Include="circularBuffer_unitTest.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="fileManager.cpp" />
@@ -148,6 +148,7 @@
     <ClInclude Include="carray.h" />
     <ClInclude Include="bufferOps.h" />
     <ClInclude Include="circularBuffer.h" />
+    <ClInclude Include="circularBuffer_unitTest.h" />
     <ClInclude Include="fileManager.h" />
     <ClInclude Include="drawScreen.h" />
     <ClInclude Include="engine.h" />

@@ -18,10 +18,10 @@ void runTest()
 
     // TESTS
     //test();
-    //testCircularBuffer();
     //testArray1();
     //testB();
     //testProfile();
+    //testStack();
     testArray();
-    testStack();
+    //testCircularBuffer();
 }
