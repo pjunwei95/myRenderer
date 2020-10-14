@@ -23,5 +23,5 @@ void runTest()
     //testProfile();
     //testStack();
     testArray();
-    //testCircularBuffer();
+    testCircularBuffer();
 }

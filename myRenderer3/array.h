@@ -196,7 +196,7 @@ void Array<T>::pushBack(const T& srcData)
 template<typename T>
 void Array<T>::insertAt(uint32_t index, const T& srcData)
 {
-    assert(index < m_Size);
+    assert(index <= m_Size);
     checkMem();
     //shift array right
     // for i = size-1; i > index-1; i--
@@ -235,7 +235,7 @@ template<typename T>
 void Array<T>::insertAtFast(uint32_t index, const T& srcData) 
 {
     assert(!isEmpty());
-    assert(index < m_Size);
+    assert(index <= m_Size);
     const T& temp = m_Data[index];
     pushBack(temp);
     m_Data[index] = srcData;
