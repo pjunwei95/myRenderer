@@ -11,31 +11,31 @@
 #    pragma comment(linker, "/subsystem:windows /ENTRY:mainCRTStartup")
 #endif
 
-BOOL isDone;
+bool isDone;
 
 int main(int argc, char *argsv[])
 {
     openLogStream();
 
-    processArgs(argc, argsv);
+    setIsDone(false);
 
-    setIsDone(FALSE);
+    processArgs(argc, argsv);
     
     //printf("Press ESC to exit the application\n");
-
-	runMainLoop();
+    if (!isDone)
+	    runMainLoop();
 
     closeLogStream();
 
 	return 0;
 }
 
-void setIsDone(BOOL value)
+void setIsDone(bool value)
 {
     isDone = value;
 }
 
-BOOL getIsDone()
+bool getIsDone()
 {
     return isDone;
 }

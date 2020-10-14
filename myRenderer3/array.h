@@ -99,10 +99,35 @@ public:
     void clear();
     void insertAtFast(uint32_t index, const T& srcData);
 
+
+    T* realloc(size_t newSize)
+    {
+        /*assert(block);
+        assert(oldSize < newSize);
+        void* newBlock;
+        newBlock = malloc(newSize);
+        assert(newBlock);
+        newBlock = memcpy(newBlock, block, oldSize);
+        free(block);
+        return newBlock;*/
+        assert(m_Capacity <= newSize);
+        T* temp = static_cast<T*>(malloc(sizeof(T) * newSize));
+        if (temp)
+        {
+            for (uint32_t i = 0; i < m_Size; ++i)
+                temp[i] = m_Data[i];
+            free(m_Data);
+            return temp;
+        }
+        else // failed to allocate memory
+            return m_Data;
+    }
+
+
+
     //DEPRECATED
     //Array createNewArray(unsigned int sizeElem);
     //Array createNewFilledArray(unsigned int numElem, unsigned int sizeElem);
-    //void* reallocArray(void* block, size_t oldSize, size_t newSize);
     //int getArrayTypeSize() const;
     //void freeArray();
     //void printTestArray();
@@ -111,16 +136,18 @@ public:
 template<typename T>
 void Array<T>::reserve(uint32_t newCap) // new filled array of fixed size
 {
-    if (newCap < m_Capacity)
+    if (newCap <= m_Capacity)
         return;
 
     if (m_Data)
     {
-        T* temp = static_cast<T*>(malloc(newCap * sizeof(T)));
+        /*T* temp = static_cast<T*>(malloc(newCap * sizeof(T)));
         assert(temp);
         for (uint32_t i = 0; i < m_Size; ++i)
             temp[i] = m_Data[i];
-        free(m_Data);
+        free(m_Data);*/
+        T* temp = realloc(newCap);
+        assert(temp);
         m_Data = temp;
     }
     else
@@ -133,18 +160,18 @@ void Array<T>::reserve(uint32_t newCap) // new filled array of fixed size
 
 //copy assignment, not move
 template<typename T>
-Array<T>& Array<T>::operator=(const Array<T>& oldArray)
+Array<T>& Array<T>::operator=(const Array<T>& rhsArray)
 {
-    if (this == &oldArray)
+    if (this == &rhsArray)
         return *this;
 
     T* temp = static_cast<T*>(malloc(m_Capacity * sizeof(T)));
     assert(temp);
-    uint32_t tempSize = oldArray.m_Size;
-    uint32_t tempCap = oldArray.m_Capacity;
+    uint32_t tempSize = rhsArray.m_Size;
+    uint32_t tempCap = rhsArray.m_Capacity;
 
     for (uint32_t i = 0; i < tempSize; ++i)
-        temp[i] = oldArray.m_Data[i];
+        temp[i] = rhsArray.m_Data[i];
 
     swap(tempSize, m_Size);
     swap(tempCap, m_Capacity);
@@ -175,12 +202,14 @@ void Array<T>::checkMem()
     }
     else if (m_Size == m_Capacity) // array memory exceeded
     {
-        T* temp = static_cast<T*>(malloc(sizeof(T) * 2 * m_Capacity));
-        for (uint32_t i = 0; i < m_Size; ++i)
-            temp[i] = m_Data[i];
-        free(m_Data);
-        m_Data = temp;
+        //T* temp = static_cast<T*>(malloc(sizeof(T) * 2 * m_Capacity));
+        //for (uint32_t i = 0; i < m_Size; ++i)
+        //    temp[i] = m_Data[i];
+        //free(m_Data);
         m_Capacity *= 2;
+        T* temp = realloc(m_Capacity);
+        assert(temp);
+        m_Data = temp;
     }
 }
 
@@ -209,13 +238,12 @@ void Array<T>::insertAt(uint32_t index, const T& srcData)
 template<typename T>
 void Array<T>::eraseAt(uint32_t index)
 {
+    //shift array left
     assert(!isEmpty());
     assert(index < m_Size);
-    //shift array left
     // for i = index; i < size-1; i++
-    //    A[i] = A[i+1]
     for (uint32_t i = index; i < m_Size; ++i)
-        m_Data[i] = m_Data[i + 1];
+        m_Data[i] = m_Data[i + 1]; //A[i] = A[i+1]
     m_Size--;
 }
 

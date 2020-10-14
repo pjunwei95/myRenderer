@@ -6,7 +6,6 @@
 //#include "profiler.h"
 //#include "test.h"
 
-
 bool isTestProfile = false;
 
 void runMainLoop()

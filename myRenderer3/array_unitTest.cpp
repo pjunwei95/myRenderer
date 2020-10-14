@@ -7,11 +7,14 @@
 //You should run suites of unit tests based off the commandline
 //unit tests will meticulously test every functionality of  your Array / Circular buffer etc, with hardcoded inputs, and will compare them with hard coded expected values to ensure nothing breaks
 
+#define LOG_TEST(name) logmsg("----------------------------------------------------TESTING "#name"\n");
+#define LOG_UNIT_TEST() logmsg("---------------------------------In \"%s\"\n", __FUNCSIG__)
+
 
 void printTestArray(const Array<int>* const a)
 {
     logmsg("==============\n");
-    logmsg("printing updated table\n");
+    logmsg("printing updated table: \n\n");
     int numAtIdx;
     for (uint32_t i = 0; i < a->size(); ++i)
     {
@@ -23,7 +26,7 @@ void printTestArray(const Array<int>* const a)
 
 void testArray1()
 {
-    //Array<int>* a = new Array<int>();
+    LOG_UNIT_TEST();
     
     Array<int> a;
     int num = 0;
@@ -77,6 +80,7 @@ void testArray1()
 
 void testArray2()
 {
+    LOG_UNIT_TEST();
     // for circular buffer, without this constructors will give linker errors
     Array<int> b;
     b.reserve(10);
@@ -92,8 +96,9 @@ void testArray2()
     //for profiler
 }
 
-void testArray3()
+void testArrayClear()
 {
+    LOG_UNIT_TEST();
     Array<int> container;
     container.pushBack(1);
     container.pushBack(2);
@@ -102,19 +107,20 @@ void testArray3()
 
     logmsg("Before clear:\n");
     printTestArray(&container);
-    logmsg("Size=%d\n", container.size());
+    logmsg("Size = %d\n", container.size());
 
     logmsg("Clear\n");
     container.clear();
 
     logmsg("After clear:\n");
     printTestArray(&container);
-    logmsg("Size=%d\n", container.size());
+    logmsg("Size = %d\n", container.size());
 }
 
 void testArray()
 {
+    LOG_TEST(ARRAY);
     testArray1();
     testArray2();
-    testArray3();
+    testArrayClear();
 }

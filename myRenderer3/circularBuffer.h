@@ -57,9 +57,9 @@ public:
 // the cursors are simply index values
 template<typename T>
 CircularBuffer<T>::CircularBuffer(uint32_t bufferLength)
-    : m_Array{ nullptr }, m_Front{ 0 }, m_Back{ 0 }, m_Capacity {bufferLength}
+    : m_Front{ 0 }, m_Back{ 0 }, m_Capacity {bufferLength}
 {
-    m_Array.reserve(bufferLength + 1); // reserve one slot for to avoid reallocation
+    m_Array.reserve(bufferLength + 1); // reserve one slot to avoid reallocation
 }
 
 template<typename T>
