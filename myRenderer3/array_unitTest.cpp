@@ -7,8 +7,6 @@
 //You should run suites of unit tests based off the commandline
 //unit tests will meticulously test every functionality of  your Array / Circular buffer etc, with hardcoded inputs, and will compare them with hard coded expected values to ensure nothing breaks
 
-#define LOG_TEST(name) logmsg("----------------------------------------------------TESTING "#name"\n");
-#define LOG_UNIT_TEST() logmsg("---------------------------------In \"%s\"\n", __FUNCSIG__)
 
 
 void printTestArray(const Array<int>* const a)

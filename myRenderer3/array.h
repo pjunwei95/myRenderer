@@ -58,7 +58,7 @@ public:
     }
     void decrementSize(uint32_t value)
     {
-        m_Size += value;
+        m_Size -= value;
     }
 
     const T& front() const
