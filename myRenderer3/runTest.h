@@ -4,8 +4,7 @@
 #include "stack_unitTest.h"
 #include "circularBuffer.h"
 //#include "stack.h"
-#include "array.h"
-
+#include "test.h"
 
 
 void runTest()
@@ -24,6 +23,6 @@ void runTest()
     //testB();
     //testProfile();
     //testStack();
-    testArray();
-    testCircularBuffer();
+    //testArray();
+    //testCircularBuffer();
 }

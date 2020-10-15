@@ -15,24 +15,30 @@ struct Profile {
 class ProfileManager
 {
 public:
-    ProfileManager();
-    ~ProfileManager();
-    void printPastFrames();
-    void initProfile(uint32_t frameNum);
-    void beginProfile(const char * string);
-    void endProfile();
-    void onProfilerFlip();
-    void destroyProfile();
-    void testProfiler();
+    ProfileManager(uint32_t frameNum, 
+        const char* name,
+        void(*cbBegin)(Profile*) = nullptr,
+        void(*cbEnd)(Profile*) = nullptr
+        )
+    {
+        frc.initialiseTimer();
+    }
 
-    Profile* getProfile();
+    ~ProfileManager() {}
+    void beginProfile(Profile* profile) 
+    {
+        frc.updateTimeStamp(&profile->m_Start);
+    }
+    void endProfile() {}
+    void onProfilerFlip() {}
+    void(*cbBegin)(Profile*);
+    void(*cbEnd)(Profile*);
+
 
 private:
-    CircularBuffer<Array<Profile>>* frameCircBuf;
     FrameRateController frc;
-    bool isProfileBegin; // This doesnt't work for nested profiling
 };
 
-void testProfiler();
+void testProfiler(){}
 
 
