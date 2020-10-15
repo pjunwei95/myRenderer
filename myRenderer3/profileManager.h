@@ -12,6 +12,8 @@ struct Profile {
     Timer m_Start;
     Timer m_Elapsed;
     char m_Name[CHAR_MAX_LIMIT];
+    Profile() {}
+    ~Profile() {}
 };
 
 class ProfileManager
@@ -23,7 +25,8 @@ public:
         frc.initialiseTimer();
     }
 
-    void profileBegin(const char* name, uint32_t size)
+    ~ProfileManager
+    void profileBegin(const char* name)
     {
         Profile* ptrProfile = findProfile(name);
         if (ptrProfile)
@@ -33,7 +36,7 @@ public:
         else
         {
             Profile newProfile;
-            strcpy_s(newProfile.m_Name, size, name);
+            strcpy_s(newProfile.m_Name, CHAR_MAX_LIMIT, name);
             frc.updateTimeStamp(newProfile.m_Start);
             profileArr.pushBack(newProfile);
         }
@@ -64,6 +67,23 @@ public:
         }
         return nullptr;
     }
+
+    void printPastFrames()
+    {
+        uint32_t cbSize = cb.size();
+        for (uint32_t i = 0; i < cbSize; ++i)
+        {
+            Array<Profile> foo = cb.at(i);
+            uint32_t arrSize = foo.size();
+            logmsg("cbSize = %d, each frame has %d profiles\n", cbSize, arrSize);
+            for (uint32_t j = 0; j < arrSize; ++j)
+            {
+                Profile p = foo[j];
+                logmsg("Frame #%d, Time elapsed for |%s| profile = %.2f ms\n", i, p.getString(), frc.getTimerElapsedMs(p.m_Elapsed));
+            }
+        }
+    }
+
 private:
     FrameRateController frc;
     Array<Profile> profileArr;

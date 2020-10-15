@@ -1,31 +1,6 @@
+#include "profileManager_unitTest.h"
 #include "profileManager.h"
 #include "logger.h"
-
-//int tempFront = frameCircBuf->frontIndex();
-    //int size = frameCircBuf->size();
-
-    //for (int i = 0; i < size; ++i)
-    //{
-    //    //go through each frame in circular buffer
-    //    int idx = (tempFront + i) % frameCircBuf->capacity();
-
-    //    //Array frameProfileList = *((Array*)frameCircBuf->getCircBufAt(&frameCircBuf, idx));
-    //    Array<Profile>* frameProfileList = (Array<Profile>*)frameCircBuf->at(idx);
-    //    for (uint32_t j = 0; j < frameProfileList->size(); ++j)
-    //    {
-    //        Profile* ptrToProfile = (Profile*)frameProfileList->at(j);
-    //        Profile profile = *ptrToProfile;
-    //        logmsg("Frame #%d, Time elapsed for |%s| profile = %.2f ms\n", i, profile.m_ProfileName, frc.getTimerElapsedMs(&profile.m_Elapsed));
-    //        //formatting for profiler: frame#, profileName, startTime, endTime
-    //        //logmsg("#%d, %s, %.2f\n", i, profile.m_ProfileName, getTimerElapsedMs(&profile.m_Elapsed));
-    //    }
-    //}
-void printPastFrames()
-{
-
-
-    
-}
 
 void testProfile()
 {
@@ -34,12 +9,13 @@ void testProfile()
     int i = 0;
     while(i <3)
     {
-        pm.profileBegin("hi", 2);
+        pm.profileBegin("hi");
         Sleep(33);
         pm.profileEnd("hi");
+        pm.onProfilerFlip();
         ++i;
     }
-        printPastFrames();
+    pm.printPastFrames();
 }
 
 //#include "profileManager.h"

@@ -4,62 +4,72 @@
 //#include "frameRateController.h"
 //#define CHAR_MAX_LIMIT 256
 
+------------------------------------------------------------------------
+class profile
+{
+public:
+    profile(const char* name,
+        void(*cbbegin)(profile*) = nullptr,
+        void(*cbend)(profile*) = nullptr
+    )
+        :
+        cbbegin{ cbbegin }, cbend{ cbend }
+    {
+        strcpy_s(m_name, sizeof(m_name), name);
+        if (cbbegin)
+            cbbegin(this);
+    }
+    ~profile()
+    {
+        if (cbend)
+            cbend(this);
+    }
+    void(*cbbegin)(profile*);
+    void(*cbend)(profile*);
+
+    const char* getstring() { return m_name; }
+
+private:
+    char m_name[char_max_limit];
+    timer m_start;
+    timer m_elapsed;
+};
 //------------------------------------------------------------------------
-//class Profile
-//{
-//public:
-//    Profile(const char* name,
-//        void(*cbBegin)(Profile*) = nullptr,
-//        void(*cbEnd)(Profile*) = nullptr
-//    )
-//        :
-//        cbBegin{ cbBegin }, cbEnd{ cbEnd }
-//    {
-//        strcpy_s(m_Name, sizeof(m_Name), name);
-//        if (cbBegin)
-//            cbBegin(this);
-//    }
-//    ~Profile()
-//    {
-//        if (cbEnd)
-//            cbEnd(this);
-//    }
-//    void(*cbBegin)(Profile*);
-//    void(*cbEnd)(Profile*);
-//
-//    const char* getString() { return m_Name; }
-//
-//private:
-//    char m_Name[CHAR_MAX_LIMIT];
-//    Timer m_Start;
-//    Timer m_Elapsed;
-//};
-////------------------------------------------------------------------------
-//
-//
-//void ProfileBegin(Profile* profile)
-//{
-//
-//}
-//
-//void ProfileEnd(Profile* profile)
-//{
-//    logmsg("Profile End: %s\n", profile->getString());
-//
-//}
-//#define PROFILE_SCOPED() \
-//Profile __timer__{__FUNCSIG__, &ProfileBegin, &ProfileEnd}
-//
-//void func1()
-//{
-//    PROFILE_SCOPED();
-//    logmsg("func1\n");
-//}
-//void testProfile()
-//{
-//    logmsg("===========================\n");
-//    func1();
-//    //func2();
-//    logmsg("===========================\n");
-//}
-//
+
+
+void profilebegin(profile* profile)
+{
+#if defined(RELEASE_BUILD)
+
+#else
+
+#endif
+}
+
+void profileend(profile* profile)
+{
+    logmsg("profile end: %s\n", profile->getstring());
+
+}
+#define PROFILE_BEGIN(NAME) beginProfile(name,)
+#define profile_scoped() \
+profile __timer__{__func__, &profilebegin, &profileend}
+
+void func1()
+{
+    profile_scoped();
+    logmsg("func1\n");
+}
+void testprofile()
+{
+    logmsg("===========================\n");
+    func1();
+    //func2();
+    logmsg("===========================\n");
+}
+
+#if defined(RELEASE_BUILD)
+    #define PROFILE() profilebegin();
+#elif defined(FINAL_BUILD)
+    #define PROFILE()
+#endif
