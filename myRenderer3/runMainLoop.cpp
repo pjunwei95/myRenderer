@@ -41,7 +41,7 @@ void runMainLoop()
 
             Timer timer;
 
-            frc.updateTimeStamp(&timer);
+            frc.updateTimeStamp(timer);
 
             wh.drawWindow();
 
@@ -53,7 +53,7 @@ void runMainLoop()
             wh.updateWindow();
 
 
-            frc.idleUntilFPSLimit(&timer);
+            frc.idleUntilFPSLimit(timer);
 
             //if (isTestProfile)
                 //onProfilerFlip();

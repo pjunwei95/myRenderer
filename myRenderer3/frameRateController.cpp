@@ -23,13 +23,12 @@ void FrameRateController::idleUntilFPSLimit(TimerHandle timer)
     }
 }
 
-
 bool FrameRateController::isWithinFrameRate(TimerHandle nStartTime)
 {
     Timer nStopTime;
-    updateTimeStamp(&nStopTime);
+    updateTimeStamp(nStopTime);
 
-    calcTimerElapsedUs(&nStopTime, nStartTime);
+    calcTimerElapsedUs(nStopTime, nStartTime);
     if (nStopTime.QuadPart > m_DefaultFrameTime.QuadPart) {
         //printf("frametime = %.2f ms\n", getTimerElapsedMs(&nStopTime));
         //printf("frametime = %f s\n", GetTimerElapsedSeconds(nStopTime));
@@ -41,22 +40,22 @@ bool FrameRateController::isWithinFrameRate(TimerHandle nStartTime)
 
 void FrameRateController::calcTimerElapsedUs(TimerHandle nStopTime, const TimerHandle nStartTime)
 {
-    nStopTime->QuadPart = (nStopTime->QuadPart - nStartTime->QuadPart); //the units here are in seconds
-    nStopTime->QuadPart *= 1000000; //convert seconds to microseconds
-    nStopTime->QuadPart /= m_Frequency.QuadPart;
+    nStopTime.QuadPart = (nStopTime.QuadPart - nStartTime.QuadPart); //the units here are in seconds
+    nStopTime.QuadPart *= 1000000; //convert seconds to microseconds
+    nStopTime.QuadPart /= m_Frequency.QuadPart;
 }
 
 void FrameRateController::updateTimeStamp(TimerHandle timer)
 {
-    QueryPerformanceCounter(timer);
+    QueryPerformanceCounter(&timer);
 }
 
 float FrameRateController::getTimerElapsedMs(const TimerHandle timeElapsed)
 {
-    return (float) timeElapsed->QuadPart / 1000;
+    return (float)timeElapsed.QuadPart / 1000;
 }
 
 float FrameRateController::getTimerElapsedSeconds(const TimerHandle timeElapsed)
 {
-    return (float)timeElapsed->QuadPart / 1000000;
+    return (float)timeElapsed.QuadPart / 1000000;
 }
