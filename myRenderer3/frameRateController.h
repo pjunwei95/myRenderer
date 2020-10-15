@@ -1,6 +1,5 @@
 #pragma once
 #include <Windows.h>
-#include "engine.h"
 typedef LARGE_INTEGER Timer;
 typedef LARGE_INTEGER& TimerHandle;
 //typedef LARGE_INTEGER * TimerHandle;

@@ -3,8 +3,8 @@
 ////#include <string>
 //#include "frameRateController.h"
 //#define CHAR_MAX_LIMIT 256
-//
-////------------------------------------------------------------------------
+
+//------------------------------------------------------------------------
 //class Profile
 //{
 //public:
@@ -39,8 +39,6 @@
 //
 //void ProfileBegin(Profile* profile)
 //{
-//    logmsg("Profile Begin: %s\n", profile->getString());
-//        frc.updateTimeStamp(&profile.m_Start);
 //
 //}
 //
