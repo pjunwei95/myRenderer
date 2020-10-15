@@ -5,11 +5,12 @@
 
 void printCircBuf(CircularBuffer<int>* const cb) 
 {
-    int tempFront = cb->frontIndex();
+    uint32_t cbSize = cb->size();
+    uint32_t tempFront = cb->frontIndex();
     logmsg("=========\n");
-    for (uint32_t i = 0; i < cb->size(); ++i)
+    for (uint32_t i = 0; i < cbSize; ++i)
     {
-        uint32_t idx = (tempFront + i) % cb->size();
+        uint32_t idx = (tempFront + i) % cb->capacity();
         if (idx == cb->backIndex() && !cb->isFull())
             break;
         //void* ptr = (uint8_t*)cb->m_Array.m_Data + (idx * cb->m_Array.m_TypeSize);
@@ -22,29 +23,29 @@ void printCircBuf(CircularBuffer<int>* const cb)
 
 void testCircularBuffer()
 {
-    CircularBuffer<int> intCircBuf(3);
+    CircularBuffer<int> cb(3);
 
-    intCircBuf.isFull();
+    cb.isFull();
     for (int i = 0; i < 10; ++i)
     {
-        if (intCircBuf.isFull())
-            intCircBuf.popFront();
-        intCircBuf.pushBack(i);
+        if (cb.isFull())
+            cb.popFront();
+        cb.pushBack(i);
     }
 
     //print to console
-    printCircBuf(&intCircBuf);
+    printCircBuf(&cb);
 
     logmsg("Popping...\n");
-    intCircBuf.popFront();
-    printCircBuf(&intCircBuf);
+    cb.popFront();
+    printCircBuf(&cb);
 
     logmsg("Popping...\n");
-    intCircBuf.popFront();
-    printCircBuf(&intCircBuf);
+    cb.popFront();
+    printCircBuf(&cb);
 
     logmsg("Pushing 99...\n");
     int rand = 99;
-    intCircBuf.pushBack(rand);
-    printCircBuf(&intCircBuf);
+    cb.pushBack(rand);
+    printCircBuf(&cb);
 }

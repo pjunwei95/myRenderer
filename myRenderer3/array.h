@@ -52,9 +52,13 @@ public:
     {
         m_Size--; 
     }
-    void addSize(uint32_t increment) 
+    void incrementSize(uint32_t value) 
     {
-        m_Size += increment; 
+        m_Size += value; 
+    }
+    void decrementSize(uint32_t value)
+    {
+        m_Size += value;
     }
 
     const T& front() const
