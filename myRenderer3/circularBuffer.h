@@ -21,51 +21,32 @@ private:
     //void pushFrontCircBuf(const T* srcData);
 
 public:
-    CircularBuffer(uint32_t bufferLength);
-    ~CircularBuffer();
+    // A circular buffer is simply an array but with 2 cursors, front & back
+    // the cursors are simply index values
+    CircularBuffer(uint32_t bufferLength)
+        : m_Front{ 0 }, m_Back{ 0 }
+    {
+        m_Array.reserve(bufferLength); // reserve one slot to avoid reallocation
+    }
+
+    ~CircularBuffer(){}
+
+    uint32_t frontIndex() const { return m_Front; }
+    uint32_t backIndex() const { return m_Back; }
+    uint32_t capacity() const { return m_Array.capacity(); }
+    const T& front() { return m_Array.at(m_Front); }
+    const T& at(uint32_t index) const { return m_Array[index]; }
+    bool isEmpty() const { return 0 == size(); }
+    bool isFull() const { return size() == m_Array.capacity(); }
 
     T& popFront();
     void pushBack(const T& srcData);
     uint32_t size() const;
 
-    uint32_t frontIndex() const { return m_Front; }
-    uint32_t backIndex() const { return m_Back; }
-    uint32_t capacity() { return m_Array.capacity(); }
-    T& front() { return m_Array.at(m_Front); }
-    T& at(uint32_t index) { return m_Array[index]; }
-
-    bool isEmpty() const
-    {
-        return 0 == size();
-    }
-    bool isFull() const
-    {
-        return size() == m_Array.capacity();
-    }
-
-    
-
     //DEPRECATED
     //void freeCircBuf(CircularBuffer * const cb);
     //CircularBuffer createNewCircBuf(unsigned int bufferLength, unsigned int sizeElem);
 };
-
-
-
-// A circular buffer is simply an array but with 2 cursors, front & back
-// the cursors are simply index values
-template<typename T>
-CircularBuffer<T>::CircularBuffer(uint32_t bufferLength)
-    : m_Front{ 0 }, m_Back{ 0 }
-{
-    m_Array.reserve(bufferLength); // reserve one slot to avoid reallocation
-}
-
-template<typename T>
-CircularBuffer<T>::~CircularBuffer()
-{
-    //~Array<T>();
-}
 
 template<typename T>
 uint32_t CircularBuffer<T>::size() const

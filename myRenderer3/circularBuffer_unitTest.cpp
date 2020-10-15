@@ -3,19 +3,19 @@
 #include "assert.h"
 #include "logger.h"
 
-void printCircBuf(CircularBuffer<int>* const cb) 
+void printCircBuf(const CircularBuffer<int>& cb) 
 {
-    uint32_t cbSize = cb->size();
-    uint32_t tempFront = cb->frontIndex();
+    uint32_t cbSize = cb.size();
+    uint32_t tempFront = cb.frontIndex();
     logmsg("=========\n");
     for (uint32_t i = 0; i < cbSize; ++i)
     {
-        uint32_t idx = (tempFront + i) % cb->capacity();
+        uint32_t idx = (tempFront + i) % cb.capacity();
         //if (idx == cb->backIndex() && !cb->isFull())
             //break;
         //void* ptr = (uint8_t*)cb->m_Array.m_Data + (idx * cb->m_Array.m_TypeSize);
         //void* ptr = getArrayAt(&cb->m_Array, idx);
-        int val = cb->at(idx);
+        int val = cb.at(idx);
         logmsg("%d ", val);
     }
     logmsg("\n=========\n");
@@ -35,20 +35,20 @@ void testPushPop()
     }
 
     //print to console
-    printCircBuf(&cb);
+    printCircBuf(cb);
 
     logmsg("Popping...\n");
     cb.popFront();
-    printCircBuf(&cb);
+    printCircBuf(cb);
 
     logmsg("Popping...\n");
     cb.popFront();
-    printCircBuf(&cb);
+    printCircBuf(cb);
 
     logmsg("Pushing 99...\n");
     int rand = 99;
     cb.pushBack(rand);
-    printCircBuf(&cb);
+    printCircBuf(cb);
 }
 
 void testCircularBuffer()
