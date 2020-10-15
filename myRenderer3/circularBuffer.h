@@ -14,10 +14,9 @@ private:
     uint32_t m_Front;
     uint32_t m_Back;
 
-    T& back() { return m_Array->at(m_Back); }
     void clear();
 
-    //DEPRECATED
+    //const T& back() { return m_Array->at(m_Back); }
     //void pushFrontCircBuf(const T* srcData);
 
 public:
@@ -91,7 +90,8 @@ T& CircularBuffer<T>::popFront()
 template<typename T>
 void CircularBuffer<T>::clear()
 {
-    assert(!isEmpty());
+    assert(m_Array);
+    m_Array.clear();
     m_Front = 0;
     m_Back = 0;
 }
