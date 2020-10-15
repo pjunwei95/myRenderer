@@ -155,19 +155,9 @@ Array<T>& Array<T>::operator=(const Array<T>& rhsArray)
     if (this == &rhsArray)
         return *this;
 
-    T* temp = static_cast<T*>(malloc(m_Capacity * sizeof(T)));
+    T* temp = realloc(m_Capacity);
     assert(temp);
-    uint32_t tempSize = rhsArray.m_Size;
-    uint32_t tempCap = rhsArray.m_Capacity;
-
-    for (uint32_t i = 0; i < tempSize; ++i)
-        temp[i] = rhsArray.m_Data[i];
-
-    swap(tempSize, m_Size);
-    swap(tempCap, m_Capacity);
-    swap(temp, m_Data);
-
-    free(temp);
+    m_Data = temp;
 
     return *this;
 }
