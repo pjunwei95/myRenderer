@@ -12,6 +12,7 @@ private:
     uint32_t m_Capacity; // available memory size
 
     void checkMem();
+    T* realloc(size_t newSize);
 
     //DEPRECATED
     //uint32_t m_TypeSize; // size of element type
@@ -103,32 +104,6 @@ public:
     void clear();
     void insertAtFast(uint32_t index, const T& srcData);
 
-
-    T* realloc(size_t newSize)
-    {
-        /*assert(block);
-        assert(oldSize < newSize);
-        void* newBlock;
-        newBlock = malloc(newSize);
-        assert(newBlock);
-        newBlock = memcpy(newBlock, block, oldSize);
-        free(block);
-        return newBlock;*/
-        assert(m_Capacity <= newSize);
-        T* temp = static_cast<T*>(malloc(sizeof(T) * newSize));
-        if (temp)
-        {
-            for (uint32_t i = 0; i < m_Size; ++i)
-                temp[i] = m_Data[i];
-            free(m_Data);
-            return temp;
-        }
-        else // failed to allocate memory
-            return m_Data;
-    }
-
-
-
     //DEPRECATED
     //Array createNewArray(unsigned int sizeElem);
     //Array createNewFilledArray(unsigned int numElem, unsigned int sizeElem);
@@ -137,6 +112,22 @@ public:
     //void printTestArray();
 
 };
+
+template<typename T>
+T* Array<T>::realloc(size_t newSize)
+{
+    T* temp = static_cast<T*>(malloc(sizeof(T) * newSize));
+    if (temp)
+    {
+        for (uint32_t i = 0; i < m_Size; ++i)
+            temp[i] = m_Data[i];
+        free(m_Data);
+        return temp;
+    }
+    else // failed to allocate memory
+        return m_Data;
+}
+
 template<typename T>
 void Array<T>::reserve(uint32_t newCap) // new filled array of fixed size
 {
@@ -145,11 +136,6 @@ void Array<T>::reserve(uint32_t newCap) // new filled array of fixed size
 
     if (m_Data)
     {
-        /*T* temp = static_cast<T*>(malloc(newCap * sizeof(T)));
-        assert(temp);
-        for (uint32_t i = 0; i < m_Size; ++i)
-            temp[i] = m_Data[i];
-        free(m_Data);*/
         T* temp = realloc(newCap);
         assert(temp);
         m_Data = temp;
@@ -206,10 +192,6 @@ void Array<T>::checkMem()
     }
     else if (m_Size == m_Capacity) // array memory exceeded
     {
-        //T* temp = static_cast<T*>(malloc(sizeof(T) * 2 * m_Capacity));
-        //for (uint32_t i = 0; i < m_Size; ++i)
-        //    temp[i] = m_Data[i];
-        //free(m_Data);
         m_Capacity *= 2;
         T* temp = realloc(m_Capacity);
         assert(temp);
