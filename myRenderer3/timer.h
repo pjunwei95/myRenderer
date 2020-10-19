@@ -1,12 +1,12 @@
 #pragma once
 #include <Windows.h>
 
-typedef LARGE_INTEGER Clock;
-typedef LARGE_INTEGER& ClockHandle;
-
 class Timer 
 {
 public:
+    typedef LARGE_INTEGER Clock;
+    typedef LARGE_INTEGER& ClockHandle;
+
     Timer() 
     {
         QueryPerformanceFrequency(&m_Frequency); //to be called only once. not per frame
