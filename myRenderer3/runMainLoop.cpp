@@ -5,6 +5,7 @@
 #include <crtdbg.h>
 //#include "profiler.h"
 //#include "test.h"
+#include "timer.h"
 
 bool isTestProfile = false;
 
@@ -19,7 +20,6 @@ void runMainLoop()
     //pi;
 
     FrameRateController frc;
-    frc.initialiseTimer();
   
     //if (isTestProfile)
         //initProfile(50);   
@@ -41,7 +41,6 @@ void runMainLoop()
 
             Timer timer;
 
-            frc.updateTimeStamp(timer);
 
             wh.drawWindow();
 

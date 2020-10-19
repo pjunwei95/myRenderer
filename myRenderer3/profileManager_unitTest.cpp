@@ -2,21 +2,21 @@
 #include "profileManager.h"
 #include "logger.h"
 
-void testProfile()
-{
-    LOG_TEST(PROFILER);
-    ProfileManager pm(50);
-    int i = 0;
-    while(i <3)
-    {
-        pm.profileBegin("hi");
-        Sleep(33);
-        pm.profileEnd("hi");
-        pm.onProfilerFlip();
-        ++i;
-    }
-    pm.printPastFrames();
-}
+//void testProfile()
+//{
+//    LOG_TEST(PROFILER);
+//    ProfileManager pm(50);
+//    int i = 0;
+//    while(i <3)
+//    {
+//        pm.profileBegin("hi");
+//        Sleep(33);
+//        pm.profileEnd("hi");
+//        pm.onProfilerFlip();
+//        ++i;
+//    }
+//    pm.printPastFrames();
+//}
 
 //#include "profileManager.h"
 //#include <stdio.h>

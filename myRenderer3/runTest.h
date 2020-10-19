@@ -17,7 +17,7 @@ void runTest()
     //pi;
 
     // TESTS
-    testProfile();
+    //testProfile();
     //testStack();
     //testArray();
     //testCircularBuffer();

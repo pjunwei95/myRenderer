@@ -1,78 +1,78 @@
 #pragma once
 
-struct ProfileEntry
-{
-    ProfileEntry(const char*)
-    {
-        // copy name
-    }
-
-    char m_Name[256]{};
-
-    ProfileEntry* m_Parent = nullptr;
-    std::vector<ProfileEntry*> m_Children;
-};
-
-struct ProfileManager
-{
-    void RegisterProfileEntry(ProfileEntry& entry)
-    {
-        assert(entry.m_Name[0] == '/0');
-    }
-
-    void DoStuff(ProfileEntry& e)
-    {
-        assert(e.m_Name[0] == '/0');
-    }
-};
-static ProfileManager gs_ProfileManager;
-
-void BeginProfile(ProfileEntry& e)
-{
-    gs_ProfileManager.DoStuff(e);
-}
-
-void EndProfile(ProfileEntry& e)
-{
-    gs_ProfileManager.DoStuff(e);
-}
-
-///////////////////////////////////////////////
-
-ProfileEntry gs_DrawWindowProfileTag{ "DrawWindowProfileTag" };
-ProfileEntry gs_Foo{ "Foo" };
-void DrawWindow()
-{
-    BeginProfile(gs_DrawWindowProfileTag);
-
-    ///
-
-    EndProfile(gs_DrawWindowProfileTag);
-}
-
-void Outside()
-{
-    BeginProfile(gs_Foo);
-    ///
-
-    DrawWindow();
-    DrawWindow();
-
-    ///
-    EndProfile(gs_Foo);
-}
-
-
-
-
-
-
-
-
-
-
-
-
+//struct ProfileEntry
+//{
+//    ProfileEntry(const char*)
+//    {
+//        // copy name
+//    }
+//
+//    char m_Name[256]{};
+//
+//    ProfileEntry* m_Parent = nullptr;
+//    std::vector<ProfileEntry*> m_Children;
+//};
+//
+//struct ProfileManager
+//{
+//    void RegisterProfileEntry(ProfileEntry& entry)
+//    {
+//        assert(entry.m_Name[0] == '/0');
+//    }
+//
+//    void DoStuff(ProfileEntry& e)
+//    {
+//        assert(e.m_Name[0] == '/0');
+//    }
+//};
+//static ProfileManager gs_ProfileManager;
+//
+//void BeginProfile(ProfileEntry& e)
+//{
+//    gs_ProfileManager.DoStuff(e);
+//}
+//
+//void EndProfile(ProfileEntry& e)
+//{
+//    gs_ProfileManager.DoStuff(e);
+//}
+//
+/////////////////////////////////////////////////
+//
+//ProfileEntry gs_DrawWindowProfileTag{ "DrawWindowProfileTag" };
+//ProfileEntry gs_Foo{ "Foo" };
+//void DrawWindow()
+//{
+//    BeginProfile(gs_DrawWindowProfileTag);
+//
+//    ///
+//
+//    EndProfile(gs_DrawWindowProfileTag);
+//}
+//
+//void Outside()
+//{
+//    BeginProfile(gs_Foo);
+//    ///
+//
+//    DrawWindow();
+//    DrawWindow();
+//
+//    ///
+//    EndProfile(gs_Foo);
+//}
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
