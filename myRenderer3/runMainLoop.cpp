@@ -37,7 +37,6 @@ void runMainLoop()
 
         while (!getIsDone())
         {
-            proflilebegin(frmame);
             //beginProfile("beforeIdle");
 
             Timer timer;
@@ -55,8 +54,6 @@ void runMainLoop()
 
 
             frc.idleUntilFPSLimit(timer);
-
-            profilend();
 
             //if (isTestProfile)
                 //onProfilerFlip();
