@@ -1,42 +1,112 @@
 #pragma once
 #include <assert.h>
 #include <vector>
+#include "timer.h"
+#include "array.h"
+#include "circularBuffer.h"
+
+//#define PROFILE_BEGIN(name)
+//#define PROFILE_END()
+//#define PROFILE_FUNCTION()
+//#define PROFILE_SCOPED(name)
+#define MAX_CHAR 256
+
+
+
 
 struct ProfileEntry
 {
-    ProfileEntry(const char*)
+    ProfileEntry()
+        : m_Duration{ 0 }, m_Children{}, m_Name{}
     {
-        // copy name
     }
 
-    char m_Name[256]{};
+    ProfileEntry(const char* name)
+        : m_Duration{ 0 }, m_Children{}, m_Name{}
+    {
+        strcpy_s(m_Name, MAX_CHAR, name);
+    }
 
-    ProfileEntry* m_Parent = nullptr;
-    std::vector<ProfileEntry*> m_Children;
+    Array<ProfileEntry*> m_Children;
+    char m_Name[256];
+    float m_Duration;
 };
 
-struct ProfileManager
+class ProfileManager
 {
+public:
+    ProfileManager()
+        : cb{50}
+    {
+    }
+
     void RegisterProfileEntry(ProfileEntry& entry)
     {
-        assert(entry.m_Name[0] == '/0');
+        //if stack is not empty, register it as children?
+        if (!stack.isEmpty()) //profile is a child
+        {
+            ProfileEntry parent = stack.back();
+            parent.m_Children.pushBack(&entry);
+        }
+        //push to stack
+        stack.pushBack(entry);
     }
 
-    void DoStuff(ProfileEntry& e)
+    void UpdateProfileEntryTime(ProfileEntry& entry, float timeElapsed)
     {
-        assert(e.m_Name[0] == '/0');
+        entry.m_Duration = timeElapsed;
     }
+
+    bool IsAncestor()
+    {
+        if (!stack.isEmpty() && stack.size() == 1)
+            return true;
+        return false;
+    }
+
+    void UpdateProfileEntryHeirarchy(ProfileEntry& entry)
+    {
+        //if is an ancestor, push to listOfAncestor
+        if (IsAncestor())
+            listOfAncestor.pushBack(&entry);
+        //pop ancestor/child
+        stack.popBack();
+    }
+
+    void PushToCircularBuffer() 
+    {
+        cb.pushBack(listOfAncestor);
+    }
+
+private:
+    CircularBuffer<Array<ProfileEntry*>> cb;
+    Array<ProfileEntry> stack;
+    Array<ProfileEntry*> listOfAncestor;
 };
+
+
 static ProfileManager gs_ProfileManager;
+
+static Timer timer;
 
 void BeginProfile(ProfileEntry& e)
 {
-    gs_ProfileManager.DoStuff(e);
+    Timer::Clock m_StartTime;
+    timer.updateTimeStamp(m_StartTime);
+    gs_ProfileManager.RegisterProfileEntry(e);
 }
 
 void EndProfile(ProfileEntry& e)
 {
-    gs_ProfileManager.DoStuff(e);
+    timer.stop();
+    float timeElapsed = timer.getDurationMs();
+    gs_ProfileManager.UpdateProfileEntryTime(e, timeElapsed);
+    gs_ProfileManager.UpdateProfileEntryHeirarchy(e);
+}
+
+void OnProfileFlip()
+{
+    gs_ProfileManager.PushToCircularBuffer();
 }
 
 ///////////////////////////////////////////////
@@ -48,12 +118,14 @@ void DrawWindow()
     BeginProfile(gs_DrawWindowProfileTag);
 
     ///
+    Sleep(33);
 
     EndProfile(gs_DrawWindowProfileTag);
 }
 
 void Outside()
 {
+
     BeginProfile(gs_Foo);
     ///
 
@@ -64,7 +136,14 @@ void Outside()
     EndProfile(gs_Foo);
 }
 
-
+void testProfile()
+{
+    for (int i = 0; i < 30; ++i)
+    {
+        Outside();
+        OnProfileFlip();
+    }
+}
 
 
 

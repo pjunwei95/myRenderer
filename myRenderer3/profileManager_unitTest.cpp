@@ -1,5 +1,4 @@
 #include "profileManager_unitTest.h"
-#include "profileManager.h"
 #include "logger.h"
 
 //void testProfile()
