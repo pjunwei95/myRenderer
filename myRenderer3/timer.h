@@ -1,5 +1,5 @@
 #pragma once
-#include <Windows.h>
+#include "engine.h"
 
 class Timer 
 {
@@ -9,7 +9,6 @@ public:
 
     Timer() 
     {
-        QueryPerformanceFrequency(&m_Frequency); //to be called only once. not per frame
         updateTimeStamp(m_StartTime); //start timer
     }
     ~Timer() 
@@ -24,7 +23,7 @@ public:
         updateTimeStamp(m_StopTime);
         m_StopTime.QuadPart = (m_StopTime.QuadPart - m_StartTime.QuadPart); //the units here are in seconds
         m_StopTime.QuadPart *= 1000000; //convert seconds to microseconds
-        m_StopTime.QuadPart /= m_Frequency.QuadPart; //machine independence
+        m_StopTime.QuadPart /= getSystemFrequency().QuadPart; //machine independence
     }
 
     void updateTimeStamp(ClockHandle timer)
@@ -45,8 +44,6 @@ public:
     Clock getDurationUs() { return m_StopTime; }
 
 private:
-    Clock m_Frequency;
-
     Clock m_StartTime;
     Clock m_StopTime;
 };

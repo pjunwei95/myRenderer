@@ -12,12 +12,13 @@
 #endif
 
 bool isDone;
+LARGE_INTEGER g_Frequency;
 
 int main(int argc, char *argsv[])
 {
     openLogStream();
 
-    setIsDone(false);
+    setGlobals();
 
     processArgs(argc, argsv);
     
@@ -30,6 +31,12 @@ int main(int argc, char *argsv[])
 	return 0;
 }
 
+void setGlobals()
+{
+    setSystemFrequency();
+    setIsDone(false);
+}
+
 void setIsDone(bool value)
 {
     isDone = value;
@@ -38,5 +45,15 @@ void setIsDone(bool value)
 bool getIsDone()
 {
     return isDone;
+}
+
+void setSystemFrequency()
+{
+    QueryPerformanceFrequency(&g_Frequency); //to be called only once. not per frame
+}
+
+LARGE_INTEGER getSystemFrequency()
+{
+    return g_Frequency;
 }
 

@@ -1,4 +1,5 @@
 #pragma once
+#include <Windows.h>
 
 #define FPS 30
 
@@ -6,6 +7,13 @@
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
+void setGlobals();
+
 void setIsDone(bool value);
 
 bool getIsDone();
+
+void setSystemFrequency();
+
+LARGE_INTEGER getSystemFrequency();
+
