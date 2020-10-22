@@ -7,13 +7,19 @@ public:
     typedef LARGE_INTEGER Clock;
     typedef LARGE_INTEGER& ClockHandle;
 
-    Timer() 
+    Timer() : m_isStopped{ false }
     {
-        updateTimeStamp(m_StartTime); //start timer
+        start();
     }
     ~Timer() 
     {
-        stop(); //stop timer
+        if (!m_isStopped)
+            stop(); //stop timer
+    }
+
+    void start()
+    {
+        updateTimeStamp(m_StartTime); //start timer
     }
 
     //This function will stop the time and convert the stoptime to a readable time duration difference
@@ -24,6 +30,7 @@ public:
         m_StopTime.QuadPart = (m_StopTime.QuadPart - m_StartTime.QuadPart); //the units here are in seconds
         m_StopTime.QuadPart *= 1000000; //convert seconds to microseconds
         m_StopTime.QuadPart /= getSystemFrequency().QuadPart; //machine independence
+        m_isStopped = true;
     }
 
     void updateTimeStamp(ClockHandle timer)
@@ -44,6 +51,7 @@ public:
     Clock getDurationUs() { return m_StopTime; }
 
 private:
+    bool m_isStopped;
     Clock m_StartTime;
     Clock m_StopTime;
 };

@@ -1,0 +1,1 @@
+{"otherData": {},"traceEvents":[{"cat":"function","dur":323,"name":"void __cdecl WindowHandler::drawWindow(void)","ph":"X","pid":0,"tid":1146309680,"ts":2047961932180},{"cat":"function","dur":378,"name":"void __cdecl WindowHandler::updateWindow(void)","ph":"X","pid":0,"tid":1146309680,"ts":2047961933657}]}

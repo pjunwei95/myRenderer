@@ -135,10 +135,28 @@ private:
     bool m_Stopped;
 };
 
-#define PROFILING 1 
-#if PROFILING
-#define PROFILE_SCOPE(name) InstrumentationTimer instTimer##(name)
-#define PROFILE_FUNCTION() PROFILE_SCOPE(__FUNCSIG__)
-#else
-#define PROFILE_SCOPE(name)
-#endif
+//#define PROFILING 1 
+//#if PROFILING
+//#define PROFILE_SCOPE(name) InstrumentationTimer instTimer##(name)
+//#define PROFILE_FUNCTION() PROFILE_SCOPE(__FUNCSIG__)
+//#else
+//#define PROFILE_SCOPE(name)
+//#endif
+//
+//void func1()
+//{
+//
+//}
+//
+//void testSample()
+//{
+//    Instrumentor::Get().BeginSession("Session Name");        // Begin session 
+//    {
+//        PROFILE_FUNCTION();
+//        // Code
+//        func1();
+//    }
+//    Instrumentor::Get().EndSession();                        // End Session
+//}
+//
+//
