@@ -27,6 +27,8 @@ struct ProfileEntry
         strcpy_s(m_Name, MAX_CHAR, name);
     }
 
+    uint32_t getChildrenSize() { return m_Children.size(); }
+
     Array<ProfileEntry*> m_Children;
     char m_Name[256];
     float m_Duration;
@@ -41,7 +43,7 @@ public:
         stack.pushBack(&entry);
     }
 
-    void foo(ProfileEntry& entry)
+    void UpdateProfileEntryParent(ProfileEntry& entry)
     {
         stack.popBack();
         if (!stack.isEmpty())
@@ -69,7 +71,7 @@ void BeginProfile(ProfileEntry& e)
 
 void EndProfile(ProfileEntry& e)
 {
-    gs_ProfileManager.foo(e);
+    gs_ProfileManager.UpdateProfileEntryParent(e);
 }
 
 void OnProfileFlip()
@@ -90,9 +92,24 @@ void DrawWindow()
     timerTest.start();
     Sleep(33);
     timerTest.stop();
-
     gs_DrawWindowProfileTag.m_Duration = timerTest.getDurationMs();
     EndProfile(gs_DrawWindowProfileTag);
+    logmsg("End of scope, drawWindow took %.2f ms\n", gs_DrawWindowProfileTag.m_Duration);
+}
+
+
+void DrawWindow2()
+{
+    BeginProfile(gs_DrawWindowProfileTag);
+
+    //Separate timer functions
+    Timer timerTest;
+    timerTest.start();
+    Sleep(33);
+    timerTest.stop();
+    gs_DrawWindowProfileTag.m_Duration = timerTest.getDurationMs();
+    EndProfile(gs_DrawWindowProfileTag);
+    logmsg("End of scope, drawWindow took %.2f ms\n", gs_DrawWindowProfileTag.m_Duration);
 }
 
 void Outside()
@@ -100,21 +117,52 @@ void Outside()
 
     BeginProfile(gs_Foo);
     ///
-
+    Timer timerTest;
+    timerTest.start();
     DrawWindow();
-    DrawWindow();
-
+    DrawWindow2();
+    timerTest.stop();
+    gs_Foo.m_Duration = timerTest.getDurationMs();
     ///
     EndProfile(gs_Foo);
-}
 
+    logmsg("End of scope\n");
+    logmsg("Foo -> %.2f ms\n", gs_Foo.m_Duration);
+
+    for (uint32_t i = 0; i < gs_Foo.getChildrenSize(); ++i)
+    {
+        ProfileEntry* child = gs_Foo.m_Children[i];
+        logmsg("    %s - > %.2f ms (children)\n", child->m_Name, child->m_Duration);
+    }
+}
 
 void testSimpleProfile()
 {
+    LOG_UNIT_TEST();
     DrawWindow();
 }
 
+void testNestedProfile()
+{
+    LOG_UNIT_TEST();
+    Outside();
+}
 
+void testProfileCircularBuffer()
+{
+
+}
+
+
+void testProfile()
+{
+    LOG_TEST(Profiler);
+    //for 1 frame
+    testSimpleProfile();
+    testNestedProfile();
+    //for multiple frames
+    testProfileCircularBuffer();
+}
 
 
 
