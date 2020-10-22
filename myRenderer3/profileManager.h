@@ -117,7 +117,7 @@ void Outside()
     for (uint32_t i = 0; i < gs_Foo.getChildrenSize(); ++i)
     {
         ProfileEntry* child = gs_Foo.m_Children[i];
-        logmsg("    %s - > %.2f ms (children)\n", child->m_Name, child->m_Duration);
+        logmsg("    %s -> %.2f ms (children)\n", child->m_Name, child->m_Duration);
     }
 }
 
