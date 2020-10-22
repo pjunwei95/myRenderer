@@ -1,31 +1,33 @@
 #pragma once
 #include <assert.h>
 #include <vector>
-#include "timer.h"
+#include "stopwatch.h"
 #include "array.h"
 #include "circularBuffer.h"
+#include "test.h"
 
+#define MAX_CHAR 50
+
+#define PROFILING 1
+#if PROFILING
 //#define PROFILE_BEGIN(name)
 //#define PROFILE_END()
-//#define PROFILE_FUNCTION()
-//#define PROFILE_SCOPED(name)
-#define MAX_CHAR 256
-
-
-
+#define PROFILE_SCOPED(name) Stopwatch timer##name;
+#define PROFILE_FUNCTION() PROFILE_SCOPE(__FUNCSIG__)
+#else
+#define PROFILE_SCOPED(name)
+#define PROFILE_FUNCTION()
+#endif
 
 struct ProfileEntry
 {
-    ProfileEntry()
-        : m_Duration{ 0 }, m_Children{}, m_Name{}
-    {
-    }
-
     ProfileEntry(const char* name)
         : m_Duration{ 0 }, m_Children{}, m_Name{}
     {
         strcpy_s(m_Name, MAX_CHAR, name);
     }
+
+    uint32_t getChildrenSize() { return m_Children.size(); }
 
     Array<ProfileEntry*> m_Children;
     char m_Name[256];
@@ -35,73 +37,41 @@ struct ProfileEntry
 class ProfileManager
 {
 public:
-    ProfileManager()
-        : cb{50}
-    {
-    }
 
     void RegisterProfileEntry(ProfileEntry& entry)
     {
-        //if stack is not empty, register it as children?
-        if (!stack.isEmpty()) //profile is a child
-        {
-            ProfileEntry parent = stack.back();
-            parent.m_Children.pushBack(&entry);
-        }
-        //push to stack
-        stack.pushBack(entry);
+        stack.pushBack(&entry);
     }
 
-    void UpdateProfileEntryTime(ProfileEntry& entry, float timeElapsed)
+    void UpdateProfileEntryParent(ProfileEntry& entry)
     {
-        entry.m_Duration = timeElapsed;
-    }
-
-    bool IsAncestor()
-    {
-        if (!stack.isEmpty() && stack.size() == 1)
-            return true;
-        return false;
-    }
-
-    void UpdateProfileEntryHeirarchy(ProfileEntry& entry)
-    {
-        //if is an ancestor, push to listOfAncestor
-        if (IsAncestor())
-            listOfAncestor.pushBack(&entry);
-        //pop ancestor/child
         stack.popBack();
+        if (!stack.isEmpty())
+        {
+            ProfileEntry* parentProfileRef = stack.back();
+            parentProfileRef->m_Children.pushBack(&entry);
+        }
     }
 
-    void PushToCircularBuffer() 
+    void PushToCircularBuffer()
     {
-        cb.pushBack(listOfAncestor);
+
     }
 
 private:
-    CircularBuffer<Array<ProfileEntry*>> cb;
-    Array<ProfileEntry> stack;
-    Array<ProfileEntry*> listOfAncestor;
+    Array<ProfileEntry*> stack;
 };
-
 
 static ProfileManager gs_ProfileManager;
 
-static Timer timer;
-
 void BeginProfile(ProfileEntry& e)
 {
-    Timer::Clock m_StartTime;
-    timer.updateTimeStamp(m_StartTime);
     gs_ProfileManager.RegisterProfileEntry(e);
 }
 
 void EndProfile(ProfileEntry& e)
 {
-    timer.stop();
-    float timeElapsed = timer.getDurationMs();
-    gs_ProfileManager.UpdateProfileEntryTime(e, timeElapsed);
-    gs_ProfileManager.UpdateProfileEntryHeirarchy(e);
+    gs_ProfileManager.UpdateProfileEntryParent(e);
 }
 
 void OnProfileFlip()
@@ -117,10 +87,14 @@ void DrawWindow()
 {
     BeginProfile(gs_DrawWindowProfileTag);
 
-    ///
+    //Separate timer functions
+    Stopwatch timerTest;
+    timerTest.start();
     Sleep(33);
-
+    timerTest.stop();
+    gs_DrawWindowProfileTag.m_Duration = timerTest.getDurationMs();
     EndProfile(gs_DrawWindowProfileTag);
+    logmsg("End of scope, drawWindow took %.2f ms\n", gs_DrawWindowProfileTag.m_Duration);
 }
 
 void Outside()
@@ -128,31 +102,52 @@ void Outside()
 
     BeginProfile(gs_Foo);
     ///
-
+    Stopwatch timerTest;
+    timerTest.start();
     DrawWindow();
     DrawWindow();
-
+    timerTest.stop();
+    gs_Foo.m_Duration = timerTest.getDurationMs();
     ///
     EndProfile(gs_Foo);
-}
 
-void testProfile()
-{
-    for (int i = 0; i < 30; ++i)
+    logmsg("End of scope\n");
+    logmsg("Foo -> %.2f ms\n", gs_Foo.m_Duration);
+
+    for (uint32_t i = 0; i < gs_Foo.getChildrenSize(); ++i)
     {
-        Outside();
-        OnProfileFlip();
+        ProfileEntry* child = gs_Foo.m_Children[i];
+        logmsg("    %s -> %.2f ms (children)\n", child->m_Name, child->m_Duration);
     }
 }
 
+void testSimpleProfile()
+{
+    LOG_UNIT_TEST();
+    DrawWindow();
+}
+
+void testNestedProfile()
+{
+    LOG_UNIT_TEST();
+    Outside();
+}
+
+void testProfileCircularBuffer()
+{
+
+}
 
 
-
-
-
-
-
-
+void testProfile()
+{
+    LOG_TEST(Profiler);
+    //for 1 frame
+    testSimpleProfile();
+    testNestedProfile();
+    //for multiple frames
+    testProfileCircularBuffer();
+}
 
 
 

@@ -4,10 +4,8 @@
 #include "windowHandler.h"
 #include <crtdbg.h>
 //#include "profiler.h"
-//#include "test.h"
-#include "timer.h"
-
-bool isTestProfile = false;
+#include "test.h"
+#include "stopwatch.h"
 
 void runMainLoop()
 {
@@ -20,51 +18,27 @@ void runMainLoop()
     //pi;
 
     FrameRateController frc;
-  
-    //if (isTestProfile)
-        //initProfile(50);   
-
-    //if (!isTestProfile)
-        //testProfiler();
-
-    //beginProfile("createWindow");
 
     WindowHandler wh;
 
     if(wh.createWindow())
     {
-        //endProfile();
 
         while (!getIsDone())
         {
-            //beginProfile("beforeIdle");
 
-            Timer timer;
-
-
+            Stopwatch frameWatch;
             wh.drawWindow();
 
             getKeyInput();
 
-            //if (isTestProfile)
-                //beginProfile("updateWindow");
-
             wh.updateWindow();
 
+            frc.idleUntilFPSLimit(frameWatch);
 
-            frc.idleUntilFPSLimit(timer);
-
-            //if (isTestProfile)
-                //onProfilerFlip();
-            
-            //if (isTestProfile)
-                //endProfile();
-            //endProfile();
         }
         wh.destroyWindow();
     }
-    //if (isTestProfile)
-        //destroyProfile();
 
 }
 

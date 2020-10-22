@@ -164,7 +164,7 @@
     <ClInclude Include="stack_unitTest.h" />
     <ClInclude Include="test.h" />
     <ClInclude Include="array.h" />
-    <ClInclude Include="timer.h" />
+    <ClInclude Include="stopwatch.h" />
     <ClInclude Include="windowHandler.h" />
   </ItemGroup>
   <ItemGroup>

@@ -4,6 +4,7 @@
 #include "stack_unitTest.h"
 #include "circularBuffer.h"
 #include "profileManager.h"
+#include "test.h"
 
 
 void runTest()
