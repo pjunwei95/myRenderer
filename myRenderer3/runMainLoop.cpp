@@ -5,7 +5,7 @@
 #include <crtdbg.h>
 //#include "profiler.h"
 #include "test.h"
-#include "timer.h"
+#include "stopwatch.h"
 
 void runMainLoop()
 {
@@ -27,14 +27,14 @@ void runMainLoop()
         while (!getIsDone())
         {
 
-            Timer timer;
+            Stopwatch frameWatch;
             wh.drawWindow();
 
             getKeyInput();
 
             wh.updateWindow();
 
-            frc.idleUntilFPSLimit(timer);
+            frc.idleUntilFPSLimit(frameWatch);
 
         }
         wh.destroyWindow();

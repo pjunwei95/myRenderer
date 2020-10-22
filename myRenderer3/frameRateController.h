@@ -1,5 +1,5 @@
 #pragma once
-#include "timer.h"
+#include "stopwatch.h"
 #include "engine.h"
 #include "logger.h"
 
@@ -8,12 +8,12 @@ class FrameRateController
 public:
     FrameRateController();
 
-    void idleUntilFPSLimit(Timer timer);
+    void idleUntilFPSLimit(Stopwatch timer);
 
-    bool isWithinFrameRate(Timer timer);
+    bool isWithinFrameRate(Stopwatch timer);
 
 private:
-    Timer::Clock m_DefaultFrameTime;
+    Stopwatch::Timer m_DefaultFrameTime;
 };
 
 

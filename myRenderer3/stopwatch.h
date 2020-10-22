@@ -1,17 +1,17 @@
 #pragma once
 #include "engine.h"
 
-class Timer 
+class Stopwatch 
 {
 public:
-    typedef LARGE_INTEGER Clock;
-    typedef LARGE_INTEGER& ClockHandle;
+    typedef LARGE_INTEGER Timer;
+    typedef LARGE_INTEGER& TimerHandle;
 
-    Timer() : m_isStopped{ false }
+    Stopwatch() : m_isStopped{ false }
     {
         start();
     }
-    ~Timer() 
+    ~Stopwatch() 
     {
         if (!m_isStopped)
             stop(); //stop timer
@@ -33,7 +33,7 @@ public:
         m_isStopped = true;
     }
 
-    void updateTimeStamp(ClockHandle timer)
+    void updateTimeStamp(TimerHandle timer)
     {
         QueryPerformanceCounter(&timer);
     }
@@ -48,10 +48,10 @@ public:
         return (float)m_StopTime.QuadPart / 1000000;
     }
 
-    Clock getDurationUs() { return m_StopTime; }
+    Timer getDurationUs() { return m_StopTime; }
 
 private:
     bool m_isStopped;
-    Clock m_StartTime;
-    Clock m_StopTime;
+    Timer m_StartTime;
+    Timer m_StopTime;
 };

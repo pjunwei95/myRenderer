@@ -125,10 +125,10 @@
     <ClInclude Include="profileManager_unitTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="timer.h">
+    <ClInclude Include="profileManager.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="profileManager.h">
+    <ClInclude Include="stopwatch.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
   </ItemGroup>

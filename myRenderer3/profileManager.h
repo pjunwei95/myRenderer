@@ -1,7 +1,7 @@
 #pragma once
 #include <assert.h>
 #include <vector>
-#include "timer.h"
+#include "stopwatch.h"
 #include "array.h"
 #include "circularBuffer.h"
 #include "test.h"
@@ -12,7 +12,7 @@
 #if PROFILING
 //#define PROFILE_BEGIN(name)
 //#define PROFILE_END()
-#define PROFILE_SCOPED(name) Timer timer##name;
+#define PROFILE_SCOPED(name) Stopwatch timer##name;
 #define PROFILE_FUNCTION() PROFILE_SCOPE(__FUNCSIG__)
 #else
 #define PROFILE_SCOPED(name)
@@ -88,22 +88,7 @@ void DrawWindow()
     BeginProfile(gs_DrawWindowProfileTag);
 
     //Separate timer functions
-    Timer timerTest;
-    timerTest.start();
-    Sleep(33);
-    timerTest.stop();
-    gs_DrawWindowProfileTag.m_Duration = timerTest.getDurationMs();
-    EndProfile(gs_DrawWindowProfileTag);
-    logmsg("End of scope, drawWindow took %.2f ms\n", gs_DrawWindowProfileTag.m_Duration);
-}
-
-
-void DrawWindow2()
-{
-    BeginProfile(gs_DrawWindowProfileTag);
-
-    //Separate timer functions
-    Timer timerTest;
+    Stopwatch timerTest;
     timerTest.start();
     Sleep(33);
     timerTest.stop();
@@ -117,10 +102,10 @@ void Outside()
 
     BeginProfile(gs_Foo);
     ///
-    Timer timerTest;
+    Stopwatch timerTest;
     timerTest.start();
     DrawWindow();
-    DrawWindow2();
+    DrawWindow();
     timerTest.stop();
     gs_Foo.m_Duration = timerTest.getDurationMs();
     ///
