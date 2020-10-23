@@ -93,6 +93,7 @@ void DrawWindow()
     Sleep(33);
     timerTest.stop();
     gs_DrawWindowProfileTag.m_Duration = timerTest.getDurationMs();
+
     EndProfile(gs_DrawWindowProfileTag);
     logmsg("End of scope, drawWindow took %.2f ms\n", gs_DrawWindowProfileTag.m_Duration);
 }

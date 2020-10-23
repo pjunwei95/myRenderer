@@ -20,6 +20,6 @@ void runTest()
     // TESTS
     testProfile();
     //testStack();
-    //testArray();
+    testArray();
     //testCircularBuffer();
 }

@@ -24,6 +24,9 @@ public:
     }
     ~Array()
     {
+        for (uint32_t i = 0; i < m_Capacity; ++i)
+            m_Data[i].~T();
+
         free(m_Data); 
     }
 
@@ -51,7 +54,9 @@ public:
     }
     void popBack()
     {
-        m_Size--; 
+        T& ref = back();
+        ref.~T();
+        m_Size--;
     }
     void incrementSize(uint32_t value) 
     {
@@ -220,6 +225,7 @@ void Array<T>::eraseAt(uint32_t index)
     // for i = index; i < size-1; i++
     for (uint32_t i = index; i < m_Size; ++i)
         m_Data[i] = m_Data[i + 1]; //A[i] = A[i+1]
+    m_Data[m_Size].~T();
     m_Size--;
 }
 
@@ -232,7 +238,7 @@ void Array<T>::removeAtFast(uint32_t index)
     assert(!isEmpty());
     assert(index < m_Size);
     m_Data[index] = back();
-    m_Size--;
+    popBack();
 }
 
 template<typename T>
