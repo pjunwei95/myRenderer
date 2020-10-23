@@ -159,6 +159,7 @@
     <ClInclude Include="profileManager.h" />
     <ClInclude Include="profileManager_unitTest.h" />
     <ClInclude Include="runMainLoop.h" />
+    <ClInclude Include="runTest.cpp" />
     <ClInclude Include="runTest.h" />
     <ClInclude Include="stack.h" />
     <ClInclude Include="stack_unitTest.h" />

@@ -18,8 +18,8 @@ void runTest()
     //pi;
 
     // TESTS
-    testProfile();
+    testProfileManager();
     //testStack();
-    testArray();
+    //testArray();
     //testCircularBuffer();
 }
