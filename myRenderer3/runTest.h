@@ -3,8 +3,8 @@
 #include "array_unitTest.h"
 #include "stack_unitTest.h"
 #include "circularBuffer.h"
-#include "profileManager.h"
 #include "test.h"
+#include "profileManager_unitTest.h"
 
 
 void runTest()
