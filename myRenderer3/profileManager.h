@@ -8,8 +8,8 @@
 
 #define MAX_CHAR 50
 
-//#define PROFILING
-#if PROFILING
+#define PROFILE_MACRO 1
+#if PROFILE_MACRO
 #define PROFILE_BEGIN(name) ProfileEntry entry_##name{ #name };\
                             BeginProfile(entry_##name);\
                             Stopwatch timer;\
@@ -19,13 +19,13 @@
                             entry_##name.m_Duration = timer.getDurationMs();\
                             EndProfile(entry_##name)
 
-#define PROFILE_PRINT(name) PrintProfile(entry_##name, 0);
+#define PROFILE_PRINT(name) PrintProfile(&entry_##name, 0);
 #define PROFILE_SCOPED(name)
 #define PROFILE_FUNCTION() PROFILE_SCOPE(__FUNCSIG__)
 #else
 #define PROFILE_BEGIN(name)
 #define PROFILE_END(name)
-#define PROFILE_PRINT(name) logmsg(#name" took %.2f ms\n", entry_##name.m_Duration)
+#define PROFILE_PRINT(name)
 #define PROFILE_SCOPED(name)
 #define PROFILE_FUNCTION()
 
@@ -91,20 +91,18 @@ void OnProfileFlip()
     gs_ProfileManager.PushToCircularBuffer();
 }
 
-void PrintProfile(ProfileEntry& e, uint32_t count)
+void PrintProfile(ProfileEntry* e, uint32_t count)
 {
-    uint32_t tabNum = count;
+    uint32_t tabNum = count++;
     while (tabNum-- > 0)
         logmsg("    ");
-    logmsg("%s -> %.2f ms\n", e.m_Name, e.m_Duration);
-    uint32_t numOfChildren = e.getChildrenSize();
-
-    if (numOfChildren != 0)
-        for (uint32_t i = 0; i < numOfChildren; ++i)
-        {
-            ProfileEntry& child = *e.m_Children[i];
-            PrintProfile(child, ++count);
-        }
+    logmsg("%s -> %.2f ms\n", e->m_Name, e->m_Duration);
+    
+    for (uint32_t i = 0; i < e->getChildrenSize(); ++i)
+    {
+        ProfileEntry* child = e->m_Children[i];
+        logmsg("    %s -> %.2f ms\n", child->m_Name, child->m_Duration);
+    }
 }
 
 //////////////////////////////////////////////////////////////
@@ -127,8 +125,6 @@ void DrawWindow()
     logmsg("End of scope, drawWindow took %.2f ms\n", gs_DrawWindowProfileTag.m_Duration);
 }
 
-
-
 void Outside()
 {
     BeginProfile(gs_Foo);
@@ -141,7 +137,7 @@ void Outside()
     gs_Foo.m_Duration = timerTest.getDurationMs();
     ///
     EndProfile(gs_Foo);
-    PrintProfile(gs_Foo, 0);
+    PrintProfile(&gs_Foo, 0);
 }
 
 void testSimpleProfile()
@@ -155,7 +151,6 @@ void testNestedProfile()
     LOG_UNIT_TEST();
     Outside();
 }
-#if PROFILING
 void DrawWindowWithMacro()
 {
     PROFILE_BEGIN(DrawWindowProfile);
@@ -169,15 +164,14 @@ void DrawWindowWithMacro()
 
 void OutsideWithMacro()
 {
-    PROFILE_BEGIN(Foo);
+    PROFILE_BEGIN(Bar);
     ///
     DrawWindowWithMacro();
     DrawWindowWithMacro();
     ///
-    PROFILE_END(Foo);
-    PROFILE_PRINT(Foo);
+    PROFILE_END(Bar);
+    PROFILE_PRINT(Bar);
 }
-
 
 void testSimpleProfileWithMacro()
 {
@@ -190,7 +184,6 @@ void testNestedProfileWithMacro()
     LOG_UNIT_TEST();
     OutsideWithMacro();
 }
-#endif
 
 void testProfileCircularBuffer()
 {
@@ -204,7 +197,7 @@ void testProfileManager()
     testSimpleProfile();
     testNestedProfile();
     //With Macros
-#if PROFILING
+#if PROFILE_MACRO
     testSimpleProfileWithMacro();
     testNestedProfileWithMacro();
 #endif
