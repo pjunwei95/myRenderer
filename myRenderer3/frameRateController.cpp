@@ -10,7 +10,7 @@ FrameRateController::FrameRateController()
 }
 
 
-void FrameRateController::idleUntilFPSLimit(Stopwatch timer)
+void FrameRateController::idleUntilFPSLimit(Stopwatch& timer)
 {
     while (1) // frame drawing and blocking, or at gameStateCurr == next
     {
@@ -21,13 +21,13 @@ void FrameRateController::idleUntilFPSLimit(Stopwatch timer)
     }
 }
 
-bool FrameRateController::isWithinFrameRate(Stopwatch timer)
+bool FrameRateController::isWithinFrameRate(Stopwatch& timer)
 {
     timer.stop();
     Stopwatch::Timer duration = timer.getDurationUs();
     if (duration.QuadPart > m_DefaultFrameTime.QuadPart) {
         //printf("frametime = %.2f ms\n", getTimerElapsedMs(&nStopTime));
-        //printf("frametime = %f s\n", GetTimerElapsedSeconds(nStopTime));
+        //printf("frametime = %f s\n", GetTimerElBapsedSeconds(nStopTime));
         //logmsg("FPS = %f \n", 1.0 / getTimerElapsedSeconds(&nStopTime));
         logmsg("FPS = %f \n", 1.0 / timer.getDurationSeconds());
         return true;

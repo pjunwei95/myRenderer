@@ -111,7 +111,7 @@ void Outside()
     ///
     EndProfile(gs_Foo);
 
-    logmsg("End of scope\n");
+    logmsg("Printing tags\n");
     logmsg("Foo -> %.2f ms\n", gs_Foo.m_Duration);
 
     for (uint32_t i = 0; i < gs_Foo.getChildrenSize(); ++i)
