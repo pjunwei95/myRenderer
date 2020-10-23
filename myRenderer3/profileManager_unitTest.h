@@ -48,6 +48,7 @@ void testNestedProfile()
     Outside();
 }
 /////////////////////////////////////////////////////////
+//Macros
 void DrawWindowWithMacro()
 {
     PROFILE_BEGIN(DrawWindowProfile);

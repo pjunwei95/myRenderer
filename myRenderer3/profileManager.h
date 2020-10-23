@@ -6,7 +6,7 @@
 #include "logger.h"
 //#include "test.h"
 
-#define MAX_CHAR 50
+#define MAX_CHAR 32
 
 #define PROFILE_MACRO 1
 #if PROFILE_MACRO
@@ -42,7 +42,7 @@ struct ProfileEntry
     uint32_t getChildrenSize() { return m_Children.size(); }
 
     Array<ProfileEntry*> m_Children;
-    char m_Name[256];
+    char m_Name[MAX_CHAR];
     float m_Duration;
 };
 
