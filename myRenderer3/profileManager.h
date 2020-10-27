@@ -114,8 +114,9 @@ void EndProfile(ProfileEntry& e)
 }
 
 
-void PrintProfile(ProfileEntry& e, uint32_t count)
+void PrintProfile(ProfileEntry* e, uint32_t count)
 {
+#if 0
     //logmsg("=====================At PrintProfile(%s)\n", e->m_Name);
     //logmsg("name = %s, child = %d\n", e->m_Name, e->getChildrenSize());
     uint32_t tabNum = count++;
@@ -128,4 +129,19 @@ void PrintProfile(ProfileEntry& e, uint32_t count)
         ProfileEntry& child = *e.m_Children[i];
         PrintProfile(child, count);
     }
+#else
+    //logmsg("=====================At PrintProfile(%s)\n", e->m_Name);
+    //logmsg("name = %s, child = %d\n", e->m_Name, e->getChildrenSize());
+    uint32_t tabNum = count++;
+    while (tabNum-- > 0)
+        logmsg("    ");
+    logmsg("%s -> %.2f ms\n", e->m_Name, e->m_Duration);
+
+    for (uint32_t i = 0; i < e->getChildrenSize(); ++i)
+    {
+
+        ProfileEntry* child = e->m_Children[i];
+        PrintProfile(child, count);
+    }
+#endif
 }
