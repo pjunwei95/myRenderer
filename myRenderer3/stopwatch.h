@@ -1,5 +1,6 @@
 #pragma once
 #include "engine.h"
+#include <assert.h>
 
 class Stopwatch 
 {
@@ -40,15 +41,21 @@ public:
 
     float getDurationMs()
     {
+        assert(m_isStopped);
         return (float)m_StopTime.QuadPart / 1000;
     }
 
     float getDurationSeconds()
     {
+        assert(m_isStopped);
         return (float)m_StopTime.QuadPart / 1000000;
     }
 
-    Timer getDurationUs() { return m_StopTime; }
+    Timer getDurationUs() 
+    { 
+        assert(m_isStopped);
+        return m_StopTime; 
+    }
 
 private:
     bool m_isStopped;

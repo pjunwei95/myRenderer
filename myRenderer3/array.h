@@ -24,7 +24,7 @@ public:
     }
     ~Array()
     {
-        for (uint32_t i = 0; i < m_Capacity; ++i)
+        for (uint32_t i = 0; i < m_Size; ++i)
             m_Data[i].~T();
 
         free(m_Data); 
