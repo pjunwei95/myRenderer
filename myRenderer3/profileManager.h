@@ -36,7 +36,7 @@ struct ProfileEntry
         strcpy_s(m_Name, MAX_CHAR, name);
     }
 
-   ~ProfileEntry()
+    ~ProfileEntry()
     {
     }
 
@@ -75,12 +75,15 @@ public:
 
     void UpdateProfileEntryParent()
     {
-        if (stack.size() >= 2)
+
+
+        if (stack.size() >= 1)
         {
-            ProfileEntry& child = *stack.back();
-            stack.popBack();
-            ProfileEntry* parent = stack.back();
-            parent->m_Children.pushBack(&child);
+            ProfileEntry* child = stack.back();
+            logmsg("%s timing is = %.2f\n", child->m_Name, child->m_Duration);
+            stack.popBack(); //problematic, stack will be popped and cannot read child
+            //ProfileEntry* parent = stack.back();
+            //parent->m_Children.pushBack(child);
         }
     }
 
