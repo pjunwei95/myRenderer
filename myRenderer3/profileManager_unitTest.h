@@ -23,7 +23,7 @@ void testSimpleProfile()
 {
     LOG_UNIT_TEST();
     DrawWindow();
-    UNIT_TEST_PRINT();
+    //UNIT_TEST_PRINT();
     //ProfileEntry* first = gs_ProfileManager.GetStack().at(0);
     //ProfileEntry ancestor = *first;
     //PrintProfile(ancestor, 0);
@@ -56,9 +56,9 @@ void testSimpleNestedProfile()
 {
     LOG_UNIT_TEST();
     OutsideSingleNested();
-    ProfileEntry* first = gs_ProfileManager.GetStack().at(0); 
-    ProfileEntry ancestor = *first;
-    PrintProfile(ancestor, 0);
+    //ProfileEntry* first = gs_ProfileManager.GetStack().at(0); 
+    //ProfileEntry ancestor = *first;
+    //PrintProfile(ancestor, 0);
     gs_ProfileManager.Clear();
 }
 
