@@ -157,6 +157,7 @@ void Array<T>::reserve(uint32_t newCap) // new filled array of fixed size
 template<typename T>
 Array<T>& Array<T>::operator=(const Array<T>& rhsArray)
 {
+    //TODO WRONG IMPLEMENTATION
     if (this == &rhsArray)
         return *this;
 
