@@ -22,10 +22,13 @@ private:
     Array<ProfileEntry> m_Stack;
     uint32_t m_TabCounter;
 public:
+    ProfileManager() : m_TabCounter{ 0 }{}
+
     void BeginProfile(const char* name) 
     {
         ProfileEntry entry(name);
         m_Stack.pushBack(entry);
+        ++m_TabCounter;
     }
 
     void EndProfile(const char* name, float time)
@@ -36,7 +39,6 @@ public:
             if (m_Stack[i].m_Name == name)
                 m_Stack[i].m_Duration = time;
         }
-        PrintProfile();
     }
 
     void PrintProfile()
@@ -63,7 +65,6 @@ struct ProfileTimer
     ProfileTimer(const char* name)
     {
         m_Name = name;
-        m_Stopwatch.start();
         gs_ProfileManager.BeginProfile(name);
     }
     ~ProfileTimer()

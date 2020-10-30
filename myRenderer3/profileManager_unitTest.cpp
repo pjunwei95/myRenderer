@@ -15,6 +15,19 @@ void testSimpleProfile()
     gs_ProfileManager.PrintProfile();
 }
 
+void OutsideSingleNested()
+{
+    PROFILE_THIS();
+    DrawWindow();
+}
+
+void testSimpleNestedProfile()
+{
+    LOG_UNIT_TEST();
+    OutsideSingleNested();
+    gs_ProfileManager.PrintProfile();
+}
+
 void testProfileManager()
 {
     LOG_TEST(Profiler);
@@ -25,7 +38,7 @@ void testProfileManager()
 #else
     //Without Macros
     testSimpleProfile();
-    //testSimpleNestedProfile();
+    testSimpleNestedProfile();
     //testDoubleDifferentNestedProfile();
     //testDoubleSameNestedProfile();
     //testNestedTwiceProfile();
