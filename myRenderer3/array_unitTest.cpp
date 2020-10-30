@@ -8,114 +8,114 @@
 
 
 
-void printTestArray(const Array<int>* const a)
-{
-    logmsg("==============\n");
-    logmsg("printing updated table: \n\n");
-    int numAtIdx;
-    for (uint32_t i = 0; i < a->size(); ++i)
-    {
-        numAtIdx = a->at(i);
-        logmsg("array [%d] = %d\n", i, numAtIdx);
-    }
-    logmsg("==============\n");
-}
-
-void testArray1()
-{
-    LOG_UNIT_TEST();
-    
-    Array<int> a;
-    int num = 0;
-    //push 10 elements and print (init)
-    for (int i = 0; i < 10; ++i)
-    {
-        a.pushBack(num);
-        num++;
-    }
-    printTestArray(&a);
-
-    //print first
-    int getFirst = a.front();
-    logmsg("first = %d\n", getFirst);
-
-    //erase at idx
-    logmsg("erasing a[%d] = %d...\n", 6, a.at(6));
-    a.eraseAt(6);
-    logmsg("a[%d] is now = %d\n", 6, a.at(6));
-
-    //insert at idx
-    int newNum = 99;
-    logmsg("inserting a[%d] = %d...\n", 6, newNum);
-    a.insertAt(6, newNum);
-    logmsg("a[%d] is now = %d\n", 6, a.at(6));
-    printTestArray(&a);
-
-    //insert at idx
-    int anotherNum = 333;
-    logmsg("inserting a[%d] = %d...\n", 0, anotherNum);
-    a.insertAt(0, anotherNum);
-    logmsg("a[%d] is now = %d\n", 0, a.at(0));
-    printTestArray(&a);
-
-    //remove at fast idx 5
-    logmsg("RemoveAtFast 5...\n");
-    a.removeAtFast(5);
-    printTestArray(&a);
-
-    //remove last
-    logmsg("popping last element...\n");
-    a.popBack();
-
-    //print last
-    int getLast = a.back();
-    logmsg("last = %d\n", getLast);
-
-    //free after usage
-    //delete a;
- }
-
-void testArray2()
-{
-    LOG_UNIT_TEST();
-    // for circular buffer, without this constructors will give linker errors
-    Array<int> b;
-    b.reserve(10);
-    int num = 1;
-    b.pushBack(num);
-    num++;
-    b.pushBack(num);
-    num++;
-    //b->addSize(1);
-    b[0] = num;
-    logmsg("capacity of b = %d\n", b.capacity());
-    //int *num = b[0];
-    //for profiler
-}
-
-void testArrayClear()
-{
-    LOG_UNIT_TEST();
-    Array<int> container;
-    container.pushBack(1);
-    container.pushBack(2);
-    container.pushBack(3);
-
-
-    logmsg("Before clear:\n");
-    printTestArray(&container);
-    logmsg("Size = %d\n", container.size());
-
-    logmsg("Clear\n");
-    container.clear();
-
-    logmsg("After clear:\n");
-    printTestArray(&container);
-    logmsg("Size = %d\n", container.size());
-}
+//void printTestArray(const Array<int>* const a)
+//{
+//    logmsg("==============\n");
+//    logmsg("printing updated table: \n\n");
+//    int numAtIdx;
+//    for (uint32_t i = 0; i < a->size(); ++i)
+//    {
+//        numAtIdx = a->at(i);
+//        logmsg("array [%d] = %d\n", i, numAtIdx);
+//    }
+//    logmsg("==============\n");
+//}
+//
+//void testArray1()
+//{
+//    LOG_UNIT_TEST();
+//    
+//    Array<int> a;
+//    int num = 0;
+//    //push 10 elements and print (init)
+//    for (int i = 0; i < 10; ++i)
+//    {
+//        a.pushBack(num);
+//        num++;
+//    }
+//    printTestArray(&a);
+//
+//    //print first
+//    int getFirst = a.front();
+//    logmsg("first = %d\n", getFirst);
+//
+//    //erase at idx
+//    logmsg("erasing a[%d] = %d...\n", 6, a.at(6));
+//    a.eraseAt(6);
+//    logmsg("a[%d] is now = %d\n", 6, a.at(6));
+//
+//    //insert at idx
+//    int newNum = 99;
+//    logmsg("inserting a[%d] = %d...\n", 6, newNum);
+//    a.insertAt(6, newNum);
+//    logmsg("a[%d] is now = %d\n", 6, a.at(6));
+//    printTestArray(&a);
+//
+//    //insert at idx
+//    int anotherNum = 333;
+//    logmsg("inserting a[%d] = %d...\n", 0, anotherNum);
+//    a.insertAt(0, anotherNum);
+//    logmsg("a[%d] is now = %d\n", 0, a.at(0));
+//    printTestArray(&a);
+//
+//    //remove at fast idx 5
+//    logmsg("RemoveAtFast 5...\n");
+//    a.removeAtFast(5);
+//    printTestArray(&a);
+//
+//    //remove last
+//    logmsg("popping last element...\n");
+//    a.popBack();
+//
+//    //print last
+//    int getLast = a.back();
+//    logmsg("last = %d\n", getLast);
+//
+//    //free after usage
+//    //delete a;
+// }
+//
+//void testArray2()
+//{
+//    LOG_UNIT_TEST();
+//    // for circular buffer, without this constructors will give linker errors
+//    Array<int> b;
+//    b.reserve(10);
+//    int num = 1;
+//    b.pushBack(num);
+//    num++;
+//    b.pushBack(num);
+//    num++;
+//    //b->addSize(1);
+//    b[0] = num;
+//    logmsg("capacity of b = %d\n", b.capacity());
+//    //int *num = b[0];
+//    //for profiler
+//}
+//
+//void testArrayClear()
+//{
+//    LOG_UNIT_TEST();
+//    Array<int> container;
+//    container.pushBack(1);
+//    container.pushBack(2);
+//    container.pushBack(3);
+//
+//
+//    logmsg("Before clear:\n");
+//    printTestArray(&container);
+//    logmsg("Size = %d\n", container.size());
+//
+//    logmsg("Clear\n");
+//    container.clear();
+//
+//    logmsg("After clear:\n");
+//    printTestArray(&container);
+//    logmsg("Size = %d\n", container.size());
+//}
 
 // This function prints all integral values contained in vector
-void Print(const Array<int>& vec, bool newline) {
+void TestPrintArray(const Array<int>& vec, bool newline) {
     /*
     This for loop goes through the entire vector and prints out each element
     of the vector. Note the subscript usage on the my_vector class.
@@ -138,20 +138,20 @@ void TestPush() {
     Array<int> a;
     //logmsg();
     logmsg("Empty array:\n");
-    Print(a);
+    TestPrintArray(a);
 
     // add 5 integers to the vector using push_back
     logmsg("push_back 5 integers:\n");
     for (int i = 0; i < 5; ++i) {
         a.pushBack(i);
-        Print(a);
+        TestPrintArray(a);
     }
 
     // remove the last element of the vector as long as the vector is non-empty
     logmsg("pop_back until empty:\n");
     while (!a.isEmpty()) {
         a.popBack();
-        Print(a);
+        TestPrintArray(a);
     }
 }
 
@@ -286,57 +286,51 @@ void TestPush() {
 //    std::cout << " TestSubscript2 to check" << std::endl;
 //#endif
 //}
-//
-//// This function tests the copy ctor of class CS170::vector.
-//// The function first declares a vector a and populates the vector.
-//// Next, it constructs vector b and c in specific ways.
-//void TestCopy() {
-//    std::cout << "\n********** TestCopy **********\n";
-//    my_vector a;
-//
-//    std::cout << "push_back 10 even integers:\n";
-//    for (cs170::vector::value_type i = 0; i < 10; ++i) {
-//        a.push_back(2 * i);
-//    }
-//
-//    std::cout << "Copy: b(a), print a,b\n";
-//    my_vector b(a);
-//    Print(a);
-//    Print(b);
-//
-//    std::cout << "Copy: c(b), print b,c\n";
-//    const my_vector c(b);
-//    Print(b);
-//    Print(c);
-//}
-//
-//// This function tests the assignment operator of class CS170::vector.
-//// The function defines and populates vectors a and b.
-//// Next, the function performs different assignments to test the correctness
-//// of the copy-assignment overloaded operator function.
-//void TestAssign() {
-//    std::cout << "\n********** TestAssign **********\n";
-//    my_vector a, b;
-//
-//    std::cout << "push_back 10 integers:\n";
-//    for (cs170::vector::value_type i = 0; i < 10; ++i) {
-//        a.push_back(2 * i);
-//        b.push_back(i);
-//    }
-//
-//    Print(a);
-//    Print(b);
-//
-//    std::cout << "Assign: b = a, print a,b\n";
-//    b = a;
-//    Print(a);
-//    Print(b);
-//
-//    std::cout << "Assign: a = a, print a\n";
-//    a = a;
-//    Print(a);
-//}
-//
+
+void TestCopy() {
+    logmsg("\n********** TestCopy **********\n");
+    Array<int> a;
+
+    logmsg("push_back 10 even integers:\n");
+    for (int i = 0; i < 10; ++i) {
+        a.pushBack(2 * i);
+    }
+
+    logmsg("Copy: b(a), print a,b\n");
+    Array<int> b(a);
+    TestPrintArray(a);
+    TestPrintArray(b);
+
+    logmsg("Copy: c(b), print b,c\n");
+    const Array<int> c(b);
+    TestPrintArray(b);
+    TestPrintArray(c);
+}
+
+void TestAssign() 
+{
+    logmsg("\n********** TestAssign **********\n");
+    Array<int> a, b;
+
+    logmsg("push_back 10 integers:\n");
+    for (int i = 0; i < 10; ++i) {
+        a.pushBack(2 * i);
+        b.pushBack(i);
+    }
+
+    TestPrintArray(a);
+    TestPrintArray(b);
+
+    logmsg("Assign: b = a, print a,b\n");
+    b = a;
+    TestPrintArray(a);
+    TestPrintArray(b);
+
+    logmsg("Assign: a = a, print a\n");
+    a = a;
+    TestPrintArray(a);
+}
+
 //// This function tests the erase member function of class CS170::vector.
 //// The main purpose of the erase function is to remove the element at
 //// a given specific position in the vector.
@@ -366,11 +360,10 @@ void TestPush() {
 void testArray()
 {
     LOG_TEST(ARRAY);
-    testArray1();
-    testArray2();
-    testArrayClear();
+    //testArray1();
+    //testArray2();
+    //testArrayClear();
     TestPush();
-
-
-
+    TestCopy();
+    TestAssign();
 }

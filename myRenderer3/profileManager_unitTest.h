@@ -189,22 +189,5 @@
 //{
 //
 //}
+void testProfileManager();
 
-void testProfileManager()
-{
-    LOG_TEST(Profiler);
-
-    //With Macros
-#if PROFILE_MACRO
-    testSimpleProfileWithMacro();
-#else
-    //Without Macros
-    //testSimpleProfile();
-    //testSimpleNestedProfile();
-    //testDoubleDifferentNestedProfile();
-    //testDoubleSameNestedProfile();
-    //testNestedTwiceProfile();
-#endif
-    //for multiple frames
-    //testProfileCircularBuffer();
-}

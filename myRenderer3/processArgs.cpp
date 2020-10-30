@@ -12,7 +12,7 @@ void loadConfig()
     //you can always assume the "config.txt" file will always be present. if not, init default values
     FileManager fm;
 
-    logmsg("Loading default configurations\n");
+    //logmsg("Loading default configurations\n");
 
     fm.readAndProcessFile("config.txt", FileManager::TYPE_TEXT);
 }
@@ -31,7 +31,7 @@ void processArgs(int argc, char *argsv[])
     for (int i = 0; i < argc; ++i)
     {
         char *string = argsv[i];
-        logmsg("argsv[%d] is \"%s\"\n", i, string);
+        //logmsg("argsv[%d] is \"%s\"\n", i, string);
         if (0 == strcmp(string, "test"))
         {
             runTest();

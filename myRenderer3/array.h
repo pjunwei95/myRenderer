@@ -3,6 +3,7 @@
 #include <assert.h>
 //#include "stdio.h"
 #include "stdlib.h"
+#include <algorithm>
 
 template<typename T>
 class Array {
@@ -19,9 +20,17 @@ private:
 
 public:
     Array() 
-        : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ 0 }
+        : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ 0 } {}
+
+    Array(const Array &other) 
+        : m_Size{ other.m_Size }, m_Capacity{ other.m_Capacity }
     {
+        m_Data = static_cast<T*>(malloc(sizeof(T) * m_Size));
+
+        for (uint32_t i = 0; i < m_Size; ++i)
+            m_Data[i] = other.m_Data[i];
     }
+
     ~Array()
     {
         for (uint32_t i = 0; i < m_Size; ++i)
@@ -117,6 +126,32 @@ public:
     //void printTestArray();
 
 };
+//TODO implement a move assignment rather than a copy assignment
+
+//copy assignment, not move
+template<typename T>
+Array<T>& Array<T>::operator=(const Array<T>& rhsArray)
+{
+    if (this == &rhsArray)
+        return *this;
+
+    uint32_t newSize = rhsArray.m_Size;
+    uint32_t newCapacity = rhsArray.m_Capacity;
+
+    T* temp = static_cast<T*>(malloc(sizeof(T) * newSize));
+
+    for (uint32_t i = 0; i < newSize; i++)
+        temp[i] = rhsArray.m_Data[i];
+
+    //TODO check if nested array or on construction give any bugs
+    //swap operations
+    m_Size = newSize;
+    m_Capacity = newCapacity;
+    free(m_Data);
+    m_Data = temp;
+
+    return *this;
+}
 
 template<typename T>
 T* Array<T>::realloc(size_t newSize)
@@ -151,21 +186,6 @@ void Array<T>::reserve(uint32_t newCap) // new filled array of fixed size
         assert(m_Data);
     }
     m_Capacity = newCap;
-}
-
-//copy assignment, not move
-template<typename T>
-Array<T>& Array<T>::operator=(const Array<T>& rhsArray)
-{
-    //TODO WRONG IMPLEMENTATION
-    if (this == &rhsArray)
-        return *this;
-
-    T* temp = realloc(m_Capacity);
-    assert(temp);
-    m_Data = temp;
-
-    return *this;
 }
 
 template<typename T>

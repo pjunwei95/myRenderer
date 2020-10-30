@@ -14,7 +14,7 @@ void tokeniseBuffer(char * buffer)
     char * token = strtok_s(buffer, delim, &nextToken);
     while (token != NULL)
     {
-        logmsg("token = %s\n", token);
+        //logmsg("token = %s\n", token);
         token = strtok_s(NULL, delim, &nextToken);
     }
 }
