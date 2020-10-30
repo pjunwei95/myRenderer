@@ -1,66 +1,66 @@
 #pragma once
 #include "profileManager.h"
-
-#define UNIT_TEST_PRINT()ProfileEntry* first = gs_ProfileManager.GetStack().at(0);\
-                            ProfileEntry ancestor = *first;\
-                            PrintProfile(ancestor, 0);
-
-//////////////////////////////////////////////////////////////
-//Simulated main functions
-
-//draw and update functions profile entry are the same 
-ProfileEntry gs_Foo{ "Foo" };
-void DrawWindow()
-{
-    ProfileEntry gs_DrawWindowProfileTag{ "DrawWindowProfileTag" };
-    ProfileTimer test(gs_DrawWindowProfileTag);
-    NewBeginProfile(test);
-    Sleep(33);
-    NewEndProfile(test);
-}
-
-void testSimpleProfile()
-{
-    LOG_UNIT_TEST();
-    DrawWindow();
-    //UNIT_TEST_PRINT();
-    //ProfileEntry* first = gs_ProfileManager.GetStack().at(0);
-    //ProfileEntry ancestor = *first;
-    //PrintProfile(ancestor, 0);
-    gs_ProfileManager.Clear();
-}
-
-
-void OutsideSingleNested()
-{
-    /*BeginProfile(gs_Foo);
-    ///
-    Stopwatch timerTest;
-    timerTest.start();
-    DrawWindow();
-    timerTest.stop();
-    gs_Foo.m_Duration = timerTest.getDurationMs();
-    ///
-    EndProfile(gs_Foo);*/
-
-    ProfileEntry gs_Bar{ "Bar" };
-    ProfileTimer test(gs_Bar);
-    NewBeginProfile(test);
-    ///
-    DrawWindow();
-    ///
-    NewEndProfile(test);
-}
-
-void testSimpleNestedProfile()
-{
-    LOG_UNIT_TEST();
-    OutsideSingleNested();
-    //ProfileEntry* first = gs_ProfileManager.GetStack().at(0); 
-    //ProfileEntry ancestor = *first;
-    //PrintProfile(ancestor, 0);
-    gs_ProfileManager.Clear();
-}
+//
+//#define UNIT_TEST_PRINT()ProfileEntry* first = gs_ProfileManager.GetStack().at(0);\
+//                            ProfileEntry ancestor = *first;\
+//                            PrintProfile(ancestor, 0);
+//
+////////////////////////////////////////////////////////////////
+////Simulated main functions
+//
+////draw and update functions profile entry are the same 
+//ProfileEntry gs_Foo{ "Foo" };
+//void DrawWindow()
+//{
+//    ProfileEntry gs_DrawWindowProfileTag{ "DrawWindowProfileTag" };
+//    ProfileTimer test(gs_DrawWindowProfileTag);
+//    NewBeginProfile(test);
+//    Sleep(33);
+//    NewEndProfile(test);
+//}
+//
+//void testSimpleProfile()
+//{
+//    LOG_UNIT_TEST();
+//    DrawWindow();
+//    //UNIT_TEST_PRINT();
+//    //ProfileEntry* first = gs_ProfileManager.GetStack().at(0);
+//    //ProfileEntry ancestor = *first;
+//    //PrintProfile(ancestor, 0);
+//    gs_ProfileManager.Clear();
+//}
+//
+//
+//void OutsideSingleNested()
+//{
+//    /*BeginProfile(gs_Foo);
+//    ///
+//    Stopwatch timerTest;
+//    timerTest.start();
+//    DrawWindow();
+//    timerTest.stop();
+//    gs_Foo.m_Duration = timerTest.getDurationMs();
+//    ///
+//    EndProfile(gs_Foo);*/
+//
+//    ProfileEntry gs_Bar{ "Bar" };
+//    ProfileTimer test(gs_Bar);
+//    NewBeginProfile(test);
+//    ///
+//    DrawWindow();
+//    ///
+//    NewEndProfile(test);
+//}
+//
+//void testSimpleNestedProfile()
+//{
+//    LOG_UNIT_TEST();
+//    OutsideSingleNested();
+//    //ProfileEntry* first = gs_ProfileManager.GetStack().at(0); 
+//    //ProfileEntry ancestor = *first;
+//    //PrintProfile(ancestor, 0);
+//    gs_ProfileManager.Clear();
+//}
 
 //ProfileEntry gs_UpdateWindowProfileTag{ "UpdateWindowProfileTag" };
 //void UpdateWindow()
@@ -199,8 +199,8 @@ void testProfileManager()
     testSimpleProfileWithMacro();
 #else
     //Without Macros
-    testSimpleProfile();
-    testSimpleNestedProfile();
+    //testSimpleProfile();
+    //testSimpleNestedProfile();
     //testDoubleDifferentNestedProfile();
     //testDoubleSameNestedProfile();
     //testNestedTwiceProfile();
