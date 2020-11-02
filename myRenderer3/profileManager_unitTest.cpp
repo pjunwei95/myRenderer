@@ -108,6 +108,23 @@ void NonScopedNonNestedBegin()
     PROFILE_END(CalledAfterTestEndProfile);
 }
 
+void NonScopedDoubleNestedBegin()
+{
+    PROFILE_BEGIN(GfxRenderTask);
+    DoSomething();
+    {
+        PROFILE_BEGIN(MergeCMDListRecord);
+        DoSomething();
+        {
+            PROFILE_BEGIN(DrawWaterVisibilityForQuery_CPU);
+            DoSomething();
+            PROFILE_END(DrawWaterVisibilityForQuery_CPU);
+        }
+        PROFILE_END(MergeCMDListRecord);
+    }
+    PROFILE_END(GfxRenderTask);
+}
+
 
 //====================================================
 //Tests
@@ -178,6 +195,14 @@ void testNonScopedNonNestedBegin()
     PROFILE_DEBUG();
 }
 
+
+void testNonScopedDoubleNestedBegin()
+{
+    LOG_UNIT_TEST();
+    NonScopedDoubleNestedBegin();
+    PROFILE_DEBUG();
+}
+
 void testDoubleFrameSimpleProfile()
 {
     LOG_UNIT_TEST();
@@ -201,8 +226,7 @@ void testDoubleFrameOutsideSingleNestedProfile()
 }
 
 
-
-#define TEST 0
+#define TEST 1
 void testProfileManager()
 {
     LOG_TEST(Profiler);
@@ -220,6 +244,7 @@ void testProfileManager()
     testNonScopedBegin();
     testNonScopedNestedBegin();
     testNonScopedNonNestedBegin();
+    testNonScopedDoubleNestedBegin();
 #else
     //=========================================
     //Multiple-frame tests
