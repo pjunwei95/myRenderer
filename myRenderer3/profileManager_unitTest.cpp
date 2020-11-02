@@ -15,17 +15,6 @@ void ProfileDebug()
 //====================================================
 //Simulated Real Functions
 
-void DrawWindowBeginEnd()
-{
-    PROFILE_BEGIN("Sample begin");
-    Sleep(33);
-    PROFILE_END();
-
-    PROFILE_BEGIN("Another Begin");
-    Sleep(33);
-    PROFILE_END();
-}
-
 void DrawWindow()
 {
     PROFILE_FUNCTION();
@@ -58,7 +47,7 @@ void DoubleSameNestedProfile()
     PROFILE_FUNCTION();
     DrawWindow();
     DrawWindow();
-    Sleep(33);
+    //Sleep(33);
 }
 
 void ThisCallDrawWindow()
@@ -83,18 +72,54 @@ void NestedTwiceProfile()
     Sleep(33);
 }
 
+void DoSomething()
+{
+    Sleep(33);
+}
+
+
+void NonScopedBegin()
+{
+    PROFILE_BEGIN(test);
+    DoSomething();
+    PROFILE_END(test);
+}
+
+void NonScopedNestedBegin()
+{
+    PROFILE_BEGIN(Test);
+    DoSomething();
+    {
+        PROFILE_BEGIN(CalledBeforeTestEndProfile);
+        DoSomething();
+        PROFILE_END(CalledBeforeTestEndProfile);
+    }
+    PROFILE_END(Test);
+}
+
+void NonScopedNonNestedBegin()
+{
+    PROFILE_BEGIN(Test);
+    DoSomething();
+    PROFILE_END(Test);
+
+    PROFILE_BEGIN(CalledAfterTestEndProfile);
+    DoSomething();
+    PROFILE_END(CalledAfterTestEndProfile);
+}
+
+
 //====================================================
 //Tests
 void testScoped()
 {
     LOG_UNIT_TEST();
     {
-        PROFILE_SCOPED("test scoped");
+        PROFILE_SCOPED(Scoped);
         Sleep(33);
     }
     ProfileDebug();
 }
-
 
 void testSimpleProfile()
 {
@@ -131,29 +156,75 @@ void testNestedTwiceProfile()
     PROFILE_DEBUG();
 }
 
-
-void testProfileBegin()
+void testNonScopedBegin()
 {
     LOG_UNIT_TEST();
-    DrawWindowBeginEnd();
+    NonScopedBegin();
     PROFILE_DEBUG();
 }
 
+
+void testNonScopedNestedBegin()
+{
+    LOG_UNIT_TEST();
+    NonScopedNestedBegin();
+    PROFILE_DEBUG();
+}
+
+void testNonScopedNonNestedBegin()
+{
+    LOG_UNIT_TEST();
+    NonScopedNonNestedBegin();
+    PROFILE_DEBUG();
+}
+
+void testDoubleFrameSimpleProfile()
+{
+    LOG_UNIT_TEST();
+    for (int i = 0; i < 2; ++i)
+    {
+        DrawWindow();
+        logmsg("Frame #%d:\n", i);
+        PROFILE_DEBUG();
+    }
+}
+
+void testDoubleFrameOutsideSingleNestedProfile()
+{
+    LOG_UNIT_TEST();
+    for (int i = 0; i < 2; ++i)
+    {
+        OutsideSingleNested();
+        logmsg("Frame #%d:\n", i);
+        PROFILE_DEBUG();
+    }
+}
+
+
+
+#define TEST 0
 void testProfileManager()
 {
     LOG_TEST(Profiler);
     //=========================================
     //ProfileTimer tests
     // Scoped
+#if TEST
     testScoped();
     testSimpleProfile();
     testSimpleNestedProfile();
     testDoubleDifferentNestedProfile();
     testDoubleSameNestedProfile();
     testNestedTwiceProfile();
-    // Begin End
-    testProfileBegin();
-
-    //for multiple frames
+    // Non-scoped
+    testNonScopedBegin();
+    testNonScopedNestedBegin();
+    testNonScopedNonNestedBegin();
+#else
+    //=========================================
+    //Multiple-frame tests
+    testDoubleFrameSimpleProfile();
+    testDoubleFrameOutsideSingleNestedProfile();
     //testProfileCircularBuffer();
+#endif
 }

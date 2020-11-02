@@ -10,14 +10,14 @@
 #define PROFILE_MACRO 1
 
 #if PROFILE_MACRO
-#define PROFILE_BEGIN(name)
-#define PROFILE_END() 
-#define PROFILE_SCOPED(name) ProfileTimer MACRO_CONCAT(timer, __COUNTER__)(##name)
+#define PROFILE_BEGIN(name) Stopwatch::Timer* name = GetStartTime(#name)
+#define PROFILE_END(name) LapTimer(#name, name) 
+#define PROFILE_SCOPED(name) ProfileTimer MACRO_CONCAT(timer, __COUNTER__)(#name)
 #define PROFILE_FUNCTION() ProfileTimer MACRO_CONCAT(timer, __COUNTER__)(__FUNCTION__)
 #else
 #define PROFILE_BEGIN(name)
-#define PROFILE_END() 
-#define PROFILE_SCOPED()
+#define PROFILE_END(name) 
+#define PROFILE_SCOPED(name)
 #define PROFILE_FUNCTION()
 #endif
 
@@ -95,15 +95,31 @@ public:
 
     ~ProfileTimer()
     {
-        m_Stopwatch.stop();
-        float elapsedTime = m_Stopwatch.getDurationMs();
-        gs_ProfileManager.EndProfile(m_Name, elapsedTime);
-    }
-
-    void LapTimer()
-    {
         float elapsedTime = m_Stopwatch.getDurationMs();
         gs_ProfileManager.EndProfile(m_Name, elapsedTime);
     }
 };
 
+//=========================================================
+//Non-scoped Timers
+Stopwatch::Timer* GetStartTime(const char* name)
+{
+    gs_ProfileManager.BeginProfile(name);
+    Stopwatch timer;
+    Stopwatch::Timer* startTime = new Stopwatch::Timer;
+    timer.updateTimeStamp(*startTime);
+    return startTime;
+}
+
+void LapTimer(const char* nameToFind, Stopwatch::Timer* startTime)
+{
+    Stopwatch timer;
+    Stopwatch::Timer stopTime;
+    timer.updateTimeStamp(stopTime);
+    stopTime.QuadPart -= startTime->QuadPart;
+    delete startTime;
+    stopTime.QuadPart *= 1000000;
+    stopTime.QuadPart /= getSystemFrequency().QuadPart;
+    float elapsedTime = (float) stopTime.QuadPart / 1000;
+    gs_ProfileManager.EndProfile(nameToFind, elapsedTime);
+}

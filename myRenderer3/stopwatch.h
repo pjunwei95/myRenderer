@@ -41,20 +41,20 @@ public:
 
     float getDurationMs()
     {
-        assert(m_isStopped);
+        stop();
         return (float)m_StopTime.QuadPart / 1000;
     }
 
     float getDurationSeconds()
     {
-        assert(m_isStopped);
+        stop();
         return (float)m_StopTime.QuadPart / 1000000;
     }
 
     Timer getDurationUs() 
     { 
-        assert(m_isStopped);
-        return m_StopTime; 
+        stop();
+        return m_StopTime;
     }
 
 private:
