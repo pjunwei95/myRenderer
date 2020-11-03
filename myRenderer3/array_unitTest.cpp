@@ -214,78 +214,70 @@ void TestPush() {
 //    std::cout << " TestInsert1 to check" << std::endl;
 //#endif
 //}
-//
-//// This is the first in a series of functions that tests the subscript
-//// operator. As can be observed, the subscript operator returns a
-//// reference to the specific element given by the index, i.e., v[i] refers
-//// to element in position i of the vector.
-//void TestSubscripts() {
-//    std::cout << "\n********** TestSubscripts **********\n";
-//    my_vector a;
-//
-//    std::cout << "push_back 10 even integers:\n";
-//    for (cs170::vector::value_type i = 0; i < 10; ++i) {
-//        a.push_back(2 * i);
-//    }
-//
-//    Print(a);
-//    std::cout << "multiple each value by 3:\n";
-//    for (cs170::vector::size_type i = 0; i < 10; ++i) {
-//        a[i] = a[i] * 3;
-//    }
-//    Print(a);
-//}
-//
-//// This is the second function that tests subscript operations.
-//// Notice that the CS170::vector object is declared as read-only and
-//// also constructed in a peculiar way.
-//void TestSubscript1() {
-//    std::cout << "\n********** TestSubscript1 **********\n";
-//    cs170::vector::value_type
-//        ia[] = { 2, 4, 6, 6, 8, 10, 6, 12, -6, 14, 16, 6, 6 };
-//    cs170::vector::size_type size = sizeof(ia) / sizeof(*ia);
-//    std::cout << "Construct from int array:\n";
-//    my_vector org;
-//
-//    for (cs170::vector::size_type i = 0; i < size; ++i) {
-//        org.push_back(ia[i]);
-//    }
-//    my_vector const a(org);
-//    Print(a);
-//
-//    cs170::vector::size_type index = a.size() / 2;
-//    std::cout << "using subscript: a[" << index << "]" << std::endl;
-//    std::cout << "a[" << index << "] = " << a[index] << std::endl;
-//}
-//
-//// This is the third function to test subscript operations.
-//// The purpose of this function is to inform the implementor that the
-//// subscript operator is supposed to cause an abort in the case when the
-//// given position is not within the bounds of the CS170::vector.
-//void TestSubscript2() {
-//    std::cout << "\n********** TestSubscript2 **********\n";
-//    cs170::vector::value_type ia[] = { 2, 4, 6, 6, 8, 10, 6, 12, -6, 14, 16, 6, 6 };
-//    cs170::vector::size_type size = sizeof(ia) / sizeof(*ia);
-//    std::cout << "Construct from int array:\n";
-//    my_vector org;
-//
-//    for (cs170::vector::size_type i = 0; i < size; ++i) {
-//        org.push_back(ia[i]);
-//    }
-//    my_vector const a(org);
-//    Print(a);
-//
-//#ifdef TEST_SUBSCRIPT_2
-//    //Supposed to cause abort
-//    cs170::vector::size_type index = a.size() * 2;   // illegal
-//    std::cout << "using subscript: a[" << index << "]" << std::endl;
-//    std::cout << "a[" << index << "] = " << a[index] << std::endl;
-//#else
-//    std::cout << "Not tested really...";
-//    std::cout << "change the macro in ";
-//    std::cout << " TestSubscript2 to check" << std::endl;
-//#endif
-//}
+
+void TestSubscripts() {
+    logmsg("\n********** TestSubscripts **********\n");
+    Array<int> a;
+
+    logmsg("push_back 10 even integers:\n");
+    for (int i = 0; i < 10; ++i) {
+        a.pushBack(2 * i);
+    }
+
+    TestPrintArray(a);
+    logmsg("multiple each value by 3:\n");
+    for (int i = 0; i < 10; ++i) {
+        a[i] = a[i] * 3;
+    }
+    TestPrintArray(a);
+}
+
+// Notice that the object is declared as read-only and
+// also constructed in a peculiar way.
+void TestSubscript1() {
+    logmsg("\n********** TestSubscript1 **********\n");
+    int ia[] = { 2, 4, 6, 6, 8, 10, 6, 12, -6, 14, 16, 6, 6 };
+    int size = sizeof(ia) / sizeof(*ia);
+    logmsg("Construct from int array:\n");
+    Array<int> org;
+
+    for (int i = 0; i < size; ++i) {
+        org.pushBack(ia[i]);
+    }
+    Array<int> const a(org);
+    TestPrintArray(a);
+
+    int index = a.size() / 2;
+    logmsg("using subscript: a[%i]\n", index);
+    logmsg("a[%i] = %i\n", index, a[index]);
+}
+
+//#define TEST_SUBSCRIPT_2
+// The purpose of this function is to inform the implementor that the
+// subscript operator is supposed to cause an abort in the case when the
+// given position is not within the bounds
+void TestSubscript2() {
+    logmsg("\n********** TestSubscript2 **********\n");
+    int ia[] = { 2, 4, 6, 6, 8, 10, 6, 12, -6, 14, 16, 6, 6 };
+    int size = sizeof(ia) / sizeof(*ia);
+    logmsg("Construct from int array:\n");
+    Array<int> org;
+
+    for (int i = 0; i < size; ++i) {
+        org.pushBack(ia[i]);
+    }
+    Array<int> const a(org);
+    TestPrintArray(a);
+
+#ifdef TEST_SUBSCRIPT_2
+    //Supposed to cause abort
+    int index = a.size() * 2;   // illegal
+    logmsg("using subscript: a[%d]\n", index);
+    logmsg("a[%d] = %d\n", index, a[index]);
+#else
+    logmsg("Not tested really...change the macro in TestSubscript2 to check\n");
+#endif
+}
 
 void TestCopy() {
     logmsg("\n********** TestCopy **********\n");
@@ -331,31 +323,98 @@ void TestAssign()
     TestPrintArray(a);
 }
 
-//// This function tests the erase member function of class CS170::vector.
-//// The main purpose of the erase function is to remove the element at
-//// a given specific position in the vector.
-//void TestErase() {
-//    std::cout << "\n********** TestErase **********\n";
-//    my_vector a;
-//    std::cout << "Empty array:\n";
-//    Print(a);
+void TestErase() {
+    logmsg("\n********** TestErase **********\n");
+    Array<int> a;
+    logmsg("Empty array:\n");
+    TestPrintArray(a);
+
+    logmsg("push_back 5 integers:\n");
+    for (int i = 0; i < 5; ++i) {
+        a.pushBack(i);
+        TestPrintArray(a);
+    }
+
+    /*
+    Removing elements at position 0 and then 3.
+    */
+    // Remove elements at position 0 and then position 3
+    logmsg("erase(0), erase(3):\n");
+    a.eraseAt(0);
+    a.eraseAt(3);
+    TestPrintArray(a);
+}
+
+void TestDeepCopy()
+{
+    logmsg("\n********** TestDeepCopy **********\n");
+    Array<int> a, b;
+
+    logmsg("push_back 10 integers:\n");
+    for (int i = 0; i < 10; ++i) {
+        a.pushBack(2 * i);
+        b.pushBack(i);
+    }
+
+    TestPrintArray(a);
+    TestPrintArray(b);
+
+    logmsg("Assign: b = a, print a,b\n");
+    b = a;
+    TestPrintArray(a);
+    TestPrintArray(b);
+
+    int index = a.size() / 2;
+    int changedValue = 99;
+    logmsg("Modify a[%i] = %i, print a,b\n", index, changedValue);
+    a[index] = changedValue;
+    TestPrintArray(a);
+    TestPrintArray(b);
+}
+
+//#include <vector>
+//void TestNestedArray() {
+//    logmsg("\n********** TestNestedArray **********\n");
+//    std::vector<int> a, b;
 //
-//    std::cout << "push_back 5 integers:\n";
-//    for (cs170::vector::value_type i = 0; i < 5; ++i) {
-//        a.push_back(i);
-//        Print(a);
+//    logmsg("push_back 10 integers:\n");
+//    for (int i = 0; i < 10; ++i) {
+//        a.push_back(2 * i);
+//        b.push_back(i);
 //    }
 //
-//    /*
-//    Removing elements at position 0 and then 3.
-//    */
-//    // Remove elements at position 0 and then position 3
-//    std::cout << "erase(0), erase(3):\n";
-//    a.erase(0);
-//    a.erase(3);
-//    Print(a);
-//}
+//    logmsg("Nested Array: Array<Array<int>>c, push a, b\n");
+//    std::vector<std::vector<int>> c;
+//    c.push_back(a);
+//    c.push_back(b);
 //
+//    logmsg("Obtain getA by accessing first element of C, print getA\n");
+//    std::vector<int> getA = c[0];
+//}
+
+void TestNestedArray() {
+    logmsg("\n********** TestNestedArray **********\n");
+    Array<int> a,b;
+
+    logmsg("push_back 10 integers:\n");
+    for (int i = 0; i < 10; ++i) {
+        a.pushBack(2 * i);
+        b.pushBack(i);
+    }
+
+    TestPrintArray(a);
+    TestPrintArray(b);
+
+    logmsg("Nested Array: Array<Array<int>>c, push a, b\n");
+    Array<Array<int>> c;
+    c.pushBack(a);
+    c.pushBack(b);
+
+    logmsg("Obtain getA by accessing first element of C, print getA\n");
+    Array<int> getA = c[0];
+    TestPrintArray(getA);
+
+}
 
 void testArray()
 {
@@ -363,7 +422,13 @@ void testArray()
     //testArray1();
     //testArray2();
     //testArrayClear();
-    TestPush();
-    TestCopy();
-    TestAssign();
+    //TestPush();
+    //TestCopy();
+    //TestAssign();
+    //TestErase();
+    //TestSubscripts();
+    //TestSubscript1();
+    //TestSubscript2();
+    TestDeepCopy();
+    //TestNestedArray();
 }

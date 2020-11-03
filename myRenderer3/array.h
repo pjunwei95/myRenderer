@@ -19,25 +19,15 @@ private:
     //uint32_t m_TypeSize; // size of element type
 
 public:
+    //Rules of three
     Array() 
         : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ 0 } {}
 
-    Array(const Array &other) 
-        : m_Size{ other.m_Size }, m_Capacity{ other.m_Capacity }
-    {
-        m_Data = static_cast<T*>(malloc(sizeof(T) * m_Size));
+    Array(const Array &other);
 
-        for (uint32_t i = 0; i < m_Size; ++i)
-            m_Data[i] = other.m_Data[i];
-    }
+    Array& operator=(const Array& oldArray); //copy assignment, not move
 
-    ~Array()
-    {
-        for (uint32_t i = 0; i < m_Size; ++i)
-            m_Data[i].~T();
-
-        free(m_Data); 
-    }
+    ~Array();
 
     T& operator[](uint32_t index)
     {
@@ -61,12 +51,7 @@ public:
     {
         return 0 == m_Size; 
     }
-    void popBack()
-    {
-        T& ref = back();
-        ref.~T();
-        m_Size--;
-    }
+
     void incrementSize(uint32_t value) 
     {
         m_Size += value; 
@@ -109,8 +94,8 @@ public:
         return m_Data[index];
     }
 
-    Array& operator=(const Array& oldArray); //copy assignment, not move
     void pushBack(const T& srcData);
+    void popBack();
     void insertAt(uint32_t index, const T& srcData);
     void reserve(uint32_t numElem);
     void eraseAt(uint32_t index);
@@ -124,8 +109,18 @@ public:
     //int getArrayTypeSize() const;
     //void freeArray();
     //void printTestArray();
-
 };
+
+
+template<typename T>
+Array<T>::Array(const Array<T> &other)
+    : m_Size{ other.m_Size }, m_Capacity{ other.m_Capacity }
+{
+    m_Data = static_cast<T*>(malloc(sizeof(T) * m_Size));
+
+    for (uint32_t i = 0; i < m_Size; ++i)
+        m_Data[i] = other.m_Data[i];
+}
 //TODO implement a move assignment rather than a copy assignment
 
 //copy assignment, not move
@@ -147,10 +142,19 @@ Array<T>& Array<T>::operator=(const Array<T>& rhsArray)
     //swap operations
     m_Size = newSize;
     m_Capacity = newCapacity;
-    free(m_Data);
+    //free(m_Data);
     m_Data = temp;
 
     return *this;
+}
+
+template<typename T>
+Array<T>::~Array()
+{
+    for (uint32_t i = 0; i < m_Size; ++i)
+        m_Data[i].~T();
+
+    free(m_Data);
 }
 
 template<typename T>
@@ -222,6 +226,14 @@ void Array<T>::pushBack(const T& srcData)
     assert(m_Size < m_Capacity);
     m_Data[m_Size] = srcData;
     m_Size++;
+}
+
+template<typename T>
+void Array<T>::popBack()
+{
+    T& ref = back();
+    ref.~T();
+    m_Size--;
 }
 
 template<typename T>
