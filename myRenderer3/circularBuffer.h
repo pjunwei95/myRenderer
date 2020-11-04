@@ -2,8 +2,7 @@
 #include "array.h"
 #include <stdlib.h>
 #include <string.h>
-
-void testCircularBuffer();
+#include "logger.h"
 
 //pushback increases back index
 template<typename T>
@@ -45,6 +44,12 @@ public:
     const T& popFront();
     void pushBack(const T& srcData);
     uint32_t size() const;
+    void specialPushBack(const T& srcData)
+    {
+        if (isFull())
+            popFront();
+        pushBack(srcData);
+    }
 
     //DEPRECATED
     //void freeCircBuf(CircularBuffer * const cb);
@@ -54,20 +59,20 @@ public:
 template<typename T>
 uint32_t CircularBuffer<T>::size() const
 {
-    return m_Array.size();
-    //if (m_Front == m_Back) // can be full or empty
-    //{
-    //    if (0 == m_Array.size())
-    //        return 0;
-    //    else
-    //        return m_Array.capacity();
-    //}
-    //else if (m_Back > m_Front) //expected, back greater than front
-    //{
-    //    return m_Back - m_Front;
-    //}
-    //else // front greater than back
-    //    return m_Array.capacity() + m_Back - m_Front;
+    //return m_Array.size();
+    if (m_Front == m_Back) // can be full or empty
+    {
+        if (0 == m_Array.size())
+            return 0;
+        else
+            return m_Array.capacity();
+    }
+    else if (m_Back > m_Front) //expected, back greater than front
+    {
+        return m_Back - m_Front;
+    }
+    else // front greater than back
+        return m_Array.capacity() + m_Back - m_Front;
 }
 
 //'push' a value directly into the 'back' slot

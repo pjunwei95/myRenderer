@@ -1,11 +1,9 @@
 #pragma once
-//#include <crtdbg.h>
+#include <crtdbg.h>
 #include "array_unitTest.h"
 #include "stack_unitTest.h"
-#include "circularBuffer.h"
-#include "test.h"
 #include "profileManager_unitTest.h"
-
+#include "circularBuffer_unitTest.h"
 
 void runTest()
 {
@@ -14,4 +12,5 @@ void runTest()
     // TESTS
     //testProfileManager();
     testArray();
+    testCircularBuffer();
 }

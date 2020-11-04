@@ -8,6 +8,9 @@
 #define FILE_NAME "debug.txt"
 #define CHAR_MAX_LIMIT 256
 
+
+
+
 FileManager::FileHandle fileHandle;
 
 void logmsg(const char *format, ...)

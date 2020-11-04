@@ -7,7 +7,8 @@
 #include "fileManager.h"
 #include "logger.h"
 
-#ifdef _MSC_VER
+#ifdef DEBUG_ASSERT
+#else
 #    pragma comment(linker, "/subsystem:windows /ENTRY:mainCRTStartup")
 #endif
 
