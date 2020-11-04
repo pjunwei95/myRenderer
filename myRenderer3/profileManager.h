@@ -21,6 +21,7 @@
 #define PROFILE_FUNCTION()
 #endif
 
+
 struct ProfileEntry
 {
    /* Array<ProfileEntry*> m_Children;*/
@@ -28,8 +29,10 @@ struct ProfileEntry
     uint32_t m_Tab;
     float m_Duration;
 
+    ProfileEntry():m_Duration{0}, m_Name{nullptr}, m_Tab{0}{}
+
     ProfileEntry(const char* name)
-        : m_Duration{ 0 },/* m_Children{},*/ m_Name{name} {}
+        : m_Name{ name }, m_Duration{ 0 },/* m_Children{},*/ m_Tab{ 0 }{}
 };
 
 class ProfileManager

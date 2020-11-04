@@ -15,7 +15,7 @@ private:
     uint32_t m_Capacity; // available memory size
 
     void checkMem();
-    T* realloc(size_t newSize);
+    T* realloc(size_t newCapacity);
 
     //DEPRECATED
     //uint32_t m_TypeSize; // size of element type
@@ -137,11 +137,6 @@ Array<T>::Array(const Array<T> &other)
 template<typename T>
 Array<T>& Array<T>::operator=(const Array<T>& rhsArray)
 {
-#ifdef USE_STD
-    Array<T> copy(rhsArray);
-    copy.swap(*this);
-    return *this;
-#else
     if (this == &rhsArray)
         return *this;
 
@@ -168,7 +163,6 @@ Array<T>& Array<T>::operator=(const Array<T>& rhsArray)
     m_Data = temp;
 
     return *this;
-#endif
 }
 
 template<typename T>
@@ -180,20 +174,7 @@ Array<T>::~Array()
     free(m_Data);
 }
 
-template<typename T>
-T* Array<T>::realloc(size_t newSize)
-{
-    T* temp = static_cast<T*>(malloc(sizeof(T) * newSize));
-    if (temp)
-    {
-        for (uint32_t i = 0; i < m_Size; ++i)
-            temp[i] = m_Data[i];
-        free(m_Data);
-        return temp;
-    }
-    else // failed to allocate memory
-        return m_Data;
-}
+
 
 template<typename T>
 void Array<T>::reserve(uint32_t newCap) // new filled array of fixed size
@@ -225,11 +206,31 @@ void Array<T>::clear()
 }
 
 template<typename T>
+T* Array<T>::realloc(size_t newCapacity)
+{
+    T* temp = static_cast<T*>(malloc(sizeof(T) * newCapacity));
+    temp = new (temp) T();
+    if (temp)
+    {
+        for (uint32_t i = 0; i < m_Size; ++i)
+        {
+            temp[i] = m_Data[i];
+        }
+        free(m_Data);
+        return temp;
+    }
+    else // failed to allocate memory
+        return m_Data;
+}
+
+template<typename T>
 void Array<T>::checkMem()
 {
     if (!m_Data) // array memory uninitialised
     {
         m_Data = static_cast<T*>(malloc(sizeof(T)));
+        //TODO settle placement new for dynamically allocated T
+        //m_Data = new (m_Data) T();
         assert(m_Data);
         m_Capacity++;
     }
