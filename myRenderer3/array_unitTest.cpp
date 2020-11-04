@@ -43,6 +43,7 @@ void testArray1()
     logmsg("erasing a[%d] = %d...\n", 6, a.at(6));
     a.eraseAt(6);
     logmsg("a[%d] is now = %d\n", 6, a.at(6));
+    assert(a.at(6) == 7);
 
     //insert at idx
     int newNum = 99;
@@ -57,6 +58,7 @@ void testArray1()
     a.insertAt(0, anotherNum);
     logmsg("a[%d] is now = %d\n", 0, a.at(0));
     TestPrintArray(a);
+    assert(a.at(0) == 333);
 
     //remove at fast idx 5
     logmsg("RemoveAtFast 5...\n");
@@ -83,11 +85,8 @@ void testArray2()
     num++;
     b.pushBack(num);
     num++;
-    //b->addSize(1);
     b[0] = num;
     logmsg("capacity of b = %d\n", b.capacity());
-    //int *num = b[0];
-    //for profiler
 }
 
 void testArrayClear()
@@ -97,7 +96,6 @@ void testArrayClear()
     container.pushBack(1);
     container.pushBack(2);
     container.pushBack(3);
-
 
     logmsg("Before clear:\n");
     TestPrintArray(container);
@@ -431,7 +429,7 @@ void testArray()
     TestDeepCopy();
     TestNestedArrayWithPointers();
     //TestNestedArray();
+    testArrayClear();
     //testArray1();
     //testArray2();
-    //testArrayClear();
 }
