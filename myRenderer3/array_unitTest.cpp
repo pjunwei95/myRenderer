@@ -1,11 +1,14 @@
 #include "array_unitTest.h"
 #include "logger.h"
+#include "array.h"
 //TODO 
 //Separate all of your testing code into files like "Array_UnitTest.h/cpp"
 //
 //You should run suites of unit tests based off the commandline
 //unit tests will meticulously test every functionality of  your Array / Circular buffer etc, with hardcoded inputs, and will compare them with hard coded expected values to ensure nothing breaks
 
+
+void TestPrintArray(const Array<int>& vec, bool newline = true);
 
 
 //void printTestArray(const Array<int>* const a)
@@ -372,29 +375,36 @@ void TestDeepCopy()
     TestPrintArray(b);
 }
 
-//#include <vector>
-//void TestNestedArray() {
-//    logmsg("\n********** TestNestedArray **********\n");
-//    std::vector<int> a, b;
-//
-//    logmsg("push_back 10 integers:\n");
-//    for (int i = 0; i < 10; ++i) {
-//        a.push_back(2 * i);
-//        b.push_back(i);
-//    }
-//
-//    logmsg("Nested Array: Array<Array<int>>c, push a, b\n");
-//    std::vector<std::vector<int>> c;
-//    c.push_back(a);
-//    c.push_back(b);
-//
-//    logmsg("Obtain getA by accessing first element of C, print getA\n");
-//    std::vector<int> getA = c[0];
-//}
+void TestNestedArrayWithPointers() {
+    logmsg("\n********** TestNestedArrayWithPointers **********\n");
+    Array<int> a,b;
+
+    logmsg("push_back 10 integers:\n");
+    for (int i = 0; i < 10; ++i) {
+        a.pushBack(2 * i);
+        b.pushBack(i);
+    }
+
+    TestPrintArray(a);
+    TestPrintArray(b);
+
+    logmsg("Nested Array: Array<Array<int>>c, push a, b\n");
+    Array<Array<int>*> c;
+    c.pushBack(&a);
+    c.pushBack(&b);
+
+    logmsg("Obtain getA by accessing first element of C, print getA\n");
+    Array<int>* getA = c[0];
+    TestPrintArray(*getA);
+
+    logmsg("Obtain getB by accessing second element of C, print getB\n");
+    Array<int>* getB = c[1];
+    TestPrintArray(*getB);
+}
 
 void TestNestedArray() {
     logmsg("\n********** TestNestedArray **********\n");
-    Array<int> a,b;
+    Array<int> a, b;
 
     logmsg("push_back 10 integers:\n");
     for (int i = 0; i < 10; ++i) {
@@ -414,6 +424,9 @@ void TestNestedArray() {
     Array<int> getA = c[0];
     TestPrintArray(getA);
 
+    //logmsg("Obtain getB by accessing second element of C, print getB\n");
+    //Array<int> getB = c[1];
+    //TestPrintArray(getB);
 }
 
 void testArray()
@@ -429,6 +442,7 @@ void testArray()
     //TestSubscripts();
     //TestSubscript1();
     //TestSubscript2();
-    TestDeepCopy();
-    //TestNestedArray();
+    //TestDeepCopy();
+    TestNestedArrayWithPointers();
+    TestNestedArray();
 }

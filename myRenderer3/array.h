@@ -3,6 +3,8 @@
 #include <assert.h>
 //#include "stdio.h"
 #include "stdlib.h"
+
+//#define USE_STD 
 #include <algorithm>
 
 template<typename T>
@@ -93,6 +95,15 @@ public:
         assert(index < m_Size);
         return m_Data[index];
     }
+#ifdef USE_STD
+    void swap(Array &other) noexcept
+    {
+        using std::swap;
+        swap(m_Data,        other.m_Data);
+        swap(m_Size,        other.m_Size);
+        swap(m_Capacity,    other.m_Capacity);
+    }
+#endif
 
     void pushBack(const T& srcData);
     void popBack();
@@ -111,7 +122,6 @@ public:
     //void printTestArray();
 };
 
-
 template<typename T>
 Array<T>::Array(const Array<T> &other)
     : m_Size{ other.m_Size }, m_Capacity{ other.m_Capacity }
@@ -127,6 +137,11 @@ Array<T>::Array(const Array<T> &other)
 template<typename T>
 Array<T>& Array<T>::operator=(const Array<T>& rhsArray)
 {
+#ifdef USE_STD
+    Array<T> copy(rhsArray);
+    copy.swap(*this);
+    return *this;
+#else
     if (this == &rhsArray)
         return *this;
 
@@ -134,18 +149,26 @@ Array<T>& Array<T>::operator=(const Array<T>& rhsArray)
     uint32_t newCapacity = rhsArray.m_Capacity;
 
     T* temp = static_cast<T*>(malloc(sizeof(T) * newSize));
-
+    //T* temp = new T[newSize];
+    
     for (uint32_t i = 0; i < newSize; i++)
         temp[i] = rhsArray.m_Data[i];
 
     //TODO check if nested array or on construction give any bugs
+
     //swap operations
+    //for (uint32_t i = 0; i < m_Size; ++i)
+    //    m_Data[i].~T();
+    if(m_Data)
+        free(m_Data);
+
     m_Size = newSize;
     m_Capacity = newCapacity;
-    //free(m_Data);
+
     m_Data = temp;
 
     return *this;
+#endif
 }
 
 template<typename T>
