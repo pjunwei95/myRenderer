@@ -385,32 +385,38 @@ void TestNestedArrayWithPointers() {
     Array<int>* getB = c[1];
     TestPrintArray(*getB);
 }
-
 void TestNestedArray() {
     logmsg("\n********** TestNestedArray **********\n");
-    Array<int> a, b;
+    Array<int> a, b, c;
 
     logmsg("push_back 10 integers:\n");
     for (int i = 0; i < 10; ++i) {
         a.pushBack(2 * i);
         b.pushBack(i);
+        c.pushBack(3 * i);
     }
 
     TestPrintArray(a);
     TestPrintArray(b);
+    TestPrintArray(c);
 
-    logmsg("Nested Array: Array<Array<int>>c, push a, b\n");
-    Array<Array<int>> c;
-    c.pushBack(a);
-    c.pushBack(b);
+    logmsg("Nested Array: Array<Array<int>>c, push a, b, c\n");
+    Array<Array<int>> d;
+    d.pushBack(a);
+    d.pushBack(b);
+    d.pushBack(c);
 
-    logmsg("Obtain getA by accessing first element of C, print getA\n");
-    Array<int> getA = c[0];
+    logmsg("Obtain getA by accessing first element of D, print getA\n");
+    Array<int> getA = d[0];
     TestPrintArray(getA);
 
-    logmsg("Obtain getB by accessing second element of C, print getB\n");
-    Array<int> getB = c[1];
+    logmsg("Obtain getB by accessing second element of D, print getB\n");
+    Array<int> getB = d[1];
     TestPrintArray(getB);
+
+    logmsg("Obtain getC by accessing third element of D, print getC\n");
+    Array<int> getC = d[2];
+    TestPrintArray(getC);
 }
 
 void testArray()
@@ -428,8 +434,8 @@ void testArray()
     TestSubscript2();
     TestDeepCopy();
     TestNestedArrayWithPointers();
-    //TestNestedArray();
-    testArrayClear();
+    TestNestedArray();
+    //testArrayClear();
     //testArray1();
     //testArray2();
 }

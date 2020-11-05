@@ -23,11 +23,13 @@ private:
 public:
     //Rules of three
     Array() 
-        : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ 0 } {}
+        : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ 0 } 
+    {
+    }
 
     Array(const Array &other);
 
-    Array& operator=(const Array& oldArray); //copy assignment, not move
+    Array& operator=(const Array& rhsArray); //copy assignment, not move
 
     ~Array();
 
@@ -113,6 +115,7 @@ public:
     void removeAtFast(uint32_t index);
     void clear();
     void insertAtFast(uint32_t index, const T& srcData);
+    //TODO implement a move assignment rather than a copy assignment
 
     //DEPRECATED
     //Array createNewArray(unsigned int sizeElem);
@@ -121,6 +124,80 @@ public:
     //void freeArray();
     //void printTestArray();
 };
+template<typename T>
+Array<T>& Array<T>::operator=(const Array<T>& rhs) //copy assignment, not move
+{
+    if (this == &rhs)
+        return *this;
+
+    uint32_t newSize = rhs.m_Size;
+    uint32_t newCapacity = rhs.m_Capacity;
+
+    T* temp = static_cast<T*>(malloc(sizeof(T) * newSize));
+
+    for (uint32_t i = 0; i < newSize; i++)
+        temp[i] = rhs.m_Data[i];
+
+    free(m_Data);
+
+    m_Size = newSize;
+    m_Capacity = newCapacity;
+
+    m_Data = temp;
+
+    return *this;
+}
+
+template<typename T>
+T* Array<T>::realloc(size_t newCapacity)
+{
+    T* temp = static_cast<T*>(malloc(sizeof(T) * newCapacity));
+    for (uint32_t i = 0; i < newCapacity; ++i)
+    {
+        T* ptr = &temp[i];
+        ptr = new (&temp[i]) T(); //calls constructor for the fresh memory
+    }
+    if (temp)
+    {
+        for (uint32_t i = 0; i < m_Size; ++i)
+        {
+            temp[i] = m_Data[i];
+            m_Data[i].~T();
+        }
+        free(m_Data);
+        return temp;
+    }
+    else // failed to allocate memory
+        return m_Data;
+}
+
+template<typename T>
+void Array<T>::checkMem()
+{
+    if (!m_Data) // array memory uninitialised
+    {
+        m_Data = static_cast<T*>(malloc(sizeof(T)));
+        m_Data = new (m_Data) T();
+        assert(m_Data);
+        m_Capacity++;
+    }
+    else if (m_Size == m_Capacity) // array memory exceeded
+    {
+        m_Capacity *= 2;
+        T* temp = realloc(m_Capacity);
+        assert(temp);
+        m_Data = temp;
+    }
+}
+
+template<typename T>
+void Array<T>::pushBack(const T& srcData)
+{
+    checkMem();
+    assert(m_Size < m_Capacity);
+    m_Data[m_Size] = srcData;
+    m_Size++;
+}
 
 template<typename T>
 Array<T>::Array(const Array<T> &other)
@@ -130,39 +207,6 @@ Array<T>::Array(const Array<T> &other)
 
     for (uint32_t i = 0; i < m_Size; ++i)
         m_Data[i] = other.m_Data[i];
-}
-//TODO implement a move assignment rather than a copy assignment
-
-//copy assignment, not move
-template<typename T>
-Array<T>& Array<T>::operator=(const Array<T>& rhsArray)
-{
-    if (this == &rhsArray)
-        return *this;
-
-    uint32_t newSize = rhsArray.m_Size;
-    uint32_t newCapacity = rhsArray.m_Capacity;
-
-    T* temp = static_cast<T*>(malloc(sizeof(T) * newSize));
-    //T* temp = new T[newSize];
-    
-    for (uint32_t i = 0; i < newSize; i++)
-        temp[i] = rhsArray.m_Data[i];
-
-    //TODO check if nested array or on construction give any bugs
-
-    //swap operations
-    //for (uint32_t i = 0; i < m_Size; ++i)
-    //    m_Data[i].~T();
-    if(m_Data)
-        free(m_Data);
-
-    m_Size = newSize;
-    m_Capacity = newCapacity;
-
-    m_Data = temp;
-
-    return *this;
 }
 
 template<typename T>
@@ -203,53 +247,6 @@ void Array<T>::clear()
     for (uint32_t i = 0; i < m_Size; ++i)
         m_Data[i].~T();
     m_Size = 0;
-}
-
-template<typename T>
-T* Array<T>::realloc(size_t newCapacity)
-{
-    T* temp = static_cast<T*>(malloc(sizeof(T) * newCapacity));
-    temp = new (temp) T();
-    if (temp)
-    {
-        for (uint32_t i = 0; i < m_Size; ++i)
-        {
-            temp[i] = m_Data[i];
-        }
-        free(m_Data);
-        return temp;
-    }
-    else // failed to allocate memory
-        return m_Data;
-}
-
-template<typename T>
-void Array<T>::checkMem()
-{
-    if (!m_Data) // array memory uninitialised
-    {
-        m_Data = static_cast<T*>(malloc(sizeof(T)));
-        //TODO settle placement new for dynamically allocated T
-        //m_Data = new (m_Data) T();
-        assert(m_Data);
-        m_Capacity++;
-    }
-    else if (m_Size == m_Capacity) // array memory exceeded
-    {
-        m_Capacity *= 2;
-        T* temp = realloc(m_Capacity);
-        assert(temp);
-        m_Data = temp;
-    }
-}
-
-template<typename T>
-void Array<T>::pushBack(const T& srcData)
-{
-    checkMem();
-    assert(m_Size < m_Capacity);
-    m_Data[m_Size] = srcData;
-    m_Size++;
 }
 
 template<typename T>
