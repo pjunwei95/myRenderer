@@ -35,8 +35,13 @@ public:
     const T& front() { return m_Array.at(m_Front); }
     const T& at(uint32_t index) const 
     {
-        //return m_Array[index]; 
-        return m_Array.at(index);
+        return m_Array[index]; 
+        //return m_Array.at(index); 
+        //this will check bounds hereby carrying eroor
+        //      index 0 1 2
+        //e.g. actual 3 4 99
+        //displayed   # 4 99
+        //where # is garbage, because size = 2
     }
     bool isEmpty() const { return 0 == size(); }
     bool isFull() const { return size() == m_Array.capacity(); }
@@ -44,17 +49,21 @@ public:
     const T& popFront();
     void pushBack(const T& srcData);
     uint32_t size() const;
-    void specialPushBack(const T& srcData)
-    {
-        if (isFull())
-            popFront();
-        pushBack(srcData);
-    }
+    void specialPushBack(const T& srcData);
+
 
     //DEPRECATED
     //void freeCircBuf(CircularBuffer * const cb);
     //CircularBuffer createNewCircBuf(unsigned int bufferLength, unsigned int sizeElem);
 };
+
+template<typename T>
+void CircularBuffer<T>::specialPushBack(const T& srcData)
+{
+    if (isFull())
+        popFront();
+    pushBack(srcData);
+}
 
 template<typename T>
 uint32_t CircularBuffer<T>::size() const

@@ -11,6 +11,6 @@ void runTest()
 
     // TESTS
     //testProfileManager();
-    testArray();
+    //testArray();
     testCircularBuffer();
 }
