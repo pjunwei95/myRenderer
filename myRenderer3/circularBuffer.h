@@ -107,7 +107,7 @@ void CircularBuffer<T>::clear()
 {
     while (!isEmpty())
     {
-        const T& popped = popFront();
+        const T& popped = this->popFront();
         popped.~T();
     }
     m_Front = 0;

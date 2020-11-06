@@ -216,6 +216,7 @@ Array<T>::~Array()
         m_Data[i].~T();
 
     free(m_Data);
+    m_Data = nullptr;
 }
 
 

@@ -225,7 +225,7 @@ void testDoubleFrameOutsideSingleNestedProfile()
     }
 }
 
-void testFlipSimpleProfile()
+void testSingleFlipSimpleProfile()
 {
     LOG_UNIT_TEST();
     DrawWindow();
@@ -234,7 +234,7 @@ void testFlipSimpleProfile()
     gs_ProfileManager.clearBuffer();
 }
 
-void Foo()
+void testMultipleFlipSimpleProfile()
 {
     LOG_UNIT_TEST();
     for (int i = 0; i < 2; ++i)
@@ -271,8 +271,8 @@ void testProfileManager()
     //Multiple-frame tests
     //testDoubleFrameSimpleProfile();
     //testDoubleFrameOutsideSingleNestedProfile();
-    testFlipSimpleProfile();
-    Foo();
+    testMultipleFlipSimpleProfile();
+    testSingleFlipSimpleProfile();
     //testProfileCircularBuffer();
 #endif
 }
