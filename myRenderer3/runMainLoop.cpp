@@ -3,6 +3,7 @@
 #include "getKeyInput.h"
 #include "frameRateController.h"
 #include "windowHandler.h"
+#include "profileManager.h"
 
 void runMainLoop()
 {

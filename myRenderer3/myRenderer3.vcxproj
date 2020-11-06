@@ -137,6 +137,7 @@
     <ClCompile Include="logger.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="processArgs.cpp" />
+    <ClCompile Include="profileManager.cpp" />
     <ClCompile Include="profileManager_unitTest.cpp" />
     <ClCompile Include="runMainLoop.cpp" />
     <ClCompile Include="stack_unitTest.cpp" />
