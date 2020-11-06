@@ -7,13 +7,12 @@
 #include "fileManager.h"
 #include "logger.h"
 
-#ifdef DEBUG_ASSERT
-#else
+#ifndef DEBUG_ASSERT
 #    pragma comment(linker, "/subsystem:windows /ENTRY:mainCRTStartup")
 #endif
 
-bool isDone;
-LARGE_INTEGER g_Frequency;
+bool g_IsDone;
+Timer g_Frequency;
 
 int main(int argc, char *argsv[])
 {
@@ -24,7 +23,7 @@ int main(int argc, char *argsv[])
     processArgs(argc, argsv);
     
     //printf("Press ESC to exit the application\n");
-    if (!isDone)
+    if (!g_IsDone)
 	    runMainLoop();
 
     closeLogStream();
@@ -40,12 +39,12 @@ void setGlobals()
 
 void setIsDone(bool value)
 {
-    isDone = value;
+    g_IsDone = value;
 }
 
 bool getIsDone()
 {
-    return isDone;
+    return g_IsDone;
 }
 
 void setSystemFrequency()
@@ -53,7 +52,7 @@ void setSystemFrequency()
     QueryPerformanceFrequency(&g_Frequency); //to be called only once. not per frame
 }
 
-LARGE_INTEGER getSystemFrequency()
+Timer getSystemFrequency()
 {
     return g_Frequency;
 }

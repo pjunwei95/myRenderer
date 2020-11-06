@@ -2,7 +2,9 @@
 #include <Windows.h>
 
 #define FPS 30
-#define DEBUG_ASSERT //for main open console windows on startup
+//#define DEBUG_ASSERT //for main open console windows on startup
+
+typedef LARGE_INTEGER Timer;
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 640;
@@ -16,5 +18,5 @@ bool getIsDone();
 
 void setSystemFrequency();
 
-LARGE_INTEGER getSystemFrequency();
+Timer getSystemFrequency();
 
