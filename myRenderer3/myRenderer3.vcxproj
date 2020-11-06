@@ -140,6 +140,7 @@
     <ClCompile Include="profileManager.cpp" />
     <ClCompile Include="profileManager_unitTest.cpp" />
     <ClCompile Include="runMainLoop.cpp" />
+    <ClCompile Include="runTest.cpp" />
     <ClCompile Include="stack_unitTest.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="windowHandler.cpp" />
