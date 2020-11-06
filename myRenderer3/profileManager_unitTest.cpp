@@ -231,17 +231,19 @@ void testFlipSimpleProfile()
     DrawWindow();
     gs_ProfileManager.OnProfileFlip();
     gs_ProfileManager.PrintBufferProfile();
+    gs_ProfileManager.clearBuffer();
 }
 
 void Foo()
 {
     LOG_UNIT_TEST();
-    for (int i = 0; i < 5; ++i)
+    for (int i = 0; i < 2; ++i)
     {
         DrawWindow();
         gs_ProfileManager.OnProfileFlip();
     }
     gs_ProfileManager.PrintBufferProfile();
+    gs_ProfileManager.clearBuffer();
 }
 
 
@@ -267,8 +269,8 @@ void testProfileManager()
 #else
     //=========================================
     //Multiple-frame tests
-    testDoubleFrameSimpleProfile();
-    testDoubleFrameOutsideSingleNestedProfile();
+    //testDoubleFrameSimpleProfile();
+    //testDoubleFrameOutsideSingleNestedProfile();
     testFlipSimpleProfile();
     Foo();
     //testProfileCircularBuffer();

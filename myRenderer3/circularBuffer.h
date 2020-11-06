@@ -12,11 +12,8 @@ private:
     uint32_t m_Front;
     uint32_t m_Back;
 
-    void clear();
-
     //const T& back() { return m_Array->at(m_Back); }
     //void pushFrontCircBuf(const T* srcData);
-
 public:
     // A circular buffer is simply an array but with 2 cursors, front & back
     // the cursors are simply index values
@@ -50,7 +47,7 @@ public:
     void pushBack(const T& srcData);
     uint32_t size() const;
     void specialPushBack(const T& srcData);
-
+    void clear();
 
     //DEPRECATED
     //void freeCircBuf(CircularBuffer * const cb);
@@ -108,8 +105,11 @@ const T& CircularBuffer<T>::popFront()
 template<typename T>
 void CircularBuffer<T>::clear()
 {
-    assert(m_Array);
-    m_Array.clear();
+    while (!isEmpty())
+    {
+        const T& popped = popFront();
+        popped.~T();
+    }
     m_Front = 0;
     m_Back = 0;
 }

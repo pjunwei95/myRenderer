@@ -71,7 +71,7 @@ public:
         m_TabCounter = -1;
     }
 
-    //void clearBuffer(){m_Buffer.c}
+    void clearBuffer() { m_Buffer.clear(); }
 
     void PrintStackProfile()
     {

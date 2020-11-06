@@ -101,7 +101,7 @@ namespace CircularBufferUnitTest {
         printCircBuf(a);
     }
 
-    void TestCircularBufferStack()
+    void TestCircularBufferArray()
     {
         LOG_UNIT_TEST();
         logmsg("creating stack a, b, c, d\n");
@@ -123,7 +123,46 @@ namespace CircularBufferUnitTest {
         logmsg("cb push c (size = %i, front = %i, back = %i)\n", cb.size(), cb.frontIndex(), cb.backIndex());
         cb.specialPushBack(d);
         logmsg("cb push d (size = %i, front = %i, back = %i)\n", cb.size(), cb.frontIndex(), cb.backIndex());
+    }
 
+    void TestSimpleClear()
+    {
+        LOG_UNIT_TEST();
+        logmsg("Push 5 items ");
+        CircularBuffer<int> a(3);
+        for (int i = 0; i < 5; ++i)
+            a.specialPushBack(i);
+        logmsg("(size = %i, capacity = %i, front = %i, back = %i)\n", a.size(), a.capacity(), a.frontIndex(), a.backIndex());
+
+        logmsg("Clearing ");
+        a.clear();
+        logmsg("(size = %i, capacity = %i, front = %i, back = %i)\n", a.size(), a.capacity(), a.frontIndex(), a.backIndex());
+    }
+
+    void TestCircularBufferArrayClear()
+    {
+        LOG_UNIT_TEST();
+        logmsg("creating stack a, b, c, d\n");
+        Array<int> a, b, c, d;
+        for (int i = 1; i < 10; ++i)
+        {
+            a.pushBack(i);
+            b.pushBack(i * 2);
+            c.pushBack(i * 3);
+            d.pushBack(i * 4);
+        }
+
+        logmsg("Push a, b, c, d to cb\n");
+        CircularBuffer<Array<int>> cb(3);
+        cb.specialPushBack(a);
+        cb.specialPushBack(b);
+        cb.specialPushBack(c);
+        cb.specialPushBack(d);
+        logmsg("Pushed 4 items (size = %i, front = %i, back = %i)\n", cb.size(), cb.frontIndex(), cb.backIndex());
+
+        logmsg("Clearing ");
+        cb.clear();
+        logmsg("(size = %i, front = %i, back = %i)\n", cb.size(), cb.frontIndex(), cb.backIndex());
     }
 }
 
@@ -135,5 +174,7 @@ void testCircularBuffer()
     CircularBufferUnitTest::TestPushPop();
     CircularBufferUnitTest::TestSpecialPush();
     CircularBufferUnitTest::TestMultiplePushAndPop();
-    CircularBufferUnitTest::TestCircularBufferStack();
+    CircularBufferUnitTest::TestCircularBufferArray();
+    CircularBufferUnitTest::TestSimpleClear();
+    CircularBufferUnitTest::TestCircularBufferArrayClear();
 }
