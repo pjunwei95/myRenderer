@@ -8,8 +8,8 @@
 #endif
 void ProfileDebug()
 {
-    gs_ProfileManager.PrintProfile();
-    gs_ProfileManager.clearProfileManager();
+    gs_ProfileManager.PrintStackProfile();
+    gs_ProfileManager.clearStack();
 }
 
 //====================================================
@@ -225,8 +225,27 @@ void testDoubleFrameOutsideSingleNestedProfile()
     }
 }
 
+void testFlipSimpleProfile()
+{
+    LOG_UNIT_TEST();
+    DrawWindow();
+    gs_ProfileManager.OnProfileFlip();
+    gs_ProfileManager.PrintBufferProfile();
+}
 
-#define TEST 1
+void Foo()
+{
+    LOG_UNIT_TEST();
+    for (int i = 0; i < 5; ++i)
+    {
+        DrawWindow();
+        gs_ProfileManager.OnProfileFlip();
+    }
+    gs_ProfileManager.PrintBufferProfile();
+}
+
+
+#define TEST 0
 void testProfileManager()
 {
     LOG_TEST(Profiler);
@@ -250,6 +269,8 @@ void testProfileManager()
     //Multiple-frame tests
     testDoubleFrameSimpleProfile();
     testDoubleFrameOutsideSingleNestedProfile();
+    testFlipSimpleProfile();
+    Foo();
     //testProfileCircularBuffer();
 #endif
 }

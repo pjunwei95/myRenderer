@@ -3,6 +3,7 @@
 #include "stopwatch.h"
 #include "array.h"
 #include "logger.h"
+#include "circularBuffer.h"
 
 #define CONCAT(x,y) x##y
 #define MACRO_CONCAT(x,y) CONCAT(x, y)
@@ -20,7 +21,6 @@
 #define PROFILE_SCOPED(name)
 #define PROFILE_FUNCTION()
 #endif
-
 
 struct ProfileEntry
 {
@@ -40,8 +40,11 @@ class ProfileManager
 private:
     Array<ProfileEntry> m_Stack;
     int m_TabCounter;
+    CircularBuffer<Array<ProfileEntry>> m_Buffer;
 public:
-    ProfileManager() : m_TabCounter{ -1 }{}
+    ProfileManager() : m_TabCounter{ -1 }, m_Buffer{ 3 }
+    {
+    }
 
     void BeginProfile(const char* name) 
     {
@@ -62,15 +65,22 @@ public:
         --m_TabCounter;
     }
 
-    void clearProfileManager()
+    void clearStack()
     {
         m_Stack.clear();
         m_TabCounter = -1;
     }
 
-    void PrintProfile()
+    //void clearBuffer(){m_Buffer.c}
+
+    void PrintStackProfile()
     {
-        uint32_t size = m_Stack.size();
+        PrintProfileEntries(m_Stack);
+    }
+
+    void PrintProfileEntries(const Array<ProfileEntry>& stack)
+    {
+        auto size = stack.size();
         for (uint32_t i = 0; i < size; ++i)
         {
             ProfileEntry e = m_Stack[i];
@@ -80,6 +90,30 @@ public:
             logmsg("%s -> %.2f ms\n", e.m_Name, e.m_Duration);
         }
     }
+
+
+    void PrintBufferProfile()
+    {
+        auto size = m_Buffer.size();
+        auto front = m_Buffer.frontIndex();
+        auto back = m_Buffer.backIndex();
+
+        for (auto i = 0u; i < size; ++i)
+        {
+            auto idx = (front + i) % m_Buffer.capacity();
+            Array<ProfileEntry> stack = m_Buffer.at(idx);
+            logmsg("Frame #%i ", i);
+            logmsg("(size = %i, front = %i, back = %i)\n", size, front, back);
+            PrintProfileEntries(stack);
+        }
+    }
+
+    void OnProfileFlip()
+    {
+        m_Buffer.specialPushBack(m_Stack);
+        clearStack();
+    }
+
 };
 
 static ProfileManager gs_ProfileManager;

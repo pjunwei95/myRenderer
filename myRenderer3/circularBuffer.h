@@ -4,7 +4,6 @@
 #include <string.h>
 #include "logger.h"
 
-//pushback increases back index
 template<typename T>
 class CircularBuffer
 {
@@ -47,6 +46,7 @@ public:
     bool isFull() const { return size() == m_Array.capacity(); }
 
     const T& popFront();
+    //pushback increases back index
     void pushBack(const T& srcData);
     uint32_t size() const;
     void specialPushBack(const T& srcData);
