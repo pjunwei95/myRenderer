@@ -265,7 +265,7 @@ void testMultipleFlipNestedTwiceProfile()
 }
 
 
-#define TEST 0
+#define TEST 1
 void testProfileManager()
 {
     LOG_TEST(Profiler);
@@ -285,7 +285,7 @@ void testProfileManager()
     testNonScopedNestedBegin();
     testNonScopedNonNestedBegin();
     testNonScopedDoubleNestedBegin();
-#else
+//#else
     //=========================================
     //Multiple-frame tests
     logmsg("Profile Buffer Size = 3\n");

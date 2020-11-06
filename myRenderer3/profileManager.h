@@ -25,7 +25,6 @@
 
 struct ProfileEntry
 {
-   /* Array<ProfileEntry*> m_Children;*/
     const char* m_Name;
     uint32_t m_Tab;
     float m_Duration;
@@ -33,7 +32,7 @@ struct ProfileEntry
     ProfileEntry():m_Duration{0}, m_Name{nullptr}, m_Tab{0}{}
 
     ProfileEntry(const char* name)
-        : m_Name{ name }, m_Duration{ 0 },/* m_Children{},*/ m_Tab{ 0 }{}
+        : m_Name{ name }, m_Duration{ 0 }, m_Tab{ 0 }{}
 };
 
 class ProfileManager
@@ -46,6 +45,10 @@ public:
     ProfileManager() : m_TabCounter{ -1 }, m_Buffer{ 3 }
     {
     }
+
+    void clearBuffer() { m_Buffer.clear(); }
+
+    void PrintStackProfile() { PrintProfileEntries(m_Stack); }
 
     void BeginProfile(const char* name) 
     {
@@ -72,13 +75,6 @@ public:
         m_TabCounter = -1;
     }
 
-    void clearBuffer() { m_Buffer.clear(); }
-
-    void PrintStackProfile()
-    {
-        PrintProfileEntries(m_Stack);
-    }
-
     void PrintProfileEntries(const Array<ProfileEntry>& stack)
     {
         auto size = stack.size();
@@ -97,14 +93,13 @@ public:
     {
         auto size = m_Buffer.size();
         auto front = m_Buffer.frontIndex();
-        auto back = m_Buffer.backIndex();
 
         for (auto i = 0u; i < size; ++i)
         {
             auto idx = (front + i) % m_Buffer.capacity();
             Array<ProfileEntry> stack = m_Buffer.at(idx);
-            logmsg("Frame #%i ", i);
-            logmsg("(size = %i, front = %i, back = %i)\n", size, front, back);
+            logmsg("Frame #%i:\n", i + 1);
+            //logmsg("(size = %i, front = %i, back = %i)\n", size, front, back);
             PrintProfileEntries(stack);
         }
     }
@@ -114,7 +109,6 @@ public:
         m_Buffer.specialPushBack(m_Stack);
         clearStack();
     }
-
 };
 
 static ProfileManager gs_ProfileManager;
