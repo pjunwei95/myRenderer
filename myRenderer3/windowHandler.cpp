@@ -46,11 +46,18 @@ bool WindowHandler::createWindow()
 void WindowHandler::drawWindow()
 {
     PROFILE_FUNCTION();
-    //Get window surface
-    screenSurface = SDL_GetWindowSurface(window);
 
-    //Fill the surface white
-    drawScreen(screenSurface);
+    {
+        PROFILE_SCOPED(GetWindowSurface);
+        //Get window surface
+        screenSurface = SDL_GetWindowSurface(window);
+    }
+
+    {
+        PROFILE_SCOPED(DrawScreen);
+        //Fill the surface white
+        drawScreen(screenSurface);
+    }
 }
 void WindowHandler::updateWindow()
 {

@@ -267,7 +267,7 @@ void testProfileManager()
     //gs_ProfileTimer tests
 #if TEST
     // Function-Scoped
-    testSimpleProfile();
+    //testSimpleProfile();
     testSimpleNestedProfile();
     testDoubleDifferentNestedProfile();
     testDoubleSameNestedProfile();
