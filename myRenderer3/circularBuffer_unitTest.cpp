@@ -100,6 +100,31 @@ namespace CircularBufferUnitTest {
         a.specialPushBack(321);
         printCircBuf(a);
     }
+
+    void TestCircularBufferStack()
+    {
+        LOG_UNIT_TEST();
+        logmsg("creating stack a, b, c, d\n");
+        Array<int> a, b, c, d;
+        for (int i = 1; i < 10; ++i)
+        {
+            a.pushBack(i);
+            b.pushBack(i * 2);
+            c.pushBack(i * 3);
+            d.pushBack(i * 4);
+        }
+
+        CircularBuffer<Array<int>> cb(3);
+        cb.specialPushBack(a);
+        logmsg("cb push a (size = %i, front = %i, back = %i)\n", cb.size(), cb.frontIndex(), cb.backIndex());
+        cb.specialPushBack(b);
+        logmsg("cb push b (size = %i, front = %i, back = %i)\n", cb.size(), cb.frontIndex(), cb.backIndex());
+        cb.specialPushBack(c);
+        logmsg("cb push c (size = %i, front = %i, back = %i)\n", cb.size(), cb.frontIndex(), cb.backIndex());
+        cb.specialPushBack(d);
+        logmsg("cb push d (size = %i, front = %i, back = %i)\n", cb.size(), cb.frontIndex(), cb.backIndex());
+
+    }
 }
 
 void testCircularBuffer()
@@ -110,4 +135,5 @@ void testCircularBuffer()
     CircularBufferUnitTest::TestPushPop();
     CircularBufferUnitTest::TestSpecialPush();
     CircularBufferUnitTest::TestMultiplePushAndPop();
+    CircularBufferUnitTest::TestCircularBufferStack();
 }

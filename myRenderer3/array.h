@@ -234,8 +234,13 @@ void Array<T>::reserve(uint32_t newCap) // new filled array of fixed size
     }
     else
     {
-        m_Data = static_cast<T*>(malloc(newCap * sizeof(T)));
-        assert(m_Data);
+        m_Data = static_cast<T*>(malloc(sizeof(T) * newCap));
+        for (uint32_t i = 0; i < newCap; ++i)
+        {
+            T* ptr = &m_Data[i];
+            ptr = new (ptr) T();
+            assert(m_Data);
+        }
     }
     m_Capacity = newCap;
 }
