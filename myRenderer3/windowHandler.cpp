@@ -51,6 +51,7 @@ void WindowHandler::drawWindow()
         PROFILE_SCOPED(GetWindowSurface);
         //Get window surface
         screenSurface = SDL_GetWindowSurface(window);
+        Sleep(33);
     }
 
     {

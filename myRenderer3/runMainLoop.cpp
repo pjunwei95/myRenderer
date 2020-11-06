@@ -17,9 +17,9 @@ void runMainLoop()
         while (!getIsDone())
         {
             Stopwatch frameWatch;
-
             {
-                PROFILE_SCOPED(Before Idle);
+                //PROFILE_SCOPED(Before Idle);
+                //PROFILE_FUNCTION();
                 wh.drawWindow();
                 getKeyInput();
                 wh.updateWindow();

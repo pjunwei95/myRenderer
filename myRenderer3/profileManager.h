@@ -63,6 +63,7 @@ public:
 };
 
 extern ProfileManager gs_ProfileManager;
+//static ProfileManager gs_ProfileManager;
 
 //=========================================================
 //Scoped Timers
