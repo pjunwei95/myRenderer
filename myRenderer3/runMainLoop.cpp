@@ -10,7 +10,6 @@ void runMainLoop()
     _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 
     FrameRateController frc;
-
     WindowHandler wh;
 
     if(wh.createWindow())
@@ -27,6 +26,8 @@ void runMainLoop()
             wh.updateWindow();
 
             frc.idleUntilFPSLimit(frameWatch);
+
+            gs_ProfileManager.OnProfileFlip();
 
         }
         wh.destroyWindow();

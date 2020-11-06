@@ -1,10 +1,9 @@
 #include <stdio.h>
-
 #include "engine.h"
 #include "sdl/SDL.h"
 #include "getKeyInput.h"
 #include "logger.h"
-//#include "profiler.h"
+#include "profileManager.h"
 
 void getKeyInput()
 {
@@ -26,7 +25,7 @@ void getKeyInput()
                 setIsDone(true);
                 break;
             case SDLK_p:
-                //printPastFrames();
+                gs_ProfileManager.PrintBufferProfile();
                 break;
             default:
                 break;

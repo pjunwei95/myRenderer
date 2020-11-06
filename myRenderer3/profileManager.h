@@ -63,6 +63,7 @@ public:
 };
 
 static ProfileManager gs_ProfileManager;
+
 //=========================================================
 //Scoped Timers
 
@@ -84,6 +85,12 @@ public:
         gs_ProfileManager.EndProfile(m_Name, elapsedTime);
     }
 };
+
+
+//=========================================================
+//Static Functions
+//ProfileManager& getProfileManager();
+
 
 //=========================================================
 //Non-scoped Timers

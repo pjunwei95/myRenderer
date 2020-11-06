@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "drawScreen.h"
 #include "logger.h"
+#include "profileManager.h"
 
 //WindowHandle window;
 //SurfaceHandle screenSurface;
@@ -44,6 +45,7 @@ bool WindowHandler::createWindow()
 
 void WindowHandler::drawWindow()
 {
+    PROFILE_FUNCTION();
     //Get window surface
     screenSurface = SDL_GetWindowSurface(window);
 
@@ -52,6 +54,7 @@ void WindowHandler::drawWindow()
 }
 void WindowHandler::updateWindow()
 {
+    PROFILE_FUNCTION();
     //Update the surface
     SDL_UpdateWindowSurface(window);
 }
