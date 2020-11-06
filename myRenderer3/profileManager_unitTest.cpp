@@ -2,14 +2,22 @@
 #include "profileManager_unitTest.h"
 
 #if 1
-#define PROFILE_DEBUG() ProfileDebug()
+#define PROFILE_STACK_DEBUG() ProfileStackDebug()
+#define PROFILE_BUFFER_DEBUG() ProfileBufferDebug()
 #else
 #define PROFILE_DEBUG()
+#define PROFILE_BUFFER_DEBUG()
 #endif
-void ProfileDebug()
+void ProfileStackDebug()
 {
     gs_ProfileManager.PrintStackProfile();
     gs_ProfileManager.clearStack();
+}
+
+void ProfileBufferDebug()
+{
+    gs_ProfileManager.PrintBufferProfile();
+    gs_ProfileManager.clearBuffer();
 }
 
 //====================================================
@@ -135,49 +143,49 @@ void testScoped()
         PROFILE_SCOPED(Scoped);
         Sleep(33);
     }
-    ProfileDebug();
+    PROFILE_STACK_DEBUG(); 
 }
 
 void testSimpleProfile()
 {
     LOG_UNIT_TEST();
     DrawWindow();
-    PROFILE_DEBUG(); //debug and cleanup the profile manager
+    PROFILE_STACK_DEBUG(); //debug and cleanup the profile manager
 }
 
 void testSimpleNestedProfile()
 {
     LOG_UNIT_TEST();
     OutsideSingleNested();
-    PROFILE_DEBUG();
+    PROFILE_STACK_DEBUG();
 }
 
 void testDoubleDifferentNestedProfile()
 {
     LOG_UNIT_TEST();
     OutsideDoubleDifferentNested();
-    PROFILE_DEBUG();
+    PROFILE_STACK_DEBUG();
 }
 
 void testDoubleSameNestedProfile()
 {
     LOG_UNIT_TEST();
     DoubleSameNestedProfile();
-    PROFILE_DEBUG();
+    PROFILE_STACK_DEBUG();
 }
 
 void testNestedTwiceProfile()
 {
     LOG_UNIT_TEST();
     NestedTwiceProfile();
-    PROFILE_DEBUG();
+    PROFILE_STACK_DEBUG();
 }
 
 void testNonScopedBegin()
 {
     LOG_UNIT_TEST();
     NonScopedBegin();
-    PROFILE_DEBUG();
+    PROFILE_STACK_DEBUG();
 }
 
 
@@ -185,14 +193,14 @@ void testNonScopedNestedBegin()
 {
     LOG_UNIT_TEST();
     NonScopedNestedBegin();
-    PROFILE_DEBUG();
+    PROFILE_STACK_DEBUG();
 }
 
 void testNonScopedNonNestedBegin()
 {
     LOG_UNIT_TEST();
     NonScopedNonNestedBegin();
-    PROFILE_DEBUG();
+    PROFILE_STACK_DEBUG();
 }
 
 
@@ -200,7 +208,7 @@ void testNonScopedDoubleNestedBegin()
 {
     LOG_UNIT_TEST();
     NonScopedDoubleNestedBegin();
-    PROFILE_DEBUG();
+    PROFILE_STACK_DEBUG();
 }
 
 void testDoubleFrameSimpleProfile()
@@ -210,7 +218,7 @@ void testDoubleFrameSimpleProfile()
     {
         DrawWindow();
         logmsg("Frame #%d:\n", i);
-        PROFILE_DEBUG();
+        PROFILE_STACK_DEBUG();
     }
 }
 
@@ -221,7 +229,7 @@ void testDoubleFrameOutsideSingleNestedProfile()
     {
         OutsideSingleNested();
         logmsg("Frame #%d:\n", i);
-        PROFILE_DEBUG();
+        PROFILE_STACK_DEBUG();
     }
 }
 
@@ -230,20 +238,30 @@ void testSingleFlipSimpleProfile()
     LOG_UNIT_TEST();
     DrawWindow();
     gs_ProfileManager.OnProfileFlip();
-    gs_ProfileManager.PrintBufferProfile();
-    gs_ProfileManager.clearBuffer();
+    PROFILE_BUFFER_DEBUG();
 }
 
 void testMultipleFlipSimpleProfile()
 {
     LOG_UNIT_TEST();
-    for (int i = 0; i < 2; ++i)
+    logmsg("Call DrawWindow for 6 frames\n");
+    for (int i = 0; i < 6; ++i)
     {
         DrawWindow();
         gs_ProfileManager.OnProfileFlip();
     }
-    gs_ProfileManager.PrintBufferProfile();
-    gs_ProfileManager.clearBuffer();
+    PROFILE_BUFFER_DEBUG();
+}
+
+void testMultipleFlipNestedTwiceProfile()
+{
+    LOG_UNIT_TEST();
+    for (int i = 0; i < 6; ++i)
+    {
+        NestedTwiceProfile();
+        gs_ProfileManager.OnProfileFlip();
+    }
+    PROFILE_BUFFER_DEBUG();
 }
 
 
@@ -253,14 +271,15 @@ void testProfileManager()
     LOG_TEST(Profiler);
     //=========================================
     //ProfileTimer tests
-    // Scoped
 #if TEST
-    testScoped();
+    // Function-Scoped
     testSimpleProfile();
     testSimpleNestedProfile();
     testDoubleDifferentNestedProfile();
     testDoubleSameNestedProfile();
     testNestedTwiceProfile();
+    // Scoped
+    testScoped();
     // Non-scoped
     testNonScopedBegin();
     testNonScopedNestedBegin();
@@ -269,10 +288,12 @@ void testProfileManager()
 #else
     //=========================================
     //Multiple-frame tests
-    //testDoubleFrameSimpleProfile();
-    //testDoubleFrameOutsideSingleNestedProfile();
-    testMultipleFlipSimpleProfile();
+    logmsg("Profile Buffer Size = 3\n");
+    testDoubleFrameSimpleProfile();
+    testDoubleFrameOutsideSingleNestedProfile();
+    // With Circular Buffer
     testSingleFlipSimpleProfile();
-    //testProfileCircularBuffer();
+    testMultipleFlipSimpleProfile();
+    testMultipleFlipNestedTwiceProfile();
 #endif
 }

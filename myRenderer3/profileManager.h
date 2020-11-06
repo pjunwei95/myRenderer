@@ -11,10 +11,11 @@
 #define PROFILE_MACRO 1
 
 #if PROFILE_MACRO
+#define PROFILE_FUNCTION() ProfileTimer MACRO_CONCAT(timer, __COUNTER__)(__FUNCTION__)
+#define PROFILE_SCOPED(name) ProfileTimer MACRO_CONCAT(timer, __COUNTER__)(#name)
+
 #define PROFILE_BEGIN(name) Stopwatch::Timer* name = GetStartTime(#name)
 #define PROFILE_END(name) LapTimer(#name, name) 
-#define PROFILE_SCOPED(name) ProfileTimer MACRO_CONCAT(timer, __COUNTER__)(#name)
-#define PROFILE_FUNCTION() ProfileTimer MACRO_CONCAT(timer, __COUNTER__)(__FUNCTION__)
 #else
 #define PROFILE_BEGIN(name)
 #define PROFILE_END(name) 
