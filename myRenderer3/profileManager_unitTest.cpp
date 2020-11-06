@@ -39,7 +39,6 @@ void OutsideSingleNested()
 {
     PROFILE_FUNCTION();
     DrawWindow();
-    Sleep(33);
 }
 
 void OutsideDoubleDifferentNested()
@@ -47,7 +46,6 @@ void OutsideDoubleDifferentNested()
     PROFILE_FUNCTION();
     DrawWindow();
     UpdateWindow();
-    Sleep(33);
 }
 
 void DoubleSameNestedProfile()
@@ -55,21 +53,18 @@ void DoubleSameNestedProfile()
     PROFILE_FUNCTION();
     DrawWindow();
     DrawWindow();
-    //Sleep(33);
 }
 
 void ThisCallDrawWindow()
 {
     PROFILE_FUNCTION();
     DrawWindow();
-    Sleep(33);
 }
 
 void ThisCallUpdateWindow()
 {
     PROFILE_FUNCTION();
     UpdateWindow();
-    Sleep(33);
 }
 
 void NestedTwiceProfile()
@@ -77,7 +72,6 @@ void NestedTwiceProfile()
     PROFILE_FUNCTION();
     ThisCallDrawWindow();
     ThisCallUpdateWindow();
-    Sleep(33);
 }
 
 void DoSomething()
@@ -278,6 +272,7 @@ void testProfileManager()
     testDoubleDifferentNestedProfile();
     testDoubleSameNestedProfile();
     testNestedTwiceProfile();
+#else
     // Scoped
     testScoped();
     // Non-scoped
@@ -285,7 +280,6 @@ void testProfileManager()
     testNonScopedNestedBegin();
     testNonScopedNonNestedBegin();
     testNonScopedDoubleNestedBegin();
-//#else
     //=========================================
     //Multiple-frame tests
     logmsg("Profile Buffer Size = 3\n");
