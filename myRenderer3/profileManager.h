@@ -62,7 +62,7 @@ public:
     void PrintBufferProfile();
 };
 
-static ProfileManager gs_ProfileManager;
+extern ProfileManager gs_ProfileManager;
 
 //=========================================================
 //Scoped Timers
@@ -73,24 +73,9 @@ private:
     Stopwatch m_Stopwatch;
     const char* m_Name;
 public:
-    ProfileTimer(const char* name)
-    {
-        m_Name = name;
-        gs_ProfileManager.BeginProfile(name);
-    }
-
-    ~ProfileTimer()
-    {
-        float elapsedTime = m_Stopwatch.getDurationMs();
-        gs_ProfileManager.EndProfile(m_Name, elapsedTime);
-    }
+    ProfileTimer(const char* name);
+    ~ProfileTimer();
 };
-
-
-//=========================================================
-//Static Functions
-//ProfileManager& getProfileManager();
-
 
 //=========================================================
 //Non-scoped Timers

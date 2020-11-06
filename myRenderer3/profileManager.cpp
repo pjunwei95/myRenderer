@@ -2,6 +2,8 @@
 #include "profileManager.h"
 #include "logger.h"
 
+ProfileManager gs_ProfileManager;
+
 //=========================================================
 //ProfileManager
 
@@ -50,6 +52,21 @@ void ProfileManager::PrintBufferProfile()
         PrintProfileEntries(stack);
     }
 }
+//=========================================================
+// Scoped Timers
+ProfileTimer::ProfileTimer(const char* name)
+    :m_Name{ name }
+{
+    gs_ProfileManager.BeginProfile(name);
+}
+
+ProfileTimer::~ProfileTimer()
+{
+    float elapsedTime = m_Stopwatch.getDurationMs();
+    gs_ProfileManager.EndProfile(m_Name, elapsedTime);
+}
+
+
 //=========================================================
 //Non-scoped Timers
 Stopwatch::Timer* GetStartTime(const char* name)

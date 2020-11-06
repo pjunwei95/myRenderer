@@ -14,24 +14,18 @@ void runMainLoop()
 
     if(wh.createWindow())
     {
-
         while (!getIsDone())
         {
-
+            PROFILE_SCOPED(Before Idle);
             Stopwatch frameWatch;
             wh.drawWindow();
-
             getKeyInput();
-
             wh.updateWindow();
-
             frc.idleUntilFPSLimit(frameWatch);
 
             gs_ProfileManager.OnProfileFlip();
-
         }
         wh.destroyWindow();
     }
-
 }
 

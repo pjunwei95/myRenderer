@@ -19,6 +19,7 @@ void getKeyInput()
         else if (e.type == SDL_KEYDOWN)
         {
             //Select surfaces based on key press
+            logmsg("The key '%c' is pressed\n", e.key.keysym.sym);
             switch (e.key.keysym.sym)
             {
             case SDLK_ESCAPE:
@@ -30,7 +31,6 @@ void getKeyInput()
             default:
                 break;
             }
-            logmsg("The key '%c' is pressed\n", e.key.keysym.sym);
         }
     }
 }

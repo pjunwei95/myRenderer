@@ -270,7 +270,7 @@ void testProfileManager()
 {
     LOG_TEST(Profiler);
     //=========================================
-    //ProfileTimer tests
+    //gs_ProfileTimer tests
 #if TEST
     // Function-Scoped
     testSimpleProfile();
@@ -295,5 +295,6 @@ void testProfileManager()
     testSingleFlipSimpleProfile();
     testMultipleFlipSimpleProfile();
     testMultipleFlipNestedTwiceProfile();
+
 #endif
 }
