@@ -259,7 +259,7 @@ void testMultipleFlipNestedTwiceProfile()
 }
 
 
-#define TEST 0
+#define TEST 1
 void testProfileManager()
 {
     LOG_TEST(Profiler);

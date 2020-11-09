@@ -152,11 +152,11 @@ template<typename T>
 T* Array<T>::realloc(size_t newCapacity)
 {
     T* temp = static_cast<T*>(malloc(sizeof(T) * newCapacity));
-    //for (uint32_t i = 0; i < newCapacity; ++i)
-    //{
-    //    T* ptr = &temp[i];
-    //    ptr = new (&temp[i]) T(); //calls constructor for the fresh memory
-    //}
+    for (uint32_t i = 0; i < newCapacity; ++i)
+    {
+        T* ptr = &temp[i];
+        new (ptr) T(); //calls constructor for the fresh memory
+    }
     if (temp)
     {
         for (uint32_t i = 0; i < m_Size; ++i)
@@ -177,7 +177,7 @@ void Array<T>::checkMem()
     if (!m_Data) // array memory uninitialised
     {
         m_Data = static_cast<T*>(malloc(sizeof(T)));
-        //m_Data = new (m_Data) T();
+        new (m_Data) T();
         assert(m_Data);
         m_Capacity++;
     }
@@ -249,7 +249,6 @@ void Array<T>::reserve(uint32_t newCap) // new filled array of fixed size
 template<typename T>
 void Array<T>::clear()
 {
-    assert(m_Data);
     for (uint32_t i = 0; i < m_Size; ++i)
         m_Data[i].~T();
     m_Size = 0;

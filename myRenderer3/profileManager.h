@@ -26,10 +26,10 @@
 #define PROFILE_FUNCTION()
 #endif
 
-for (...)
-    PROFILE_FUNCTION();
-int i = 0;
-i = 5;
+//for (...)
+//    PROFILE_FUNCTION();
+//int i = 0;
+//i = 5;
 
 struct ProfileEntry
 {
@@ -37,7 +37,7 @@ struct ProfileEntry
     uint32_t m_Tab = 0;
     float m_Duration = 1000000;
 
-    ProfileEntry(const char* name)
+    ProfileEntry(const char* name = nullptr)
         : m_Name{ name }{}
 };
 
