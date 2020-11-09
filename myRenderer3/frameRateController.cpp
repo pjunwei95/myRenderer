@@ -2,6 +2,7 @@
 #include "engine.h"
 #include <stdio.h>
 //#include "profiler.h"
+#include "profileManager.h"
 
 FrameRateController::FrameRateController()
 {
@@ -12,6 +13,7 @@ FrameRateController::FrameRateController()
 
 void FrameRateController::idleUntilFPSLimit(Stopwatch& timer)
 {
+    PROFILE_FUNCTION();
     while (1) // frame drawing and blocking, or at gameStateCurr == next
     {
         if (isWithinFrameRate(timer))

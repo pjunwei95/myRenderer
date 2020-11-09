@@ -26,7 +26,7 @@ void getKeyInput()
                 setIsDone(true);
                 break;
             case SDLK_p:
-                gs_ProfileManager.PrintBufferProfile();
+                ProfileManager::Instance().PrintBufferProfile();
                 break;
             default:
                 break;

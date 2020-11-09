@@ -18,7 +18,7 @@ void runMainLoop()
         {
             Stopwatch frameWatch;
             {
-                //PROFILE_SCOPED(Before Idle);
+                PROFILE_SCOPED(Frame);
                 //PROFILE_FUNCTION();
                 wh.drawWindow();
                 getKeyInput();
@@ -26,7 +26,7 @@ void runMainLoop()
             }
 
             frc.idleUntilFPSLimit(frameWatch);
-            gs_ProfileManager.OnProfileFlip();
+            ProfileManager::Instance().OnProfileFlip();
         }
         wh.destroyWindow();
     }

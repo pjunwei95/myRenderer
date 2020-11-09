@@ -10,14 +10,14 @@
 #endif
 void ProfileStackDebug()
 {
-    gs_ProfileManager.PrintStackProfile();
-    gs_ProfileManager.clearStack();
+    ProfileManager::Instance().PrintStackProfile();
+    ProfileManager::Instance().clearStack();
 }
 
 void ProfileBufferDebug()
 {
-    gs_ProfileManager.PrintBufferProfile();
-    gs_ProfileManager.clearBuffer();
+    ProfileManager::Instance().PrintBufferProfile();
+    ProfileManager::Instance().clearBuffer();
 }
 
 //====================================================
@@ -231,7 +231,7 @@ void testSingleFlipSimpleProfile()
 {
     LOG_UNIT_TEST();
     DrawWindow();
-    gs_ProfileManager.OnProfileFlip();
+    ProfileManager::Instance().OnProfileFlip();
     PROFILE_BUFFER_DEBUG();
 }
 
@@ -242,7 +242,7 @@ void testMultipleFlipSimpleProfile()
     for (int i = 0; i < 6; ++i)
     {
         DrawWindow();
-        gs_ProfileManager.OnProfileFlip();
+        ProfileManager::Instance().OnProfileFlip();
     }
     PROFILE_BUFFER_DEBUG();
 }
@@ -253,13 +253,13 @@ void testMultipleFlipNestedTwiceProfile()
     for (int i = 0; i < 6; ++i)
     {
         NestedTwiceProfile();
-        gs_ProfileManager.OnProfileFlip();
+        ProfileManager::Instance().OnProfileFlip();
     }
     PROFILE_BUFFER_DEBUG();
 }
 
 
-#define TEST 1
+#define TEST 0
 void testProfileManager()
 {
     LOG_TEST(Profiler);
@@ -272,7 +272,6 @@ void testProfileManager()
     testDoubleDifferentNestedProfile();
     testDoubleSameNestedProfile();
     testNestedTwiceProfile();
-#else
     // Scoped
     testScoped();
     // Non-scoped
@@ -280,6 +279,7 @@ void testProfileManager()
     testNonScopedNestedBegin();
     testNonScopedNonNestedBegin();
     testNonScopedDoubleNestedBegin();
+#else
     //=========================================
     //Multiple-frame tests
     logmsg("Profile Buffer Size = 3\n");
