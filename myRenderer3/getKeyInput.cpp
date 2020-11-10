@@ -19,13 +19,14 @@ void getKeyInput()
         else if (e.type == SDL_KEYDOWN)
         {
             //Select surfaces based on key press
-            logmsg("The key '%c' is pressed\n", e.key.keysym.sym);
+            logfile("The key '%c' is pressed\n", e.key.keysym.sym);
             switch (e.key.keysym.sym)
             {
             case SDLK_ESCAPE:
                 setIsDone(true);
                 break;
             case SDLK_p:
+                logfile("Dumping profile logs:\n");
                 ProfileManager::Instance().PrintBufferProfile();
                 break;
             default:

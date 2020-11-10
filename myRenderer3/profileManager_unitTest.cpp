@@ -11,17 +11,22 @@
 void ProfileStackDebug()
 {
     ProfileManager::Instance().PrintStackProfile();
-    ProfileManager::Instance().clearStack();
+    ProfileManager::Instance().ClearStack();
 }
 
 void ProfileBufferDebug()
 {
     ProfileManager::Instance().PrintBufferProfile();
-    ProfileManager::Instance().clearBuffer();
+    ProfileManager::Instance().ClearBuffer();
 }
 
 //====================================================
 //Simulated Real Functions
+
+void Scoped()
+{
+    Sleep(33);
+}
 
 void DrawWindow()
 {
@@ -48,11 +53,24 @@ void OutsideDoubleDifferentNested()
     UpdateWindow();
 }
 
-void DoubleSameNestedProfile()
+void OutsideDoubleSameNestedNonScopedProfile()
 {
     PROFILE_FUNCTION();
     DrawWindow();
     DrawWindow();
+}
+
+void OutsideDoubleSameNestedScopedProfile()
+{
+    PROFILE_FUNCTION();
+    {
+        PROFILE_SCOPED(Scoped1);
+        Scoped();
+    }
+    {
+        PROFILE_SCOPED(Scoped2);
+        Scoped();
+    }
 }
 
 void ThisCallDrawWindow()
@@ -74,26 +92,21 @@ void NestedTwiceProfile()
     ThisCallUpdateWindow();
 }
 
-void DoSomething()
-{
-    Sleep(33);
-}
-
 
 void NonScopedBegin()
 {
     PROFILE_BEGIN(test);
-    DoSomething();
+    Scoped();
     PROFILE_END(test);
 }
 
 void NonScopedNestedBegin()
 {
     PROFILE_BEGIN(Test);
-    DoSomething();
+    Scoped();
     {
         PROFILE_BEGIN(CalledBeforeTestEndProfile);
-        DoSomething();
+        Scoped();
         PROFILE_END(CalledBeforeTestEndProfile);
     }
     PROFILE_END(Test);
@@ -102,24 +115,24 @@ void NonScopedNestedBegin()
 void NonScopedNonNestedBegin()
 {
     PROFILE_BEGIN(Test);
-    DoSomething();
+    Scoped();
     PROFILE_END(Test);
 
     PROFILE_BEGIN(CalledAfterTestEndProfile);
-    DoSomething();
+    Scoped();
     PROFILE_END(CalledAfterTestEndProfile);
 }
 
 void NonScopedDoubleNestedBegin()
 {
     PROFILE_BEGIN(GfxRenderTask);
-    DoSomething();
+    Scoped();
     {
         PROFILE_BEGIN(MergeCMDListRecord);
-        DoSomething();
+        Scoped();
         {
             PROFILE_BEGIN(DrawWaterVisibilityForQuery_CPU);
-            DoSomething();
+            Scoped();
             PROFILE_END(DrawWaterVisibilityForQuery_CPU);
         }
         PROFILE_END(MergeCMDListRecord);
@@ -161,10 +174,17 @@ void testDoubleDifferentNestedProfile()
     PROFILE_STACK_DEBUG();
 }
 
-void testDoubleSameNestedProfile()
+void testDoubleSameNestedNonScopedProfile()
 {
     LOG_UNIT_TEST();
-    DoubleSameNestedProfile();
+    OutsideDoubleSameNestedNonScopedProfile();
+    PROFILE_STACK_DEBUG();
+}
+
+void testDoubleSameNestedScopedProfile()
+{
+    LOG_UNIT_TEST();
+    OutsideDoubleSameNestedScopedProfile();
     PROFILE_STACK_DEBUG();
 }
 
@@ -264,13 +284,15 @@ void testProfileManager()
 {
     LOG_TEST(Profiler);
     //=========================================
-    //gs_ProfileTimer tests
+    //Single-frame tests
 #if TEST
     // Function-Scoped
     //testSimpleProfile();
-    testSimpleNestedProfile();
-    testDoubleDifferentNestedProfile();
-    testDoubleSameNestedProfile();
+    //testSimpleNestedProfile();
+    //testDoubleDifferentNestedProfile();
+    testDoubleSameNestedScopedProfile();
+    testDoubleSameNestedNonScopedProfile();
+#else
     testNestedTwiceProfile();
     // Scoped
     testScoped();
@@ -279,10 +301,11 @@ void testProfileManager()
     testNonScopedNestedBegin();
     testNonScopedNonNestedBegin();
     testNonScopedDoubleNestedBegin();
-#else
+    //=========================================
+    LOG_TEST(ProfileCircularBuffer);
+    logmsg("Profile Buffer Size = 3\n");
     //=========================================
     //Multiple-frame tests
-    logmsg("Profile Buffer Size = 3\n");
     testDoubleFrameSimpleProfile();
     testDoubleFrameOutsideSingleNestedProfile();
     // With Circular Buffer

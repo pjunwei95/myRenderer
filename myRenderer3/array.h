@@ -135,8 +135,10 @@ Array<T>& Array<T>::operator=(const Array<T>& rhs) //copy assignment, not move
 
     T* temp = static_cast<T*>(malloc(sizeof(T) * newSize));
 
-    for (uint32_t i = 0; i < newSize; i++)
+    for (uint32_t i = 0; i < newSize; i++) {
+        new (&temp[i]) T{};
         temp[i] = rhs.m_Data[i];
+    }
 
     free(m_Data);
 
