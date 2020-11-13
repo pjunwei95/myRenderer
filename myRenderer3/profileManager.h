@@ -89,6 +89,29 @@ public:
 };
 
 //=========================================================
+//Dump Profile Info
+//Pseudo - code Brute - force
+//(Unable to print current duration)
+//========== =
+//Go thru each nameList
+//    count = 0
+//    total = 0
+//    Go thru each stack on cb
+//        go thru each entry on stack
+//            if (name matches)
+//                count++
+//                total += time
+//                check if time is max, update if necessary
+//    print name, avg = total / count, total, spike = max
+//
+//    Array<float> m_DurationList;
+//                Alt
+//                m_DurationList.add(time)
+//    print name, duration = m_DurationList.back, total, avg = total / size(), spike = max
+
+
+
+//=========================================================
 //Non-scoped Timers (Deprecated)
 //Stopwatch::Timer* GetStartTime(const char* name)
 //{
