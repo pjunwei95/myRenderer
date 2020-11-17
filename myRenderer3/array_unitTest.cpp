@@ -89,22 +89,20 @@ void TestArrayCombined()
     assert(a.capacity() == 16);
 }
 
-void testArray2()
+void TestReserve()
 {
     LOG_UNIT_TEST();
-    // for circular buffer, without this constructors will give linker errors
-    Array<int> b;
-    b.reserve(10);
-    int num = 1;
-    b.pushBack(num);
-    num++;
-    b.pushBack(num);
-    num++;
-    b[0] = num;
-    logmsg("capacity of b = %d\n", b.capacity());
+    Array<int> a;
+    a.reserve(10);
+    assert(a.capacity() == 10);
+    assert(a.size() == 0);
+    a.reserve(5);
+    assert(a.capacity() == 10);
+    a.reserve(20);
+    assert(a.capacity() == 20);
 }
 
-void testArrayClear()
+void TestClear()
 {
     LOG_UNIT_TEST();
     Array<int> container;
@@ -115,6 +113,7 @@ void testArrayClear()
     logmsg("Before clear:\n");
     TestPrintArray(container);
     logmsg("Size = %d\n", container.size());
+    assert(container.size() == 3);
 
     logmsg("Clear\n");
     container.clear();
@@ -122,6 +121,7 @@ void testArrayClear()
     logmsg("After clear:\n");
     TestPrintArray(container);
     logmsg("Size = %d\n", container.size());
+    assert(container.size() == 0);
 }
 
 // This function prints all integral values contained in vector
@@ -551,12 +551,38 @@ void TestConstructor()
     assert(a.capacity() == 0);
 }
 
+void TestOtherDataType()
+{
+    LOG_UNIT_TEST();
+    Array<float> f;
+    Array<double> d;
+    float floatRes[] = { 1.1f, 2.2f, 3.3f };
+    double doubleRes[] = { 1.1, 2.2, 3.3 };
+
+    for (float i = 1.0f; i <= 3; ++i)
+    {
+        f.pushBack(i + i / 10.0f);
+    }
+
+    for (double i = 1.0; i <= 3; ++i)
+    {
+        d.pushBack(i + i / 10.0);
+    }
+
+    assert(sizeof(f) == sizeof(d));
+    for (int i = 0; i < 3; ++i)
+    {
+        assert(f[i] == floatRes[i]);
+        assert(d[i] == doubleRes[i]);
+    }
+
+
+}
 
 
 void TestArray()
 {
     LOG_TEST(ARRAY);
-
     TestConstructor();
     TestPush();
     TestStressPush();
@@ -570,10 +596,10 @@ void TestArray()
     TestInsert();
     TestInsert1();
     TestErase();
+    TestClear();
+    TestReserve();
     TestArrayCombined();
-
+    TestOtherDataType();
     TestNestedArrayWithPointers();
     TestNestedArray();
-    //testArrayClear();
-    //testArray2();
 }
