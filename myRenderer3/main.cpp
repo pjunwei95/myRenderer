@@ -6,6 +6,7 @@
 #include "runMainLoop.h"
 #include "fileManager.h"
 #include "logger.h"
+#include "runTest.h"
 
 #ifndef DEBUG_ASSERT
 #    pragma comment(linker, "/subsystem:windows /ENTRY:mainCRTStartup")
@@ -13,6 +14,7 @@
 
 bool g_IsDone;
 Timer g_Frequency;
+EngineMode g_Mode;
 
 int main(int argc, char *argsv[])
 {
@@ -23,8 +25,15 @@ int main(int argc, char *argsv[])
     processArgs(argc, argsv);
     
     //printf("Press ESC to exit the application\n");
-    if (!g_IsDone)
-	    runMainLoop();
+    if (g_Mode == EngineMode::UNIT_TEST)
+    {
+        runTest();
+    }
+    else
+    {
+        if (!g_IsDone)
+            runMainLoop();
+    }
 
     closeLogStream();
 
@@ -35,25 +44,17 @@ void setGlobals()
 {
     setSystemFrequency();
     setIsDone(false);
+    setMode(MAIN);
 }
 
-void setIsDone(bool value)
-{
-    g_IsDone = value;
-}
+void setMode(EngineMode mode) { g_Mode = mode; }
 
-bool getIsDone()
-{
-    return g_IsDone;
-}
+void setIsDone(bool value) { g_IsDone = value; }
 
-void setSystemFrequency()
-{
-    QueryPerformanceFrequency(&g_Frequency); //to be called only once. not per frame
-}
+bool getIsDone() { return g_IsDone; }
 
-Timer getSystemFrequency()
-{
-    return g_Frequency;
-}
+//to be called only once. not per frame
+void setSystemFrequency() { QueryPerformanceFrequency(&g_Frequency);; }
+
+Timer getSystemFrequency() { return g_Frequency; }
 

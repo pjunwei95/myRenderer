@@ -3,7 +3,6 @@
 #include <string.h>
 #include "fileManager.h"
 #include "logger.h"
-#include "runTest.h"
 #include "engine.h"
 
 void loadConfig()
@@ -34,9 +33,7 @@ void processArgs(int argc, char *argsv[])
         //logmsg("argsv[%d] is \"%s\"\n", i, string);
         if (0 == strcmp(string, "test"))
         {
-            runTest();
-            //exit(EXIT_SUCCESS);
-            setIsDone(true);
+            setMode(UNIT_TEST);
         }
     }
 }

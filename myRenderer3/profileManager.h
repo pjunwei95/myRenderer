@@ -86,6 +86,32 @@ public:
     void ClearBuffer() { m_Buffer.clear(); }
     void PrintStackProfile() { PrintProfileEntries(m_Stack); }
     Array<ProfileEntry>& GetStack() { return m_Stack; }
+
+    void DumpProfileInfo()
+    {
+
+
+
+
+        //=========================================================
+        //Pseudo - code Brute - force
+        //===========
+        //Go thru each nameList
+        //    count = 0
+        //    total = 0
+        //    Go thru each stack on cb
+        //        go thru each entry on stack
+        //            if (name matches)
+        //                count++
+        //                total += time
+        //                check if time is max, update if necessary
+        //    print name, avg = total / count, total, spike = max
+        //
+        //    Alt
+        //    Array<float> m_DurationList;
+        //                m_DurationList.add(time)
+        //    print name, duration = m_DurationList.back, total, avg = total / size(), spike = max
+    }
 };
 
 //=========================================================
