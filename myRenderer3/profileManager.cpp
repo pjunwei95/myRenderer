@@ -22,7 +22,7 @@ ProfileTimer::~ProfileTimer()
 ProfileManager* ProfileManager::ms_Instance = nullptr;
 
 ProfileManager::ProfileManager()
-    : m_TabCounter{ -1 }, m_Buffer{ 3 }, m_Stack{}
+    : m_Stack{ }, m_TabCounter{ -1 }, m_Buffer{ 3 }
 {
     //ms_Instance = this;
 }
@@ -41,6 +41,11 @@ void ProfileManager::BeginProfile(const char* name)
 
 void ProfileManager::EndProfile(const char* name, float time)
 {
+    //ProfileEntry& entry = m_Stack.popBack();
+    //assert(strcmp(entry.m_Name, name) == 0);
+    //entry.m_Duration = time;
+    //entry.m_Tab = m_TabCounter;
+
     bool found = false;
     uint32_t size = m_Stack.size();
     for (uint32_t i = 0; i < size; ++i)

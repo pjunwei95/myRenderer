@@ -143,6 +143,7 @@
     <ClCompile Include="runTest.cpp" />
     <ClCompile Include="stack_unitTest.cpp" />
     <ClCompile Include="test.cpp" />
+    <ClCompile Include="unit_test_math.cpp" />
     <ClCompile Include="windowHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -168,6 +169,7 @@
     <ClInclude Include="test.h" />
     <ClInclude Include="array.h" />
     <ClInclude Include="stopwatch.h" />
+    <ClInclude Include="unit_test_math.h" />
     <ClInclude Include="windowHandler.h" />
   </ItemGroup>
   <ItemGroup>

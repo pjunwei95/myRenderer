@@ -3,7 +3,7 @@
 #include "stack_unitTest.h"
 #include "profileManager_unitTest.h"
 #include "circularBuffer_unitTest.h"
-#include "math.h"
+#include "unit_test_math.h"
 
 void runTest()
 {
@@ -13,5 +13,5 @@ void runTest()
     //testArray();
     //testCircularBuffer();
     testProfileManager();
-    TestMath();
+    //TestMath();
 }

@@ -262,6 +262,7 @@ void Array<T>::popBack()
     T& ref = back();
     ref.~T();
     m_Size--;
+    
 }
 
 template<typename T>
