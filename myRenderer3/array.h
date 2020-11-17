@@ -21,12 +21,12 @@ private:
     //uint32_t m_TypeSize; // size of element type
 
 public:
-    //Rules of three
     Array() 
         : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ 0 } 
     {
     }
 
+    //Rules of three
     Array(const Array &other);
 
     Array& operator=(const Array& rhsArray); //copy assignment, not move
@@ -268,7 +268,7 @@ void Array<T>::popBack()
 template<typename T>
 void Array<T>::insertAt(uint32_t index, const T& srcData)
 {
-    assert(index <= m_Size);
+    assert(index < m_Size);
     checkMem();
     //shift array right
     // for i = size-1; i > index-1; i--
