@@ -1,13 +1,11 @@
 #pragma once
 #include "logger.h"
 #include <stdint.h>
-//#include <immintrin.h>
 
-// +, *, dot, cross for vectors, and * for scalar, 
 struct Vector2
 {
-    float x = 0.0f;
-    float y = 0.0f;
+    float x;
+    float y;
 
     Vector2(float _x, float _y)
         : x{ _x }, y{ _y }
@@ -16,25 +14,10 @@ struct Vector2
 
     //TOOD: Add constructor to convert from vec3, vec4 to vec2
 
-
-    //Vector2 operator=(const Vector2& rhs)
-    //{
-    //    x = rhs.x;
-    //    y = rhs.y;
-    //    return *this;
-    //}
-
     Vector2& operator+=(const Vector2& rhs)
     {
         x += rhs.x;
         y += rhs.y;
-        return *this;
-    }
-
-    Vector2& operator-=(const Vector2& rhs)
-    {
-        x -= rhs.x;
-        y -= rhs.y;
         return *this;
     }
 
