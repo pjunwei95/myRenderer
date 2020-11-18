@@ -28,6 +28,7 @@ void getKeyInput()
             case SDLK_p:
                 logfile("Dumping profile logs:\n");
                 ProfileManager::Instance().PrintBufferProfile();
+                ProfileInfo::Instance().DumpProfileInfo();
                 break;
             default:
                 break;

@@ -279,8 +279,33 @@ void testMultipleFlipNestedTwiceProfile()
 }
 
 
-#define TEST 1
-void testProfileManager()
+void testDumpInfoMultipleFlipSimpleProfile()
+{
+    LOG_UNIT_TEST();
+    for (int i = 0; i < 6; ++i)
+    {
+        DrawWindow();
+        ProfileManager::Instance().OnProfileFlip();
+    }
+    ProfileInfo::Instance().DumpProfileInfo();
+    ProfileManager::Instance().ClearBuffer();
+}
+
+void testDumpInfoMultipleFlipNestedTwiceProfile()
+{
+    LOG_UNIT_TEST();
+    for (int i = 0; i < 6; ++i)
+    {
+        NestedTwiceProfile();
+        ProfileManager::Instance().OnProfileFlip();
+    }
+    ProfileInfo::Instance().DumpProfileInfo();
+    ProfileManager::Instance().ClearBuffer();
+}
+
+
+#define TEST 0
+void TestProfileManager()
 {
     LOG_TEST(Profiler);
     //=========================================
@@ -291,8 +316,8 @@ void testProfileManager()
     //testSimpleNestedProfile();
     //testDoubleDifferentNestedProfile();
     testDoubleSameNestedScopedProfile();
+//#else
     testDoubleSameNestedNonScopedProfile();
-#else
     testNestedTwiceProfile();
     // Scoped
     testScoped();
@@ -312,6 +337,9 @@ void testProfileManager()
     testSingleFlipSimpleProfile();
     testMultipleFlipSimpleProfile();
     testMultipleFlipNestedTwiceProfile();
-
+#else
+    //Dump Profile Info
+    testDumpInfoMultipleFlipSimpleProfile();
+    testDumpInfoMultipleFlipNestedTwiceProfile();
 #endif
 }

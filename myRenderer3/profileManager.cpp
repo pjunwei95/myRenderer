@@ -103,3 +103,75 @@ void ProfileManager::OnProfileFlip()
     ClearStack();
 }
 
+//=========================================================
+//ProfileInfo
+
+ProfileInfo& ProfileInfo::Instance()
+{
+    static ProfileInfo instance;
+    return instance;
+}
+
+void ProfileInfo::DumpProfileInfo()
+{
+    PreprocessNameList();
+    PrintProfileInfo();
+    ClearNameList();
+}
+
+void ProfileInfo::PrintProfileInfo()
+{
+    const CircularBuffer<Array<ProfileEntry>>& buffer = ProfileManager::Instance().GetBuffer();
+    for (uint32_t i = 0; i < m_NameList.size(); ++i)
+    {
+        const char* name = m_NameList[i];
+        int count = 0;
+        float total = 0.0;
+        float max = 0.0;
+        for (uint32_t j = 0; j < buffer.size(); ++j)
+        {
+            const Array<ProfileEntry>& stack = buffer.at(j);
+            for (uint32_t k = 0; k < stack.size(); ++k)
+            {
+                if (strcmp(name, stack[k].m_Name) == 0)
+                {
+                    ++count;
+                    float time = stack[k].m_Duration;
+                    total += time;
+                    if (time > max)
+                        max = time;
+                }
+            }
+        }
+        logfile("\nProfile Tag: %s\nAvg per frame: %.2f ms\nTotal for all frames: %.2f ms\nHighest Spike: %.2f ms\n", name, total / count, total, max);
+    }
+}
+
+void ProfileInfo::PreprocessNameList()
+{
+    const CircularBuffer<Array<ProfileEntry>>& buffer = ProfileManager::Instance().GetBuffer();
+    for (uint32_t i = 0; i < buffer.size(); ++i)
+    {
+        const Array<ProfileEntry>& stack = buffer.at(i);
+        for (uint32_t j = 0; j < stack.size(); ++j)
+        {
+            const char* name = stack[j].m_Name;
+            if (this->contains(name)) //skip
+                continue;
+            else
+                m_NameList.pushBack(name);
+        }
+    }
+}
+
+bool ProfileInfo::contains(const char* name)
+{
+    for (uint32_t i = 0; i < m_NameList.size(); ++i)
+    {
+        if (strcmp(m_NameList[i], name) == 0)
+            return true;
+    }
+    return false;
+}
+
+

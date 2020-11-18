@@ -86,56 +86,46 @@ public:
     void ClearBuffer() { m_Buffer.clear(); }
     void PrintStackProfile() { PrintProfileEntries(m_Stack); }
     Array<ProfileEntry>& GetStack() { return m_Stack; }
-
-    void DumpProfileInfo()
-    {
-
-
-
-
-        //=========================================================
-        //Pseudo - code Brute - force
-        //===========
-        //Go thru each nameList
-        //    count = 0
-        //    total = 0
-        //    Go thru each stack on cb
-        //        go thru each entry on stack
-        //            if (name matches)
-        //                count++
-        //                total += time
-        //                check if time is max, update if necessary
-        //    print name, avg = total / count, total, spike = max
-        //
-        //    Alt
-        //    Array<float> m_DurationList;
-        //                m_DurationList.add(time)
-        //    print name, duration = m_DurationList.back, total, avg = total / size(), spike = max
-    }
+    CircularBuffer<Array<ProfileEntry>>& GetBuffer() { return m_Buffer; }
 };
 
-//=========================================================
-//Dump Profile Info
-//Pseudo - code Brute - force
-//(Unable to print current duration)
-//===========
-//Go thru each nameList
-//    count = 0
-//    total = 0
-//    Go thru each stack on cb
-//        go thru each entry on stack
-//            if (name matches)
-//                count++
-//                total += time
-//                check if time is max, update if necessary
-//    print name, avg = total / count, total, spike = max
-//
-//    Array<float> m_DurationList;
-//                Alt
-//                m_DurationList.add(time)
-//    print name, duration = m_DurationList.back, total, avg = total / size(), spike = max
+class ProfileInfo 
+{
+private:
+    Array<const char*> m_NameList;
+    static ProfileInfo* ms_Instance;
+public: 
+    static ProfileInfo& Instance();
 
+    void ClearNameList() { m_NameList.clear(); }
 
+    //=========================================================
+      //Pseudo-code (Print Profile Info)
+      //=========================================================
+      //Go thru each nameList
+      //    count = 0
+      //    total = 0
+      //    Go thru each stack on cb
+      //        go thru each entry on stack
+      //            if (name matches)
+      //                count++
+      //                total += time
+      //                check if time is max, update if necessary
+      //    print name, avg = total / count, total, spike = max
+      //=========================================================
+      //    Alt
+      //    Array<float> m_DurationList;
+      //                m_DurationList.add(time)
+      //    print name, duration = m_DurationList.back, total, avg = total / size(), spike = max
+      //=========================================================
+    void PrintProfileInfo();
+
+    void PreprocessNameList();
+
+    bool contains(const char* name);
+
+    void DumpProfileInfo();
+};
 
 //=========================================================
 //Non-scoped Timers (Deprecated)
