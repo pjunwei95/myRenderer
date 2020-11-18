@@ -143,7 +143,7 @@ void ProfileInfo::PrintProfileInfo()
                 }
             }
         }
-        logfile("\nProfile Tag: %s\nAvg per frame: %.2f ms\nTotal for all frames: %.2f ms\nHighest Spike: %.2f ms\n", name, total / count, total, max);
+        logfile("\nProfile Tag: %s\nAvg per frame: %.2f ms\nTotal for all %i frames: %.2f ms\nHighest Spike: %.2f ms\n", name, total / count, count, total, max);
     }
 }
 
