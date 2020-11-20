@@ -136,6 +136,7 @@
     <ClCompile Include="getKeyInput.cpp" />
     <ClCompile Include="logger.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="math.cpp" />
     <ClCompile Include="processArgs.cpp" />
     <ClCompile Include="profileManager.cpp" />
     <ClCompile Include="profileManager_unitTest.cpp" />
