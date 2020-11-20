@@ -195,15 +195,26 @@ struct Mtx44
         arr[2][3] += z;
     }
 
-    Mtx44 Transpose()
+    Mtx44& Transpose()
     {
         Mtx44 trans;
         for (int i = 0; i < 4; ++i)
         {
             for (int j = 0; j < 4; ++j)
+            {
                 trans.arr[i][j] = arr[j][i];
+            }
         }
-        return trans;
+
+        for (int i = 0; i < 4; ++i)
+        {
+            for (int j = 0; j < 4; ++j)
+            {
+                arr[i][j] = trans.arr[i][j];
+            }
+        }
+
+        return *this;
     }
 
 
