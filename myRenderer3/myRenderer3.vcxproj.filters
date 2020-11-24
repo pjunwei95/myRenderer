@@ -75,6 +75,9 @@
     <ClCompile Include="math.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="render.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine.h">
@@ -152,10 +155,21 @@
     <ClInclude Include="pch.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
+    <ClInclude Include="render.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="config.txt">
       <Filter>Resource Files</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shader.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="shader.frag">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

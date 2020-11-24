@@ -72,10 +72,11 @@
   <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -88,7 +89,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(solutiondir)myRenderer3\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -140,6 +141,7 @@
     <ClCompile Include="processArgs.cpp" />
     <ClCompile Include="profileManager.cpp" />
     <ClCompile Include="profileManager_unitTest.cpp" />
+    <ClCompile Include="render.cpp" />
     <ClCompile Include="runMainLoop.cpp" />
     <ClCompile Include="runTest.cpp" />
     <ClCompile Include="stack_unitTest.cpp" />
@@ -164,6 +166,7 @@
     <ClInclude Include="processArgs.h" />
     <ClInclude Include="profileManager.h" />
     <ClInclude Include="profileManager_unitTest.h" />
+    <ClInclude Include="render.h" />
     <ClInclude Include="runMainLoop.h" />
     <ClInclude Include="runTest.h" />
     <ClInclude Include="stack.h" />
@@ -176,6 +179,10 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="config.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shader.frag" />
+    <None Include="shader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

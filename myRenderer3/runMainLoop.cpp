@@ -1,11 +1,9 @@
-//#include <crtdbg.h>
+#include <crtdbg.h>
 #include "engine.h"
 #include "getKeyInput.h"
 #include "frameRateController.h"
 #include "windowHandler.h"
 #include "profileManager.h"
-#include "sdl/SDL_opengl.h"
-
 
 void runMainLoop()
 {
@@ -13,7 +11,6 @@ void runMainLoop()
 
     FrameRateController frc;
     WindowHandler wh;
-    //glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
 
     if(wh.createWindow())

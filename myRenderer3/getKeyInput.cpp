@@ -5,6 +5,7 @@
 #include "logger.h"
 #include "profileManager.h"
 
+
 void getKeyInput()
 {
     SDL_Event e;
@@ -30,6 +31,7 @@ void getKeyInput()
                 ProfileManager::Instance().PrintBufferProfile();
                 ProfileInfo::Instance().DumpProfileInfo();
                 break;
+
             default:
                 break;
             }
