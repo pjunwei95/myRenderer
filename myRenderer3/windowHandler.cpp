@@ -1,23 +1,9 @@
-#include "sdl/SDL.h"
-#include "engine.h"
 #include "windowHandler.h"
-#include <stdio.h>
+#include "engine.h"
 #include "drawScreen.h"
 #include "logger.h"
 #include "profileManager.h"
 
-//WindowHandle window;
-//SurfaceHandle screenSurface;
-
-void WindowHandler::initWindow()
-{
-    //SDL Properties
-    //The window we'll be rendering to
-    window = NULL;
-    //The surface contained by the window
-    screenSurface = NULL;
-}
-// bool initWindow(WindowHandle windowHandle)
 bool WindowHandler::createWindow()
 {
     //Initialize SDL

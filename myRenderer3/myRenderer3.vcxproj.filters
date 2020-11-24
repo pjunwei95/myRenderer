@@ -143,11 +143,14 @@
     <ClInclude Include="circularBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="math.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
     <ClInclude Include="unit_test_math.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Resource Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

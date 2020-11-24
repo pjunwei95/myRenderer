@@ -160,6 +160,7 @@
     <ClInclude Include="getKeyInput.h" />
     <ClInclude Include="logger.h" />
     <ClInclude Include="math.h" />
+    <ClInclude Include="pch.h" />
     <ClInclude Include="processArgs.h" />
     <ClInclude Include="profileManager.h" />
     <ClInclude Include="profileManager_unitTest.h" />
