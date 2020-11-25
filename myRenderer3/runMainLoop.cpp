@@ -13,9 +13,10 @@ void runMainLoop()
     FrameRateController frc;
     WindowHandler wh;
 
-
     if(wh.createWindow())
     {
+        render();
+
         while (!getIsDone())
         {
             //TODO encapsulate framewatch to frc class
@@ -25,7 +26,6 @@ void runMainLoop()
                 wh.drawWindow();
                 getKeyInput();
                 wh.updateWindow();
-                render();
             }
             frc.idleUntilFPSLimit(frameWatch);
             ProfileManager::Instance().OnProfileFlip();

@@ -1,3 +1,7 @@
 #pragma once
+#include "include/sdl/SDL.h"
+#include "windowHandler.h"
 
-void drawScreen(SDL_Surface * screenSurface);
+void DrawScreen(SDL_Surface * screenSurface);
+
+void DrawTriangle(WindowHandle window);

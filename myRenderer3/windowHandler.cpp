@@ -23,9 +23,6 @@ bool WindowHandler::createWindow()
     }
     else
     {
-
-
-
         //Create window
         //window = SDL_CreateWindow("Renderer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
         //    SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
@@ -54,18 +51,19 @@ void WindowHandler::drawWindow()
         m_ScreenSurface = SDL_GetWindowSurface(m_Window);
     }
 
-    {
-        PROFILE_SCOPED(DrawScreen);
-        //Fill the surface white
-        drawScreen(m_ScreenSurface);
-    }
+    //{
+    //    PROFILE_SCOPED(DrawScreen);
+    //    //Fill the surface white
+    //    drawScreen(m_ScreenSurface);
+    //}
+    DrawTriangle(m_Window);
 }
 void WindowHandler::updateWindow()
 {
     PROFILE_FUNCTION();
     //Update the surface
     SDL_UpdateWindowSurface(m_Window);
-    SDL_GL_SwapWindow(m_Window);
+
 }
 void WindowHandler::destroyWindow()
 {
