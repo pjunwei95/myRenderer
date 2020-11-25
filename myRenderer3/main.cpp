@@ -10,7 +10,9 @@
 
 #ifndef DEBUG_ASSERT
 #    pragma comment(linker, "/subsystem:windows /ENTRY:mainCRTStartup")
+#   pragma optimize("", off) //for breakpoints
 #endif
+
 
 #define FILE_NAME "debug.txt"
 
@@ -56,7 +58,7 @@ void setIsDone(bool value) { g_IsDone = value; }
 bool getIsDone() { return g_IsDone; }
 
 //to be called only once. not per frame
-void setSystemFrequency() { QueryPerformanceFrequency(&g_Frequency);; }
+void setSystemFrequency() { QueryPerformanceFrequency(&g_Frequency); }
 
 Timer getSystemFrequency() { return g_Frequency; }
 
