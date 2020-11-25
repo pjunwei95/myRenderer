@@ -1,4 +1,4 @@
-#include "sdl/SDL.h"
+#include "include/sdl/SDL.h"
 #include "drawScreen.h"
 
 void drawScreen(SDL_Surface * screenSurface)

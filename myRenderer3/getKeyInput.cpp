@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "engine.h"
-#include "sdl/SDL.h"
+#include "include/sdl/SDL.h"
 #include "getKeyInput.h"
 #include "logger.h"
 #include "profileManager.h"

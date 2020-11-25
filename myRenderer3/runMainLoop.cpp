@@ -4,6 +4,7 @@
 #include "frameRateController.h"
 #include "windowHandler.h"
 #include "profileManager.h"
+#include "render.h"
 
 void runMainLoop()
 {
@@ -24,6 +25,7 @@ void runMainLoop()
                 wh.drawWindow();
                 getKeyInput();
                 wh.updateWindow();
+                render();
             }
             frc.idleUntilFPSLimit(frameWatch);
             ProfileManager::Instance().OnProfileFlip();
