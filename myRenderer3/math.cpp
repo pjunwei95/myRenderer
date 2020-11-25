@@ -166,7 +166,7 @@ void Mtx44::Translate(float x, float y, float z)
     arr[2][3] += z;
 }
 
-Mtx44& Mtx44::Transpose()
+void Mtx44::Transpose()
 {
     Mtx44 trans;
     for (int i = 0; i < 4; ++i)
@@ -184,8 +184,29 @@ Mtx44& Mtx44::Transpose()
             arr[i][j] = trans.arr[i][j];
         }
     }
+}
 
-    return *this;
+void Mtx44::Ortho(const float& l, const float& r, const float& b, const float& t, const float& n, const float& f)
+{
+    arr[0][0] = 2 / (r - l);
+    arr[0][1] = 0;
+    arr[0][2] = 0;
+    arr[0][3] = 0;
+
+    arr[1][0] = 0;
+    arr[1][1] = 2 / (t - b);
+    arr[1][2] = 0;
+    arr[1][3] = 0;
+
+    arr[2][0] = 0;
+    arr[2][1] = 0;
+    arr[2][2] = -2 / (f - n);
+    arr[2][3] = 0;
+
+    arr[3][0] = -(r + l) / (r - l);
+    arr[3][1] = -(t + b) / (t - b);
+    arr[3][2] = -(f + n) / (f - n);
+    arr[3][3] = 1;
 }
 
 

@@ -12,6 +12,6 @@ void runTest()
     // TESTS
     //TestArray();
     //testCircularBuffer();
-    //TestProfileManager();
+    TestProfileManager();
     TestMath();
 }

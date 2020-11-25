@@ -90,7 +90,10 @@ struct Mtx44
 
     //void Mtx44RotateClockWise(float x, float y, float z)
 
-    Mtx44& Transpose();
+    void Transpose();
+
+    void Ortho(const float& left, const float& right, const float& bottom, const float& top, const float& zNear, const float& zFar);
+
 };
 // this.row x other.col
 // strassen's method has better time complexity (omega(n^2.81))
