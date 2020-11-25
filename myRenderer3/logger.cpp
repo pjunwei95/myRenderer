@@ -8,7 +8,7 @@
 #define FILE_NAME "debug.txt"
 #define CHAR_MAX_LIMIT 256
 
-FileManager::FileHandle fileHandle;
+FileManager logManager;
 
 void logmsg(const char *format, ...)
 {
@@ -39,23 +39,21 @@ void logfile(const char *format, ...)
     assert(err < CHAR_MAX_LIMIT);
 
     OutputDebugString(buffer); //to output
-    vfprintf(fileHandle, format, args); //to file
+    vfprintf(logManager.m_FileHandle, format, args); //to file
     va_end(args);
 }
 
 
 void openLogStream()
 {
-    FileManager fm;
-    fm.openFile(FILE_NAME, FileManager::TYPE_TEXT, FileManager::MODE_WRITE, &fileHandle);
+    logManager.openFile(FILE_NAME, FileManager::TYPE_TEXT, FileManager::MODE_WRITE);
     OutputDebugString("===========Output Begin===========\n");
-    fprintf(fileHandle, "===========Logging Begin===========\n");
+    fprintf(logManager.m_FileHandle, "===========Logging Begin===========\n");
 }
 
 void closeLogStream()
 {
-    FileManager fm;
     OutputDebugString("===========Output End=============\n");
-    fprintf(fileHandle, "===========Logging End=============\n");
-    fm.closeFile(fileHandle);
+    fprintf(logManager.m_FileHandle, "===========Logging End=============\n");
+    logManager.closeFile();
 }
