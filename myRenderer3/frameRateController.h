@@ -1,7 +1,5 @@
 #pragma once
 #include "stopwatch.h"
-#include "engine.h"
-#include "logger.h"
 
 class FrameRateController
 {

@@ -21,12 +21,12 @@ private:
     //uint32_t m_TypeSize; // size of element type
 
 public:
-    //Rules of three
     Array() 
         : m_Data{ nullptr }, m_Size{ 0 }, m_Capacity{ 0 } 
     {
     }
 
+    //Rules of three
     Array(const Array &other);
 
     Array& operator=(const Array& rhsArray); //copy assignment, not move
@@ -135,8 +135,10 @@ Array<T>& Array<T>::operator=(const Array<T>& rhs) //copy assignment, not move
 
     T* temp = static_cast<T*>(malloc(sizeof(T) * newSize));
 
-    for (uint32_t i = 0; i < newSize; i++)
+    for (uint32_t i = 0; i < newSize; i++) {
+        new (&temp[i]) T{};
         temp[i] = rhs.m_Data[i];
+    }
 
     free(m_Data);
 
@@ -155,7 +157,7 @@ T* Array<T>::realloc(size_t newCapacity)
     for (uint32_t i = 0; i < newCapacity; ++i)
     {
         T* ptr = &temp[i];
-        ptr = new (&temp[i]) T(); //calls constructor for the fresh memory
+        new (ptr) T(); //calls constructor for the fresh memory
     }
     if (temp)
     {
@@ -177,7 +179,7 @@ void Array<T>::checkMem()
     if (!m_Data) // array memory uninitialised
     {
         m_Data = static_cast<T*>(malloc(sizeof(T)));
-        m_Data = new (m_Data) T();
+        new (m_Data) T();
         assert(m_Data);
         m_Capacity++;
     }
@@ -249,7 +251,6 @@ void Array<T>::reserve(uint32_t newCap) // new filled array of fixed size
 template<typename T>
 void Array<T>::clear()
 {
-    assert(m_Data);
     for (uint32_t i = 0; i < m_Size; ++i)
         m_Data[i].~T();
     m_Size = 0;
@@ -261,12 +262,13 @@ void Array<T>::popBack()
     T& ref = back();
     ref.~T();
     m_Size--;
+    
 }
 
 template<typename T>
 void Array<T>::insertAt(uint32_t index, const T& srcData)
 {
-    assert(index <= m_Size);
+    assert(index < m_Size);
     checkMem();
     //shift array right
     // for i = size-1; i > index-1; i--

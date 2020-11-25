@@ -4,29 +4,31 @@
 #include "frameRateController.h"
 #include "windowHandler.h"
 #include "profileManager.h"
+#include "render.h"
 
 void runMainLoop()
 {
-    _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+    //_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 
     FrameRateController frc;
     WindowHandler wh;
+
 
     if(wh.createWindow())
     {
         while (!getIsDone())
         {
+            //TODO encapsulate framewatch to frc class
             Stopwatch frameWatch;
             {
-                //PROFILE_SCOPED(Before Idle);
-                //PROFILE_FUNCTION();
+                PROFILE_SCOPED(Frame);
                 wh.drawWindow();
                 getKeyInput();
                 wh.updateWindow();
+                render();
             }
-
             frc.idleUntilFPSLimit(frameWatch);
-            gs_ProfileManager.OnProfileFlip();
+            ProfileManager::Instance().OnProfileFlip();
         }
         wh.destroyWindow();
     }

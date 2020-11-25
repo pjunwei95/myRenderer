@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include "engine.h"
-#include "sdl/SDL.h"
+#include "include/sdl/SDL.h"
 #include "getKeyInput.h"
 #include "logger.h"
 #include "profileManager.h"
+
 
 void getKeyInput()
 {
@@ -19,15 +20,18 @@ void getKeyInput()
         else if (e.type == SDL_KEYDOWN)
         {
             //Select surfaces based on key press
-            logmsg("The key '%c' is pressed\n", e.key.keysym.sym);
+            logfile("The key '%c' is pressed\n", e.key.keysym.sym);
             switch (e.key.keysym.sym)
             {
             case SDLK_ESCAPE:
                 setIsDone(true);
                 break;
             case SDLK_p:
-                gs_ProfileManager.PrintBufferProfile();
+                logfile("Dumping profile logs:\n");
+                ProfileManager::Instance().PrintBufferProfile();
+                ProfileInfo::Instance().DumpProfileInfo();
                 break;
+
             default:
                 break;
             }

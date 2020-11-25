@@ -1,5 +1,5 @@
 #pragma once
-#include "sdl/SDL.h"
+#include "include/sdl/SDL.h"
 
 typedef SDL_Window* WindowHandle;
 typedef SDL_Surface* SurfaceHandle;
@@ -7,15 +7,19 @@ typedef SDL_Surface* SurfaceHandle;
 class WindowHandler
 {
 public:
-    void initWindow();
+    WindowHandler();
+
     bool createWindow();
     void drawWindow();
     void updateWindow();
     void destroyWindow();
-
 private:
-    WindowHandle window;
-    SurfaceHandle screenSurface;
+    //SDL Properties
+    //The window we'll be rendering to
+    WindowHandle m_Window;
+    //The surface contained by the window
+    SurfaceHandle m_ScreenSurface;
+    SDL_GLContext m_Context;
 };
 
 

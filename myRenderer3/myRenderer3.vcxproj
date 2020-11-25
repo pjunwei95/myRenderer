@@ -72,10 +72,11 @@
   <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -88,8 +89,8 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(solutiondir)myRenderer3\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glew32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)myRenderer3\lib64\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -136,13 +137,16 @@
     <ClCompile Include="getKeyInput.cpp" />
     <ClCompile Include="logger.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="math.cpp" />
     <ClCompile Include="processArgs.cpp" />
     <ClCompile Include="profileManager.cpp" />
     <ClCompile Include="profileManager_unitTest.cpp" />
+    <ClCompile Include="render.cpp" />
     <ClCompile Include="runMainLoop.cpp" />
     <ClCompile Include="runTest.cpp" />
     <ClCompile Include="stack_unitTest.cpp" />
     <ClCompile Include="test.cpp" />
+    <ClCompile Include="unit_test_math.cpp" />
     <ClCompile Include="windowHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -157,9 +161,12 @@
     <ClInclude Include="frameRateController.h" />
     <ClInclude Include="getKeyInput.h" />
     <ClInclude Include="logger.h" />
+    <ClInclude Include="math.h" />
+    <ClInclude Include="pch.h" />
     <ClInclude Include="processArgs.h" />
     <ClInclude Include="profileManager.h" />
     <ClInclude Include="profileManager_unitTest.h" />
+    <ClInclude Include="render.h" />
     <ClInclude Include="runMainLoop.h" />
     <ClInclude Include="runTest.h" />
     <ClInclude Include="stack.h" />
@@ -167,10 +174,15 @@
     <ClInclude Include="test.h" />
     <ClInclude Include="array.h" />
     <ClInclude Include="stopwatch.h" />
+    <ClInclude Include="unit_test_math.h" />
     <ClInclude Include="windowHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="config.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shader.frag" />
+    <None Include="shader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

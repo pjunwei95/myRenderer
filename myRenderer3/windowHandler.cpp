@@ -1,23 +1,18 @@
-#include "sdl/SDL.h"
-#include "engine.h"
 #include "windowHandler.h"
-#include <stdio.h>
+#include "engine.h"
 #include "drawScreen.h"
 #include "logger.h"
 #include "profileManager.h"
 
-//WindowHandle window;
-//SurfaceHandle screenSurface;
-
-void WindowHandler::initWindow()
+WindowHandler::WindowHandler()
+    : m_Window{ NULL }, m_ScreenSurface{ NULL }
 {
-    //SDL Properties
-    //The window we'll be rendering to
-    window = NULL;
-    //The surface contained by the window
-    screenSurface = NULL;
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+    SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 }
-// bool initWindow(WindowHandle windowHandle)
+
 bool WindowHandler::createWindow()
 {
     //Initialize SDL
@@ -28,16 +23,22 @@ bool WindowHandler::createWindow()
     }
     else
     {
+
+
+
         //Create window
-        window = SDL_CreateWindow("Renderer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-            SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-        if (window == NULL)
+        //window = SDL_CreateWindow("Renderer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+        //    SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+        m_Window = SDL_CreateWindow("Renderer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+            SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL);
+        if (m_Window == NULL)
         {
             logmsg("Window could not be created! SDL_Error: %s\n", SDL_GetError());
             return 0;
         }
         else
         {
+            m_Context = SDL_GL_CreateContext(m_Window);
             return 1;
         }
     }
@@ -50,26 +51,29 @@ void WindowHandler::drawWindow()
     {
         PROFILE_SCOPED(GetWindowSurface);
         //Get window surface
-        screenSurface = SDL_GetWindowSurface(window);
-        Sleep(33);
+        m_ScreenSurface = SDL_GetWindowSurface(m_Window);
     }
 
     {
         PROFILE_SCOPED(DrawScreen);
         //Fill the surface white
-        drawScreen(screenSurface);
+        drawScreen(m_ScreenSurface);
     }
 }
 void WindowHandler::updateWindow()
 {
     PROFILE_FUNCTION();
     //Update the surface
-    SDL_UpdateWindowSurface(window);
+    SDL_UpdateWindowSurface(m_Window);
+    SDL_GL_SwapWindow(m_Window);
 }
 void WindowHandler::destroyWindow()
 {
     //Destroy window
-    SDL_DestroyWindow(window);
+    SDL_DestroyWindow(m_Window);
+
+    SDL_GL_DeleteContext(m_Context);
+
     //Quit SDL subsystems
     SDL_Quit();
 }

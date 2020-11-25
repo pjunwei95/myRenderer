@@ -7,10 +7,20 @@
 typedef LARGE_INTEGER Timer;
 
 //Screen dimension constants
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+//const int SCREEN_WIDTH = 640;
+//const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 800;
+const int SCREEN_HEIGHT = 600;
+
+enum EngineMode
+{
+    MAIN,
+    UNIT_TEST
+};
 
 void setGlobals();
+
+void setMode(EngineMode mode);
 
 void setIsDone(bool value);
 

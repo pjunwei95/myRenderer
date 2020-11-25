@@ -5,65 +5,49 @@
 
 #define CONCAT(x,y) x##y
 #define MACRO_CONCAT(x,y) CONCAT(x, y)
+#define UNIQUENAME() MACRO_CONCAT(__func__, __COUNTER__)
 
 #define PROFILE_MACRO 1
+// Roger's style for PROFILE_BEGIN(name)
+//Stopwatch MACRO_CONCAT(__timer__, __COUNTER__); \
+//ProfileManager::Instance().GetStack.pushBack(ProfileEntry{ #name });
 
 #if PROFILE_MACRO
-#define PROFILE_FUNCTION() ProfileTimer MACRO_CONCAT(timer, __COUNTER__)(__FUNCTION__)
-#define PROFILE_SCOPED(name) ProfileTimer MACRO_CONCAT(timer, __COUNTER__)(#name)
+#define PROFILE_FUNCTION() ProfileTimer MACRO_CONCAT(__timer__, __COUNTER__)(__func__)
+#define PROFILE_SCOPED(name) ProfileTimer MACRO_CONCAT(__timer__, __COUNTER__)(#name)
+#define PROFILE_BEGIN(name) \
+    Stopwatch __timer__##name; \
+    ProfileManager::Instance().BeginProfile(#name)
 
-#define PROFILE_BEGIN(name) Stopwatch::Timer* name = GetStartTime(#name)
-#define PROFILE_END(name) LapTimer(#name, name) 
+#define PROFILE_END(name) \
+    float __duration__##name = __timer__##name.getDurationMs();\
+    ProfileManager::Instance().EndProfile(#name, __duration__##name)
 #else
-#define PROFILE_BEGIN(name)
-#define PROFILE_END(name) 
-#define PROFILE_SCOPED(name)
-#define PROFILE_FUNCTION()
+#define PROFILE_BEGIN(name) (void(0))
+#define PROFILE_END(name) (void(0))
+#define PROFILE_SCOPED(name) (void(0))
+#define PROFILE_FUNCTION() (void(0))
 #endif
+
+//for (...)
+//    PROFILE_FUNCTION();
+//int i = 0;
+//i = 5;
+
+//=========================================================
+//Profile Entry
 
 struct ProfileEntry
 {
-    const char* m_Name;
-    uint32_t m_Tab;
-    float m_Duration;
+    const char* m_Name = nullptr;
+    uint32_t m_Tab = 0;
+    float m_Duration = -1;
 
-    ProfileEntry():m_Duration{0}, m_Name{nullptr}, m_Tab{0}{}
-
-    ProfileEntry(const char* name)
-        : m_Name{ name }, m_Duration{ 0 }, m_Tab{ 0 }{}
+    ProfileEntry(const char* name = nullptr)
+        : m_Name{ name }
+    {
+    }
 };
-
-class ProfileManager
-{
-private:
-    Array<ProfileEntry> m_Stack;
-    int m_TabCounter;
-    CircularBuffer<Array<ProfileEntry>> m_Buffer;
-public:
-    ProfileManager() : m_TabCounter{ -1 }, m_Buffer{ 3 }
-    {
-    }
-    void PrintStackProfile() { PrintProfileEntries(m_Stack); }
-    void clearBuffer() { m_Buffer.clear(); }
-    void clearStack()
-    {
-        m_Stack.clear();
-        m_TabCounter = -1;
-    }
-    void OnProfileFlip()
-    {
-        m_Buffer.specialPushBack(m_Stack);
-        clearStack();
-    }
-
-    void BeginProfile(const char* name);
-    void EndProfile(const char* name, float time);
-    void PrintProfileEntries(const Array<ProfileEntry>& stack);
-    void PrintBufferProfile();
-};
-
-extern ProfileManager gs_ProfileManager;
-//static ProfileManager gs_ProfileManager;
 
 //=========================================================
 //Scoped Timers
@@ -79,7 +63,90 @@ public:
 };
 
 //=========================================================
-//Non-scoped Timers
-Stopwatch::Timer* GetStartTime(const char* name);
+//Profile Manager
 
-void LapTimer(const char* nameToFind, Stopwatch::Timer* startTime);
+class ProfileManager
+{
+private:
+    ProfileManager();
+
+    static ProfileManager* ms_Instance;
+    Array<ProfileEntry> m_Stack;
+    int m_TabCounter;
+    CircularBuffer<Array<ProfileEntry>> m_Buffer;
+public:
+    static ProfileManager& Instance();
+    void BeginProfile(const char* name);
+    void EndProfile(const char* name, float time);
+    void PrintProfileEntries(const Array<ProfileEntry>& stack);
+    void PrintBufferProfile();
+    void ClearStack();
+    void OnProfileFlip();
+
+    void ClearBuffer() { m_Buffer.clear(); }
+    void PrintStackProfile() { PrintProfileEntries(m_Stack); }
+    Array<ProfileEntry>& GetStack() { return m_Stack; }
+    CircularBuffer<Array<ProfileEntry>>& GetBuffer() { return m_Buffer; }
+};
+
+class ProfileInfo 
+{
+private:
+    Array<const char*> m_NameList;
+    static ProfileInfo* ms_Instance;
+public: 
+    static ProfileInfo& Instance();
+
+    void ClearNameList() { m_NameList.clear(); }
+
+    //=========================================================
+      //Pseudo-code (Print Profile Info)
+      //=========================================================
+      //Go thru each nameList
+      //    count = 0
+      //    total = 0
+      //    Go thru each stack on cb
+      //        go thru each entry on stack
+      //            if (name matches)
+      //                count++
+      //                total += time
+      //                check if time is max, update if necessary
+      //    print name, avg = total / count, total, spike = max
+      //=========================================================
+      //    Alt
+      //    Array<float> m_DurationList;
+      //                m_DurationList.add(time)
+      //    print name, duration = m_DurationList.back, total, avg = total / size(), spike = max
+      //=========================================================
+    void PrintProfileInfo();
+
+    void PreprocessNameList();
+
+    bool contains(const char* name);
+
+    void DumpProfileInfo();
+};
+
+//=========================================================
+//Non-scoped Timers (Deprecated)
+//Stopwatch::Timer* GetStartTime(const char* name)
+//{
+//    ProfileManager::Instance().BeginProfile(name);
+//    Stopwatch timer;
+//    Stopwatch::Timer* startTime = new Stopwatch::Timer;
+//    timer.updateTimeStamp(*startTime);
+//    return startTime;
+//}
+//
+//void LapTimer(const char* nameToFind, Stopwatch::Timer* startTime)
+//{
+//    Stopwatch timer;
+//    Stopwatch::Timer stopTime;
+//    timer.updateTimeStamp(stopTime);
+//    stopTime.QuadPart -= startTime->QuadPart;
+//    delete startTime;
+//    stopTime.QuadPart *= 1000000;
+//    stopTime.QuadPart /= getSystemFrequency().QuadPart;
+//    float elapsedTime = (float)stopTime.QuadPart / 1000;
+//    ProfileManager::Instance().EndProfile(nameToFind, elapsedTime);
+//}
