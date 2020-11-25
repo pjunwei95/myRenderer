@@ -5,7 +5,7 @@
 //#define NDEBUG
 #include <assert.h>
 
-bool FileManager::openFile(const char* fileName, OpenType openType, FileMode fileMode)
+bool FileManager::OpenFile(const char* fileName, OpenType openType, FileMode fileMode)
 {
     assert(fileName);
 
@@ -27,7 +27,7 @@ bool FileManager::openFile(const char* fileName, OpenType openType, FileMode fil
     return true;
 }
 
-void FileManager::closeFile()
+void FileManager::CloseFile()
 {
     assert(m_FileHandle);
     fclose(m_FileHandle);
@@ -45,7 +45,7 @@ void readToBuffer(const FileManager::FileHandle fileHandle, char* buffer, long l
 
 void FileManager::readAndProcessFile(const char* fileName, OpenType openType)
 {
-    openFile(fileName, openType, MODE_READ);
+    OpenFile(fileName, openType, MODE_READ);
 
     char * buffer = 0;
 
@@ -56,7 +56,7 @@ void FileManager::readAndProcessFile(const char* fileName, OpenType openType)
 
     readToBuffer(m_FileHandle, buffer, length);
 
-    closeFile();
+    CloseFile();
 
     if (openType == TYPE_TEXT)
         tokeniseBuffer(buffer);

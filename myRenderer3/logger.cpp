@@ -5,7 +5,6 @@
 #include <string.h>
 #include <Windows.h>
 
-#define FILE_NAME "debug.txt"
 #define CHAR_MAX_LIMIT 256
 
 FileManager logManager;
@@ -39,21 +38,21 @@ void logfile(const char *format, ...)
     assert(err < CHAR_MAX_LIMIT);
 
     OutputDebugString(buffer); //to output
-    vfprintf(logManager.m_FileHandle, format, args); //to file
+    vfprintf(logManager.GetFileHandle(), format, args); //to file
     va_end(args);
 }
 
 
-void openLogStream()
+void openLogStream(const char* fileName)
 {
-    logManager.openFile(FILE_NAME, FileManager::TYPE_TEXT, FileManager::MODE_WRITE);
+    logManager.OpenFile(fileName, FileManager::TYPE_TEXT, FileManager::MODE_WRITE);
     OutputDebugString("===========Output Begin===========\n");
-    fprintf(logManager.m_FileHandle, "===========Logging Begin===========\n");
+    fprintf(logManager.GetFileHandle(), "===========Logging Begin===========\n");
 }
 
 void closeLogStream()
 {
     OutputDebugString("===========Output End=============\n");
-    fprintf(logManager.m_FileHandle, "===========Logging End=============\n");
-    logManager.closeFile();
+    fprintf(logManager.GetFileHandle(), "===========Logging End=============\n");
+    logManager.CloseFile();
 }

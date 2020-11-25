@@ -12,13 +12,15 @@
 #    pragma comment(linker, "/subsystem:windows /ENTRY:mainCRTStartup")
 #endif
 
+#define FILE_NAME "debug.txt"
+
 bool g_IsDone;
 Timer g_Frequency;
 EngineMode g_Mode;
 
 int main(int argc, char *argsv[])
 {
-    openLogStream();
+    openLogStream(FILE_NAME);
 
     setGlobals();
 

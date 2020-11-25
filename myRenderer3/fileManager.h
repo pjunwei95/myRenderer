@@ -6,14 +6,11 @@ class FileManager
 public:
     typedef FILE* FileHandle;
 
-    FileHandle m_FileHandle;
-
     enum OpenType
     {
         TYPE_TEXT,
         TYPE_BIN
     };
-
     enum FileMode
     {
         MODE_READ,
@@ -21,9 +18,19 @@ public:
         MODE_APPEND
     };
 
-    bool openFile(const char * fileName, OpenType openType, FileMode fileMode);
+    FileManager()
+        : m_FileHandle{ nullptr }
+    {
+    }
 
-    void closeFile();
+    ~FileManager()
+    {
+    }
 
+    inline FileHandle GetFileHandle() { return m_FileHandle; }
+    bool OpenFile(const char * fileName, OpenType openType, FileMode fileMode);
+    void CloseFile();
     void readAndProcessFile(const char * fileName, OpenType openType);
+private:
+    FileHandle m_FileHandle;
 };
