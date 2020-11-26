@@ -102,31 +102,34 @@ void InitGraphics()
         &unusedIds,
         true);
 
-    //Shader vShaderObj;
-    //vShaderObj.m_FileName = vertexSource;
-    //FileManager foo(vShaderObj.m_FileName, FileManager::TYPE_TEXT, FileManager::MODE_READ);
-    //vShaderObj.m_BufferLength = foo.GetBufferLength();
-    //vShaderObj.m_Buffer = (char*)malloc(vShaderObj.m_BufferLength);
-    //foo.ReadBufferWithLength(vShaderObj.m_Buffer, vShaderObj.m_BufferLength);
-    //vShaderObj.m_Shader = glCreateShader(GL_VERTEX_SHADER);
-    //glShaderSource(vShaderObj.m_Shader, 1, &vShaderObj.m_FileName, NULL);
-    //glCompileShader(vShaderObj.m_Shader);
-    //LogShaderCompilation(vShaderObj.m_Shader);
 
+#ifdef SHADER_OBJ
+    Shader vShaderObj;
+    vShaderObj.m_FileName = vertexSource;
+    FileManager foo(vShaderObj.m_FileName, FileManager::TYPE_TEXT, FileManager::MODE_READ);
+    vShaderObj.m_BufferLength = foo.GetBufferLength();
+    vShaderObj.m_Buffer = (char*)malloc(vShaderObj.m_BufferLength);
+    foo.ReadBufferWithLength(vShaderObj.m_Buffer, vShaderObj.m_BufferLength);
+    vShaderObj.m_Shader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vShaderObj.m_Shader, 1, &vShaderObj.m_Buffer, NULL);
+    glCompileShader(vShaderObj.m_Shader);
+    LogShaderCompilation(vShaderObj.m_Shader);
+#else
     FileManager vertexFM(vertexSource, FileManager::TYPE_TEXT, FileManager::MODE_READ);
     char* vertexCode = (char*)malloc(vertexFM.GetBufferLength());
     vertexFM.ReadBufferWithLength(vertexCode, vertexFM.GetBufferLength());
 
+    //Create and compile the vertex shader
+    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    //glShaderSource(vertexShader, 1, &vertexSource, NULL);
+    glShaderSource(vertexShader, 1, &vertexCode, NULL);
+    glCompileShader(vertexShader);
+    LogShaderCompilation(vertexShader);
+#endif
+
     FileManager fragmentFM(fragmentSource, FileManager::TYPE_TEXT, FileManager::MODE_READ);
     char* fragmentCode = (char*)malloc(fragmentFM.GetBufferLength());
     fragmentFM.ReadBufferWithLength(fragmentCode, fragmentFM.GetBufferLength());
-
-     //Create and compile the vertex shader
-    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexSource, NULL);
-    //glShaderSource(vertexShader, 1, &vertexCode, NULL);
-    glCompileShader(vertexShader);
-    LogShaderCompilation(vertexShader);
 
     // Create and compile the fragment shader
     GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -140,8 +143,11 @@ void InitGraphics()
 
     // Link the vertex and fragment shader into a shader program
     GLuint shaderProgram = glCreateProgram();
-    //glAttachShader(shaderProgram, vShaderObj.m_Shader);
+#ifdef SHADER_OBJ
+    glAttachShader(shaderProgram, vShaderObj.m_Shader);
+#else
     glAttachShader(shaderProgram, vertexShader);
+#endif
     glAttachShader(shaderProgram, fragmentShader);
     glBindFragDataLocation(shaderProgram, 0, "outColor");
     glLinkProgram(shaderProgram);
