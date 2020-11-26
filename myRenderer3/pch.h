@@ -1,6 +1,4 @@
 #pragma once
-
-void foo()
-{
-
-}
+#include <assert.h>
+#include "logger.h"
+#include <stdlib.h>

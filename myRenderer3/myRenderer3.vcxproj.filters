@@ -166,6 +166,9 @@
     <Text Include="config.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="debug.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="shader.vert">

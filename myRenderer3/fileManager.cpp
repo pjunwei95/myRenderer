@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include "bufferOps.h"
 //#define NDEBUG
-#include <assert.h>
 
 bool FileManager::OpenFile(const char* fileName, OpenType openType, FileMode fileMode)
 {
@@ -62,4 +61,19 @@ void FileManager::readAndProcessFile(const char* fileName, OpenType openType)
         tokeniseBuffer(buffer);
 
     free(buffer);
+}
+
+char* FileManager::ReadBuffer()
+{
+    char* buffer = 0;
+    fseek(m_FileHandle, 0, SEEK_END);
+    long length = ftell(m_FileHandle);
+    fseek(m_FileHandle, 0, SEEK_SET);
+    buffer = (char*)malloc(length + 1);
+    assert(buffer);
+    assert(length);
+    size_t value = fread(buffer, 1, length, m_FileHandle);
+    assert(value < length);
+    buffer[value] = '\0';
+    return buffer;
 }

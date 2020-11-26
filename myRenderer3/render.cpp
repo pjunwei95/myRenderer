@@ -1,26 +1,28 @@
 #include "include/GL/glew.h"
 #include "include/sdl/SDL_opengl.h"
-#include "logger.h"
+#include "fileManager.h"
 
-//const GLchar* vertexSource = "shader.vert";
-//const GLchar* fragmentSource = "shader.frag";
+#pragma optimize("",off)
 
-const GLchar* vertexSource = R"glsl(
-    #version 150 core
-    in vec2 position;
-    void main()
-    {
-        gl_Position = vec4(position, 0.0, 1.0);
-    }
-)glsl";
-const GLchar* fragmentSource = R"glsl(
-    #version 150 core
-    out vec4 outColor;
-    void main()
-    {
-        outColor = vec4(1.0, 1.0, 1.0, 1.0);
-    }
-)glsl";
+const GLchar* vertexSource = "shader.vert";
+const GLchar* fragmentSource = "shader.frag";
+
+//const GLchar* vertexSource = R"glsl(
+//    #version 150 core
+//    in vec2 position;
+//    void main()
+//    {
+//        gl_Position = vec4(position, 0.0, 1.0);
+//    }
+//)glsl";
+//const GLchar* fragmentSource = R"glsl(
+//    #version 150 core
+//    out vec4 outColor;
+//    void main()
+//    {
+//        outColor = vec4(1.0, 1.0, 1.0, 1.0);
+//    }
+//)glsl";
 
 
 void render()
@@ -47,14 +49,22 @@ void render()
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+    FileManager vertexFM(vertexSource, FileManager::TYPE_TEXT, FileManager::MODE_READ);
+    char* vertexCode = (char*)malloc(vertexFM.GetBufferLength());
+    vertexFM.ReadBufferWithLength(vertexCode, vertexFM.GetBufferLength());
+
+    FileManager fragmentFM(fragmentSource, FileManager::TYPE_TEXT, FileManager::MODE_READ);
+    char* fragmentCode = (char*)malloc(fragmentFM.GetBufferLength());
+    fragmentFM.ReadBufferWithLength(fragmentCode, fragmentFM.GetBufferLength());
+
     // Create and compile the vertex shader
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexSource, NULL);
+    glShaderSource(vertexShader, 1, &vertexCode, NULL);
     glCompileShader(vertexShader);
 
     // Create and compile the fragment shader
     GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
+    glShaderSource(fragmentShader, 1, &fragmentCode, NULL);
     glCompileShader(fragmentShader);
 
     //Checks for compilation
@@ -68,6 +78,11 @@ void render()
     char fragmentlog[512];
     glGetShaderInfoLog(vertexShader, 512, NULL, fragmentlog);
     logmsg("Fragment compilation %s", fragmentlog);
+
+    free(vertexCode);
+    free(fragmentCode);
+
+
 
     // Link the vertex and fragment shader into a shader program
     GLuint shaderProgram = glCreateProgram();

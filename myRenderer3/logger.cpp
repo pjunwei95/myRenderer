@@ -22,7 +22,6 @@ void logmsg(const char *format, ...)
 
     OutputDebugString(buffer); //to output
     //printf(buffer); //to console
-    //vfprintf(fileHandle, format, args); //to file
     va_end(args);
 }
 
