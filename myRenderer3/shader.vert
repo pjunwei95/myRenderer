@@ -1,4 +1,4 @@
-#version 150 core
+#version 460 core
 
 in vec2 position;
 void main()

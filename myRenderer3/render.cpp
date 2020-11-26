@@ -1,38 +1,119 @@
-#include "include/GL/glew.h"
-#include "include/sdl/SDL_opengl.h"
+#include "render.h"
 #include "fileManager.h"
+#include "array.h"
 
 #pragma optimize("",off)
 
 const GLchar* vertexSource = "shader.vert";
 const GLchar* fragmentSource = "shader.frag";
 
-void render()
+void GLAPIENTRY
+MessageCallback(GLenum source,
+    GLenum type,
+    GLuint id,
+    GLenum severity,
+    GLsizei length,
+    const GLchar *message,
+    const void *userParam)
+{
+    userParam;
+    length;
+    source;
+    logmsg("---------------------Callback-----------------\n");
+    logmsg("message: %s\ntype: ", message);
+    const char* errorTypeStr = 0;
+    switch (type) {
+    case GL_DEBUG_TYPE_ERROR:
+        errorTypeStr = "ERROR";
+        break;
+    case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
+        errorTypeStr = "DEPRECATED_BEHAVIOR";
+        break;
+    case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
+        errorTypeStr = "UNDEFINED_BEHAVIOR";
+        break;
+    case GL_DEBUG_TYPE_PORTABILITY: //TODO filter ignore
+        errorTypeStr = "PORTABILITY";
+        break;
+    case GL_DEBUG_TYPE_PERFORMANCE:
+        errorTypeStr = "PERFORMANCE";
+        break;
+    case GL_DEBUG_TYPE_OTHER:
+        errorTypeStr = "OTHER";
+        break;
+    default:
+        errorTypeStr = "** GL ERROR **";
+        logmsg("0x%x", type);
+        break;
+    }
+    logmsg("%s\nid: %i\nseverity: ", errorTypeStr, id);
+    const char* severityStr = 0;
+    switch (severity) { //TODO filter null
+    case GL_DEBUG_SEVERITY_LOW:
+        severityStr = "LOW";
+        break;
+    case GL_DEBUG_SEVERITY_MEDIUM:
+        severityStr = "MEDIUM";
+        break;
+    case GL_DEBUG_SEVERITY_HIGH:
+        severityStr = "HIGH";
+        break;
+    }
+    logmsg("%s\n", severityStr);
+}
+
+//TODO insert filename here
+void LogShaderCompilation(GLuint shader) 
+{
+    GLint status;
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
+    char log[512];
+    glGetShaderInfoLog(shader, 512, NULL, log);
+    if (!strlen(log))
+        logmsg("Compiled successfully!\n");
+    else
+        logmsg("Compilation failed!: %s\n", log);
+}
+
+void InitGraphics()
 {
     // Initialize GLEW
     glewExperimental = GL_TRUE;
-    glewInit();
+    GLenum err = glewInit();
 
-    // Create Vertex Array Object
-    GLuint vao;
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
+    if (err != GLEW_OK) {
+        logmsg("Error: %s.\n", glewGetErrorString(err));
+        exit(EXIT_FAILURE);
+    }
 
-    // Create a Vertex Buffer Object and copy the vertex data to it
-    GLuint vbo;
-    glGenBuffers(1, &vbo);
+    logmsg("Status: Using GLEW %s.\n", glewGetString(GLEW_VERSION));
+    logmsg("System supports OpenGL %s\n", glGetString(GL_VERSION));
 
-    GLfloat vertices[] = {
-          0.0f,  0.5f,
-          0.5f, -0.5f,
-         -0.5f, -0.5f
-    };
+    glEnable(GL_DEBUG_OUTPUT); //TODO to cmdline
+    assert(glDebugMessageCallback);
+    logmsg("Register OpenGL debug callback\n");
+    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+    glDebugMessageCallback(MessageCallback, nullptr);
+    GLuint unusedIds = 0;
+    glDebugMessageControl(GL_DONT_CARE,
+        GL_DONT_CARE,
+        GL_DONT_CARE,
+        0,
+        &unusedIds,
+        true);
 
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    //Shader vShaderObj;
+    //vShaderObj.m_FileName = vertexSource;
+    //FileManager foo(vShaderObj.m_FileName, FileManager::TYPE_TEXT, FileManager::MODE_READ);
+    //vShaderObj.m_BufferLength = foo.GetBufferLength();
+    //vShaderObj.m_Buffer = (char*)malloc(vShaderObj.m_BufferLength);
+    //foo.ReadBufferWithLength(vShaderObj.m_Buffer, vShaderObj.m_BufferLength);
+    //vShaderObj.m_Shader = glCreateShader(GL_VERTEX_SHADER);
+    //glShaderSource(vShaderObj.m_Shader, 1, &vShaderObj.m_FileName, NULL);
+    //glCompileShader(vShaderObj.m_Shader);
+    //LogShaderCompilation(vShaderObj.m_Shader);
 
-    //bin or text?
-    FileManager vertexFM(vertexSource, FileManager::TYPE_BIN, FileManager::MODE_READ);
+    FileManager vertexFM(vertexSource, FileManager::TYPE_TEXT, FileManager::MODE_READ);
     char* vertexCode = (char*)malloc(vertexFM.GetBufferLength());
     vertexFM.ReadBufferWithLength(vertexCode, vertexFM.GetBufferLength());
 
@@ -40,42 +121,30 @@ void render()
     char* fragmentCode = (char*)malloc(fragmentFM.GetBufferLength());
     fragmentFM.ReadBufferWithLength(fragmentCode, fragmentFM.GetBufferLength());
 
-    // Create and compile the vertex shader
+     //Create and compile the vertex shader
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexCode, NULL);
+    glShaderSource(vertexShader, 1, &vertexSource, NULL);
+    //glShaderSource(vertexShader, 1, &vertexCode, NULL);
     glCompileShader(vertexShader);
+    LogShaderCompilation(vertexShader);
 
     // Create and compile the fragment shader
     GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    //glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
     glShaderSource(fragmentShader, 1, &fragmentCode, NULL);
     glCompileShader(fragmentShader);
+    LogShaderCompilation(fragmentShader);
 
-    //Checks for compilation
-    GLint status;
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &status);
-    char vertexlog[512];
-    glGetShaderInfoLog(vertexShader, 512, NULL, vertexlog);
-    logmsg("Vertex compilation %s", vertexlog);
-
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &status);
-    char fragmentlog[512];
-    glGetShaderInfoLog(vertexShader, 512, NULL, fragmentlog);
-    logmsg("Fragment compilation %s", fragmentlog);
-
-    free(vertexCode);
+    //free(vertexCode);
     free(fragmentCode);
 
     // Link the vertex and fragment shader into a shader program
     GLuint shaderProgram = glCreateProgram();
+    //glAttachShader(shaderProgram, vShaderObj.m_Shader);
     glAttachShader(shaderProgram, vertexShader);
     glAttachShader(shaderProgram, fragmentShader);
     glBindFragDataLocation(shaderProgram, 0, "outColor");
     glLinkProgram(shaderProgram);
     glUseProgram(shaderProgram);
-
-    // Specify the layout of the vertex data
-    GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
-    glEnableVertexAttribArray(posAttrib);
-    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
 }

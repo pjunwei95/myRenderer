@@ -1,11 +1,8 @@
 #pragma once
-#include <stdint.h>
-#include <assert.h>
-//#include "stdio.h"
-#include "stdlib.h"
-
-//#define USE_STD 
+#define USE_STD 
+#ifdef USE_STD
 #include <algorithm>
+#endif
 
 template<typename T>
 class Array {

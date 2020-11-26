@@ -13,10 +13,6 @@
     {
       "Id": "a292cc03-64ca-457b-b9bb-caa15860c1c7",
       "Command": "test"
-    },
-    {
-      "Id": "65253600-6b29-4efc-a6d7-0b441794726f",
-      "Command": "-DGLEW_STATIC"
     }
   ]
 }

@@ -1,5 +1,3 @@
-#include <crtdbg.h>
-#include "engine.h"
 #include "getKeyInput.h"
 #include "frameRateController.h"
 #include "windowHandler.h"
@@ -8,14 +6,15 @@
 
 void runMainLoop()
 {
-    //_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+    _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 
     FrameRateController frc;
     WindowHandler wh;
 
+    //init functions
     if(wh.createWindow())
     {
-        render();
+        InitGraphics();
 
         while (!getIsDone())
         {

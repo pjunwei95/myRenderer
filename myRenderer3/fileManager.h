@@ -1,6 +1,4 @@
 #pragma once
-#include <stdio.h>
-
 class FileManager
 {
 public:
