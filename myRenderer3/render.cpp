@@ -7,24 +7,6 @@
 const GLchar* vertexSource = "shader.vert";
 const GLchar* fragmentSource = "shader.frag";
 
-//const GLchar* vertexSource = R"glsl(
-//    #version 150 core
-//    in vec2 position;
-//    void main()
-//    {
-//        gl_Position = vec4(position, 0.0, 1.0);
-//    }
-//)glsl";
-//const GLchar* fragmentSource = R"glsl(
-//    #version 150 core
-//    out vec4 outColor;
-//    void main()
-//    {
-//        outColor = vec4(1.0, 1.0, 1.0, 1.0);
-//    }
-//)glsl";
-
-
 void render()
 {
     // Initialize GLEW
@@ -49,7 +31,8 @@ void render()
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    FileManager vertexFM(vertexSource, FileManager::TYPE_TEXT, FileManager::MODE_READ);
+    //bin or text?
+    FileManager vertexFM(vertexSource, FileManager::TYPE_BIN, FileManager::MODE_READ);
     char* vertexCode = (char*)malloc(vertexFM.GetBufferLength());
     vertexFM.ReadBufferWithLength(vertexCode, vertexFM.GetBufferLength());
 
@@ -81,8 +64,6 @@ void render()
 
     free(vertexCode);
     free(fragmentCode);
-
-
 
     // Link the vertex and fragment shader into a shader program
     GLuint shaderProgram = glCreateProgram();

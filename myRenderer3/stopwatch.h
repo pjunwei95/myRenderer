@@ -1,5 +1,4 @@
 #pragma once
-#include "engine.h"
 
 class Stopwatch 
 {
@@ -11,9 +10,7 @@ public:
     ~Stopwatch();
 
     inline void updateTimeStamp(TimerHandle timer) { QueryPerformanceCounter(&timer); }
-
-    //start timer
-    inline void start() { updateTimeStamp(m_StartTime); }
+    inline void start() { updateTimeStamp(m_StartTime); } //start timer
 
     //This function will stop the time and convert the stoptime to a readable time duration difference
     //in microseconds

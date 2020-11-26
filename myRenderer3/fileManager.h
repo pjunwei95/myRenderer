@@ -40,14 +40,15 @@ public:
     void CloseFile();
     void readAndProcessFile(const char * fileName, OpenType openType);
     char* ReadBuffer();
-
     char* ReadBufferWithLength(char* buffer, long length)
     {
+        assert(buffer);
         size_t value = fread(buffer, 1, length, m_FileHandle);
         assert(value < length);
         buffer[value] = '\0';
         return buffer;
     }
+
     // always return length + 1 to account for null terminating character
     long GetBufferLength()
     {
@@ -55,7 +56,7 @@ public:
         fseek(m_FileHandle, 0, SEEK_END);
         long length = ftell(m_FileHandle);
         fseek(m_FileHandle, 0, SEEK_SET);
-        //assert(length);
+        assert(length);
         return length + 1;
     }
 private:
