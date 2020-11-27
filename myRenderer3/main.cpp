@@ -20,17 +20,20 @@ int main(int argc, char *argsv[])
     openLogStream(FILE_NAME);
 
     InitGlobals();
+    //Engine::Instance().InitGlobals();
 
     processArgs(argc, argsv);
     
     //printf("Press ESC to exit the application\n");
     if (GetMode() == EngineMode::UNIT_TEST)
+        //if (Engine::Instance().GetMode() == Engine::EngineMode::UNIT_TEST)
     {
         ExecuteAllTests();
     }
     else
     {
         if (!getIsDone())
+            //if (!Engine::Instance().getIsDone())
             runMainLoop();
     }
 

@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <crtdbg.h>
-
+//#include <Windows.h>
 
 #define GLEW_STATIC
 #include "include/GL/glew.h"
@@ -12,4 +12,4 @@
 
 #include "logger.h"
 #include "engine.h"
-#include "stopwatch.h"
+//#include "stopwatch.h"

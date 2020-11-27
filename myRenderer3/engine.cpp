@@ -1,8 +1,6 @@
 #include "engine.h"
 
 #ifdef ENGINECLASS
-
-
 void Engine::InitGlobals()
 {
     setSystemFrequency();
@@ -23,8 +21,10 @@ void Engine::setIsDone(bool value) { g_IsDone = value; }
 
 //to be called only once. not per frame
 void Engine::setSystemFrequency() { QueryPerformanceFrequency(&g_Frequency); }
-Engine::Timer Engine::getSystemFrequency() { return g_Frequency; }
+Stopwatch::Timer Engine::getSystemFrequency() { return g_Frequency; }
+
 #else
+
 static bool g_IsDone;
 Timer g_Frequency;
 EngineMode g_Mode;
