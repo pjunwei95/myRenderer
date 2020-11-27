@@ -3,13 +3,54 @@
 
 #define FPS 30
 
-//#if ENABLE_DEBUG
-#if 1
+//#define ENABLE_DEBUG
+#if ENABLE_DEBUG
 #define DEBUG_ASSERT //for main open console windows on startup
-#define ENABLE_BREAKPOINT
+#define BREAKPOINT_ENABLED
 #endif
 
+#define ENGINECLASS
+#ifdef ENGINECLASS
+class Engine
+{
+public:
+    typedef LARGE_INTEGER Timer;
 
+    enum class EngineMode
+    {
+        MAIN,
+        UNIT_TEST
+    };
+
+    enum class EngineOption
+    {
+        NORMAL,
+        DEBUG
+    };
+
+    void InitGlobals();
+
+    EngineMode& GetMode();
+    void SetMode(EngineMode mode);
+
+    EngineOption& GetOption();
+    void SetOption(EngineOption option);
+
+    void setIsDone(bool value);
+
+    bool getIsDone();
+
+    void setSystemFrequency();
+
+    Timer getSystemFrequency();
+
+private:
+    static bool g_IsDone;
+    Timer g_Frequency;
+    EngineMode g_Mode;
+    EngineOption g_Option;
+};
+#else
 typedef LARGE_INTEGER Timer;
 
 //Screen dimension constants
@@ -28,9 +69,6 @@ enum class EngineOption
     DEBUG
 };
 
-//extern EngineMode g_Mode;
-//extern EngineOption g_Option;
-
 void InitGlobals();
 
 EngineMode& GetMode();
@@ -47,4 +85,4 @@ bool getIsDone();
 void setSystemFrequency();
 
 Timer getSystemFrequency();
-
+#endif

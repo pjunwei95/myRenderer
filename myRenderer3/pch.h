@@ -12,3 +12,4 @@
 
 #include "logger.h"
 #include "engine.h"
+#include "stopwatch.h"

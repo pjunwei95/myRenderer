@@ -14,7 +14,6 @@
 
 #define FILE_NAME "debug.txt"
 
-Timer g_Frequency;
 
 int main(int argc, char *argsv[])
 {
@@ -39,9 +38,3 @@ int main(int argc, char *argsv[])
 
 	return 0;
 }
-
-//to be called only once. not per frame
-void setSystemFrequency() { QueryPerformanceFrequency(&g_Frequency); }
-
-Timer getSystemFrequency() { return g_Frequency; }
-
