@@ -2,14 +2,23 @@
 #include "fileManager.h"
 #include "logger.h"
 
+
+const char* smapleText = "debug\nhi";
+
 void loadConfig()
 {
     //TODO 
     //you can always assume the "config.txt" file will always be present. if not, init default values
+    //logmsg("Loading default configurations\n");
     FileManager fm;
 
-    //logmsg("Loading default configurations\n");
-
+    //fm.rea
+    //search if file exist
+    //  if not exist, create file
+    //      openfile
+    //      write to file
+    //      closefile
+    //  if exist, read
     fm.readAndProcessFile("config.txt", FileManager::TYPE_TEXT);
 }
 

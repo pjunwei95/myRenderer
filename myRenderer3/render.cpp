@@ -18,6 +18,7 @@ MessageCallback(GLenum source,
                 const GLchar *message,
                 const void *userParam)
 {
+    //TODO asserts
     userParam;
     length;
     source;
@@ -118,6 +119,27 @@ void InitGraphics()
     glDebugMessageControl(GL_DONT_CARE, GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR, GL_DONT_CARE, 0, NULL, GL_TRUE);
     //========================Severity
     glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_HIGH, 0, NULL, GL_TRUE);
+
+
+#if 1
+     //Create Vertex Array Object
+  GLuint vao;
+  glGenVertexArrays(1, &vao);
+  glBindVertexArray(vao);
+
+  // Create a Vertex Buffer Object and copy the vertex data to it
+  GLuint vbo;
+  glGenBuffers(1, &vbo);
+
+  GLfloat vertices[] = {
+       0.0f,  0.5f, 1.0f, 0.0f, 0.0f,
+       0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+      -0.5f, -0.5f, 0.0f, 0.0f, 1.0f
+  };
+
+  glBindBuffer(GL_ARRAY_BUFFER, vbo);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+#endif
 
 
 #ifdef SHADER_OBJ
