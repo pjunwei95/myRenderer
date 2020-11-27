@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\unit_test">
+      <UniqueIdentifier>{19b28738-8f18-497d-aefc-675b94b7f868}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -51,31 +54,37 @@
     <ClCompile Include="carray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="array_unitTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="stack_unitTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="circularBuffer_unitTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="profileManager_unitTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="profileManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="runTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="unit_test_math.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="math.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="render.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stopwatch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="array_unitTest.cpp">
+      <Filter>Source Files\unit_test</Filter>
+    </ClCompile>
+    <ClCompile Include="circularBuffer_unitTest.cpp">
+      <Filter>Source Files\unit_test</Filter>
+    </ClCompile>
+    <ClCompile Include="profileManager_unitTest.cpp">
+      <Filter>Source Files\unit_test</Filter>
+    </ClCompile>
+    <ClCompile Include="unit_test_math.cpp">
+      <Filter>Source Files\unit_test</Filter>
+    </ClCompile>
+    <ClCompile Include="stack_unitTest.cpp">
+      <Filter>Source Files\unit_test</Filter>
+    </ClCompile>
+    <ClCompile Include="engine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -131,9 +140,6 @@
     <ClInclude Include="profileManager_unitTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="stopwatch.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
     <ClInclude Include="runTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -155,12 +161,18 @@
     <ClInclude Include="pch.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
+    <ClInclude Include="stopwatch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="render.h">
-      <Filter>Resource Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="config.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="debug.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

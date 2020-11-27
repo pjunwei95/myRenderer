@@ -11,12 +11,12 @@
       "Command": "config"
     },
     {
-      "Id": "a292cc03-64ca-457b-b9bb-caa15860c1c7",
-      "Command": "test"
+      "Id": "3d272f0b-c5b3-408e-9bce-883dd56da098",
+      "Command": "debug"
     },
     {
-      "Id": "65253600-6b29-4efc-a6d7-0b441794726f",
-      "Command": "-DGLEW_STATIC"
+      "Id": "a292cc03-64ca-457b-b9bb-caa15860c1c7",
+      "Command": "test"
     }
   ]
 }

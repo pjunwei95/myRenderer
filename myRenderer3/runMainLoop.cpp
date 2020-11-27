@@ -1,5 +1,3 @@
-#include <crtdbg.h>
-#include "engine.h"
 #include "getKeyInput.h"
 #include "frameRateController.h"
 #include "windowHandler.h"
@@ -8,15 +6,18 @@
 
 void runMainLoop()
 {
-    //_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+    _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 
     FrameRateController frc;
     WindowHandler wh;
 
-
+    //init functions
     if(wh.createWindow())
     {
+        InitGraphics();
+
         while (!getIsDone())
+            //while (!Engine::Instance().getIsDone())
         {
             //TODO encapsulate framewatch to frc class
             Stopwatch frameWatch;
@@ -25,7 +26,6 @@ void runMainLoop()
                 wh.drawWindow();
                 getKeyInput();
                 wh.updateWindow();
-                render();
             }
             frc.idleUntilFPSLimit(frameWatch);
             ProfileManager::Instance().OnProfileFlip();

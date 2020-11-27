@@ -3,22 +3,20 @@
 #include <stdio.h>
 #include "bufferOps.h"
 //#define NDEBUG
-#include <assert.h>
 
-bool FileManager::openFile(const char* fileName, OpenType openType, FileMode fileMode, FileHandle* fileHandle)
+bool FileManager::OpenFile(const char* fileName, OpenType openType, FileMode fileMode)
 {
     assert(fileName);
-    assert(fileHandle);
 
     errno_t err = NULL;
     if (fileMode == MODE_WRITE)
-        err = fopen_s(fileHandle, fileName, "w");
+        err = fopen_s(&m_FileHandle, fileName, "w");
     else if (fileMode == MODE_APPEND)
-        err = fopen_s(fileHandle, fileName, "a");
+        err = fopen_s(&m_FileHandle, fileName, "a");
     else if (fileMode == MODE_READ && openType == TYPE_TEXT)
-        err = fopen_s(fileHandle, fileName, "r"); 
+        err = fopen_s(&m_FileHandle, fileName, "r");
     else if (fileMode == MODE_READ && openType == TYPE_BIN)
-        err = fopen_s(fileHandle, fileName, "rb");
+        err = fopen_s(&m_FileHandle, fileName, "rb");
 
     if (err)
     {
@@ -28,10 +26,10 @@ bool FileManager::openFile(const char* fileName, OpenType openType, FileMode fil
     return true;
 }
 
-void FileManager::closeFile(FileHandle fileHandle)
+void FileManager::CloseFile()
 {
-    assert(fileHandle);
-    fclose(fileHandle);
+    assert(m_FileHandle);
+    fclose(m_FileHandle);
 }
 
 void readToBuffer(const FileManager::FileHandle fileHandle, char* buffer, long length)
@@ -46,24 +44,36 @@ void readToBuffer(const FileManager::FileHandle fileHandle, char* buffer, long l
 
 void FileManager::readAndProcessFile(const char* fileName, OpenType openType)
 {
-    FileHandle fileHandle;
-
-    openFile(fileName, openType, MODE_READ, &fileHandle);
+    OpenFile(fileName, openType, MODE_READ);
 
     char * buffer = 0;
-    long length;
 
-    fseek(fileHandle, 0, SEEK_END);
-    length = ftell(fileHandle);
-    fseek(fileHandle, 0, SEEK_SET);
+    fseek(m_FileHandle, 0, SEEK_END);
+    long length = ftell(m_FileHandle);
+    fseek(m_FileHandle, 0, SEEK_SET);
     buffer = (char *)malloc(length + 1);
 
-    readToBuffer(fileHandle, buffer, length);
+    readToBuffer(m_FileHandle, buffer, length);
 
-    closeFile(fileHandle);
+    CloseFile();
 
     if (openType == TYPE_TEXT)
         tokeniseBuffer(buffer);
 
     free(buffer);
+}
+
+char* FileManager::ReadBuffer()
+{
+    char* buffer = 0;
+    fseek(m_FileHandle, 0, SEEK_END);
+    long length = ftell(m_FileHandle);
+    fseek(m_FileHandle, 0, SEEK_SET);
+    buffer = (char*)malloc(length + 1);
+    assert(buffer);
+    assert(length);
+    size_t value = fread(buffer, 1, length, m_FileHandle);
+    assert(value < length);
+    buffer[value] = '\0';
+    return buffer;
 }
