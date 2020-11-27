@@ -10,15 +10,12 @@
 
 #ifndef DEBUG_ASSERT
 #    pragma comment(linker, "/subsystem:windows /ENTRY:mainCRTStartup")
-#   pragma optimize("", off) //for breakpoints
 #endif
 
 
 #define FILE_NAME "debug.txt"
 
-bool g_IsDone;
 Timer g_Frequency;
-EngineMode g_Mode;
 
 int main(int argc, char *argsv[])
 {
@@ -29,13 +26,13 @@ int main(int argc, char *argsv[])
     processArgs(argc, argsv);
     
     //printf("Press ESC to exit the application\n");
-    if (g_Mode == EngineMode::UNIT_TEST)
+    if (GetMode() == EngineMode::UNIT_TEST)
     {
         runTest();
     }
     else
     {
-        if (!g_IsDone)
+        if (!getIsDone())
             runMainLoop();
     }
 
@@ -43,19 +40,6 @@ int main(int argc, char *argsv[])
 
 	return 0;
 }
-
-void setGlobals()
-{
-    setSystemFrequency();
-    setIsDone(false);
-    setMode(MAIN);
-}
-
-void setMode(EngineMode mode) { g_Mode = mode; }
-
-void setIsDone(bool value) { g_IsDone = value; }
-
-bool getIsDone() { return g_IsDone; }
 
 //to be called only once. not per frame
 void setSystemFrequency() { QueryPerformanceFrequency(&g_Frequency); }

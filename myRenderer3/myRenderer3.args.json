@@ -11,6 +11,10 @@
       "Command": "config"
     },
     {
+      "Id": "3d272f0b-c5b3-408e-9bce-883dd56da098",
+      "Command": "debug"
+    },
+    {
       "Id": "a292cc03-64ca-457b-b9bb-caa15860c1c7",
       "Command": "test"
     }

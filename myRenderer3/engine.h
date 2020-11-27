@@ -2,25 +2,40 @@
 #include <Windows.h>
 
 #define FPS 30
-//#define DEBUG_ASSERT //for main open console windows on startup
+
+//#if ENABLE_DEBUG
+#if 1
+#define DEBUG_ASSERT //for main open console windows on startup
+#define ENABLE_BREAKPOINT
+#endif
+
 
 typedef LARGE_INTEGER Timer;
 
 //Screen dimension constants
-//const int SCREEN_WIDTH = 640;
-//const int SCREEN_HEIGHT = 480;
-const int SCREEN_WIDTH = 800;
-const int SCREEN_HEIGHT = 600;
+const int SCREEN_WIDTH = 800; //640
+const int SCREEN_HEIGHT = 600; //480
 
-enum EngineMode
+enum class EngineMode
 {
     MAIN,
     UNIT_TEST
 };
 
+enum EngineOption
+{
+    NORMAL,
+    DEBUG
+};
+
+//extern EngineMode g_Mode;
+extern EngineOption g_Option;
+
 void setGlobals();
 
-void setMode(EngineMode mode);
+void SetMode(EngineMode mode);
+
+EngineMode& GetMode();
 
 void setIsDone(bool value);
 

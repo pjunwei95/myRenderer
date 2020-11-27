@@ -2,19 +2,22 @@
 #include "fileManager.h"
 #include "array.h"
 
+
+#ifdef ENABLE_BREAKPOINT
 #pragma optimize("",off)
+#endif
 
 const GLchar* vertexSource = "shader.vert";
 const GLchar* fragmentSource = "shader.frag";
 
 void GLAPIENTRY
 MessageCallback(GLenum source,
-    GLenum type,
-    GLuint id,
-    GLenum severity,
-    GLsizei length,
-    const GLchar *message,
-    const void *userParam)
+                GLenum type,
+                GLuint id,
+                GLenum severity,
+                GLsizei length,
+                const GLchar *message,
+                const void *userParam)
 {
     userParam;
     length;
@@ -89,10 +92,14 @@ void InitGraphics()
     logmsg("Status: Using GLEW %s.\n", glewGetString(GLEW_VERSION));
     logmsg("System supports OpenGL %s\n", glGetString(GL_VERSION));
 
-    glEnable(GL_DEBUG_OUTPUT); //TODO to cmdline
+    //g_Option = NORMAL;
+
+    if (g_Option == DEBUG)
+        glEnable(GL_DEBUG_OUTPUT); //TODO to cmdline
     assert(glDebugMessageCallback);
+    
     logmsg("Register OpenGL debug callback\n");
-    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+    //glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     glDebugMessageCallback(MessageCallback, nullptr);
     GLuint unusedIds = 0;
     glDebugMessageControl(GL_DONT_CARE,
@@ -121,8 +128,8 @@ void InitGraphics()
 
     //Create and compile the vertex shader
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    //glShaderSource(vertexShader, 1, &vertexSource, NULL);
-    glShaderSource(vertexShader, 1, &vertexCode, NULL);
+    glShaderSource(vertexShader, 1, &vertexSource, NULL);
+    //glShaderSource(vertexShader, 1, &vertexCode, NULL);
     glCompileShader(vertexShader);
     LogShaderCompilation(vertexShader);
 #endif

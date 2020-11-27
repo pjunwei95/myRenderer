@@ -134,6 +134,7 @@
     <ClCompile Include="circularBuffer_unitTest.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="engine.cpp" />
     <ClCompile Include="fileManager.cpp" />
     <ClCompile Include="drawScreen.cpp" />
     <ClCompile Include="frameRateController.cpp" />

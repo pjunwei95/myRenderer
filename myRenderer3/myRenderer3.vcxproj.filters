@@ -84,6 +84,9 @@
     <ClCompile Include="stack_unitTest.cpp">
       <Filter>Source Files\unit_test</Filter>
     </ClCompile>
+    <ClCompile Include="engine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine.h">

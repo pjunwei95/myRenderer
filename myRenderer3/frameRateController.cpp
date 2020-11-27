@@ -28,7 +28,7 @@ bool FrameRateController::isWithinFrameRate(Stopwatch& timer)
     timer.stop();
     Stopwatch::Timer duration = timer.getDurationUs();
     if (duration.QuadPart > m_DefaultFrameTime.QuadPart) {
-        printf("FPS = %f \n", 1.0 / timer.getDurationSeconds());
+        //printf("FPS = %f \n", 1.0 / timer.getDurationSeconds());
         //logmsg("FPS = %f \n", 1.0 / timer.getDurationSeconds());
         return true;
     }

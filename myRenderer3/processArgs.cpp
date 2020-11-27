@@ -30,10 +30,14 @@ void processArgs(int argc, char *argsv[])
     for (int i = 0; i < argc; ++i)
     {
         char *string = argsv[i];
-        //logmsg("argsv[%d] is \"%s\"\n", i, string);
+
         if (0 == strcmp(string, "test"))
         {
-            setMode(UNIT_TEST);
+            SetMode(EngineMode::UNIT_TEST);
+        }
+        else if (0 == strcmp(string, "debug"))
+        {
+            g_Option = DEBUG;
         }
     }
 }
