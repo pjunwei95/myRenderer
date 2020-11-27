@@ -19,8 +19,8 @@ void Stopwatch::stop()
     updateTimeStamp(m_StopTime);
     m_StopTime.QuadPart = (m_StopTime.QuadPart - m_StartTime.QuadPart); //the units here are in seconds
     m_StopTime.QuadPart *= 1000000; //convert seconds to microseconds
-    m_StopTime.QuadPart /= getSystemFrequency().QuadPart; //machine independence
-    //m_StopTime.QuadPart /= Engine::Instance().getSystemFrequency().QuadPart; //machine independence
+    //m_StopTime.QuadPart /= getSystemFrequency().QuadPart; //machine independence
+    m_StopTime.QuadPart /= Engine::Instance().getSystemFrequency().QuadPart; //machine independence
     m_isStopped = true;
 }
 

@@ -9,17 +9,17 @@
 #define BREAKPOINT_ENABLED
 #endif
 
-//typedef LARGE_INTEGER Timer;
+typedef LARGE_INTEGER Timer;
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 800; //640
 const int SCREEN_HEIGHT = 600; //480
 
-//#define ENGINECLASS
+#define ENGINECLASS
 #ifdef ENGINECLASS
-struct Engine
+class Engine
 {
-    //public:
+public:
     enum class EngineMode
     {
         MAIN,
@@ -46,7 +46,7 @@ struct Engine
 
     void setSystemFrequency();
 
-    Stopwatch::Timer getSystemFrequency();
+    Timer getSystemFrequency();
 
     static Engine& Instance() 
     {
@@ -54,10 +54,10 @@ struct Engine
         return instance;
     }
 
-//private:
+private:
     static Engine* ms_Instance;
-    static bool g_IsDone;
-    Stopwatch::Timer g_Frequency;
+    bool g_IsDone;
+    Timer g_Frequency;
     EngineMode g_Mode;
     EngineOption g_Option;
 };

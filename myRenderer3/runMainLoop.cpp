@@ -16,8 +16,8 @@ void runMainLoop()
     {
         InitGraphics();
 
-        while (!getIsDone())
-            //while (!Engine::Instance().getIsDone())
+        //while (!getIsDone())
+        while (!Engine::Instance().getIsDone())
         {
             //TODO encapsulate framewatch to frc class
             Stopwatch frameWatch;

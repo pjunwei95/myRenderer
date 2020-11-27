@@ -94,7 +94,8 @@ void InitGraphics()
 
     //g_Option = NORMAL;
 
-    if (GetOption() == EngineOption::DEBUG)
+    //if (GetOption() == EngineOption::DEBUG)
+    if (Engine::Instance().GetOption() == Engine::EngineOption::DEBUG)
         glEnable(GL_DEBUG_OUTPUT); //TODO to cmdline
     assert(glDebugMessageCallback);
     
