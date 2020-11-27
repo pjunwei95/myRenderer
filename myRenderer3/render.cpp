@@ -1,6 +1,7 @@
 #include "render.h"
 #include "fileManager.h"
 #include "array.h"
+#include "engine.h"
 
 
 #ifdef ENABLE_BREAKPOINT

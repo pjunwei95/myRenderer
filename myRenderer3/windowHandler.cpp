@@ -1,6 +1,8 @@
 #include "windowHandler.h"
 #include "drawScreen.h"
 #include "profileManager.h"
+#include "engine.h"
+
 
 WindowHandler::WindowHandler()
     : m_Window{ NULL }, m_ScreenSurface{ NULL }

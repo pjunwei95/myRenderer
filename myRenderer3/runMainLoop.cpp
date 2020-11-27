@@ -3,6 +3,7 @@
 #include "windowHandler.h"
 #include "profileManager.h"
 #include "render.h"
+#include "engine.h"
 
 void runMainLoop()
 {

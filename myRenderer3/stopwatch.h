@@ -17,7 +17,7 @@ public:
     void stop();
     float getDurationMs();
     float getDurationSeconds();
-    Timer getDurationUs();
+    Stopwatch::Timer getDurationUs();
 
 private:
     bool m_isStopped;

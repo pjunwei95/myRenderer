@@ -21,7 +21,7 @@ void Engine::setIsDone(bool value) { g_IsDone = value; }
 
 //to be called only once. not per frame
 void Engine::setSystemFrequency() { QueryPerformanceFrequency(&g_Frequency); }
-Timer Engine::getSystemFrequency() { return g_Frequency; }
+Stopwatch::Timer Engine::getSystemFrequency() { return g_Frequency; }
 
 #else
 

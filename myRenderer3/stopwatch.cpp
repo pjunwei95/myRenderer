@@ -1,4 +1,5 @@
 #include "stopwatch.h"
+#include "engine.h"
 
 Stopwatch::Stopwatch()
     : m_isStopped{ false }
@@ -36,7 +37,7 @@ float Stopwatch::getDurationSeconds()
     return (float)m_StopTime.QuadPart / 1000000;
 }
 
-Timer Stopwatch::getDurationUs()
+Stopwatch::Timer Stopwatch::getDurationUs()
 {
     stop();
     return m_StopTime;
