@@ -12,7 +12,6 @@
 #    pragma comment(linker, "/subsystem:windows /ENTRY:mainCRTStartup")
 #endif
 
-
 #define FILE_NAME "debug.txt"
 
 Timer g_Frequency;
@@ -21,14 +20,14 @@ int main(int argc, char *argsv[])
 {
     openLogStream(FILE_NAME);
 
-    setGlobals();
+    InitGlobals();
 
     processArgs(argc, argsv);
     
     //printf("Press ESC to exit the application\n");
     if (GetMode() == EngineMode::UNIT_TEST)
     {
-        runTest();
+        ExecuteAllTests();
     }
     else
     {

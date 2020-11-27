@@ -22,20 +22,23 @@ enum class EngineMode
     UNIT_TEST
 };
 
-enum EngineOption
+enum class EngineOption
 {
     NORMAL,
     DEBUG
 };
 
 //extern EngineMode g_Mode;
-extern EngineOption g_Option;
+//extern EngineOption g_Option;
 
-void setGlobals();
-
-void SetMode(EngineMode mode);
+void InitGlobals();
 
 EngineMode& GetMode();
+void SetMode(EngineMode mode);
+
+
+EngineOption& GetOption();
+void SetOption(EngineOption option);
 
 void setIsDone(bool value);
 

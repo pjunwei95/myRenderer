@@ -5,12 +5,12 @@ EngineMode g_Mode;
 EngineOption g_Option;
 
 
-void setGlobals()
+void InitGlobals()
 {
     setSystemFrequency();
-    setIsDone(false);
+    g_IsDone = false;
     g_Mode = EngineMode::MAIN;
-    g_Option = NORMAL;
+    g_Option = EngineOption::NORMAL;
 }
 
 EngineMode& GetMode()
@@ -21,6 +21,16 @@ EngineMode& GetMode()
 void SetMode(EngineMode mode)
 {
     g_Mode = mode;
+}
+
+void SetOption(EngineOption option)
+{
+    g_Option = option;
+}
+
+EngineOption& GetOption()
+{
+    return g_Option;
 }
 
 

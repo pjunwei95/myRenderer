@@ -37,7 +37,7 @@ void processArgs(int argc, char *argsv[])
         }
         else if (0 == strcmp(string, "debug"))
         {
-            g_Option = DEBUG;
+            SetOption(EngineOption::DEBUG);
         }
     }
 }
