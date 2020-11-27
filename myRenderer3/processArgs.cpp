@@ -1,9 +1,6 @@
 #include "processArgs.h"
-#include <stdio.h>
-#include <string.h>
 #include "fileManager.h"
 #include "logger.h"
-#include "engine.h"
 
 void loadConfig()
 {
@@ -16,7 +13,7 @@ void loadConfig()
     fm.readAndProcessFile("config.txt", FileManager::TYPE_TEXT);
 }
 
-void processArgs(int argc, char *argsv[])
+void ProcessArgs(int argc, char *argsv[])
 {
     if (argc < 2) 
     {

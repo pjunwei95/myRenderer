@@ -1,8 +1,6 @@
 #include "render.h"
 #include "fileManager.h"
 #include "array.h"
-#include "engine.h"
-
 
 #ifdef ENABLE_BREAKPOINT
 #pragma optimize("",off)
@@ -36,7 +34,7 @@ MessageCallback(GLenum source,
     case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
         errorTypeStr = "UNDEFINED_BEHAVIOR";
         break;
-    case GL_DEBUG_TYPE_PORTABILITY: //TODO filter ignore
+    case GL_DEBUG_TYPE_PORTABILITY:
         errorTypeStr = "PORTABILITY";
         break;
     case GL_DEBUG_TYPE_PERFORMANCE:
@@ -52,7 +50,7 @@ MessageCallback(GLenum source,
     }
     logmsg("%s\nid: %i\nseverity: ", errorTypeStr, id);
     const char* severityStr = 0;
-    switch (severity) { //TODO filter null
+    switch (severity) {
     case GL_DEBUG_SEVERITY_LOW:
         severityStr = "LOW";
         break;
@@ -63,21 +61,33 @@ MessageCallback(GLenum source,
         severityStr = "HIGH";
         break;
     }
-    logmsg("%s\n", severityStr);
+    logmsg("%s\n\n", severityStr);
 }
 
-//TODO insert filename here
-void LogShaderCompilation(GLuint shader) 
+void LogShaderCompilation(GLuint shader, const char* fileName) 
 {
     GLint status;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
     char log[512];
     glGetShaderInfoLog(shader, 512, NULL, log);
     if (!strlen(log))
-        logmsg("Compiled successfully!\n");
+        logmsg("%s compiled successfully!\n", fileName);
     else
-        logmsg("Compilation failed!: %s\n", log);
+        logmsg("%s compilation failed!: %s", fileName, log);
 }
+
+//void LogShaderCompilation(GLuint shader)
+//{
+//    GLint status;
+//    glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
+//    char log[512];
+//    glGetShaderInfoLog(shader, 512, NULL, log);
+//    if (!strlen(log))
+//        logmsg("Compiled successfully!\n");
+//    else
+//        logmsg("Compilation failed!: %s\n", log);
+//}
+
 
 void InitGraphics()
 {
@@ -85,31 +95,29 @@ void InitGraphics()
     glewExperimental = GL_TRUE;
     GLenum err = glewInit();
 
-    if (err != GLEW_OK) {
-        logmsg("Error: %s.\n", glewGetErrorString(err));
-        exit(EXIT_FAILURE);
-    }
+    assert(err == GLEW_OK);
 
     logmsg("Status: Using GLEW %s.\n", glewGetString(GLEW_VERSION));
     logmsg("System supports OpenGL %s\n", glGetString(GL_VERSION));
 
-    //g_Option = NORMAL;
-
-    //if (GetOption() == EngineOption::DEBUG)
     if (Engine::Instance().GetOption() == Engine::Option::DEBUG)
-        glEnable(GL_DEBUG_OUTPUT); //TODO to cmdline
+        glEnable(GL_DEBUG_OUTPUT);
+
     assert(glDebugMessageCallback);
-    
     logmsg("Register OpenGL debug callback\n");
-    //glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     glDebugMessageCallback(MessageCallback, nullptr);
-    GLuint unusedIds = 0;
-    glDebugMessageControl(GL_DONT_CARE,
-        GL_DONT_CARE,
-        GL_DONT_CARE,
-        0,
-        &unusedIds,
-        true);
+
+    //Filter debug messages
+    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, GL_FALSE);
+    //========================ErrorTypes:
+    //GL_DEBUG_TYPE_ERROR
+    glDebugMessageControl(GL_DONT_CARE, GL_DEBUG_TYPE_ERROR, GL_DONT_CARE, 0, NULL, GL_TRUE);
+    //GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR
+    glDebugMessageControl(GL_DONT_CARE, GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR, GL_DONT_CARE, 0, NULL, GL_TRUE);
+    //GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR
+    glDebugMessageControl(GL_DONT_CARE, GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR, GL_DONT_CARE, 0, NULL, GL_TRUE);
+    //========================Severity
+    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_HIGH, 0, NULL, GL_TRUE);
 
 
 #ifdef SHADER_OBJ
@@ -130,10 +138,10 @@ void InitGraphics()
 
     //Create and compile the vertex shader
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexSource, NULL);
-    //glShaderSource(vertexShader, 1, &vertexCode, NULL);
+    //glShaderSource(vertexShader, 1, &vertexSource, NULL);
+    glShaderSource(vertexShader, 1, &vertexCode, NULL);
     glCompileShader(vertexShader);
-    LogShaderCompilation(vertexShader);
+    LogShaderCompilation(vertexShader, vertexSource);
 #endif
 
     FileManager fragmentFM(fragmentSource, FileManager::TYPE_TEXT, FileManager::MODE_READ);
@@ -145,9 +153,9 @@ void InitGraphics()
     //glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
     glShaderSource(fragmentShader, 1, &fragmentCode, NULL);
     glCompileShader(fragmentShader);
-    LogShaderCompilation(fragmentShader);
+    LogShaderCompilation(fragmentShader, fragmentSource);
 
-    //free(vertexCode);
+    free(vertexCode);
     free(fragmentCode);
 
     // Link the vertex and fragment shader into a shader program

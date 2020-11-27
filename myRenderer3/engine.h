@@ -14,7 +14,7 @@
 const int SCREEN_WIDTH = 800; //640
 const int SCREEN_HEIGHT = 600; //480
 
-//#define ENGINECLASS
+#define ENGINECLASS
 #ifdef ENGINECLASS
 class Engine
 {

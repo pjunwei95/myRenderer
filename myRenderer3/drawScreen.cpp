@@ -9,7 +9,7 @@ void DrawScreen(SDL_Surface * screenSurface)
 
 void DrawTriangle(WindowHandle window)
 {
-    //// Create Vertex Array Object
+    // Create Vertex Array Object
     //GLuint vao;
     //glGenVertexArrays(1, &vao);
     //glBindVertexArray(vao);

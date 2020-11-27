@@ -1,7 +1,4 @@
 #include "frameRateController.h"
-#include "engine.h"
-#include <stdio.h>
-//#include "profiler.h"
 #include "profileManager.h"
 
 FrameRateController::FrameRateController()

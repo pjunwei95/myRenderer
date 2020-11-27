@@ -1,5 +1,4 @@
 #include "stopwatch.h"
-#include "engine.h"
 
 Stopwatch::Stopwatch()
     : m_isStopped{ false }

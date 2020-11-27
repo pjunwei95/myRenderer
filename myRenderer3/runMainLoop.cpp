@@ -3,9 +3,8 @@
 #include "windowHandler.h"
 #include "profileManager.h"
 #include "render.h"
-#include "engine.h"
 
-void runMainLoop()
+void RunMainLoop()
 {
     _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 
