@@ -15,7 +15,7 @@ void getKeyInput()
         if (e.type == SDL_QUIT)
         {
             //setIsDone(true);
-            Engine::Instance().setIsDone(true);
+            Engine::Instance().SetIsDone(true);
         }
         //User presses a key
         else if (e.type == SDL_KEYDOWN)
@@ -26,7 +26,7 @@ void getKeyInput()
             {
             case SDLK_ESCAPE:
                 //setIsDone(true);
-                Engine::Instance().setIsDone(true);
+                Engine::Instance().SetIsDone(true);
                 break;
             case SDLK_p:
                 logfile("Dumping profile logs:\n");

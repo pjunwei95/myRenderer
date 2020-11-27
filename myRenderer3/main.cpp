@@ -26,14 +26,14 @@ int main(int argc, char *argsv[])
     
     //printf("Press ESC to exit the application\n");
     //if (GetMode() == EngineMode::UNIT_TEST)
-    if (Engine::Instance().GetMode() == Engine::EngineMode::UNIT_TEST)
+    if (Engine::Instance().GetMode() == Engine::Mode::UNIT_TEST)
     {
         ExecuteAllTests();
     }
     else
     {
         //if (!getIsDone())
-        if (!Engine::Instance().getIsDone())
+        if (!Engine::Instance().GetIsDone())
             runMainLoop();
     }
 

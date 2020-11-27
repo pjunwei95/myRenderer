@@ -3,25 +3,17 @@
 #ifdef ENGINECLASS
 void Engine::InitGlobals()
 {
-    setSystemFrequency();
+    SetSystemFrequency();
     g_IsDone = false;
-    g_Mode = EngineMode::MAIN;
-    g_Option = EngineOption::NORMAL;
+    g_Mode = Engine::Mode::MAIN;
+    g_Option = Engine::Option::NORMAL;
 }
 
-Engine::EngineMode& Engine::GetMode() { return g_Mode; }
-void Engine::SetMode(EngineMode mode) { g_Mode = mode; }
-
-Engine::EngineOption& Engine::GetOption() { return g_Option; }
-void Engine::SetOption(EngineOption option) { g_Option = option; }
-
-bool Engine::getIsDone() { return g_IsDone; }
-void Engine::setIsDone(bool value) { g_IsDone = value; }
-
-
-//to be called only once. not per frame
-void Engine::setSystemFrequency() { QueryPerformanceFrequency(&g_Frequency); }
-Stopwatch::Timer Engine::getSystemFrequency() { return g_Frequency; }
+Engine& Engine::Instance()
+{
+    static Engine instance;
+    return instance;
+}
 
 #else
 

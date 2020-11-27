@@ -5,9 +5,9 @@
 #define FPS 30
 
 //#define ENABLE_DEBUG
-#if ENABLE_DEBUG
-#define DEBUG_ASSERT //for main open console windows on startup
-#define BREAKPOINT_ENABLED
+#ifdef ENABLE_DEBUG
+#define DEBUG_ASSERT //for debugging asserts by opening console window messages
+#define BREAKPOINT_ENABLED //for enabling breakpoints on release
 #endif
 
 //Screen dimension constants
@@ -19,44 +19,41 @@ const int SCREEN_HEIGHT = 600; //480
 class Engine
 {
 public:
-    enum class EngineMode
+    enum class Mode
     {
         MAIN,
         UNIT_TEST
     };
 
-    enum class EngineOption
+    enum class Option
     {
         NORMAL,
         DEBUG
     };
 
+    static Engine& Instance();
     void InitGlobals();
 
-    EngineMode& GetMode();
-    void SetMode(EngineMode mode);
+    inline Mode& GetMode() { return g_Mode; }
+    inline void SetMode(Mode mode) { g_Mode = mode; }
 
-    EngineOption& GetOption();
-    void SetOption(EngineOption option);
+    inline Option& GetOption() { return g_Option; }
+    inline void SetOption(Option option) { g_Option = option; }
 
-    bool getIsDone();
-    void setIsDone(bool value);
+    inline bool GetIsDone() { return g_IsDone; }
+    inline void SetIsDone(bool value) { g_IsDone = value; }
 
-    Stopwatch::Timer getSystemFrequency();
-    void setSystemFrequency();
+    //to be called only once. not per frame
+    inline void SetSystemFrequency() { QueryPerformanceFrequency(&g_Frequency); }
+    inline Stopwatch::Timer GetSystemFrequency() { return g_Frequency; }
 
-    static Engine& Instance() 
-    {
-        static Engine instance;
-        return instance;
-    }
 
 private:
     static Engine* ms_Instance;
     bool g_IsDone;
     Stopwatch::Timer g_Frequency;
-    EngineMode g_Mode;
-    EngineOption g_Option;
+    Mode g_Mode;
+    Option g_Option;
 };
 #else
 typedef LARGE_INTEGER Timer;
