@@ -9,8 +9,6 @@ void DrawScreen(SDL_Surface * screenSurface)
 
 void DrawTriangle()
 {
-
-
     // Clear the screen to black
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);

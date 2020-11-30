@@ -1,11 +1,8 @@
 #include "fileManager.h"
 #include "logger.h"
 #include <stdarg.h>
-#include <cassert>
 #include <string.h>
-#include <Windows.h>
 
-#define CHAR_MAX_LIMIT 256
 
 FileManager logManager;
 

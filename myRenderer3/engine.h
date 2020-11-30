@@ -3,6 +3,11 @@
 #include "stopwatch.h"
 
 #define FPS 30
+#define CHAR_MAX_LIMIT 256
+
+//Macros
+#define STRINGIFY(x) #x
+#define TOSTRING(x) STRINGIFY(x)
 
 #define ENABLE_DEBUG
 #ifdef ENABLE_DEBUG
