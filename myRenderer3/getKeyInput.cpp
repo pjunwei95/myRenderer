@@ -11,7 +11,6 @@ void getKeyInput()
         //User requests quit
         if (e.type == SDL_QUIT)
         {
-            //setIsDone(true);
             Engine::Instance().SetIsDone(true);
         }
         //User presses a key
@@ -22,7 +21,6 @@ void getKeyInput()
             switch (e.key.keysym.sym)
             {
             case SDLK_ESCAPE:
-                //setIsDone(true);
                 Engine::Instance().SetIsDone(true);
                 break;
             case SDLK_p:

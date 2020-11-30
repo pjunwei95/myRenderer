@@ -41,12 +41,10 @@ void ProcessArgs(int argc, char *argsv[])
 
         if (0 == strcmp(string, "test"))
         {
-            //SetMode(EngineMode::UNIT_TEST);
             Engine::Instance().SetMode(Engine::Mode::UNIT_TEST);
         }
         else if (0 == strcmp(string, "debug"))
         {
-            //SetOption(EngineOption::DEBUG);
             Engine::Instance().SetOption(Engine::Option::DEBUG);
         }
     }

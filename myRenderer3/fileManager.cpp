@@ -1,5 +1,4 @@
 #include "fileManager.h"
-#include <Windows.h>
 #include "bufferOps.h"
 
 void FileManager::OpenFile(const char* fileName, OpenType openType, FileMode fileMode)
