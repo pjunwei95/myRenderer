@@ -1,15 +1,9 @@
 #pragma once
 
-//#define SHADER_OBJ
-
-#ifdef SHADER_OBJ
-struct Shader
+enum ShaderType
 {
-    const char* m_FileName = 0;
-    char* m_Buffer = 0;
-    long m_BufferLength = 0;
-    GLuint m_Shader;
+    VERTEX = GL_VERTEX_SHADER,
+    FRAGMENT = GL_FRAGMENT_SHADER
 };
-#endif
 
 void InitGraphics();

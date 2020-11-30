@@ -1,7 +1,6 @@
 #include "array_unitTest.h"
 #include "logger.h"
 #include "array.h"
-//TODO 
 //You should run suites of unit tests based off the commandline
 //unit tests will meticulously test every functionality of  your Array / Circular buffer etc, with hardcoded inputs, and will compare them with hard coded expected values to ensure nothing breaks
 

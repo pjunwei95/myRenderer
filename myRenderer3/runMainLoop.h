@@ -1,3 +1,3 @@
 #pragma once
 
-void runMainLoop();
+void RunMainLoop();

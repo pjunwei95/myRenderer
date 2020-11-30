@@ -1,11 +1,8 @@
 //#define SDL_MAIN_HANDLED
 //#pragma comment (lib, "opengl32.lib")
-#include <stdio.h>
-#include "engine.h"
 #include "processArgs.h"
 #include "runMainLoop.h"
 #include "fileManager.h"
-#include "logger.h"
 #include "runTest.h"
 
 #ifndef DEBUG_ASSERT
@@ -17,27 +14,24 @@
 
 int main(int argc, char *argsv[])
 {
-    openLogStream(FILE_NAME);
+    OpenLogStream(FILE_NAME);
 
-    InitGlobals();
-    //Engine::Instance().InitGlobals();
+    Engine::Instance().InitGlobals();
 
-    processArgs(argc, argsv);
+    ProcessArgs(argc, argsv);
     
     //printf("Press ESC to exit the application\n");
-    if (GetMode() == EngineMode::UNIT_TEST)
-        //if (Engine::Instance().GetMode() == Engine::EngineMode::UNIT_TEST)
+    if (Engine::Instance().GetMode() == Engine::Mode::UNIT_TEST)
     {
         ExecuteAllTests();
     }
     else
     {
-        if (!getIsDone())
-            //if (!Engine::Instance().getIsDone())
-            runMainLoop();
+        if (!Engine::Instance().GetIsDone())
+            RunMainLoop();
     }
 
-    closeLogStream();
+    CloseLogStream();
 
 	return 0;
 }

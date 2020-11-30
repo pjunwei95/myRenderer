@@ -1,32 +1,75 @@
 #pragma once
 #include <Windows.h>
+#include "stopwatch.h"
 
 #define FPS 30
+#define CHAR_MAX_LIMIT 256
 
-//#define ENABLE_DEBUG
-#if ENABLE_DEBUG
-#define DEBUG_ASSERT //for main open console windows on startup
-#define BREAKPOINT_ENABLED
+//Macros
+#define STRINGIFY(x) #x
+#define TOSTRING(x) STRINGIFY(x)
+
+#define ENABLE_DEBUG
+#ifdef ENABLE_DEBUG
+//#define DEBUG_ASSERT //for debugging asserts by opening console window messages
+#define BREAKPOINT_ENABLED //for enabling breakpoints on release
 #endif
-
-//typedef LARGE_INTEGER Timer;
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 800; //640
 const int SCREEN_HEIGHT = 600; //480
 
-//#define ENGINECLASS
+#define ENGINECLASS
 #ifdef ENGINECLASS
-struct Engine
+class Engine
 {
-    //public:
-    enum class EngineMode
+public:
+    enum class Mode
     {
         MAIN,
         UNIT_TEST
     };
 
-    enum class EngineOption
+    enum class Option
+    {
+        NORMAL,
+        DEBUG
+    };
+
+    static Engine& Instance();
+    void InitGlobals();
+
+    inline Mode& GetMode() { return g_Mode; }
+    inline void SetMode(Mode mode) { g_Mode = mode; }
+
+    inline Option& GetOption() { return g_Option; }
+    inline void SetOption(Option option) { g_Option = option; }
+
+    inline bool GetIsDone() { return g_IsDone; }
+    inline void SetIsDone(bool value) { g_IsDone = value; }
+
+    //to be called only once. not per frame
+    inline void SetSystemFrequency() { QueryPerformanceFrequency(&g_Frequency); }
+    inline Stopwatch::Timer GetSystemFrequency() { return g_Frequency; }
+
+
+private:
+    static Engine* ms_Instance;
+    bool g_IsDone;
+    Stopwatch::Timer g_Frequency;
+    Mode g_Mode;
+    Option g_Option;
+};
+#else
+namespace Engine
+{
+    enum class Mode
+    {
+        MAIN,
+        UNIT_TEST
+    };
+
+    enum class Option
     {
         NORMAL,
         DEBUG
@@ -34,62 +77,22 @@ struct Engine
 
     void InitGlobals();
 
-    EngineMode& GetMode();
-    void SetMode(EngineMode mode);
+    inline Mode& GetMode() { return g_Mode; }
+    inline void SetMode(Mode mode) { g_Mode = mode; }
 
-    EngineOption& GetOption();
-    void SetOption(EngineOption option);
+    inline Option& GetOption() { return g_Option; }
+    inline void SetOption(Option option) { g_Option = option; }
 
-    void setIsDone(bool value);
+    inline bool GetIsDone() { return g_IsDone; }
+    inline void SetIsDone(bool value) { g_IsDone = value; }
 
-    bool getIsDone();
+    //to be called only once. not per frame
+    inline void SetSystemFrequency() { QueryPerformanceFrequency(&g_Frequency); }
+    inline Stopwatch::Timer GetSystemFrequency() { return g_Frequency; }
 
-    void setSystemFrequency();
-
-    Stopwatch::Timer getSystemFrequency();
-
-    static Engine& Instance() 
-    {
-        static Engine instance;
-        return instance;
-    }
-
-//private:
-    static Engine* ms_Instance;
-    static bool g_IsDone;
+    bool g_IsDone;
     Stopwatch::Timer g_Frequency;
-    EngineMode g_Mode;
-    EngineOption g_Option;
+    Mode g_Mode;
+    Option g_Option;
 };
-#else
-typedef LARGE_INTEGER Timer;
-
-enum class EngineMode
-{
-    MAIN,
-    UNIT_TEST
-};
-
-enum class EngineOption
-{
-    NORMAL,
-    DEBUG
-};
-
-void InitGlobals();
-
-EngineMode& GetMode();
-void SetMode(EngineMode mode);
-
-
-EngineOption& GetOption();
-void SetOption(EngineOption option);
-
-void setIsDone(bool value);
-
-bool getIsDone();
-
-void setSystemFrequency();
-
-Timer getSystemFrequency();
 #endif

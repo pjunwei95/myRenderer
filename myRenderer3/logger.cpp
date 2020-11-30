@@ -1,11 +1,8 @@
 #include "fileManager.h"
 #include "logger.h"
 #include <stdarg.h>
-#include <cassert>
 #include <string.h>
-#include <Windows.h>
 
-#define CHAR_MAX_LIMIT 256
 
 FileManager logManager;
 
@@ -42,14 +39,14 @@ void logfile(const char *format, ...)
 }
 
 
-void openLogStream(const char* fileName)
+void OpenLogStream(const char* fileName)
 {
     logManager.OpenFile(fileName, FileManager::TYPE_TEXT, FileManager::MODE_WRITE);
     OutputDebugString("===========Output Begin===========\n");
     fprintf(logManager.GetFileHandle(), "===========Logging Begin===========\n");
 }
 
-void closeLogStream()
+void CloseLogStream()
 {
     OutputDebugString("===========Output End=============\n");
     fprintf(logManager.GetFileHandle(), "===========Logging End=============\n");

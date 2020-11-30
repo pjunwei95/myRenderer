@@ -1,22 +1,30 @@
 #include "processArgs.h"
-#include <stdio.h>
-#include <string.h>
 #include "fileManager.h"
 #include "logger.h"
-#include "engine.h"
+
+#ifdef BREAKPOINT_ENABLED
+#pragma optimize("", off)
+#endif
+const char* smapleText = "debug\nhi";
 
 void loadConfig()
 {
     //TODO 
     //you can always assume the "config.txt" file will always be present. if not, init default values
+    //logmsg("Loading default configurations\n");
     FileManager fm;
 
-    //logmsg("Loading default configurations\n");
-
+    //fm.rea
+    //search if file exist
+    //  if not exist, create file
+    //      openfile
+    //      write to file
+    //      closefile
+    //  if exist, read
     fm.readAndProcessFile("config.txt", FileManager::TYPE_TEXT);
 }
 
-void processArgs(int argc, char *argsv[])
+void ProcessArgs(int argc, char *argsv[])
 {
     if (argc < 2) 
     {
@@ -33,13 +41,11 @@ void processArgs(int argc, char *argsv[])
 
         if (0 == strcmp(string, "test"))
         {
-            SetMode(EngineMode::UNIT_TEST);
-            //Engine::Instance().SetMode(Engine::EngineMode::UNIT_TEST);
+            Engine::Instance().SetMode(Engine::Mode::UNIT_TEST);
         }
         else if (0 == strcmp(string, "debug"))
         {
-            SetOption(EngineOption::DEBUG);
-            //Engine::Instance().SetOption(Engine::EngineOption::DEBUG);
+            Engine::Instance().SetOption(Engine::Option::DEBUG);
         }
     }
 }

@@ -5,9 +5,9 @@
 
 //#define ASSERT(condition) if(!(condition)) logmsg("ASSERT FAILED: %s @ %s (%d)\n", #condition, __FILE__, __LINE__ )
 
-void openLogStream(const char* fileName);
+void OpenLogStream(const char* fileName);
 
-void closeLogStream();
+void CloseLogStream();
 
 void logmsg(const char * format, ...);
 
