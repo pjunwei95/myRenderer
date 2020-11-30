@@ -2,7 +2,7 @@
 #include "fileManager.h"
 #include "array.h"
 
-#ifdef ENABLE_BREAKPOINT
+#ifdef BREAKPOINT_ENABLED
 #pragma optimize("",off)
 #endif
 
@@ -92,7 +92,15 @@ void LogShaderCompilation(GLuint shader, const char* fileName)
 
 void InitGraphics()
 {
-    // Initialize GLEW
+    //set contexts
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
+    SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG | SDL_GL_CONTEXT_DEBUG_FLAG);
+
+#if 1
+    //Initialize GLEW
     glewExperimental = GL_TRUE;
     GLenum err = glewInit();
 
@@ -132,9 +140,9 @@ void InitGraphics()
   glGenBuffers(1, &vbo);
 
   GLfloat vertices[] = {
-       0.0f,  0.5f, 1.0f, 0.0f, 0.0f,
-       0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-      -0.5f, -0.5f, 0.0f, 0.0f, 1.0f
+       0.0f,  0.5f,
+       0.5f, -0.5f,
+      -0.5f, -0.5f
   };
 
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -160,7 +168,6 @@ void InitGraphics()
 
     //Create and compile the vertex shader
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    //glShaderSource(vertexShader, 1, &vertexSource, NULL);
     glShaderSource(vertexShader, 1, &vertexCode, NULL);
     glCompileShader(vertexShader);
     LogShaderCompilation(vertexShader, vertexSource);
@@ -172,7 +179,6 @@ void InitGraphics()
 
     // Create and compile the fragment shader
     GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    //glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
     glShaderSource(fragmentShader, 1, &fragmentCode, NULL);
     glCompileShader(fragmentShader);
     LogShaderCompilation(fragmentShader, fragmentSource);
@@ -191,5 +197,71 @@ void InitGraphics()
     glBindFragDataLocation(shaderProgram, 0, "outColor");
     glLinkProgram(shaderProgram);
     glUseProgram(shaderProgram);
+
+
+    //to be extracted
+#if 1
+        // Specify the layout of the vertex data
+    GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
+    glEnableVertexAttribArray(posAttrib);
+    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
+#endif
+
+#else
+// Initialize GLEW
+glewExperimental = GL_TRUE;
+glewInit();
+
+// Create Vertex Array Object
+GLuint vao;
+glGenVertexArrays(1, &vao);
+glBindVertexArray(vao);
+
+// Create a Vertex Buffer Object and copy the vertex data to it
+GLuint vbo;
+glGenBuffers(1, &vbo);
+
+GLfloat vertices[] = {
+     0.0f,  0.5f,
+     0.5f, -0.5f,
+    -0.5f, -0.5f
+};
+
+glBindBuffer(GL_ARRAY_BUFFER, vbo);
+glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+
+FileManager vertexFM(vertexSource, FileManager::TYPE_TEXT, FileManager::MODE_READ);
+char* vertexCode = (char*)malloc(vertexFM.GetBufferLength());
+vertexFM.ReadBufferWithLength(vertexCode, vertexFM.GetBufferLength());
+
+FileManager fragmentFM(fragmentSource, FileManager::TYPE_TEXT, FileManager::MODE_READ);
+char* fragmentCode = (char*)malloc(fragmentFM.GetBufferLength());
+fragmentFM.ReadBufferWithLength(fragmentCode, fragmentFM.GetBufferLength());
+
+// Create and compile the vertex shader
+GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+glShaderSource(vertexShader, 1, &vertexCode, NULL);
+glCompileShader(vertexShader);
+
+// Create and compile the fragment shader
+GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+glShaderSource(fragmentShader, 1, &fragmentCode, NULL);
+glCompileShader(fragmentShader);
+
+// Link the vertex and fragment shader into a shader program
+GLuint shaderProgram = glCreateProgram();
+glAttachShader(shaderProgram, vertexShader);
+glAttachShader(shaderProgram, fragmentShader);
+glBindFragDataLocation(shaderProgram, 0, "outColor");
+glLinkProgram(shaderProgram);
+glUseProgram(shaderProgram);
+
+// Specify the layout of the vertex data
+GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
+glEnableVertexAttribArray(posAttrib);
+glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
+#endif
 
 }

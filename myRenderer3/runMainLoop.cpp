@@ -11,25 +11,18 @@ void RunMainLoop()
     FrameRateController frc;
     WindowHandler wh;
 
-    //init functions
-    if(wh.createWindow())
+    while (!Engine::Instance().GetIsDone())
     {
-        InitGraphics();
-
-        while (!Engine::Instance().GetIsDone())
+        //TODO encapsulate framewatch to frc class
+        Stopwatch frameWatch;
         {
-            //TODO encapsulate framewatch to frc class
-            Stopwatch frameWatch;
-            {
-                PROFILE_SCOPED(Frame);
-                wh.drawWindow();
-                getKeyInput();
-                wh.updateWindow();
-            }
-            frc.idleUntilFPSLimit(frameWatch);
-            ProfileManager::Instance().OnProfileFlip();
+            PROFILE_SCOPED(Frame);
+            wh.drawWindow();
+            getKeyInput();
+            wh.updateWindow();
         }
-        wh.destroyWindow();
+        frc.idleUntilFPSLimit(frameWatch);
+        ProfileManager::Instance().OnProfileFlip();
     }
 }
 

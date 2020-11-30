@@ -1,17 +1,19 @@
 #include "windowHandler.h"
 #include "drawScreen.h"
 #include "profileManager.h"
+#include "render.h"
 
 //TODO convert this to graphics manager class
 WindowHandler::WindowHandler()
     : m_Window{ NULL }, m_ScreenSurface{ NULL }
 {
-    //set contexts
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
-    SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS , SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG | SDL_GL_CONTEXT_DEBUG_FLAG);
+    if (createWindow())
+        InitGraphics();
+}
+
+WindowHandler::~WindowHandler()
+{
+    DestroyWindow();
 }
 
 bool WindowHandler::createWindow()
@@ -51,7 +53,7 @@ void WindowHandler::drawWindow()
 
     {
         PROFILE_SCOPED(DrawTriangle);
-        DrawTriangle(m_Window);
+        DrawTriangle();
         //Fill the surface white
         //drawScreen(m_ScreenSurface);
     }
@@ -60,9 +62,12 @@ void WindowHandler::updateWindow()
 {
     PROFILE_FUNCTION();
     //Update the surface
-    SDL_UpdateWindowSurface(m_Window);
+    //SDL_UpdateWindowSurface(m_Window);
+
+    //Swap buffers
+    SDL_GL_SwapWindow(m_Window);
 }
-void WindowHandler::destroyWindow()
+void WindowHandler::DestroyWindow()
 {
     SDL_GL_DeleteContext(m_Context);
 
@@ -72,3 +77,4 @@ void WindowHandler::destroyWindow()
     //Quit SDL subsystems
     SDL_Quit();
 }
+

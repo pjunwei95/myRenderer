@@ -10,6 +10,7 @@
 #define GLEW_STATIC
 #include "include/GL/glew.h"
 #include "include/sdl/SDL_opengl.h"
+#include "include/sdl/SDL.h"
 
 #include "logger.h"
 #include "engine.h"

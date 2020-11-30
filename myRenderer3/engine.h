@@ -4,9 +4,9 @@
 
 #define FPS 30
 
-//#define ENABLE_DEBUG
+#define ENABLE_DEBUG
 #ifdef ENABLE_DEBUG
-#define DEBUG_ASSERT //for debugging asserts by opening console window messages
+//#define DEBUG_ASSERT //for debugging asserts by opening console window messages
 #define BREAKPOINT_ENABLED //for enabling breakpoints on release
 #endif
 
