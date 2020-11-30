@@ -110,7 +110,7 @@ GLuint CompileShader(const char* shaderFile, ShaderType shaderType)
     return shader;
 }
 
-//Wrap up a shaderProgram class
+//TODO Wrap up a shaderProgram class
 
 void InitGraphics()
 {
