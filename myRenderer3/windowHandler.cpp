@@ -2,7 +2,7 @@
 #include "drawScreen.h"
 #include "profileManager.h"
 
-
+//TODO convert this to graphics manager class
 WindowHandler::WindowHandler()
     : m_Window{ NULL }, m_ScreenSurface{ NULL }
 {

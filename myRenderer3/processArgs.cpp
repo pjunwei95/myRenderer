@@ -2,7 +2,9 @@
 #include "fileManager.h"
 #include "logger.h"
 
-
+#ifdef BREAKPOINT_ENABLED
+#pragma optimize("", off)
+#endif
 const char* smapleText = "debug\nhi";
 
 void loadConfig()

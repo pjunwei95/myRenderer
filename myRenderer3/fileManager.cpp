@@ -1,29 +1,28 @@
 #include "fileManager.h"
 #include <Windows.h>
-#include <stdio.h>
 #include "bufferOps.h"
-//#define NDEBUG
 
-bool FileManager::OpenFile(const char* fileName, OpenType openType, FileMode fileMode)
+void FileManager::OpenFile(const char* fileName, OpenType openType, FileMode fileMode)
 {
     assert(fileName);
 
     errno_t err = NULL;
+    const char* mode;
     if (fileMode == MODE_WRITE)
-        err = fopen_s(&m_FileHandle, fileName, "w");
+        mode = "w";
     else if (fileMode == MODE_APPEND)
-        err = fopen_s(&m_FileHandle, fileName, "a");
+        mode = "a";
     else if (fileMode == MODE_READ && openType == TYPE_TEXT)
-        err = fopen_s(&m_FileHandle, fileName, "r");
+        mode = "r";
     else if (fileMode == MODE_READ && openType == TYPE_BIN)
-        err = fopen_s(&m_FileHandle, fileName, "rb");
+        mode = "rb";
+    else
+        mode = nullptr;
+
+    err = fopen_s(&m_FileHandle, fileName, mode);
 
     if (err)
-    {
-        printf("Error opening data file %s\n", fileName);
-        return false;
-    }
-    return true;
+        logmsg("Error opening data file %s\n", fileName);
 }
 
 void FileManager::CloseFile()
@@ -76,4 +75,24 @@ char* FileManager::ReadBuffer()
     assert(value < length);
     buffer[value] = '\0';
     return buffer;
+}
+
+char* FileManager::ReadBufferWithLength(char* buffer, long length)
+{
+    assert(buffer);
+    size_t value = fread(buffer, 1, length, m_FileHandle);
+    assert(value < length);
+    buffer[value] = '\0';
+    return buffer;
+}
+
+// always return length + 1 to account for null terminating character
+long FileManager::GetBufferLength()
+{
+    assert(m_FileHandle);
+    fseek(m_FileHandle, 0, SEEK_END);
+    long length = ftell(m_FileHandle);
+    fseek(m_FileHandle, 0, SEEK_SET);
+    assert(length);
+    return length + 1;
 }
