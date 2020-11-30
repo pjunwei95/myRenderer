@@ -69,7 +69,10 @@ void LogShaderCompilation(GLuint shader, const char* fileName)
 {
     GLint status;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
-    char log[512];
+
+    assert(status == GL_TRUE);
+
+    char log[256];
     glGetShaderInfoLog(shader, 512, NULL, log);
     if (!strlen(log))
         logmsg("%s compiled successfully!\n", fileName);
@@ -77,18 +80,20 @@ void LogShaderCompilation(GLuint shader, const char* fileName)
         logmsg("%s compilation failed!: %s", fileName, log);
 }
 
-//void LogShaderCompilation(GLuint shader)
-//{
-//    GLint status;
-//    glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
-//    char log[512];
-//    glGetShaderInfoLog(shader, 512, NULL, log);
-//    if (!strlen(log))
-//        logmsg("Compiled successfully!\n");
-//    else
-//        logmsg("Compilation failed!: %s\n", log);
-//}
+GLuint CompileShader(const char* shaderFile, ShaderType shaderType)
+{
+    FileManager fm(shaderFile, FileManager::TYPE_TEXT, FileManager::MODE_READ);
+    char* code = (char*)malloc(fm.GetBufferLength());
+    fm.ReadBufferWithLength(code, fm.GetBufferLength());
 
+    GLuint shader = glCreateShader(shaderType);
+    glShaderSource(shader, 1, &code, NULL);
+    glCompileShader(shader);
+    LogShaderCompilation(shader, shaderFile);
+    free(code);
+
+    return shader;
+}
 
 void InitGraphics()
 {
@@ -99,7 +104,6 @@ void InitGraphics()
     SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG | SDL_GL_CONTEXT_DEBUG_FLAG);
 
-#if 1
     //Initialize GLEW
     glewExperimental = GL_TRUE;
     GLenum err = glewInit();
@@ -128,140 +132,43 @@ void InitGraphics()
     //========================Severity
     glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_HIGH, 0, NULL, GL_TRUE);
 
-
-#if 1
-     //Create Vertex Array Object
-  GLuint vao;
-  glGenVertexArrays(1, &vao);
-  glBindVertexArray(vao);
-
-  // Create a Vertex Buffer Object and copy the vertex data to it
-  GLuint vbo;
-  glGenBuffers(1, &vbo);
-
-  GLfloat vertices[] = {
-       0.0f,  0.5f,
-       0.5f, -0.5f,
-      -0.5f, -0.5f
-  };
-
-  glBindBuffer(GL_ARRAY_BUFFER, vbo);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-#endif
-
-
-#ifdef SHADER_OBJ
-    Shader vShaderObj;
-    vShaderObj.m_FileName = vertexSource;
-    FileManager foo(vShaderObj.m_FileName, FileManager::TYPE_TEXT, FileManager::MODE_READ);
-    vShaderObj.m_BufferLength = foo.GetBufferLength();
-    vShaderObj.m_Buffer = (char*)malloc(vShaderObj.m_BufferLength);
-    foo.ReadBufferWithLength(vShaderObj.m_Buffer, vShaderObj.m_BufferLength);
-    vShaderObj.m_Shader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vShaderObj.m_Shader, 1, &vShaderObj.m_Buffer, NULL);
-    glCompileShader(vShaderObj.m_Shader);
-    LogShaderCompilation(vShaderObj.m_Shader);
-#else
-    FileManager vertexFM(vertexSource, FileManager::TYPE_TEXT, FileManager::MODE_READ);
-    char* vertexCode = (char*)malloc(vertexFM.GetBufferLength());
-    vertexFM.ReadBufferWithLength(vertexCode, vertexFM.GetBufferLength());
-
-    //Create and compile the vertex shader
-    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexCode, NULL);
-    glCompileShader(vertexShader);
-    LogShaderCompilation(vertexShader, vertexSource);
-#endif
-
-    FileManager fragmentFM(fragmentSource, FileManager::TYPE_TEXT, FileManager::MODE_READ);
-    char* fragmentCode = (char*)malloc(fragmentFM.GetBufferLength());
-    fragmentFM.ReadBufferWithLength(fragmentCode, fragmentFM.GetBufferLength());
-
-    // Create and compile the fragment shader
-    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentCode, NULL);
-    glCompileShader(fragmentShader);
-    LogShaderCompilation(fragmentShader, fragmentSource);
-
-    free(vertexCode);
-    free(fragmentCode);
+    //Create and compile the shaders
+    GLuint vertexShader = CompileShader(vertexSource, ShaderType::VERTEX);
+    GLuint fragmentShader = CompileShader(fragmentSource, ShaderType::FRAGMENT);
 
     // Link the vertex and fragment shader into a shader program
     GLuint shaderProgram = glCreateProgram();
-#ifdef SHADER_OBJ
-    glAttachShader(shaderProgram, vShaderObj.m_Shader);
-#else
     glAttachShader(shaderProgram, vertexShader);
-#endif
     glAttachShader(shaderProgram, fragmentShader);
     glBindFragDataLocation(shaderProgram, 0, "outColor");
     glLinkProgram(shaderProgram);
     glUseProgram(shaderProgram);
 
-
     //to be extracted
 #if 1
-        // Specify the layout of the vertex data
+    //Create Vertex Array Object
+    GLuint vao;
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+
+    // Create a Vertex Buffer Object and copy the vertex data to it
+    GLuint vbo;
+    glGenBuffers(1, &vbo);
+
+    GLfloat vertices[] = {
+         0.0f,  0.5f,
+         0.5f, -0.5f,
+        -0.5f, -0.5f
+    };
+
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+#endif
+#if 1
+    // Specify the layout of the vertex data
     GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
     glEnableVertexAttribArray(posAttrib);
     glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
-
 #endif
-
-#else
-// Initialize GLEW
-glewExperimental = GL_TRUE;
-glewInit();
-
-// Create Vertex Array Object
-GLuint vao;
-glGenVertexArrays(1, &vao);
-glBindVertexArray(vao);
-
-// Create a Vertex Buffer Object and copy the vertex data to it
-GLuint vbo;
-glGenBuffers(1, &vbo);
-
-GLfloat vertices[] = {
-     0.0f,  0.5f,
-     0.5f, -0.5f,
-    -0.5f, -0.5f
-};
-
-glBindBuffer(GL_ARRAY_BUFFER, vbo);
-glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-
-FileManager vertexFM(vertexSource, FileManager::TYPE_TEXT, FileManager::MODE_READ);
-char* vertexCode = (char*)malloc(vertexFM.GetBufferLength());
-vertexFM.ReadBufferWithLength(vertexCode, vertexFM.GetBufferLength());
-
-FileManager fragmentFM(fragmentSource, FileManager::TYPE_TEXT, FileManager::MODE_READ);
-char* fragmentCode = (char*)malloc(fragmentFM.GetBufferLength());
-fragmentFM.ReadBufferWithLength(fragmentCode, fragmentFM.GetBufferLength());
-
-// Create and compile the vertex shader
-GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-glShaderSource(vertexShader, 1, &vertexCode, NULL);
-glCompileShader(vertexShader);
-
-// Create and compile the fragment shader
-GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-glShaderSource(fragmentShader, 1, &fragmentCode, NULL);
-glCompileShader(fragmentShader);
-
-// Link the vertex and fragment shader into a shader program
-GLuint shaderProgram = glCreateProgram();
-glAttachShader(shaderProgram, vertexShader);
-glAttachShader(shaderProgram, fragmentShader);
-glBindFragDataLocation(shaderProgram, 0, "outColor");
-glLinkProgram(shaderProgram);
-glUseProgram(shaderProgram);
-
-// Specify the layout of the vertex data
-GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
-glEnableVertexAttribArray(posAttrib);
-glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
-#endif
-
 }
