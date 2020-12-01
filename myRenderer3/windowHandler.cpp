@@ -4,11 +4,14 @@
 #include "render.h"
 
 //TODO convert this to graphics manager class
+//these should all belong to your Graphics Engine, not Window class
+//actually, if anything, Window Creation should now belong to GraphicInit
+
 WindowHandler::WindowHandler()
     : m_Window{ NULL }, m_ScreenSurface{ NULL }
 {
-    if (createWindow())
-        InitGraphics();
+    createWindow();
+    InitGraphics();
 }
 
 WindowHandler::~WindowHandler()
@@ -16,41 +19,28 @@ WindowHandler::~WindowHandler()
     DestroyWindow();
 }
 
-bool WindowHandler::createWindow()
+void WindowHandler::createWindow()
 {
     //Initialize SDL
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
-    {
-        logmsg("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-        return false;
-    }
-    else
-    {
-        //Create window
-        //window = SDL_CreateWindow("Renderer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-        //    SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-        m_Window = SDL_CreateWindow("Renderer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-            SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL);
-        if (m_Window == NULL)
-        {
-            logmsg("Window could not be created! SDL_Error: %s\n", SDL_GetError());
-            return false;
-        }
-        else
-        {
-            m_Context = SDL_GL_CreateContext(m_Window);
-            return true;
-        }
-    }
+    assert(SDL_Init(SDL_INIT_VIDEO) >= 0);
+    //logmsg("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+
+    //Create window
+    m_Window = SDL_CreateWindow("Renderer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+        SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL);
+    assert(m_Window);
+    //logmsg("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+    //logmsg("SDL Error: %s\n", SDL_GetError());
+
+    m_Context = SDL_GL_CreateContext(m_Window);
 }
 
-void WindowHandler::drawWindow()
+void WindowHandler::DrawWindow()
 {
     PROFILE_FUNCTION();
 
     //Get window surface
     m_ScreenSurface = SDL_GetWindowSurface(m_Window);
-
     {
         PROFILE_SCOPED(DrawTriangle);
         DrawTriangle();
@@ -58,7 +48,7 @@ void WindowHandler::drawWindow()
         //drawScreen(m_ScreenSurface);
     }
 }
-void WindowHandler::updateWindow()
+void WindowHandler::UpdateWindow()
 {
     PROFILE_FUNCTION();
     //Update the surface

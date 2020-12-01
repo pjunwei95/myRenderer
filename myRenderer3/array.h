@@ -1,13 +1,19 @@
 #pragma once
-#define USE_STD 
+//#define USE_STD 
 #ifdef USE_STD
 #include <algorithm>
 #endif
 
 template<typename T>
 class Array {
+#if 1
 private:
     T* m_Data; // pointer to array
+#else
+public:
+    T* m_Data; // pointer to array
+private:
+#endif
     uint32_t m_Size; // number of elements
     uint32_t m_Capacity; // available memory size
 
@@ -39,6 +45,8 @@ public:
     {
         return m_Data[index];
     }
+
+    T* const& GetData() { return m_Data; }
 
     uint32_t size() const 
     {

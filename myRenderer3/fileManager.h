@@ -1,4 +1,6 @@
 #pragma once
+#include "array.h"
+
 class FileManager
 {
 public:
@@ -34,13 +36,32 @@ public:
     }
 
     inline FileHandle GetFileHandle() { return m_FileHandle; }
+    inline uint32_t GetFileSize() { return m_FileSize; }
+
     void OpenFile(const char * fileName, OpenType openType, FileMode fileMode);
     void CloseFile();
     void readAndProcessFile(const char * fileName, OpenType openType);
+    void SetFileSize(); // always return length + 1 to account for null terminating character
+    //char* ReadBuffer();
+    //char* ReadBufferWithLength(char* buffer, long length);
+    
+    template<typename T>
+    void ReadArray(Array<T>& buffer);
 
-    char* ReadBuffer();
-    char* ReadBufferWithLength(char* buffer, long length);
-    long GetBufferLength(); // always return length + 1 to account for null terminating character
 private:
     FileHandle m_FileHandle;
+    uint32_t m_FileSize;
 };
+
+template<typename T>
+void FileManager::ReadArray(Array<T>& array)
+{
+    assert(!array.size());
+    int c;
+    while ((c = fgetc(m_FileHandle)) != EOF)
+    {
+        array.pushBack((T)c);
+    }
+    array.pushBack(0);
+    assert(array.size() < (uint32_t)m_FileSize);
+}

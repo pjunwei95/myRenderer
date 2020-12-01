@@ -88,6 +88,7 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <ForcedIncludeFiles>pch.h</ForcedIncludeFiles>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;opengl32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -187,8 +188,8 @@
     <Text Include="debug.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shader.frag" />
-    <None Include="shader.vert" />
+    <None Include="res\shader.frag" />
+    <None Include="res\shader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -8,9 +8,9 @@ public:
     WindowHandler();
     ~WindowHandler();
 
-    bool createWindow();
-    void drawWindow();
-    void updateWindow();
+    void createWindow();
+    void DrawWindow();
+    void UpdateWindow();
     void DestroyWindow();
 private:
     //SDL Properties

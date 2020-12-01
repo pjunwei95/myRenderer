@@ -8,8 +8,8 @@
 
 //TODO macro to debug each glCalls
 
-const GLchar* vertexSource = "shader.vert";
-const GLchar* fragmentSource = "shader.frag";
+const GLchar* vertexSource = "res/shader.vert";
+const GLchar* fragmentSource = "res/shader.frag";
 
 void GLAPIENTRY
 MessageCallback(GLenum source,
@@ -21,9 +21,9 @@ MessageCallback(GLenum source,
                 const void *userParam)
 {
     //TODO asserts
-    userParam;
-    length;
-    source;
+    assert(source);
+    assert(length);
+    assert(userParam);
     logmsg("---------------------Callback-----------------\n");
     logmsg("message: %s\ntype: ", message);
     const char* errorTypeStr = 0;
@@ -76,8 +76,8 @@ void CheckProgramStatus(GLuint shaderProgram, GLenum pname, const char* identifi
     if (!strlen(msg))
         logmsg("%s OK!\n", identifier);
     else
-        logmsg("%s: %s", identifier, msg);
-    assert(status == GL_TRUE);
+        logmsg("%s:\n%s\n", identifier, msg);
+    //assert(status == GL_TRUE);
 }
 
 void CheckShaderCompilation(GLuint shader, const char* fileName) 
@@ -91,21 +91,20 @@ void CheckShaderCompilation(GLuint shader, const char* fileName)
         logmsg("%s compiled successfully!\n", fileName);
     else
         logmsg("%s compilation failed!: %s", fileName, msg);
-    assert(status == GL_TRUE);
+    //assert(status == GL_TRUE);
 }
-
 
 GLuint CompileShader(const char* shaderFile, ShaderType shaderType)
 {
     FileManager fm(shaderFile, FileManager::TYPE_TEXT, FileManager::MODE_READ);
-    char* code = (char*)malloc(fm.GetBufferLength());
-    fm.ReadBufferWithLength(code, fm.GetBufferLength());
+    Array<GLchar> shaderCode;
+    fm.ReadArray(shaderCode);
 
     GLuint shader = glCreateShader(shaderType);
-    glShaderSource(shader, 1, &code, NULL);
+    glShaderSource(shader, 1, &shaderCode.GetData(), NULL);
+    //glShaderSource(shader, 1, &shaderCode.m_Data, NULL);
     glCompileShader(shader);
     CheckShaderCompilation(shader, shaderFile);
-    free(code);
 
     return shader;
 }
@@ -118,8 +117,6 @@ void InitGraphics()
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
-    SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG | SDL_GL_CONTEXT_DEBUG_FLAG);
 
     //Initialize GLEW
     glewExperimental = GL_TRUE;
@@ -134,25 +131,24 @@ void InitGraphics()
         glEnable(GL_DEBUG_OUTPUT);
 
     assert(glDebugMessageCallback);
-    logmsg("Register OpenGL debug callback\n");
+    logmsg("Registered OpenGL debug callback\n");
     glDebugMessageCallback(MessageCallback, nullptr);
 
     //Filter debug messages
-    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, GL_FALSE);
+    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, GL_TRUE);
     //========================ErrorTypes:
-    //GL_DEBUG_TYPE_ERROR
-    glDebugMessageControl(GL_DONT_CARE, GL_DEBUG_TYPE_ERROR, GL_DONT_CARE, 0, NULL, GL_TRUE);
-    //GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR
-    glDebugMessageControl(GL_DONT_CARE, GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR, GL_DONT_CARE, 0, NULL, GL_TRUE);
-    //GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR
-    glDebugMessageControl(GL_DONT_CARE, GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR, GL_DONT_CARE, 0, NULL, GL_TRUE);
+    glDebugMessageControl(GL_DONT_CARE, GL_DEBUG_TYPE_PORTABILITY, GL_DONT_CARE, 0, NULL, GL_FALSE);
+    glDebugMessageControl(GL_DONT_CARE, GL_DEBUG_TYPE_PERFORMANCE, GL_DONT_CARE, 0, NULL, GL_FALSE);
+    glDebugMessageControl(GL_DONT_CARE, GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR, GL_DONT_CARE, 0, NULL, GL_FALSE);
     //========================Severity
-    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_HIGH, 0, NULL, GL_TRUE);
+    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_LOW, 0, NULL, GL_FALSE);
+    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, NULL, GL_FALSE);
 
     //Create and compile the shaders
     GLuint vertexShader = CompileShader(vertexSource, ShaderType::VERTEX);
     GLuint fragmentShader = CompileShader(fragmentSource, ShaderType::FRAGMENT);
 
+    //TODO throw all of this into the "CompileShader" function
     // Link the vertex and fragment shader into a shader program
     GLuint shaderProgram = glCreateProgram();
     glAttachShader(shaderProgram, vertexShader);
@@ -164,7 +160,7 @@ void InitGraphics()
     CheckProgramStatus(shaderProgram, GL_VALIDATE_STATUS, STRINGIFY(GL_VALIDATE_STATUS));
     glUseProgram(shaderProgram);
 
-    //to be extracted
+    //TODO to be extracted into a seperate independent Vertex Buffer class. Else your entire app will forever bind these 3 vertices
 #if 1
 
     // Create a Vertex Buffer Object and copy the vertex data to it
@@ -172,9 +168,9 @@ void InitGraphics()
     glGenBuffers(1, &vbo);
 
     GLfloat vertices[] = {
-         0.0f,  0.5f,
-         0.5f, -0.5f,
-        -0.5f, -0.5f
+         0.0f,  0.5f, 1.0f, 0.0f, 0.0f, // Vertex 1: Red
+         0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // Vertex 2: Green
+        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f  // Vertex 3: Blue
     };
 
     //Create Vertex Array Object
@@ -187,10 +183,33 @@ void InitGraphics()
 
 #endif
 #if 1
+    //Specify input vertex format for vertex shader
     // Specify the layout of the vertex data
     GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
     glEnableVertexAttribArray(posAttrib);
-    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE,
+        5 * sizeof(float), 0);
+
+    GLint colAttrib = glGetAttribLocation(shaderProgram, "color");
+    glEnableVertexAttribArray(colAttrib);
+    glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE,
+        5 * sizeof(float), (void*)(2 * sizeof(float)));
 #endif
+
+
+#if 0
+    glDeleteProgram(shaderProgram);
+    glDeleteShader(fragmentShader);
+    glDeleteShader(vertexShader);
+
+    glDeleteBuffers(1, &vbo);
+
+    glDeleteVertexArrays(1, &vao);
+#endif
+}
+
+void DestroyGraphics()
+{
+
 }
 

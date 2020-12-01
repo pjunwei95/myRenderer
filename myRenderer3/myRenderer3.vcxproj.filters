@@ -177,10 +177,10 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shader.vert">
+    <None Include="res\shader.frag">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="shader.frag">
+    <None Include="res\shader.vert">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
