@@ -20,7 +20,6 @@ int main(int argc, char *argsv[])
 
     ProcessArgs(argc, argsv);
     
-    //printf("Press ESC to exit the application\n");
     if (Engine::Instance().GetMode() == Engine::Mode::UNIT_TEST)
     {
         ExecuteAllTests();

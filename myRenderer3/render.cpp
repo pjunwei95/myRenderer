@@ -8,8 +8,8 @@
 
 //TODO macro to debug each glCalls
 
-const GLchar* vertexSource = "shader.vert";
-const GLchar* fragmentSource = "shader.frag";
+const GLchar* vertexSource = "res/shader.vert";
+const GLchar* fragmentSource = "res/shader.frag";
 
 void GLAPIENTRY
 MessageCallback(GLenum source,
@@ -21,9 +21,9 @@ MessageCallback(GLenum source,
                 const void *userParam)
 {
     //TODO asserts
-    userParam;
-    length;
-    source;
+    assert(source);
+    assert(length);
+    assert(userParam);
     logmsg("---------------------Callback-----------------\n");
     logmsg("message: %s\ntype: ", message);
     const char* errorTypeStr = 0;
@@ -94,24 +94,17 @@ void CheckShaderCompilation(GLuint shader, const char* fileName)
     //assert(status == GL_TRUE);
 }
 
-
 GLuint CompileShader(const char* shaderFile, ShaderType shaderType)
 {
     FileManager fm(shaderFile, FileManager::TYPE_TEXT, FileManager::MODE_READ);
-    char* code = (char*)malloc(fm.GetBufferLength());
-    fm.ReadBufferWithLength(code, fm.GetBufferLength());
-    //TODO use an Array<char>
-    //Array<char> shaderCode;
-    //shaderCode.reserve(fm.GetBufferLength());
-    //fm.ReadCharArrayWithLength(shaderCode, fm.GetBufferLength());
-    //shaderCode.
+    Array<GLchar> shaderCode;
+    fm.ReadArray(shaderCode);
 
     GLuint shader = glCreateShader(shaderType);
-    glShaderSource(shader, 1, &code, NULL);
-    //glShaderSource(shader, 1, &shaderFile, NULL);
+    glShaderSource(shader, 1, &shaderCode.GetData(), NULL);
+    //glShaderSource(shader, 1, &shaderCode.m_Data, NULL);
     glCompileShader(shader);
     CheckShaderCompilation(shader, shaderFile);
-    //free(code);
 
     return shader;
 }
@@ -124,8 +117,6 @@ void InitGraphics()
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
-    SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG | SDL_GL_CONTEXT_DEBUG_FLAG);
 
     //Initialize GLEW
     glewExperimental = GL_TRUE;
@@ -140,7 +131,7 @@ void InitGraphics()
         glEnable(GL_DEBUG_OUTPUT);
 
     assert(glDebugMessageCallback);
-    logmsg("Register OpenGL debug callback\n");
+    logmsg("Registered OpenGL debug callback\n");
     glDebugMessageCallback(MessageCallback, nullptr);
 
     //Filter debug messages
@@ -150,7 +141,6 @@ void InitGraphics()
     glDebugMessageControl(GL_DONT_CARE, GL_DEBUG_TYPE_PERFORMANCE, GL_DONT_CARE, 0, NULL, GL_FALSE);
     glDebugMessageControl(GL_DONT_CARE, GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR, GL_DONT_CARE, 0, NULL, GL_FALSE);
     //========================Severity
-    //glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_HIGH, 0, NULL, GL_FALSE);
     glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_LOW, 0, NULL, GL_FALSE);
     glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, NULL, GL_FALSE);
 
@@ -178,9 +168,9 @@ void InitGraphics()
     glGenBuffers(1, &vbo);
 
     GLfloat vertices[] = {
-         0.0f,  0.5f,
-         0.5f, -0.5f,
-        -0.5f, -0.5f
+         0.0f,  0.5f, 1.0f, 0.0f, 0.0f, // Vertex 1: Red
+         0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // Vertex 2: Green
+        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f  // Vertex 3: Blue
     };
 
     //Create Vertex Array Object
@@ -197,7 +187,29 @@ void InitGraphics()
     // Specify the layout of the vertex data
     GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
     glEnableVertexAttribArray(posAttrib);
-    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE,
+        5 * sizeof(float), 0);
+
+    GLint colAttrib = glGetAttribLocation(shaderProgram, "color");
+    glEnableVertexAttribArray(colAttrib);
+    glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE,
+        5 * sizeof(float), (void*)(2 * sizeof(float)));
 #endif
+
+
+#if 0
+    glDeleteProgram(shaderProgram);
+    glDeleteShader(fragmentShader);
+    glDeleteShader(vertexShader);
+
+    glDeleteBuffers(1, &vbo);
+
+    glDeleteVertexArrays(1, &vao);
+#endif
+}
+
+void DestroyGraphics()
+{
+
 }
 

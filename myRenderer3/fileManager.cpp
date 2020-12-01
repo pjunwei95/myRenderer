@@ -1,11 +1,9 @@
 #include "fileManager.h"
 #include "bufferOps.h"
-#include "array.h"
 
 void FileManager::OpenFile(const char* fileName, OpenType openType, FileMode fileMode)
 {
     assert(fileName);
-
     errno_t err = NULL;
     const char* mode;
     if (fileMode == MODE_WRITE)
@@ -20,6 +18,7 @@ void FileManager::OpenFile(const char* fileName, OpenType openType, FileMode fil
         mode = nullptr;
 
     err = fopen_s(&m_FileHandle, fileName, mode);
+    SetFileSize();
 
     if (err)
         logmsg("Error opening data file %s\n", fileName);
@@ -62,46 +61,37 @@ void FileManager::readAndProcessFile(const char* fileName, OpenType openType)
     free(buffer);
 }
 
-char* FileManager::ReadBuffer()
-{
-    //char* buffer = 0;
-    //fseek(m_FileHandle, 0, SEEK_END);
-    //long length = ftell(m_FileHandle);
-    //fseek(m_FileHandle, 0, SEEK_SET);
-    //buffer = (char*)malloc(length + 1);
-    //assert(buffer);
-    //assert(length);
-    //size_t value = fread(buffer, 1, length, m_FileHandle);
-    //assert(value < length);
-    //buffer[value] = '\0';
-    //return buffer;
-}
-
-char* FileManager::ReadBufferWithLength(char* buffer, long length)
-{
-    assert(buffer);
-    size_t value = fread(buffer, 1, length, m_FileHandle);
-    assert(value < length);
-    buffer[value] = '\0';
-    return buffer;
-}
-
-//void FileManager::ReadCharArrayWithLength(Array<char> buffer, long length)
-//{
-//    assert(!buffer.size());
-//    size_t value = fread(&buffer[0], 1, length, m_FileHandle);
-//    assert(value < length);
-//    buffer[value] = '\0';
-//}
-
-
 // always return length + 1 to account for null terminating character
-long FileManager::GetBufferLength()
+void FileManager::SetFileSize()
 {
     assert(m_FileHandle);
     fseek(m_FileHandle, 0, SEEK_END);
-    long length = ftell(m_FileHandle);
+    m_FileSize = ftell(m_FileHandle) + 1;
     fseek(m_FileHandle, 0, SEEK_SET);
-    assert(length);
-    return length + 1;
+    assert(m_FileSize);
 }
+
+//char* FileManager::ReadBuffer()
+//{
+//    char* buffer = 0;
+//    fseek(m_FileHandle, 0, SEEK_END);
+//    long length = ftell(m_FileHandle);
+//    fseek(m_FileHandle, 0, SEEK_SET);
+//    buffer = (char*)malloc(length + 1);
+//    assert(buffer);
+//    assert(length);
+//    size_t value = fread(buffer, 1, length, m_FileHandle);
+//    assert(value < length);
+//    buffer[value] = '\0';
+//    return buffer;
+//}
+
+//char* FileManager::ReadBufferWithLength(char* buffer, long length)
+//{
+//    assert(buffer);
+//    size_t value = fread(buffer, 1, length, m_FileHandle);
+//    assert(value < length);
+//    buffer[value] = '\0';
+//    return buffer;
+//}
+
