@@ -1,5 +1,6 @@
 #include "fileManager.h"
 #include "bufferOps.h"
+#include "array.h"
 
 void FileManager::OpenFile(const char* fileName, OpenType openType, FileMode fileMode)
 {
@@ -63,17 +64,17 @@ void FileManager::readAndProcessFile(const char* fileName, OpenType openType)
 
 char* FileManager::ReadBuffer()
 {
-    char* buffer = 0;
-    fseek(m_FileHandle, 0, SEEK_END);
-    long length = ftell(m_FileHandle);
-    fseek(m_FileHandle, 0, SEEK_SET);
-    buffer = (char*)malloc(length + 1);
-    assert(buffer);
-    assert(length);
-    size_t value = fread(buffer, 1, length, m_FileHandle);
-    assert(value < length);
-    buffer[value] = '\0';
-    return buffer;
+    //char* buffer = 0;
+    //fseek(m_FileHandle, 0, SEEK_END);
+    //long length = ftell(m_FileHandle);
+    //fseek(m_FileHandle, 0, SEEK_SET);
+    //buffer = (char*)malloc(length + 1);
+    //assert(buffer);
+    //assert(length);
+    //size_t value = fread(buffer, 1, length, m_FileHandle);
+    //assert(value < length);
+    //buffer[value] = '\0';
+    //return buffer;
 }
 
 char* FileManager::ReadBufferWithLength(char* buffer, long length)
@@ -84,6 +85,15 @@ char* FileManager::ReadBufferWithLength(char* buffer, long length)
     buffer[value] = '\0';
     return buffer;
 }
+
+//void FileManager::ReadCharArrayWithLength(Array<char> buffer, long length)
+//{
+//    assert(!buffer.size());
+//    size_t value = fread(&buffer[0], 1, length, m_FileHandle);
+//    assert(value < length);
+//    buffer[value] = '\0';
+//}
+
 
 // always return length + 1 to account for null terminating character
 long FileManager::GetBufferLength()

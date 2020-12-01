@@ -77,7 +77,7 @@ void CheckProgramStatus(GLuint shaderProgram, GLenum pname, const char* identifi
         logmsg("%s OK!\n", identifier);
     else
         logmsg("%s:\n%s\n", identifier, msg);
-    assert(status == GL_TRUE);
+    //assert(status == GL_TRUE);
 }
 
 void CheckShaderCompilation(GLuint shader, const char* fileName) 
@@ -91,7 +91,7 @@ void CheckShaderCompilation(GLuint shader, const char* fileName)
         logmsg("%s compiled successfully!\n", fileName);
     else
         logmsg("%s compilation failed!: %s", fileName, msg);
-    assert(status == GL_TRUE);
+    //assert(status == GL_TRUE);
 }
 
 
@@ -99,15 +99,19 @@ GLuint CompileShader(const char* shaderFile, ShaderType shaderType)
 {
     FileManager fm(shaderFile, FileManager::TYPE_TEXT, FileManager::MODE_READ);
     char* code = (char*)malloc(fm.GetBufferLength());
-    //TODO use an Array<char>
     fm.ReadBufferWithLength(code, fm.GetBufferLength());
+    //TODO use an Array<char>
+    //Array<char> shaderCode;
+    //shaderCode.reserve(fm.GetBufferLength());
+    //fm.ReadCharArrayWithLength(shaderCode, fm.GetBufferLength());
+    //shaderCode.
 
     GLuint shader = glCreateShader(shaderType);
     glShaderSource(shader, 1, &code, NULL);
     //glShaderSource(shader, 1, &shaderFile, NULL);
     glCompileShader(shader);
     CheckShaderCompilation(shader, shaderFile);
-    free(code);
+    //free(code);
 
     return shader;
 }

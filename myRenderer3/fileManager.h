@@ -40,6 +40,7 @@ public:
 
     char* ReadBuffer();
     char* ReadBufferWithLength(char* buffer, long length);
+    //void ReadCharArrayWithLength(Array<char> buffer, long length);
     long GetBufferLength(); // always return length + 1 to account for null terminating character
 private:
     FileHandle m_FileHandle;
