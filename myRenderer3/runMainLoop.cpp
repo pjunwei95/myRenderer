@@ -17,9 +17,9 @@ void RunMainLoop()
         Stopwatch frameWatch;
         {
             PROFILE_SCOPED(Frame);
-            wh.drawWindow();
+            wh.DrawWindow();
             getKeyInput();
-            wh.updateWindow();
+            wh.UpdateWindow();
         }
         frc.idleUntilFPSLimit(frameWatch);
         ProfileManager::Instance().OnProfileFlip();

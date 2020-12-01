@@ -76,7 +76,7 @@ void CheckProgramStatus(GLuint shaderProgram, GLenum pname, const char* identifi
     if (!strlen(msg))
         logmsg("%s OK!\n", identifier);
     else
-        logmsg("%s: %s", identifier, msg);
+        logmsg("%s:\n%s\n", identifier, msg);
     assert(status == GL_TRUE);
 }
 
@@ -99,10 +99,12 @@ GLuint CompileShader(const char* shaderFile, ShaderType shaderType)
 {
     FileManager fm(shaderFile, FileManager::TYPE_TEXT, FileManager::MODE_READ);
     char* code = (char*)malloc(fm.GetBufferLength());
+    //TODO use an Array<char>
     fm.ReadBufferWithLength(code, fm.GetBufferLength());
 
     GLuint shader = glCreateShader(shaderType);
     glShaderSource(shader, 1, &code, NULL);
+    //glShaderSource(shader, 1, &shaderFile, NULL);
     glCompileShader(shader);
     CheckShaderCompilation(shader, shaderFile);
     free(code);
@@ -138,21 +140,21 @@ void InitGraphics()
     glDebugMessageCallback(MessageCallback, nullptr);
 
     //Filter debug messages
-    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, GL_FALSE);
+    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, GL_TRUE);
     //========================ErrorTypes:
-    //GL_DEBUG_TYPE_ERROR
-    glDebugMessageControl(GL_DONT_CARE, GL_DEBUG_TYPE_ERROR, GL_DONT_CARE, 0, NULL, GL_TRUE);
-    //GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR
-    glDebugMessageControl(GL_DONT_CARE, GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR, GL_DONT_CARE, 0, NULL, GL_TRUE);
-    //GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR
-    glDebugMessageControl(GL_DONT_CARE, GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR, GL_DONT_CARE, 0, NULL, GL_TRUE);
+    glDebugMessageControl(GL_DONT_CARE, GL_DEBUG_TYPE_PORTABILITY, GL_DONT_CARE, 0, NULL, GL_FALSE);
+    glDebugMessageControl(GL_DONT_CARE, GL_DEBUG_TYPE_PERFORMANCE, GL_DONT_CARE, 0, NULL, GL_FALSE);
+    glDebugMessageControl(GL_DONT_CARE, GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR, GL_DONT_CARE, 0, NULL, GL_FALSE);
     //========================Severity
-    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_HIGH, 0, NULL, GL_TRUE);
+    //glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_HIGH, 0, NULL, GL_FALSE);
+    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_LOW, 0, NULL, GL_FALSE);
+    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, NULL, GL_FALSE);
 
     //Create and compile the shaders
     GLuint vertexShader = CompileShader(vertexSource, ShaderType::VERTEX);
     GLuint fragmentShader = CompileShader(fragmentSource, ShaderType::FRAGMENT);
 
+    //TODO throw all of this into the "CompileShader" function
     // Link the vertex and fragment shader into a shader program
     GLuint shaderProgram = glCreateProgram();
     glAttachShader(shaderProgram, vertexShader);
@@ -164,7 +166,7 @@ void InitGraphics()
     CheckProgramStatus(shaderProgram, GL_VALIDATE_STATUS, STRINGIFY(GL_VALIDATE_STATUS));
     glUseProgram(shaderProgram);
 
-    //to be extracted
+    //TODO to be extracted into a seperate independent Vertex Buffer class. Else your entire app will forever bind these 3 vertices
 #if 1
 
     // Create a Vertex Buffer Object and copy the vertex data to it
@@ -187,6 +189,7 @@ void InitGraphics()
 
 #endif
 #if 1
+    //Specify input vertex format for vertex shader
     // Specify the layout of the vertex data
     GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
     glEnableVertexAttribArray(posAttrib);

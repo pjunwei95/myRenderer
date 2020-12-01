@@ -10,7 +10,7 @@
 #endif
 
 #define FILE_NAME "debug.txt"
-
+//TODO your profiler is still dumping to the default "debug.txt".dump it to a separate file
 
 int main(int argc, char *argsv[])
 {
