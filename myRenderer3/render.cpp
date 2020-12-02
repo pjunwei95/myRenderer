@@ -68,26 +68,13 @@ MessageCallback(GLenum source,
     logmsg("%s\n\n", severityStr);
 }
 
-void CheckProgramStatus(GLuint shaderProgram, GLenum pname, const char* identifier)
-{
-    GLint status;
-    glGetProgramiv(shaderProgram, pname, &status);
-    char msg[CHAR_MAX_LIMIT];
-    glGetProgramInfoLog(shaderProgram, CHAR_MAX_LIMIT, NULL, msg);
-    if (!strlen(msg))
-        logmsg("%s OK!\n", identifier);
-    else
-        logmsg("%s:\n%s\n", identifier, msg);
-    assert(status == GL_TRUE);
-}
-
-void CheckShaderCompilation(GLuint shader, const char* fileName) 
+void CheckShaderCompilation(GLuint shader, const char* fileName)
 {
     assert(fileName);
     GLint status;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
 
-    if (status == GL_FALSE)
+    if (status != GL_TRUE)
     {
         int length;
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
@@ -98,8 +85,35 @@ void CheckShaderCompilation(GLuint shader, const char* fileName)
 
         glDeleteShader(shader); //before asserting to delete resources
     }
-    assert(status == GL_TRUE);
+    //assert(status == GL_TRUE);
 }
+
+void CheckProgramStatus(GLuint shaderProgram, GLenum pname, const char* identifier)
+{
+    GLint status;
+    glGetProgramiv(shaderProgram, pname, &status);
+#if 1
+    if (status != GL_TRUE)
+    {
+        int length;
+        glGetProgramiv(shaderProgram, GL_INFO_LOG_LENGTH, &length);
+        Array<GLchar> message;
+        message.reserve(length);
+        glGetProgramInfoLog(shaderProgram, message.capacity(), &length, message.GetData());
+        logmsg("%s FAILED\n%s\n", identifier, message.GetData());
+        glDeleteProgram(shaderProgram);
+    }
+#else
+    char msg[CHAR_MAX_LIMIT];
+    glGetProgramInfoLog(shaderProgram, CHAR_MAX_LIMIT, NULL, msg);
+    if (!strlen(msg))
+        logmsg("%s OK!\n", identifier);
+    else
+        logmsg("%s:\n%s\n", identifier, msg);
+#endif
+    //assert(status == GL_TRUE);
+}
+
 
 GLuint CompileShader(const char* shaderFile, ShaderType shaderType)
 {
@@ -192,6 +206,9 @@ void InitGraphics()
     glGenBuffers(1, &vbo);
 
     GLfloat vertices[] = {
+        // 0.0f,  0.5f, 0.0f, 0.0f, 0.5f, // Vertex 1: Red
+        // 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, // Vertex 2: Green
+        //-0.5f, -0.5f, 0.0f, 0.0f, 0.5f  // Vertex 3: Blue
          0.0f,  0.5f, 1.0f, 0.0f, 0.0f, // Vertex 1: Red
          0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // Vertex 2: Green
         -0.5f, -0.5f, 0.0f, 0.0f, 1.0f  // Vertex 3: Blue
