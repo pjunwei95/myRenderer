@@ -6,7 +6,24 @@
 #pragma optimize("",off)
 #endif
 
-//TODO macro to debug each glCalls
+//macro to debug each glCalls
+//#define ASSERT(x) if (!(x)) __debugbreak();
+//#define GLCall(x) GLClearError();\
+//    x;\
+//    ASSERT(GLLogCall(#x, __FILE__, __LINE__))
+//
+//static void GLClearError() { while (glGetError() != GL_NO_ERROR); }
+//
+//static bool GLLogCall(const char* function, const char* file, int line)
+//{
+//    while (GLenum error = glGetError())
+//    {
+//        logmsg("[OpenGL Error] (%s): %s : %i\n", function, file, line);
+//        return false;
+//    }
+//    return true;
+//}
+
 
 const GLchar* vertexSource = "res/shader.vert";
 const GLchar* fragmentSource = "res/shader.frag";
@@ -21,9 +38,7 @@ MessageCallback(GLenum source,
                 const void *userParam)
 {
     //TODO asserts
-    assert(source);
-    assert(length);
-    assert(userParam);
+
     logmsg("---------------------Callback-----------------\n");
     logmsg("message: %s\ntype: ", message);
     const char* errorTypeStr = 0;
@@ -65,49 +80,100 @@ MessageCallback(GLenum source,
         break;
     }
     logmsg("%s\n\n", severityStr);
+    assert(source);
+    assert(length);
+    assert(userParam);
+}
+
+void CheckShaderCompilation(GLuint shader, const char* fileName)
+{
+    assert(fileName);
+    GLint status;
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
+
+    if (status != GL_TRUE)
+    {
+        int length;
+        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
+        Array<GLchar> message;
+        message.reserve(length);
+        glGetShaderInfoLog(shader, length, &length, message.GetData());
+        logmsg("Failed to compile %s\n%s\n", fileName, message.GetData());
+
+        glDeleteShader(shader); //before asserting to delete resources
+    }
+    //assert(status == GL_TRUE);
 }
 
 void CheckProgramStatus(GLuint shaderProgram, GLenum pname, const char* identifier)
 {
     GLint status;
     glGetProgramiv(shaderProgram, pname, &status);
+#if 1
+    if (status != GL_TRUE)
+    {
+        int length;
+        glGetProgramiv(shaderProgram, GL_INFO_LOG_LENGTH, &length);
+        Array<GLchar> message;
+        message.reserve(length);
+        glGetProgramInfoLog(shaderProgram, message.capacity(), &length, message.GetData());
+        logmsg("%s FAILED\n%s\n", identifier, message.GetData());
+        glDeleteProgram(shaderProgram);
+    }
+#else
     char msg[CHAR_MAX_LIMIT];
     glGetProgramInfoLog(shaderProgram, CHAR_MAX_LIMIT, NULL, msg);
     if (!strlen(msg))
         logmsg("%s OK!\n", identifier);
     else
         logmsg("%s:\n%s\n", identifier, msg);
+#endif
     //assert(status == GL_TRUE);
 }
 
-void CheckShaderCompilation(GLuint shader, const char* fileName) 
-{
-    assert(fileName);
-    GLint status;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
-    char msg[CHAR_MAX_LIMIT];
-    glGetShaderInfoLog(shader, CHAR_MAX_LIMIT, NULL, msg);
-    if (!strlen(msg))
-        logmsg("%s compiled successfully!\n", fileName);
-    else
-        logmsg("%s compilation failed!: %s", fileName, msg);
-    //assert(status == GL_TRUE);
-}
 
 GLuint CompileShader(const char* shaderFile, ShaderType shaderType)
 {
+    assert(shaderFile);
+
     FileManager fm(shaderFile, FileManager::TYPE_TEXT, FileManager::MODE_READ);
     Array<GLchar> shaderCode;
     fm.ReadArray(shaderCode);
 
     GLuint shader = glCreateShader(shaderType);
-    glShaderSource(shader, 1, &shaderCode.GetData(), NULL);
-    //glShaderSource(shader, 1, &shaderCode.m_Data, NULL);
+    //glShaderSource(shader, 1, &shaderCode.GetData(), NULL);
+    glShaderSource(shader, 1, &shaderFile, NULL);
+    //glShaderSource(shader, 1, &shaderFile, NULL);
     glCompileShader(shader);
     CheckShaderCompilation(shader, shaderFile);
 
     return shader;
 }
+
+
+static GLuint CreateShaderProgram()
+{
+    // Link the vertex and fragment shader into a shader program
+    GLuint shaderProgram = glCreateProgram();
+
+    //Create and compile the shaders
+    GLuint vertexShader = CompileShader(vertexSource, ShaderType::VERTEX);
+    GLuint fragmentShader = CompileShader(fragmentSource, ShaderType::FRAGMENT);
+
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+
+    glLinkProgram(shaderProgram);
+    CheckProgramStatus(shaderProgram, GL_LINK_STATUS, STRINGIFY(GL_LINK_STATUS));
+    glValidateProgram(shaderProgram);
+    CheckProgramStatus(shaderProgram, GL_VALIDATE_STATUS, STRINGIFY(GL_VALIDATE_STATUS));
+
+    glDeleteShader(fragmentShader);
+    glDeleteShader(vertexShader);
+
+    return shaderProgram;
+}
+
 
 //TODO Wrap up a shaderProgram class
 
@@ -144,21 +210,10 @@ void InitGraphics()
     glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_LOW, 0, NULL, GL_FALSE);
     glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, NULL, GL_FALSE);
 
-    //Create and compile the shaders
-    GLuint vertexShader = CompileShader(vertexSource, ShaderType::VERTEX);
-    GLuint fragmentShader = CompileShader(fragmentSource, ShaderType::FRAGMENT);
-
-    //TODO throw all of this into the "CompileShader" function
-    // Link the vertex and fragment shader into a shader program
-    GLuint shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glBindFragDataLocation(shaderProgram, 0, "outColor");
-    glLinkProgram(shaderProgram);
-    CheckProgramStatus(shaderProgram, GL_LINK_STATUS, STRINGIFY(GL_LINK_STATUS));
-    glValidateProgram(shaderProgram);
-    CheckProgramStatus(shaderProgram, GL_VALIDATE_STATUS, STRINGIFY(GL_VALIDATE_STATUS));
+    GLuint shaderProgram = CreateShaderProgram();
+    glBindFragDataLocation(shaderProgram, 0, "outColor");//TODO extract this out?
     glUseProgram(shaderProgram);
+
 
     //TODO to be extracted into a seperate independent Vertex Buffer class. Else your entire app will forever bind these 3 vertices
 #if 1
@@ -168,15 +223,18 @@ void InitGraphics()
     glGenBuffers(1, &vbo);
 
     GLfloat vertices[] = {
+        // 0.0f,  0.5f, 0.0f, 0.0f, 0.5f, // Vertex 1: Red
+        // 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, // Vertex 2: Green
+        //-0.5f, -0.5f, 0.0f, 0.0f, 0.5f  // Vertex 3: Blue
          0.0f,  0.5f, 1.0f, 0.0f, 0.0f, // Vertex 1: Red
          0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // Vertex 2: Green
         -0.5f, -0.5f, 0.0f, 0.0f, 1.0f  // Vertex 3: Blue
     };
 
     //Create Vertex Array Object
-    GLuint vao;
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
+    //GLuint vao;
+    //glGenVertexArrays(1, &vao);
+    //glBindVertexArray(vao);
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
@@ -199,8 +257,6 @@ void InitGraphics()
 
 #if 0
     glDeleteProgram(shaderProgram);
-    glDeleteShader(fragmentShader);
-    glDeleteShader(vertexShader);
 
     glDeleteBuffers(1, &vbo);
 

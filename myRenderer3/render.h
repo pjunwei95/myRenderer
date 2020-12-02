@@ -1,10 +1,16 @@
 #pragma once
 
+
+
+
+
+
+
 struct ShaderProgram
 {
     GLuint m_Vbo;
     GLuint m_Vao;
-    GLuint m_vShader;
+    GLuint m_vShader; 
     GLuint m_fShader;
     GLuint m_Program;
 };
