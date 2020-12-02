@@ -6,7 +6,24 @@
 #pragma optimize("",off)
 #endif
 
-//TODO macro to debug each glCalls
+//macro to debug each glCalls
+//#define ASSERT(x) if (!(x)) __debugbreak();
+//#define GLCall(x) GLClearError();\
+//    x;\
+//    ASSERT(GLLogCall(#x, __FILE__, __LINE__))
+//
+//static void GLClearError() { while (glGetError() != GL_NO_ERROR); }
+//
+//static bool GLLogCall(const char* function, const char* file, int line)
+//{
+//    while (GLenum error = glGetError())
+//    {
+//        logmsg("[OpenGL Error] (%s): %s : %i\n", function, file, line);
+//        return false;
+//    }
+//    return true;
+//}
+
 
 const GLchar* vertexSource = "res/shader.vert";
 const GLchar* fragmentSource = "res/shader.frag";
@@ -21,10 +38,7 @@ MessageCallback(GLenum source,
                 const void *userParam)
 {
     //TODO asserts
-    assert(source);
-    assert(length);
-    //assert(userParam);
-    userParam;
+
     logmsg("---------------------Callback-----------------\n");
     logmsg("message: %s\ntype: ", message);
     const char* errorTypeStr = 0;
@@ -66,6 +80,9 @@ MessageCallback(GLenum source,
         break;
     }
     logmsg("%s\n\n", severityStr);
+    assert(source);
+    assert(length);
+    assert(userParam);
 }
 
 void CheckShaderCompilation(GLuint shader, const char* fileName)
@@ -124,9 +141,9 @@ GLuint CompileShader(const char* shaderFile, ShaderType shaderType)
     fm.ReadArray(shaderCode);
 
     GLuint shader = glCreateShader(shaderType);
-    glShaderSource(shader, 1, &shaderCode.GetData(), NULL);
+    //glShaderSource(shader, 1, &shaderCode.GetData(), NULL);
+    glShaderSource(shader, 1, &shaderFile, NULL);
     //glShaderSource(shader, 1, &shaderFile, NULL);
-    //glShaderSource(shader, 1, &shaderCode.m_Data, NULL);
     glCompileShader(shader);
     CheckShaderCompilation(shader, shaderFile);
 
