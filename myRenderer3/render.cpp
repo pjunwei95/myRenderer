@@ -23,7 +23,8 @@ MessageCallback(GLenum source,
     //TODO asserts
     assert(source);
     assert(length);
-    assert(userParam);
+    //assert(userParam);
+    userParam;
     logmsg("---------------------Callback-----------------\n");
     logmsg("message: %s\ntype: ", message);
     const char* errorTypeStr = 0;
@@ -175,9 +176,9 @@ void InitGraphics()
     };
 
     //Create Vertex Array Object
-    GLuint vao;
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
+    //GLuint vao;
+    //glGenVertexArrays(1, &vao);
+    //glBindVertexArray(vao);
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
