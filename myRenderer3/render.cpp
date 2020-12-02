@@ -101,7 +101,8 @@ GLuint CompileShader(const char* shaderFile, ShaderType shaderType)
     fm.ReadArray(shaderCode);
 
     GLuint shader = glCreateShader(shaderType);
-    glShaderSource(shader, 1, &shaderCode.GetData(), NULL);
+    //glShaderSource(shader, 1, &shaderCode.GetData(), NULL);
+    glShaderSource(shader, 1, &shaderFile, NULL);
     //glShaderSource(shader, 1, &shaderCode.m_Data, NULL);
     glCompileShader(shader);
     CheckShaderCompilation(shader, shaderFile);
