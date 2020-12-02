@@ -78,7 +78,7 @@ void CheckProgramStatus(GLuint shaderProgram, GLenum pname, const char* identifi
         logmsg("%s OK!\n", identifier);
     else
         logmsg("%s:\n%s\n", identifier, msg);
-    //assert(status == GL_TRUE);
+    assert(status == GL_TRUE);
 }
 
 void CheckShaderCompilation(GLuint shader, const char* fileName) 
@@ -86,30 +86,63 @@ void CheckShaderCompilation(GLuint shader, const char* fileName)
     assert(fileName);
     GLint status;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
-    char msg[CHAR_MAX_LIMIT];
-    glGetShaderInfoLog(shader, CHAR_MAX_LIMIT, NULL, msg);
-    if (!strlen(msg))
-        logmsg("%s compiled successfully!\n", fileName);
-    else
-        logmsg("%s compilation failed!: %s", fileName, msg);
-    //assert(status == GL_TRUE);
+
+    if (status == GL_FALSE)
+    {
+        int length;
+        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
+        Array<GLchar> message;
+        message.reserve(length);
+        glGetShaderInfoLog(shader, length, &length, message.GetData());
+        logmsg("Failed to compile %s\n%s\n", fileName, message.GetData());
+
+        glDeleteShader(shader); //before asserting to delete resources
+    }
+    assert(status == GL_TRUE);
 }
 
 GLuint CompileShader(const char* shaderFile, ShaderType shaderType)
 {
+    assert(shaderFile);
+
     FileManager fm(shaderFile, FileManager::TYPE_TEXT, FileManager::MODE_READ);
     Array<GLchar> shaderCode;
     fm.ReadArray(shaderCode);
 
     GLuint shader = glCreateShader(shaderType);
-    //glShaderSource(shader, 1, &shaderCode.GetData(), NULL);
-    glShaderSource(shader, 1, &shaderFile, NULL);
+    glShaderSource(shader, 1, &shaderCode.GetData(), NULL);
+    //glShaderSource(shader, 1, &shaderFile, NULL);
     //glShaderSource(shader, 1, &shaderCode.m_Data, NULL);
     glCompileShader(shader);
     CheckShaderCompilation(shader, shaderFile);
 
     return shader;
 }
+
+
+static GLuint CreateShaderProgram()
+{
+    // Link the vertex and fragment shader into a shader program
+    GLuint shaderProgram = glCreateProgram();
+
+    //Create and compile the shaders
+    GLuint vertexShader = CompileShader(vertexSource, ShaderType::VERTEX);
+    GLuint fragmentShader = CompileShader(fragmentSource, ShaderType::FRAGMENT);
+
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+
+    glLinkProgram(shaderProgram);
+    CheckProgramStatus(shaderProgram, GL_LINK_STATUS, STRINGIFY(GL_LINK_STATUS));
+    glValidateProgram(shaderProgram);
+    CheckProgramStatus(shaderProgram, GL_VALIDATE_STATUS, STRINGIFY(GL_VALIDATE_STATUS));
+
+    glDeleteShader(fragmentShader);
+    glDeleteShader(vertexShader);
+
+    return shaderProgram;
+}
+
 
 //TODO Wrap up a shaderProgram class
 
@@ -146,21 +179,10 @@ void InitGraphics()
     glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_LOW, 0, NULL, GL_FALSE);
     glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, NULL, GL_FALSE);
 
-    //Create and compile the shaders
-    GLuint vertexShader = CompileShader(vertexSource, ShaderType::VERTEX);
-    GLuint fragmentShader = CompileShader(fragmentSource, ShaderType::FRAGMENT);
-
-    //TODO throw all of this into the "CompileShader" function
-    // Link the vertex and fragment shader into a shader program
-    GLuint shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glBindFragDataLocation(shaderProgram, 0, "outColor");
-    glLinkProgram(shaderProgram);
-    CheckProgramStatus(shaderProgram, GL_LINK_STATUS, STRINGIFY(GL_LINK_STATUS));
-    glValidateProgram(shaderProgram);
-    CheckProgramStatus(shaderProgram, GL_VALIDATE_STATUS, STRINGIFY(GL_VALIDATE_STATUS));
+    GLuint shaderProgram = CreateShaderProgram();
+    glBindFragDataLocation(shaderProgram, 0, "outColor");//TODO extract this out?
     glUseProgram(shaderProgram);
+
 
     //TODO to be extracted into a seperate independent Vertex Buffer class. Else your entire app will forever bind these 3 vertices
 #if 1
@@ -201,8 +223,6 @@ void InitGraphics()
 
 #if 0
     glDeleteProgram(shaderProgram);
-    glDeleteShader(fragmentShader);
-    glDeleteShader(vertexShader);
 
     glDeleteBuffers(1, &vbo);
 
