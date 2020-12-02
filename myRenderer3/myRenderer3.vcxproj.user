@@ -6,9 +6,9 @@
     <RemoteDebuggerCommandArguments>2 config</RemoteDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LocalDebuggerCommandArguments>2 config debug</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>2 config test</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <RemoteDebuggerCommandArguments>2 config debug</RemoteDebuggerCommandArguments>
+    <RemoteDebuggerCommandArguments>2 config test</RemoteDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LocalDebuggerCommandArguments>2 config</LocalDebuggerCommandArguments>

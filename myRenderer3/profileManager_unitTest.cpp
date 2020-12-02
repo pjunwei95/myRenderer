@@ -304,7 +304,7 @@ void testDumpInfoMultipleFlipNestedTwiceProfile()
 }
 
 
-#define TEST 0
+#define TEST 1
 void TestProfileManager()
 {
     LOG_TEST(Profiler);
@@ -312,10 +312,10 @@ void TestProfileManager()
     //Single-frame tests
 #if TEST
     // Function-Scoped
-    //testSimpleProfile();
-    //testSimpleNestedProfile();
-    //testDoubleDifferentNestedProfile();
-    testDoubleSameNestedScopedProfile();
+    testSimpleProfile();
+    testSimpleNestedProfile();
+    testDoubleDifferentNestedProfile();
+    testDoubleSameNestedScopedProfile(); //TODO tofix
 //#else
     testDoubleSameNestedNonScopedProfile();
     testNestedTwiceProfile();
@@ -337,7 +337,7 @@ void TestProfileManager()
     testSingleFlipSimpleProfile();
     testMultipleFlipSimpleProfile();
     testMultipleFlipNestedTwiceProfile();
-#else
+//#else
     //Dump Profile Info
     testDumpInfoMultipleFlipSimpleProfile();
     testDumpInfoMultipleFlipNestedTwiceProfile();
