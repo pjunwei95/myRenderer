@@ -8,25 +8,6 @@
 #pragma optimize("",off)
 #endif
 
-//macro to debug each glCalls
-//#define ASSERT(x) if (!(x)) __debugbreak();
-//#define GLCall(x) GLClearError();\
-//    x;\
-//    ASSERT(GLLogCall(#x, __FILE__, __LINE__))
-//
-//static void GLClearError() { while (glGetError() != GL_NO_ERROR); }
-//
-//static bool GLLogCall(const char* function, const char* file, int line)
-//{
-//    while (GLenum error = glGetError())
-//    {
-//        logmsg("[OpenGL Error] (%s): %s : %i\n", function, file, line);
-//        return false;
-//    }
-//    return true;
-//}
-
-
 const GLchar* vertexSource = "res/shader.vert";
 const GLchar* fragmentSource = "res/shader.frag";
 
@@ -39,8 +20,6 @@ MessageCallback(GLenum source,
                 const GLchar *message,
                 const void *userParam)
 {
-    //TODO asserts
-
     logmsg("---------------------Callback-----------------\n");
     logmsg("message: %s\ntype: ", message);
     const char* errorTypeStr = 0;
@@ -145,7 +124,6 @@ GLuint CompileShader(const char* shaderFile, ShaderType shaderType)
     GLuint shader = glCreateShader(shaderType);
     glShaderSource(shader, 1, &shaderCode.GetData(), NULL);
     //glShaderSource(shader, 1, &shaderFile, NULL);
-    //glShaderSource(shader, 1, &shaderFile, NULL);
     glCompileShader(shader);
     CheckShaderCompilation(shader, shaderFile);
 
@@ -219,47 +197,21 @@ void InitGraphics()
     -0.5f, -0.5f, 0.0f, 0.0f, 1.0f  // Vertex 3: Blue
     };
 
-#if 0
-    GLuint vbo;
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-#else
     // Create a Vertex Buffer Object and copy the vertex data to it
     VertexBuffer vb(vertices, sizeof(vertices));
-#endif
-
-    //Create Vertex Array Object
-    //GLuint vao;
-    //glGenVertexArrays(1, &vao);
-    //glBindVertexArray(vao);
 
     GLuint shaderProgram = CreateShaderProgram();
     glBindFragDataLocation(shaderProgram, 0, "outColor");//TODO extract this out?
     glUseProgram(shaderProgram);
 
 
-
-#if 0
     //Specify input vertex format for vertex shader
     // Specify the layout of the vertex data
-    GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
-    glEnableVertexAttribArray(posAttrib);
-    glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE,
-        5 * sizeof(float), 0);
-
-    GLint colAttrib = glGetAttribLocation(shaderProgram, "color");
-    glEnableVertexAttribArray(colAttrib);
-    glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE,
-        5 * sizeof(float), (void*)(2 * sizeof(float)));
-#else
     VertexArray va;
     VertexBufferFormat layout;
-    //layout.Push<float>(2);
     layout.Push(shaderProgram, "position", 2);
     layout.Push(shaderProgram, "color", 3);
     va.AddBuffer(vb, layout);
-#endif
 
 
 #if 0
