@@ -2,6 +2,7 @@
 #include "fileManager.h"
 #include "array.h"
 #include "vertexBuffer.h"
+#include "vertexArray.h"
 
 #ifdef BREAKPOINT_ENABLED
 #pragma optimize("",off)
@@ -239,7 +240,7 @@ void InitGraphics()
 
 
 
-#if 1
+#if 0
     //Specify input vertex format for vertex shader
     // Specify the layout of the vertex data
     GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
@@ -251,6 +252,13 @@ void InitGraphics()
     glEnableVertexAttribArray(colAttrib);
     glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE,
         5 * sizeof(float), (void*)(2 * sizeof(float)));
+#else
+    VertexArray va;
+    VertexBufferFormat layout;
+    //layout.Push<float>(2);
+    layout.Push(shaderProgram, "position", 2);
+    layout.Push(shaderProgram, "color", 3);
+    va.AddBuffer(vb, layout);
 #endif
 
 
