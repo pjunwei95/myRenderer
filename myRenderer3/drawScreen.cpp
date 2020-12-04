@@ -1,3 +1,4 @@
+#ifdef DEPRECATED
 #include "drawScreen.h"
 
 void DrawScreen(SDL_Surface * screenSurface)
@@ -16,3 +17,4 @@ void DrawTriangle()
     // Draw a triangle from the 3 vertices
     glDrawArrays(GL_TRIANGLES, 0, 3);
 }
+#endif
