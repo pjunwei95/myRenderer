@@ -1,7 +1,8 @@
 #pragma once
-#include "vertexArray.h"
-#include "vertexBuffer.h"
-#include "shader.h"
+
+class VertexArray;
+class VertexBuffer;
+class Shader;
 
 class Renderer
 {

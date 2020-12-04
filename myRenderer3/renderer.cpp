@@ -1,5 +1,9 @@
 #include "renderer.h"
 #include "profileManager.h"
+#include "vertexArray.h"
+#include "vertexBuffer.h"
+#include "shader.h"
+
 
 #ifdef BREAKPOINT_ENABLED
 #pragma optimize("",off)
