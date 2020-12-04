@@ -1,3 +1,5 @@
+//deprecated
+#ifdef DEPRECATED
 #include "windowHandler.h"
 #include "drawScreen.h"
 #include "profileManager.h"
@@ -11,7 +13,6 @@ WindowHandler::WindowHandler()
     : m_Window{ NULL }, m_ScreenSurface{ NULL }
 {
     createWindow();
-    InitGraphics();
 }
 
 WindowHandler::~WindowHandler()
@@ -67,4 +68,4 @@ void WindowHandler::DestroyWindow()
     //Quit SDL subsystems
     SDL_Quit();
 }
-
+#endif

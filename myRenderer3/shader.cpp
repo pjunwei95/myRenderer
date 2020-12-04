@@ -1,12 +1,5 @@
 #include "shader.h"
 #include "fileManager.h"
-#ifndef SHADER
-struct ShaderProgramSource
-{
-    const char* vertexSource;
-    const char* fragmentSource;
-};
-
 
 Shader::Shader(const char* vertexFilePath, const char* fragmentFilePath)
     : m_RendererID{ 0 }
@@ -53,14 +46,12 @@ uint32_t Shader::CompileShader(const char* shaderFile, ShaderType shaderType)
 {
     //parse shader
     assert(shaderFile);
-
     FileManager fm(shaderFile, FileManager::TYPE_TEXT, FileManager::MODE_READ);
-    Array<GLchar> shaderCode;
+    Array<char> shaderCode;
     fm.ReadArray(shaderCode);
 
     GLuint shader = glCreateShader(shaderType);
     glShaderSource(shader, 1, &shaderCode.GetData(), NULL);
-    //glShaderSource(shader, 1, &shaderFile, NULL);
     glCompileShader(shader);
     CheckShaderCompilation(shader, shaderFile);
 
@@ -106,4 +97,3 @@ uint32_t Shader::CreateShader(const char* vertexFilePath, const char* fragmentFi
 
     return shaderProgram;
 }
-#endif

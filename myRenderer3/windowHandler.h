@@ -1,3 +1,5 @@
+//deprecated
+#ifdef RENDER
 #pragma once
 typedef SDL_Window* WindowHandle;
 typedef SDL_Surface* SurfaceHandle;
@@ -20,6 +22,6 @@ private:
     SurfaceHandle m_ScreenSurface;
     SDL_GLContext m_Context;
 };
-
+#endif
 
 

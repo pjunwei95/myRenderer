@@ -42,9 +42,7 @@ public:
     void CloseFile();
     void readAndProcessFile(const char * fileName, OpenType openType);
     void SetFileSize(); // always return length + 1 to account for null terminating character
-    //char* ReadBuffer();
-    //char* ReadBufferWithLength(char* buffer, long length);
-    
+
     template<typename T>
     void ReadArray(Array<T>& buffer);
 

@@ -1,5 +1,4 @@
 #pragma once
-#ifndef SHADER
 enum ShaderType
 {
     VERTEX = GL_VERTEX_SHADER,
@@ -21,4 +20,3 @@ private:
     uint32_t CompileShader(const char* shaderFile, ShaderType shaderType);
     uint32_t CreateShader(const char* vertexShader, const char* fragmentShader);
 };
-#endif

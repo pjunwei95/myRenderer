@@ -1,3 +1,4 @@
+#ifdef DEPRECATED
 #include "drawScreen.h"
 
 void DrawScreen(SDL_Surface * screenSurface)
@@ -9,7 +10,6 @@ void DrawScreen(SDL_Surface * screenSurface)
 
 void DrawTriangle()
 {
-    
     // Clear the screen to black
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -17,3 +17,4 @@ void DrawTriangle()
     // Draw a triangle from the 3 vertices
     glDrawArrays(GL_TRIANGLES, 0, 3);
 }
+#endif

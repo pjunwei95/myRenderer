@@ -1,16 +1,85 @@
 #include "renderer.h"
-#include "fileManager.h"
-#include "array.h"
-#include "vertexBuffer.h"
-#include "vertexArray.h"
-#include "shader.h"
+#include "profileManager.h"
 
 #ifdef BREAKPOINT_ENABLED
 #pragma optimize("",off)
 #endif
 
-const GLchar* vertexSource = "res/shader.vert";
-const GLchar* fragmentSource = "res/shader.frag";
+const char* vertexSource = "res/shader.vert";
+const char* fragmentSource = "res/shader.frag";
+
+Renderer::Renderer()
+    : m_Window{ nullptr }, m_ScreenSurface{ nullptr }, m_Context{ nullptr }
+{
+    InitGraphics();
+}
+
+Renderer::~Renderer()
+{
+    //TODO delete shaders and programs
+
+    DestroyWindow();
+}
+
+void Renderer::DrawTriangle()
+{
+    //================================================================
+    GLfloat vertices[] = {
+         0.0f,  0.5f, 1.0f, 0.0f, 0.0f, // Vertex 1: Red
+         0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // Vertex 2: Green
+        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f  // Vertex 3: Blue
+    };
+
+    // Create a Vertex Buffer Object and copy the vertex data to it
+    VertexBuffer vb(vertices, sizeof(vertices));
+    vb.Bind();
+
+    Shader shaderProgram(vertexSource, fragmentSource);
+    shaderProgram.Bind();
+    glBindFragDataLocation(shaderProgram.GetProgramID(), 0, "outColor");
+
+    // Specify the layout (vertex format) of the vertex data
+    VertexBufferFormat layout;
+    layout.Push(shaderProgram.GetProgramID(), "position", 2);
+    layout.Push(shaderProgram.GetProgramID(), "color", 3);
+
+    VertexArray va;
+    va.AddBuffer(vb, layout);
+    //================================================================
+
+    m_ScreenSurface = SDL_GetWindowSurface(m_Window);
+
+    shaderProgram.Bind();
+    va.Bind();
+    vb.Bind();
+
+    // Draw a triangle from the 3 vertices
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+}
+
+void Renderer::Draw(VertexArray const& va, VertexBuffer const& vb, Shader const& shader)
+{
+    PROFILE_FUNCTION();
+    m_ScreenSurface = SDL_GetWindowSurface(m_Window);
+
+    shader.Bind();
+    va.Bind();
+    vb.Bind();
+
+    // Draw a triangle from the 3 vertices
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+}
+
+void Renderer::Clear() const
+{
+    glClear(GL_COLOR_BUFFER_BIT); // Clear the screen to black
+}
+
+void Renderer::SwapBuffer() const
+{
+    PROFILE_FUNCTION();
+    SDL_GL_SwapWindow(m_Window);
+}
 
 void GLAPIENTRY
 MessageCallback(GLenum source,
@@ -67,10 +136,10 @@ MessageCallback(GLenum source,
     assert(userParam);
 }
 
-//TODO Wrap up a shaderProgram class
-
-void InitGraphics()
+void Renderer::InitGraphics()
 {
+    CreateSDLWindow();
+
     //set contexts
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
@@ -81,53 +150,47 @@ void InitGraphics()
     GLenum err = glewInit();
 
     assert(err == GLEW_OK);
-
-    logmsg("Status: Using GLEW %s.\n", glewGetString(GLEW_VERSION));
-    logmsg("System supports OpenGL %s\n", glGetString(GL_VERSION));
-
     if (Engine::Instance().GetOption() == Engine::Option::DEBUG)
+    {
+        logmsg("Status: Using GLEW %s.\n", glewGetString(GLEW_VERSION));
+        logmsg("System supports OpenGL %s\n", glGetString(GL_VERSION));
+
         glEnable(GL_DEBUG_OUTPUT);
 
-    assert(glDebugMessageCallback);
-    logmsg("Registered OpenGL debug callback\n");
-    glDebugMessageCallback(MessageCallback, nullptr);
+        assert(glDebugMessageCallback);
+        logmsg("Registered OpenGL debug callback\n");
+        glDebugMessageCallback(MessageCallback, nullptr);
 
-    //Filter debug messages
-    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, GL_TRUE);
-    //========================ErrorTypes:
-    glDebugMessageControl(GL_DONT_CARE, GL_DEBUG_TYPE_PORTABILITY, GL_DONT_CARE, 0, NULL, GL_FALSE);
-    glDebugMessageControl(GL_DONT_CARE, GL_DEBUG_TYPE_PERFORMANCE, GL_DONT_CARE, 0, NULL, GL_FALSE);
-    glDebugMessageControl(GL_DONT_CARE, GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR, GL_DONT_CARE, 0, NULL, GL_FALSE);
-    //========================Severity
-    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_LOW, 0, NULL, GL_FALSE);
-    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, NULL, GL_FALSE);
-
-
-    GLfloat vertices[] = {
-     0.0f,  0.5f, 1.0f, 0.0f, 0.0f, // Vertex 1: Red
-     0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // Vertex 2: Green
-    -0.5f, -0.5f, 0.0f, 0.0f, 1.0f  // Vertex 3: Blue
-    };
-
-    // Create a Vertex Buffer Object and copy the vertex data to it
-    VertexBuffer vb(vertices, sizeof(vertices));
-    vb.Bind();
-
-    Shader shaderProgram(vertexSource, fragmentSource);
-    shaderProgram.Bind();
-    //glBindFragDataLocation(shaderProgram.GetProgramID(), 0, "outColor");
-
-    // Specify the layout (vertex format) of the vertex data
-    VertexBufferFormat layout;
-    layout.Push(shaderProgram.GetProgramID(), "position", 2);
-    layout.Push(shaderProgram.GetProgramID(), "color", 3);
-
-    VertexArray va;
-    va.AddBuffer(vb, layout);
+        //Filter debug messages
+        glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, GL_TRUE);
+        //========================ErrorTypes:
+        glDebugMessageControl(GL_DONT_CARE, GL_DEBUG_TYPE_PORTABILITY, GL_DONT_CARE, 0, NULL, GL_FALSE);
+        glDebugMessageControl(GL_DONT_CARE, GL_DEBUG_TYPE_PERFORMANCE, GL_DONT_CARE, 0, NULL, GL_FALSE);
+        glDebugMessageControl(GL_DONT_CARE, GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR, GL_DONT_CARE, 0, NULL, GL_FALSE);
+        //========================Severity
+        glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_LOW, 0, NULL, GL_FALSE);
+        glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, NULL, GL_FALSE);
+    }
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
-void DestroyGraphics()
+void Renderer::CreateSDLWindow()
 {
+    //Initialize SDL
+    assert(SDL_Init(SDL_INIT_VIDEO) >= 0);
+    //Create window
+    m_Window = SDL_CreateWindow("Renderer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+        SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL);
+    assert(m_Window);
 
+    m_Context = SDL_GL_CreateContext(m_Window);
 }
+
+void Renderer::DestroyWindow()
+{
+    SDL_GL_DeleteContext(m_Context);
+    SDL_DestroyWindow(m_Window); //Destroy window
+    SDL_Quit(); //Quit SDL subsystems
+}
+
 

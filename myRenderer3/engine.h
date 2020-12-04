@@ -19,8 +19,6 @@
 const int SCREEN_WIDTH = 800; //640
 const int SCREEN_HEIGHT = 600; //480
 
-#define ENGINECLASS
-#ifdef ENGINECLASS
 class Engine
 {
 public:
@@ -60,39 +58,3 @@ private:
     Mode g_Mode;
     Option g_Option;
 };
-#else
-namespace Engine
-{
-    enum class Mode
-    {
-        MAIN,
-        UNIT_TEST
-    };
-
-    enum class Option
-    {
-        NORMAL,
-        DEBUG
-    };
-
-    void InitGlobals();
-
-    inline Mode& GetMode() { return g_Mode; }
-    inline void SetMode(Mode mode) { g_Mode = mode; }
-
-    inline Option& GetOption() { return g_Option; }
-    inline void SetOption(Option option) { g_Option = option; }
-
-    inline bool GetIsDone() { return g_IsDone; }
-    inline void SetIsDone(bool value) { g_IsDone = value; }
-
-    //to be called only once. not per frame
-    inline void SetSystemFrequency() { QueryPerformanceFrequency(&g_Frequency); }
-    inline Stopwatch::Timer GetSystemFrequency() { return g_Frequency; }
-
-    bool g_IsDone;
-    Stopwatch::Timer g_Frequency;
-    Mode g_Mode;
-    Option g_Option;
-};
-#endif
