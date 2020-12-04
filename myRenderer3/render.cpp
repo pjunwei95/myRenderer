@@ -1,6 +1,7 @@
 #include "render.h"
 #include "fileManager.h"
 #include "array.h"
+#include "vertexBuffer.h"
 
 #ifdef BREAKPOINT_ENABLED
 #pragma optimize("",off)
@@ -102,7 +103,7 @@ void CheckShaderCompilation(GLuint shader, const char* fileName)
 
         glDeleteShader(shader); //before asserting to delete resources
     }
-    //assert(status == GL_TRUE);
+    assert(status == GL_TRUE);
 }
 
 void CheckProgramStatus(GLuint shaderProgram, GLenum pname, const char* identifier)
@@ -128,7 +129,7 @@ void CheckProgramStatus(GLuint shaderProgram, GLenum pname, const char* identifi
     else
         logmsg("%s:\n%s\n", identifier, msg);
 #endif
-    //assert(status == GL_TRUE);
+    assert(status == GL_TRUE);
 }
 
 
@@ -141,8 +142,8 @@ GLuint CompileShader(const char* shaderFile, ShaderType shaderType)
     fm.ReadArray(shaderCode);
 
     GLuint shader = glCreateShader(shaderType);
-    //glShaderSource(shader, 1, &shaderCode.GetData(), NULL);
-    glShaderSource(shader, 1, &shaderFile, NULL);
+    glShaderSource(shader, 1, &shaderCode.GetData(), NULL);
+    //glShaderSource(shader, 1, &shaderFile, NULL);
     //glShaderSource(shader, 1, &shaderFile, NULL);
     glCompileShader(shader);
     CheckShaderCompilation(shader, shaderFile);
@@ -210,36 +211,34 @@ void InitGraphics()
     glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_LOW, 0, NULL, GL_FALSE);
     glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, NULL, GL_FALSE);
 
-    GLuint shaderProgram = CreateShaderProgram();
-    glBindFragDataLocation(shaderProgram, 0, "outColor");//TODO extract this out?
-    glUseProgram(shaderProgram);
-
-
-    //TODO to be extracted into a seperate independent Vertex Buffer class. Else your entire app will forever bind these 3 vertices
-#if 1
-
-    // Create a Vertex Buffer Object and copy the vertex data to it
-    GLuint vbo;
-    glGenBuffers(1, &vbo);
 
     GLfloat vertices[] = {
-        // 0.0f,  0.5f, 0.0f, 0.0f, 0.5f, // Vertex 1: Red
-        // 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, // Vertex 2: Green
-        //-0.5f, -0.5f, 0.0f, 0.0f, 0.5f  // Vertex 3: Blue
-         0.0f,  0.5f, 1.0f, 0.0f, 0.0f, // Vertex 1: Red
-         0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // Vertex 2: Green
-        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f  // Vertex 3: Blue
+     0.0f,  0.5f, 1.0f, 0.0f, 0.0f, // Vertex 1: Red
+     0.5f, -0.5f, 0.0f, 1.0f, 0.0f, // Vertex 2: Green
+    -0.5f, -0.5f, 0.0f, 0.0f, 1.0f  // Vertex 3: Blue
     };
+
+#if 0
+    GLuint vbo;
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+#else
+    // Create a Vertex Buffer Object and copy the vertex data to it
+    VertexBuffer vb(vertices, sizeof(vertices));
+#endif
 
     //Create Vertex Array Object
     //GLuint vao;
     //glGenVertexArrays(1, &vao);
     //glBindVertexArray(vao);
 
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    GLuint shaderProgram = CreateShaderProgram();
+    glBindFragDataLocation(shaderProgram, 0, "outColor");//TODO extract this out?
+    glUseProgram(shaderProgram);
 
-#endif
+
+
 #if 1
     //Specify input vertex format for vertex shader
     // Specify the layout of the vertex data

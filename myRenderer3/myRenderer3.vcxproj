@@ -153,6 +153,7 @@
     <ClCompile Include="stopwatch.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="unit_test_math.cpp" />
+    <ClCompile Include="vertexBuffer.cpp" />
     <ClCompile Include="windowHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +182,7 @@
     <ClInclude Include="array.h" />
     <ClInclude Include="stopwatch.h" />
     <ClInclude Include="unit_test_math.h" />
+    <ClInclude Include="vertexBuffer.h" />
     <ClInclude Include="windowHandler.h" />
   </ItemGroup>
   <ItemGroup>
