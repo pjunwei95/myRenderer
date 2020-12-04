@@ -1,9 +1,10 @@
 #pragma once
 #include "array.h"
+#include "shader.h"
 
 struct VertexBufferElement
 {
-    GLuint shaderProgram;
+    uint32_t shaderProgram;
     const char* attribute;
     uint32_t type;
     uint32_t count;
@@ -34,7 +35,7 @@ public:
     //    assert(false);
     //}
 
-    void Push(GLuint shaderProgram, const char* attributeName, uint32_t count)
+    void Push(uint32_t shaderProgram, const char* attributeName, uint32_t count)
     {
         m_Elements.pushBack({ shaderProgram, attributeName, GL_FLOAT, count, GL_FALSE });
         m_Stride += count * VertexBufferElement::GetSizeOfType(GL_FLOAT);

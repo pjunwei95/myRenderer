@@ -1,8 +1,9 @@
-#include "render.h"
+#include "renderer.h"
 #include "fileManager.h"
 #include "array.h"
 #include "vertexBuffer.h"
 #include "vertexArray.h"
+#include "shader.h"
 
 #ifdef BREAKPOINT_ENABLED
 #pragma optimize("",off)
@@ -66,95 +67,6 @@ MessageCallback(GLenum source,
     assert(userParam);
 }
 
-void CheckShaderCompilation(GLuint shader, const char* fileName)
-{
-    assert(fileName);
-    GLint status;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
-
-    if (status != GL_TRUE)
-    {
-        int length;
-        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
-        Array<GLchar> message;
-        message.reserve(length);
-        glGetShaderInfoLog(shader, length, &length, message.GetData());
-        logmsg("Failed to compile %s\n%s\n", fileName, message.GetData());
-
-        glDeleteShader(shader); //before asserting to delete resources
-    }
-    assert(status == GL_TRUE);
-}
-
-void CheckProgramStatus(GLuint shaderProgram, GLenum pname, const char* identifier)
-{
-    GLint status;
-    glGetProgramiv(shaderProgram, pname, &status);
-#if 1
-    if (status != GL_TRUE)
-    {
-        int length;
-        glGetProgramiv(shaderProgram, GL_INFO_LOG_LENGTH, &length);
-        Array<GLchar> message;
-        message.reserve(length);
-        glGetProgramInfoLog(shaderProgram, message.capacity(), &length, message.GetData());
-        logmsg("%s FAILED\n%s\n", identifier, message.GetData());
-        glDeleteProgram(shaderProgram);
-    }
-#else
-    char msg[CHAR_MAX_LIMIT];
-    glGetProgramInfoLog(shaderProgram, CHAR_MAX_LIMIT, NULL, msg);
-    if (!strlen(msg))
-        logmsg("%s OK!\n", identifier);
-    else
-        logmsg("%s:\n%s\n", identifier, msg);
-#endif
-    assert(status == GL_TRUE);
-}
-
-
-GLuint CompileShader(const char* shaderFile, ShaderType shaderType)
-{
-    assert(shaderFile);
-
-    FileManager fm(shaderFile, FileManager::TYPE_TEXT, FileManager::MODE_READ);
-    Array<GLchar> shaderCode;
-    fm.ReadArray(shaderCode);
-
-    GLuint shader = glCreateShader(shaderType);
-    glShaderSource(shader, 1, &shaderCode.GetData(), NULL);
-    //glShaderSource(shader, 1, &shaderFile, NULL);
-    glCompileShader(shader);
-    CheckShaderCompilation(shader, shaderFile);
-
-    return shader;
-}
-
-
-static GLuint CreateShaderProgram()
-{
-    // Link the vertex and fragment shader into a shader program
-    GLuint shaderProgram = glCreateProgram();
-
-    //Create and compile the shaders
-    GLuint vertexShader = CompileShader(vertexSource, ShaderType::VERTEX);
-    GLuint fragmentShader = CompileShader(fragmentSource, ShaderType::FRAGMENT);
-
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-
-    glLinkProgram(shaderProgram);
-    CheckProgramStatus(shaderProgram, GL_LINK_STATUS, STRINGIFY(GL_LINK_STATUS));
-    glValidateProgram(shaderProgram);
-    CheckProgramStatus(shaderProgram, GL_VALIDATE_STATUS, STRINGIFY(GL_VALIDATE_STATUS));
-
-    glDeleteShader(fragmentShader);
-    glDeleteShader(vertexShader);
-
-    return shaderProgram;
-}
-
-
 //TODO Wrap up a shaderProgram class
 
 void InitGraphics()
@@ -199,28 +111,19 @@ void InitGraphics()
 
     // Create a Vertex Buffer Object and copy the vertex data to it
     VertexBuffer vb(vertices, sizeof(vertices));
+    vb.Bind();
 
-    GLuint shaderProgram = CreateShaderProgram();
-    glBindFragDataLocation(shaderProgram, 0, "outColor");//TODO extract this out?
-    glUseProgram(shaderProgram);
+    Shader shaderProgram(vertexSource, fragmentSource);
+    shaderProgram.Bind();
+    //glBindFragDataLocation(shaderProgram.GetProgramID(), 0, "outColor");
 
-
-    //Specify input vertex format for vertex shader
-    // Specify the layout of the vertex data
-    VertexArray va;
+    // Specify the layout (vertex format) of the vertex data
     VertexBufferFormat layout;
-    layout.Push(shaderProgram, "position", 2);
-    layout.Push(shaderProgram, "color", 3);
+    layout.Push(shaderProgram.GetProgramID(), "position", 2);
+    layout.Push(shaderProgram.GetProgramID(), "color", 3);
+
+    VertexArray va;
     va.AddBuffer(vb, layout);
-
-
-#if 0
-    glDeleteProgram(shaderProgram);
-
-    glDeleteBuffers(1, &vbo);
-
-    glDeleteVertexArrays(1, &vao);
-#endif
 }
 
 void DestroyGraphics()

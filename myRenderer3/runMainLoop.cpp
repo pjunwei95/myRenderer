@@ -2,7 +2,6 @@
 #include "frameRateController.h"
 #include "windowHandler.h"
 #include "profileManager.h"
-#include "render.h"
 
 void RunMainLoop()
 {

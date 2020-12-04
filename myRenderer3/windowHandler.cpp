@@ -1,7 +1,7 @@
 #include "windowHandler.h"
 #include "drawScreen.h"
 #include "profileManager.h"
-#include "render.h"
+#include "renderer.h"
 
 //TODO convert this to graphics manager class
 //these should all belong to your Graphics Engine, not Window class

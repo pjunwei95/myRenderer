@@ -146,9 +146,10 @@
     <ClCompile Include="processArgs.cpp" />
     <ClCompile Include="profileManager.cpp" />
     <ClCompile Include="profileManager_unitTest.cpp" />
-    <ClCompile Include="render.cpp" />
+    <ClCompile Include="renderer.cpp" />
     <ClCompile Include="runMainLoop.cpp" />
     <ClCompile Include="runTest.cpp" />
+    <ClCompile Include="shader.cpp" />
     <ClCompile Include="stack_unitTest.cpp" />
     <ClCompile Include="stopwatch.cpp" />
     <ClCompile Include="test.cpp" />
@@ -174,9 +175,10 @@
     <ClInclude Include="processArgs.h" />
     <ClInclude Include="profileManager.h" />
     <ClInclude Include="profileManager_unitTest.h" />
-    <ClInclude Include="render.h" />
+    <ClInclude Include="renderer.h" />
     <ClInclude Include="runMainLoop.h" />
     <ClInclude Include="runTest.h" />
+    <ClInclude Include="shader.h" />
     <ClInclude Include="stack.h" />
     <ClInclude Include="stack_unitTest.h" />
     <ClInclude Include="test.h" />
